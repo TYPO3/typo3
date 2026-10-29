@@ -1,0 +1,2184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline" approved="yes">
+        <source>Components</source>
+        <target state="final">Komponenter</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title" approved="yes">
+        <source>Open %1s component</source>
+        <target state="final">Åbn %1s komponent</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Håndtér sidetræ eksempler</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline" approved="yes">
+        <source>Styles</source>
+        <target state="final">Typografier</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title" approved="yes">
+        <source>Open %1s style</source>
+        <target state="final">Åbn %1s typografi</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder" approved="yes">
+        <source>GifBuilder</source>
+        <target state="final">GifBuilder</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder.description" approved="yes">
+        <source>Live demos of every GIFBUILDER object — BOX, ELLIPSE, TEXT (with niceText and shadow variants), OUTLINE, EMBOSS, standalone SHADOW — plus every EFFECT value, the ADJUST tone curves, and the CROP / SCALE / IMAGE composites, all rendered through the real GifBuilder pipeline.</source>
+        <target state="final">Live demoer af hvert GIFBUILDER objekt — BOX, ELLIPSE, TEKST (med niceText og skyggevarianter), OUTLINE, EMBOSS, standalone SHADOW — plus hver EFFEKT værdi, ADJUST tonekurver, og CROP / SCALE / IMAGE sammensætninger, alle gengives gennem den virkelige GifBuilder pipeline.</target>
+      </trans-unit>
+      <trans-unit id="styleguide" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">Styleguide</target>
+      </trans-unit>
+      <trans-unit id="action.accordion" approved="yes">
+        <source>Accordion</source>
+        <target state="final">Harmonika</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description" approved="yes">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target state="final">Sammenklappelige indholdssektioner, der udvider og kollapser for at vise eller skjule information.</target>
+      </trans-unit>
+      <trans-unit id="action.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Profilbillede</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description" approved="yes">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target state="final">Vis billeder, der repræsenterer backend brugere med valgfri statusindikatorer.</target>
+      </trans-unit>
+      <trans-unit id="action.badges" approved="yes">
+        <source>Badges</source>
+        <target state="final">Badges</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target state="final">Små etiketter til visning af status, tæller, eller kategoriseringsinformation.</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs" approved="yes">
+        <source>Breadcrumbs</source>
+        <target state="final">Brødkrummer</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target state="final">Navigationsspor, der viser den aktuelle placering i backend-hierarkiet, herunder moduler og elementer.</target>
+      </trans-unit>
+      <trans-unit id="action.buttons" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Knapper</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description" approved="yes">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target state="final">Interaktive elementer til udløsning af handlinger med forskellige stilarter, størrelser og tilstande.</target>
+      </trans-unit>
+      <trans-unit id="action.cards" approved="yes">
+        <source>Cards</source>
+        <target state="final">Cards</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description" approved="yes">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target state="final">Fleksible beholdere til gruppering af relateret indhold, der vises individuelt eller i grupper.</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Afkrydsningsfelter</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description" approved="yes">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target state="final">Formularkontroller til at vælge en eller flere muligheder, herunder skiftere og kontakter.</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Kombo-bokse</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target state="final">Indtastningsfelter med rullelisteforslag til valg eller indtastning af værdier.</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Indholdsnavigation</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description" approved="yes">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target state="final">En to-panel-beholder med et skalérbart navigationsområde og et fleksibelt indholdsområde.</target>
+      </trans-unit>
+      <trans-unit id="action.datetime" approved="yes">
+        <source>Datetime / Relative Time</source>
+        <target state="final">Datetime / Relativ tid</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description" approved="yes">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target state="final">Webkomponent til visning af tidsstempler i relativ format med sprogunderstøttelse.</target>
+      </trans-unit>
+      <trans-unit id="action.exception" approved="yes">
+        <source>Exception</source>
+        <target state="final">Undtagelse</target>
+      </trans-unit>
+      <trans-unit id="action.exception.description" approved="yes">
+        <source>Shows how an exception is displayed. Throws an actual exception inside a frame to also execute JavaScript (stacktrace copy).</source>
+        <target state="final">Viser hvordan en undtagelse vises. Kaster en egentlig undtagelse i en ramme for også at udføre JavaScript (stacktrace copy).</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Farve-tokens</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description" approved="yes">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target state="final">Foruddefinerede farveværdier og design-tokens der anvendes i hele TYPO3 backend-interfacet.</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Accent og tilstand</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description" approved="yes">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target state="final">Tilstandsfulde farvevarianter for interaktive elementer, herunder accent farver og semantiske tilstande.</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview" approved="yes">
+        <source>Components overview</source>
+        <target state="final">Komponentoversigt</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description" approved="yes">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target state="final">Gennemse alle tilgængelige UI komponenter i TYPO3 backend komponentbiblioteket.</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Udviklerværktøjer</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description" approved="yes">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target state="final">Specialiserede komponenter og hjælpeprogrammer til udvikling og fejlfinding.</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Rulleliste</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target state="final">Skift overlays til visning af lister, menuer og kontekstuelle handlinger.</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Flashbeskeder</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target state="final">Midlertidige meddelelser til visning af feedback om brugerhandlinger og systembegivenheder.</target>
+      </trans-unit>
+      <trans-unit id="action.form" approved="yes">
+        <source>Form</source>
+        <target state="final">Formular</target>
+      </trans-unit>
+      <trans-unit id="action.form.description" approved="yes">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target state="final">Komplet formularudformninger der kombinerer forskellige indtastningsfelter og kontrolelementer.</target>
+      </trans-unit>
+      <trans-unit id="action.icons" approved="yes">
+        <source>Icons</source>
+        <target state="final">Ikoner</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description" approved="yes">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target state="final">Komplet bibliotek af ikoner, der er tilgængelige til brug i TYPO3 backend interface.</target>
+      </trans-unit>
+      <trans-unit id="action.infobox" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infoboks</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description" approved="yes">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target state="final">Fremhævede containere til visning af vigtige oplysninger og kontekstuel hjælp.</target>
+      </trans-unit>
+      <trans-unit id="action.input" approved="yes">
+        <source>Input</source>
+        <target state="final">Input</target>
+      </trans-unit>
+      <trans-unit id="action.input.description" approved="yes">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target state="final">Tekstinputfelter med understøttelse af forskellige typer, tilstande og størrelser.</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups" approved="yes">
+        <source>List groups</source>
+        <target state="final">Vis grupper</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Lister for visning af en serie af indhold.</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Håndtér sidetræ eksempler</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target state="final">Opret og administrer eksempler på sidetræer med TCA-demoelementer eller indholdselementer til test- og demonstrationsformål.</target>
+      </trans-unit>
+      <trans-unit id="action.modal" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modal</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description" approved="yes">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target state="final">Dialogvinduer, der vises på toppen af sidens indhold til fokuserede interaktioner.</target>
+      </trans-unit>
+      <trans-unit id="action.navs" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navs</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target state="final">Navigationskomponenter, herunder faner, piller og flade navigationsstilarter til organisering af indhold.</target>
+      </trans-unit>
+      <trans-unit id="action.notifications" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifikationer</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target state="final">Midlertidige meddelelser til at informere brugerne om begivenheder med valgfri handlingsknapper.</target>
+      </trans-unit>
+      <trans-unit id="action.pagination" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Sideinddeling</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target state="final">Kontroller til navigation gennem flersidet indhold og datasæt.</target>
+      </trans-unit>
+      <trans-unit id="action.panels" approved="yes">
+        <source>Panels</source>
+        <target state="final">Paneler</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description" approved="yes">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target state="final">Sammenfoldelige indholdsbeholdere til organisering af oplysninger i sektioner.</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Fremgangs-indikatorer</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description" approved="yes">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target state="final">Visuelle indikatorer, der viser fuldførelse status af opgaver og processer.</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Fremgangsmonitorer</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description" approved="yes">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target state="final">Segmenterede fremskridt vises for multi-trinprocesser som guider.</target>
+      </trans-unit>
+      <trans-unit id="action.radio" approved="yes">
+        <source>Radio</source>
+        <target state="final">Radio</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description" approved="yes">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target state="final">Formularkontrol for at vælge en enkelt mulighed fra flere valg.</target>
+      </trans-unit>
+      <trans-unit id="action.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Vælg</target>
+      </trans-unit>
+      <trans-unit id="action.select.description" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target state="final">Rullelistemenuer for at vælge en eller flere muligheder fra en liste.</target>
+      </trans-unit>
+      <trans-unit id="action.shadows" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Skygger</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description" approved="yes">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target state="final">Skyggeeffekter og elevationstilarter, der bruges til at skabe dybde i grænsefladen.</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">Status indikatorer</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators.description" approved="yes">
+        <source>Small colored dots that communicate the state of records, tasks, and interface elements, including animated live and loading variants.</source>
+        <target state="final">Små farvede prikker, der kommunikerer tilstanden af elementer, opgaver og grænsefladeelementer, herunder animerede live- og indlæsnings-varianter.</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview" approved="yes">
+        <source>Styles overview</source>
+        <target state="final">Oversigt over typografier</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description" approved="yes">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target state="final">Gennemse alle tilgængelige designstilarter, herunder farver, typografi, og visuelle tokens.</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Overflader</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description" approved="yes">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target state="final">Baggrundsoverflader og containerstil, der definerer det visuelle hierarki.</target>
+      </trans-unit>
+      <trans-unit id="action.tab" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Faner</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description" approved="yes">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target state="final">Organiseret indholdssektioner med klikbare overskrifter til at skifte mellem visninger.</target>
+      </trans-unit>
+      <trans-unit id="action.tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabeller</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description" approved="yes">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target state="final">Strukturerede layouts til visning af tabeldata med valgfri handlingsikoner.</target>
+      </trans-unit>
+      <trans-unit id="action.textarea" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Tekstareal</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description" approved="yes">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target state="final">Multi-line tekstinput-felter til at indtaste længere indhold.</target>
+      </trans-unit>
+      <trans-unit id="action.trees" approved="yes">
+        <source>Trees</source>
+        <target state="final">Træer</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description" approved="yes">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target state="final">Hierarkiske træstrukturer til visning af indlejrede data og navigation.</target>
+      </trans-unit>
+      <trans-unit id="action.typography" approved="yes">
+        <source>Typography</source>
+        <target state="final">Typografi</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target state="final">Skrifttypestilarter, størrelser, vægte og tekstformatering brugt i hele backend.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError" approved="yes">
+        <source>An error occured while processing the page tree</source>
+        <target state="final">Der opstod en fejl under behandling af sidetræet</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton" approved="yes">
+        <source>Create page tree</source>
+        <target state="final">Opret sidetræ</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Slet sidetræ og alle relaterede elementer</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Data oprettet</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody" approved="yes">
+        <source>A page tree with TCA demo records was created.</source>
+        <target state="final">Et sidetræ med TCA demo-elementer blev oprettet.</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Ingen data oprettet</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody" approved="yes">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target state="final">Et sidetræ med TCA demo-elementer findes allerede. Slet det først.</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Data slettet</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Sidetræet med alle tilknyttede elementer blev slettet.</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel" approved="yes">
+        <source>A localized label</source>
+        <target state="final">En oversat etiket</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3" approved="yes">
+        <source>A localized help text</source>
+        <target state="final">En oversat hjælpetekst</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle" approved="yes">
+        <source>Form engine - Minimal table configuration</source>
+        <target state="final">Formularmotor - Minimal tabel konfiguration</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField" approved="yes">
+        <source>Title field</source>
+        <target state="final">Titelfelt</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets" approved="yes">
+        <source>Create page tree with site sets</source>
+        <target state="final">Opret sidetræ med sidesæt</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate" approved="yes">
+        <source>Create page tree with sys_template</source>
+        <target state="final">Opret sidetræ med sys_template</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Slet sidetræ og alle relaterede elementer</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Data oprettet</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody" approved="yes">
+        <source>A page tree with content elements was created.</source>
+        <target state="final">Et sidetræ med indholdselementer blev oprettet.</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Ingen data oprettet</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody" approved="yes">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target state="final">Et sidetræ med indholdselementer eksisterer allerede. Slet det først.</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Data slettet</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Sidetræet med alle tilknyttede elementer blev slettet.</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel" approved="yes">
+        <source>Item group from locallang</source>
+        <target state="final">Elementgruppe fra locallang</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title" approved="yes">
+        <source>Styleguide Frontend</source>
+        <target state="final">Styleguide Frontend</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0" approved="yes">
+        <source>Main content</source>
+        <target state="final">Hovedindhold</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.title" approved="yes">
+        <source>Styleguide Content Restrictions</source>
+        <target state="final">Styleguide Indholdsbegrænsninger</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.0" approved="yes">
+        <source>Unrestricted (any content type)</source>
+        <target state="final">Ubegrænset (enhver indholdstype)</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.1" approved="yes">
+        <source>Allowed only: Header, Text, Text &amp; Media</source>
+        <target state="final">Kun tilladt: Header, Tekst, Tekst &amp; medier</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.2" approved="yes">
+        <source>Disallowed: Image, HTML, Text &amp; Media</source>
+        <target state="final">Ikke tilladt: Billede, HTML, Tekst &amp; medier</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label" approved="yes">
+        <source>Color scheme:</source>
+        <target state="final">Farveskema:</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Farveskema</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline" approved="yes">
+        <source>Frontend Styleguide</source>
+        <target state="final">Frontend styleguide</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Profilbillede</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext" approved="yes">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target state="final"><![CDATA[En avatar viser et billede, der repræsenterer en backend bruger og kan give yderligere oplysninger såsom deres status.<br>Avatarer kan vises med en egen ViewHelper. Hvis et avatarbillede er gemt i brugerindstillingerne, vil dette blive brugt i stedet for standardbilledet.]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text" approved="yes">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target state="final">Vis backend brugerens avatar-billede eller et statisk fallback-billede for brugere uden avatar-billeder.</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text" approved="yes">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target state="final">Hvis angivet, vil backend brugertype (normal bruger eller admin bruger) og dens status (deaktiveret eller ej) blive vist ved siden af avataren. </target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Badges</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target state="final">Små etiketter til visning af status, tællere, eller kategoriserings-information i et kompakt format.</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline" approved="yes">
+        <source>Shape</source>
+        <target state="final">Facon</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline" approved="yes">
+        <source>Usage within headings</source>
+        <target state="final">Brug i overskrifter</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline" approved="yes">
+        <source>Breadcrumb</source>
+        <target state="final">Brødkrumme</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target state="final">Navigationsspor, der viser den aktuelle placering i backend-hierarkiet, herunder moduler og sider.</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Knapper</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext" approved="yes">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target state="final">Interaktive elementer til udløsning af handlinger, der fås i forskellige farver, størrelser og tilstande.</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline" approved="yes">
+        <source>Active state</source>
+        <target state="final">Aktiv tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline" approved="yes">
+        <source>Disabled state</source>
+        <target state="final">Deaktiveret tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline" approved="yes">
+        <source>Types</source>
+        <target state="final">Typer</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline" approved="yes">
+        <source>Additional icon</source>
+        <target state="final">Yderligere ikon</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Standardstørrelse</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Lille størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.headline" approved="yes">
+        <source>Button groups</source>
+        <target state="final">Knapgrupper</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.basic.headline" approved="yes">
+        <source>Basic button group</source>
+        <target state="final">Basisknapgruppe</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.toolbar.headline" approved="yes">
+        <source>Button toolbar</source>
+        <target state="final">Knap værktøjslinje</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.sizes.headline" approved="yes">
+        <source>Button group sizing</source>
+        <target state="final">Knapgruppestørrelse</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.dropdown.headline" approved="yes">
+        <source>Button group with dropdown</source>
+        <target state="final">Knapgruppe med rullemenu</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.vertical.headline" approved="yes">
+        <source>Vertical button group</source>
+        <target state="final">Lodret knapgruppe</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline" approved="yes">
+        <source>Cards</source>
+        <target state="final">Cards</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext" approved="yes">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target state="final">Cards kan vises individuelt eller i grupper.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Justering</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text" approved="yes">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target state="final"><![CDATA[Hvis du har flere cards og hver har et link eller en knap, kan det være at de ikke tilpasser sig korrekt, afhængigt af længden af den tidligere placerede overskrifter og/eller beskrivelsestekst. For at sikre, at de justerer sig uanset tidligere indhold, placeres linket eller knappen inde i <code>div.card-footer</code> og ikke inde i <code>div.card-body</code>. På denne måde vil linkene altid blive justeret nederst på kortet.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text" approved="yes">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target state="final"><![CDATA[Det er muligt at tilføje farve til cards. Denne indstilling bruges dog sjældent - så brug venligst denne indstilling med omtanke. Alle tilgængelige indstillinger er vist nedenfor. Tildel en af følgende klasser til <code>div.card</code> hvis det er nødvendigt.<br>Hvis du vil vise cards i dets standardtilstand, er det ikke nødvendigt at tilføje <code>.card-default</code> til <code>div.card</code> - bare udelad den ekstra klasse.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text" approved="yes">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target state="final">Dette er et eksempel på et enkelt card med dets mulige indhold. Medmindre yderligere er defineret via CSS, udfylder et enkelt card den fulde bredde på det sted, det er placeret.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline" approved="yes">
+        <source>"Extension Manager" module</source>
+        <target state="final">"Udvidelseshåndtering" modul</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text" approved="yes">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target state="final">I udvidelseshåndteringen er det muligt at få pre-konfigurerede distributioner. For denne visning er kortene blevet forbedret med et billede og nogle badges.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline" approved="yes">
+        <source>Form fields in cards</source>
+        <target state="final">Formularfelter i cards</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text" approved="yes">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target state="final"><![CDATA[Det er også muligt at vise formularer og formularfelter i kort. Dette er gjort, for eksempel, i afsnittet "Upload udvidelse" i <a href="%1s">"Udvidelser" modul</a>, i "Feature-skiftere" overlejringen i <a href="%2s">"indstillinger" modulet</a> og i "Rå søgning" undermodulet <a href="%3s">"Database" modul</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline" approved="yes">
+        <source>Lists in cards</source>
+        <target state="final">Lister i cards</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline" approved="yes">
+        <source>Multiple cards</source>
+        <target state="final">Flere cards</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text" approved="yes">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target state="final"><![CDATA[For at vise flere cards kan de gruppéres ved at omslutte dem med <code>div.card-container</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline" approved="yes">
+        <source>Rows in cards</source>
+        <target state="final">Rækker i cards</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text" approved="yes">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target state="final">Oven i elementet information overlay, er rækker inkluderet i cardkomponenten.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text" approved="yes">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target state="final"><![CDATA[For at give cards den ønskede størrelse, skal du tildele en af følgende klasser til <code>div.card</code>. Hvis der kun anvendes et enkelt card, skal det være pakket ind med <code>div.card-container</code> som med flere cards.]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Afkrydsningsfelter</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext" approved="yes">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target state="final">Formularkontrol til at vælge en eller flere muligheder, herunder standard afkrydsningsfelter, skifter og kontakter.</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Kort-Layout</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" approved="yes">
+        <source>Checkbox toggle button</source>
+        <target state="final">Afkrydsningsfelt skifter-knap</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline" approved="yes">
+        <source>Icon Toggle</source>
+        <target state="final">Ikon skift</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline" approved="yes">
+        <source>Labeled Toggle</source>
+        <target state="final">Mærke skifte</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline" approved="yes">
+        <source>Switch</source>
+        <target state="final">Switch</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline" approved="yes">
+        <source>Toggle</source>
+        <target state="final">Skift</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Combo-bokse</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target state="final">Indtastningsfelter med rullelisteforslag til at vælge eller indtaste værdier, der kombinerer tekstindtastning med valgkapaciteter.</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Pladsholder</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline" approved="yes">
+        <source>Readonly</source>
+        <target state="final">Skrivebeskyttet</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Yderligere tekst</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Rulleliste</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target state="final">Skift overlays i et kompakt rullelisteformat.</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline" approved="yes">
+        <source>Toggles</source>
+        <target state="final">Omskiftere</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Grundlæggende</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline" approved="yes">
+        <source>States</source>
+        <target state="final">Tilstande</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Header</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline" approved="yes">
+        <source>Advanced Buttons</source>
+        <target state="final">Avancerede knapper</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline" approved="yes">
+        <source>Rows</source>
+        <target state="final">Rækker</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline" approved="yes">
+        <source>Divider</source>
+        <target state="final">Adskiller</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline" approved="yes">
+        <source>List items with actions</source>
+        <target state="final">Vis elementer med handlinger</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline" approved="yes">
+        <source>Positions</source>
+        <target state="final">Positioner</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline" approved="yes">
+        <source>Nested Submenu</source>
+        <target state="final">Indlejret undermenu</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Udviklerværktøjer</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext" approved="yes">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target state="final">Specialiserede komponenter og værktøjer designet til udvikling, fejlrettelser, og testformål.</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <trans-unit id="component.exception.headline" approved="yes">
+        <source>Exception</source>
+        <target state="final">Undtagelse</target>
+      </trans-unit>
+      <trans-unit id="component.exception.introtext" approved="yes">
+        <source>Page rendered by the configured exception handler when an uncaught exception occurs. The example exception is thrown for demonstration only.</source>
+        <target state="final">Side gengives af den konfigurerede undtagelseshandler, når en ikke-fanget undtagelse forekommer. Eksempelundtagelsen bliver kun vist til demonstrationsformål.</target>
+      </trans-unit>
+      <trans-unit id="component.exception.preview.title" approved="yes">
+        <source>Exception page</source>
+        <target state="final">Undtagelsesside</target>
+      </trans-unit>
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Flashbeskeder</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target state="final">Midlertidige meddelelser til visning af feedback om brugerhandlinger og systemhændelser i forskellige sværhedsgrader.</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text" approved="yes">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target state="final"><![CDATA[Farven bestemmes ved at indstille den tilsvarende <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. Følgende muligheder er tilgængelige:]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline" approved="yes">
+        <source>Form</source>
+        <target state="final">Formular</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext" approved="yes">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target state="final">Komplet form layouts kombinerer forskellige input felter, kontrolelementer og validering mønstre.</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline" approved="yes">
+        <source>Form with all fields and labels</source>
+        <target state="final">Formular med alle felter og etiketter</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline" approved="yes">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target state="final">Formular med alle felter og etiketter (højre mod venstre)</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline" approved="yes">
+        <source>Form fields in rows</source>
+        <target state="final">Formularfelter i rækker</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline" approved="yes">
+        <source>Login form example</source>
+        <target state="final">Log ind formular eksempel</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infoboks</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext" approved="yes">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target state="final">Dette er en fluid-baseret kontrol for backend, der kan indsættes som view-hjælper.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline" approved="yes">
+        <source>Custom icon</source>
+        <target state="final">Brugerdefineret ikon</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text" approved="yes">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target state="final"><![CDATA[Det er også muligt at bruge en brugerdefineret ikon. Bare videregiv ikon-id som <code>iconName</code> til view-hjælperen. Identifikationen skal være registreret i din TYPO3 installation.]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.text" approved="yes">
+        <source>Links within the text are underlined, so they can be recognized without relying on the color.</source>
+        <target state="final">Links i teksten er understreget, så de kan genkendes uden at basere sig på farven.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline" approved="yes">
+        <source>Without icon</source>
+        <target state="final">Uden ikon</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline" approved="yes">
+        <source>Input</source>
+        <target state="final">Input</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext" approved="yes">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target state="final">Tekstindtastningsfelter understøtter forskellige typer, tilstande og størrelser til single-line dataindtastning.</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline" approved="yes">
+        <source>File upload</source>
+        <target state="final">Filupload</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline" approved="yes">
+        <source>Email</source>
+        <target state="final">E-mail</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Pladsholder</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Yderligere tekst</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline" approved="yes">
+        <source>Password</source>
+        <target state="final">Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline" approved="yes">
+        <source>Search</source>
+        <target state="final">Søg</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Standardstørrelse</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Lille størrelse</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline" approved="yes">
+        <source>List groups</source>
+        <target state="final">Vis grupper</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Lister for visning af en serie af indhold.</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline" approved="yes">
+        <source>Borderless</source>
+        <target state="final">Uden kanter</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text" approved="yes">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target state="final"><![CDATA[Tilføj <code>.list-group-flush</code> for at fjerne den omkringliggende kant og vise listegruppen uden kanter i en forældre-beholder (f.eks. cards)]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline" approved="yes">
+        <source>Links and buttons</source>
+        <target state="final">Links og knapper</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modal</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext" approved="yes">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target state="final">Modaler på knapper kan udløses ved hjælp af t3js-modal-trigger klasse. Der er forskellige data attributter til at tilpasse tekst og adfærd. Ikke alle muligheder vises her.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline" approved="yes">
+        <source>Custom title and content within the modal</source>
+        <target state="final">Brugerdefineret titel og indhold i modal</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Alvorlighed</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description" approved="yes">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target state="final">Sæt den virtuelle stil på modalen ved brug af omfangsniveau for at vise indholds- eller handlingsnatur.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description" approved="yes">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target state="final">Styr bredden af modalen. Standardstørrelsen vokser, baseret på indhold, mens andre størrelser har faste bredder.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.headline" approved="yes">
+        <source>Size configuration</source>
+        <target state="final">Størrelseskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.description" approved="yes">
+        <source>Compose width and height independently using size tokens, override only one axis, or define breakpoint-specific overrides for responsive behaviour.</source>
+        <target state="final">Sammensæt bredde og højde uafhængigt ved hjælp af størrelsestokens, tilsidesæt kun én akse, eller definér breakpoint-specifikke tilsidesætning for responsiv adfærd.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.compose" approved="yes">
+        <source>Compose width and height</source>
+        <target state="final">Sammensæt bredde og højde</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.axis" approved="yes">
+        <source>Single-axis override</source>
+        <target state="final">Tilsidesæt enkelt akse</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline" approved="yes">
+        <source>Position</source>
+        <target state="final">Position</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.description" approved="yes">
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right. Sheet-positioned modals can also be resized, see the example below.</source>
+        <target state="final">Placér modal på forskellige steder på skærmen. Modaler positioneret i toppen glider ned fra toppen, positionerede i bunden, ind fra højre. Modalerne kan også ændres på pladepositionerne, se eksemplet nedenfor.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.headline" approved="yes">
+        <source>Resizable sheet</source>
+        <target state="final">Størrelsesændrende ark</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.description" approved="yes">
+        <source>Sheet-positioned modals show a drag handle on their free edge. The width is stored per "resizeIdentifier" in the user's configuration, so it is remembered the next time a modal with the same identifier is opened.</source>
+        <target state="final">Med arkpositionerede modaler vises et trækhåndtag på deres frie kant. Bredden gemmes pr. "resizeIdentifier" i brugerens konfiguration, så den huskes næste gang en modal med den samme identifikator åbnes.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.openModal" approved="yes">
+        <source>Open resizable sheet</source>
+        <target state="final">Åben størrelsesændrende ark</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline" approved="yes">
+        <source>Playground</source>
+        <target state="final">Legeplads</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description" approved="yes">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target state="final">Test interaktivt forskellige modalkonfigurationer ved at vælge indstillinger nedenfor.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Position</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity" approved="yes">
+        <source>Severity</source>
+        <target state="final">Alvor</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Skjul sidehoved</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statisk bagdrop</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal" approved="yes">
+        <source>Open modal</source>
+        <target state="final">Åbn modal</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no" approved="yes">
+        <source>No</source>
+        <target state="final">Nej</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Skjul sidehoved</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description" approved="yes">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target state="final">Skjul modal-sidehoved for et renere udseende. Titlen bruges stadig til tilgængelighedsformål.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statisk bagdrop</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description" approved="yes">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target state="final">Forhindrer modal i at lukke, når du klikker uden for det. Brugere skal bruge knapperne eller luk-ikonet for at afvise.</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navs</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target state="final">Navigationskomponenter, herunder faner, piller og flade navigationsstilarter til organisering af indhold.</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Grundlæggende</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline" approved="yes">
+        <source>Flat</source>
+        <target state="final">Flad</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline" approved="yes">
+        <source>Pills</source>
+        <target state="final">Piller</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Faner</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifikationer</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target state="final">Midlertidige meddelelser til at informere brugerne om begivenheder med valgfri handlingsknapper og forskellige sværhedsgradsniveauer. Fejlmeddelelser fortsætter indtil de afbrydes.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline" approved="yes">
+        <source>Action Buttons</source>
+        <target state="final">Handlingsknap</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text" approved="yes">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target state="final">Notifikation kan beriges med handlingsknapper for at udløse to slags handlinger: Øjeblikkelig handling og udskudte handlinger.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline" approved="yes">
+        <source>Immediate Action</source>
+        <target state="final">Øjeblikkelig handling</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text" approved="yes">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target state="final">Øjeblikkelige handlinger udføres direkte, når handlingsknappen udløses. Notifikationen annulleres med det samme. Denne handlingstype er egnet til handling, der ikke behøver nogen behandlingstid, f.eks. at kalde et backend-modul.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline" approved="yes">
+        <source>Deferred Action</source>
+        <target state="final">Udskudt handling</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text" approved="yes">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target state="final">Udskudte handlinger er egnede til handlinger, der har brug for en tidsperiode, indtil de er færdige, f.eks. AJAX opkald. Meddelelserne lukkes så snart handlingen er afsluttet. Når den er aktiveret, vil knappen vise et spinner-ikon for at angive en aktivitet.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html" approved="yes">
+        <source>Implementation via HTML:</source>
+        <target state="final">Implementering via HTML:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script" approved="yes">
+        <source>Implementation via script:</source>
+        <target state="final">Implementering via script:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Alvorlighed</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text" approved="yes">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target state="final">Alle meddelelser forsvinder efter 5 sekunder som standard, undtagen for fejlmeddelelsen, som vil forblive synlig medmindre andet er konfigureret.</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Sideinddeling</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target state="final">Kontroller for at navigere gennem flersidet indhold og datasæt med sidenumre og navigationpile.</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline" approved="yes">
+        <source>Panels</source>
+        <target state="final">Paneler</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext" approved="yes">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target state="final">Sammenklappelige indholdsbeholdere til organisering af oplysninger i udvidelige og sammenklappelige sektioner.</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline" approved="yes">
+        <source>Collapsible</source>
+        <target state="final">Sammenklappelig</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline" approved="yes">
+        <source>Nesting</source>
+        <target state="final">Indlejring</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline" approved="yes">
+        <source>Variants</source>
+        <target state="final">Varianter</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline" approved="yes">
+        <source>Loader</source>
+        <target state="final">Indlæser</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline" approved="yes">
+        <source>Progress</source>
+        <target state="final">Fremgang</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline" approved="yes">
+        <source>Progress Component</source>
+        <target state="final">Fremgangskomponent</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Header</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline" approved="yes">
+        <source>Header with icon and actions</source>
+        <target state="final">Header med ikon og handlinger</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline" approved="yes">
+        <source>Header with thumbnail and actions</source>
+        <target state="final">Header med miniaturebilleder og handlinger</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline" approved="yes">
+        <source>Header with section controls</source>
+        <target state="final">Header med sektionskontroller</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline" approved="yes">
+        <source>Body</source>
+        <target state="final">Body</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline" approved="yes">
+        <source>Footer</source>
+        <target state="final">Sidefod</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline" approved="yes">
+        <source>List</source>
+        <target state="final">Liste</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="component.panels.alerts.headline" approved="yes">
+        <source>Alerts</source>
+        <target state="final">Advarsler</target>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline" approved="yes">
+        <source>Form Sections</source>
+        <target state="final">Formularsektioner</target>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Faner</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Fremgangs-indikatorer</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext" approved="yes">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target state="final"><![CDATA[Fremgrans-indikatorer repræsenterer en bestemt tilstand, der kan vises på en procentvis måde, f.eks. antal uploadede filer, eksekverede opgraderingsguider eller brug af diskplads.<br>Hvis den nøjagtige mængde data, der indlæses, ikke er kendt, kan statuslinjerne gengives i en ubestemt tilstand.<br>Hvor det er muliugt anvendes en klar formulering, der beskriver statuslinjen.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline" approved="yes">
+        <source>Interactive Demos</source>
+        <target state="final">Interaktiv demo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline" approved="yes">
+        <source>Indeterminate Progress Bar</source>
+        <target state="final">Svævende fremdriftsbjælke</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Opretter en statuslinje i svævende tilstand, derefter opkald gjort () for at udløse overgangen til 100% og fjernelse.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button" approved="yes">
+        <source>Start Indeterminate Progress</source>
+        <target state="final">Start svævende fremdrift</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed" approved="yes">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target state="final">Start ubestemt fremdrift (med forsinkelse)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline" approved="yes">
+        <source>Determinate Progress Bar</source>
+        <target state="final">Bestem fremdriftbaren</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Opretter en fremdriftbjælke med en indledende værdi, derefter kaldes done() for at udløse overgangen til 100% og fjernelse.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button" approved="yes">
+        <source>Start Determinate Progress</source>
+        <target state="final">Start bestemt fremdrift</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed" approved="yes">
+        <source>Start Determinate Progress (with delay)</source>
+        <target state="final">Start bestemt fremdrift (med forsinkelse)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline" approved="yes">
+        <source>Reusable Progress Bar</source>
+        <target state="final">Genanvendelig fremdriftsbjælke</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text" approved="yes">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target state="final">Demonstrerer hvordan kald start() annullerer en done() operation, der allerede er i gang. Statuslinjen nedenfor kalder done() efter 1 sekund, men start() kaldes 100ms senere for at annullere fjernelsen.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button" approved="yes">
+        <source>Run Demo</source>
+        <target state="final">Kør demo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline" approved="yes">
+        <source>Custom label</source>
+        <target state="final">Tilpasset etiket</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text" approved="yes">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target state="final">Alternativt kan en etiket vises under statuslinjen.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text" approved="yes">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target state="final">Som standard vises en fremgang uden bekendt.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline" approved="yes">
+        <source>Max value</source>
+        <target state="final">Maksimumsværdi</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" approved="yes">
+        <source>Ridiculous max value</source>
+        <target state="final">Meningsløs høj værdi</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Alvorlighed</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline" approved="yes">
+        <source>Value</source>
+        <target state="final">Værdi</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline" approved="yes">
+        <source>Progress Bar with Table</source>
+        <target state="final">Fremdriftsbjælke med tabel</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text" approved="yes">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target state="final">Demonstrerer brug af en fremgangsbjælke som det første barn af en tabelwrapper for at angive indlæsningstilstand.</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Fremgangstrackere</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext" approved="yes">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target state="final"><![CDATA[Fremgangstrackere er en segmenteret variant af statuslinjer, der opdeler statuslinjen i lige store dele.<br>Den primære brug er i guiden komponenter.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline" approved="yes">
+        <source>Active stage</source>
+        <target state="final">Aktivt trin</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline" approved="yes">
+        <source>Demo</source>
+        <target state="final">Demo</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Radioknapper</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext" approved="yes">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target state="final">Formularkontrol til valg af en enkelt eksklusiv mulighed fra flere gensidigt eksklusive valg.</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Kort-Layout</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Indholdsnavigation</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext" approved="yes">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target state="final"><![CDATA[En to-panel-beholder med et skalerbart navigationsområde og et fleksibelt indholdsområde. Navigationspanelet er valgfrit, skalerbart og kan kollapses til venstre. Indholdspanelet er påkrævet og udfylder det resterende mellemrum.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline" approved="yes">
+        <source>Basic usage</source>
+        <target state="final">Grundlæggende brug</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text" approved="yes">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target state="final"><![CDATA[Indholdsnavigation bruger navngivne slots: <code>navigation</code> og <code>indhold</code>. <code>indhold</code> felt er påkrævet. Navigationspanelet kan kollapses ved at trække under halvdelen af dets mindste bredde. Når det kollapses, vises en ekspander-knap med panelets titel.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline" approved="yes">
+        <source>External controls</source>
+        <target state="final">Ekstern styring</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text" approved="yes">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target state="final"><![CDATA[Navigationspanelet kan udvides eller sammenklappes programmatisk ved hjælp af <code>expand()</code>, <code>collapse()</code>og <code>isCollapsed()</code> metoder.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline" approved="yes">
+        <source>Toggle button</source>
+        <target state="final">Skifteknap</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text" approved="yes">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target state="final"><![CDATA[Komponenten <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> giver en knap til at udvide eller skjule navigationen. Placer den hvor som helst i indholdsnavigationskomponenten. Brug <code>action="collapse"</code> for en luk-sammen knap (synlig når udvidet) eller <code>action="expand"</code> for en ekspanderende knap (synlig når den er kollapset). Komponenten viser/skjuler automatisk baseret på navigationstilstanden og læser etiketter fra den overordnede indholdsnavigations <code>navigationsetikel-collapse</code> og <code>navigationsetikel-expand</code> attributter.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline" approved="yes">
+        <source>Hiding navigation</source>
+        <target state="final">Skjul navigation</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text" approved="yes">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target state="final"><![CDATA[Navigeringspanelet kan skjules ved at tilføje attributten <code>skjult</code> til det opslidte element. Brug komponentens <code>showNavigation()</code>, <code>hideNavigation()</code>og <code>isNavigationHidden()</code> metoder til programmatisk kontrol.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline" approved="yes">
+        <source>Width persistence</source>
+        <target state="final">Bredde vedholdenhed</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text" approved="yes">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target state="final"><![CDATA[Navigationsbredden fortsætter automatisk til <code>localStorage</code> ved hjælp af containerens <code>identifikator</code> attribut. Ændr størrelsen på panelet nedenfor, og genindlæs siden for at se bredden gendannet.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline" approved="yes">
+        <source>Right-to-left support</source>
+        <target state="final">Højre-til-venstre understøttelse</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text" approved="yes">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target state="final"><![CDATA[Containeren tilpasser sig automatisk til højre-til-venstre layouts. Navigeringspanelet vises til højre og trækretninger spejles.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline" approved="yes">
+        <source>Flyout mode</source>
+        <target state="final">Flyout tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text" approved="yes">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target state="final"><![CDATA[Når containeren bliver for smal (under 750px), skifter navigationen automatisk til flyout-tilstand ved hjælp af CSS-containerforespørgsler. I flyout-tilstand, overlejrer navigationen indholdet i stedet for at være placeret ved siden af det, og størrelsesændring er deaktiveret.]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline" approved="yes">
+        <source>Select</source>
+        <target state="final">Vælg</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target state="final">Rullelistemenuer til at vælge en eller flere muligheder fra en foruddefineret liste af værdier.</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline" approved="yes">
+        <source>Multiple selection</source>
+        <target state="final">Multivalg</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline" approved="yes">
+        <source>Option groups</source>
+        <target state="final">Valggrupper</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Enkelt valg med valgmulighedersgrupper</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Flere valg med valgmulighedsgrupper</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Standardstørrelse</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Lille størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Enkelt valg med valgmulighedersgrupper</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Flere valg med valgmulighedsgrupper</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <trans-unit id="component.statusIndicator.headline" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">Status indikatorer</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.introtext" approved="yes">
+        <source>Indicators communicate the state of records, tasks, and interface elements with small colored dots, including animated variants for ongoing activity. Toggle the color scheme to preview light and dark.</source>
+        <target state="final">Indikatorer kommunikerer tilstanden af elementer opgaver og grænsefladeelementer med små farvede prikker, herunder animerede varianter til løbende aktivitet. Slå farveskemaet til og fra for at forhåndsvise lys og mørke.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.headline" approved="yes">
+        <source>Dots</source>
+        <target state="final">Prikker</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.introtext" approved="yes">
+        <source>Small colored dots flag the state of an element without occupying much space, for example on navigation items or list rows. Each state uses a brighter, fill-tuned shade of its hue so the small filled shape stays vibrant across light and dark.</source>
+        <target state="final">Små farvede prikker viser tilstanden af et element uden at optage meget plads, for eksempel på navigationselementer eller -rækker. Hver tilstand bruger en lysere, udfyldt skyggenuance af sin nuance, så den lille fyldte form forbliver levende på tværs af lys og mørke.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.headline" approved="yes">
+        <source>Semantic states</source>
+        <target state="final">Semantiske tilstande</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.introtext" approved="yes">
+        <source>Beside the base colours, a small set of semantic states name a recurring domain concept and map to one of those colours – and, where it fits, to a motion – in the stylesheet. Use them so the same concept looks identical wherever it appears in the backend, instead of each module picking its own colour: active is a plain green, online a pulsing green, running a loading blue, and disabled a red.</source>
+        <target state="final">Ved siden af grundfarverne nævner et lille sæt semantiske tilstande et tilbagevendende domænekoncept og kort til en af disse farver – og hvor det passer til en bevægelse – i stilarket. Brug dem, så det samme koncept ser identisk ud, uanset hvor det vises i backend, i stedet for at hvert modul vælger sin egen farve: active er en almindelig grøn, online en pulserende grøn, kører en lastning blå, og deaktiveret en rød.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.headline" approved="yes">
+        <source>Animated</source>
+        <target state="final">Animeret</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.introtext" approved="yes">
+        <source>Motion adds an activity state on top of the colour. Each animation composes with any state colour; all are shown below so they can be verified in every state.</source>
+        <target state="final">Bevægelse tilføjer en aktivitetstilstand oven på farven. Hver animation komponerer farve med enhver tilstand; alle er vist nedenfor, så de kan verificeres i hver tilstand.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.headline" approved="yes">
+        <source>Live</source>
+        <target state="final">Offentlig</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.introtext" approved="yes">
+        <source>Signals that an element is active or live. A halo gently breathes in and out around the dot. Apply it with the live attribute.</source>
+        <target state="final">Signalerer om at et element er aktivt eller offentligt. En halo trækker forsigtigt ind og ud omkring prikken. Anvend det med den offentlige attribut.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.headline" approved="yes">
+        <source>Loading</source>
+        <target state="final">Indlæser</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.introtext" approved="yes">
+        <source>Signals that an operation is in progress. A fading trail rotates around the dot like a spinner. Apply it with the loading attribute.</source>
+        <target state="final">Signalerer som en operation er i gang. Et udtonet spor roterer rundt om prikken som en spinner. Anvend den med indlæsningsegenskaben.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.headline" approved="yes">
+        <source>Reduced motion</source>
+        <target state="final">Reduceret bevægelse</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.introtext" approved="yes">
+        <source>When the operating system requests reduced motion (prefers-reduced-motion: reduce), the live and loading animations are switched off and the indicators render statically. The examples below force that fallback so it can be previewed regardless of your current system setting.</source>
+        <target state="final">Når operativsystemet anmoder om reduceret bevægelse (prefers-reduced-motion: reduce), er offemtlig- og indlæsning-animationer slukket, og indikatorerne vises statisk. Eksemplerne nedenfor tvinger tilbagefald, så det kan forhåndsvises uanset din nuværende systemindstilling.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.headline" approved="yes">
+        <source>In context</source>
+        <target state="final">I kontekst</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.introtext" approved="yes">
+        <source>Indicators are inline elements, so they compose naturally next to text inside other components. When the indicator is the only cue, give it a label; when adjacent text already states the status, leave it decorative without a label.</source>
+        <target state="final">Indikatorer er inline elementer, så de sammensættes naturligt ved siden af tekst inde i andre komponenter. Når indikatoren er den eneste stikord, giv det en etiket; når tilstødende tekst allerede angiver status, efterlad det dekorativt uden en etiket.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.badges.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Etiketter</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Lister</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.tables.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabeller</target>
+      </trans-unit>
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline" approved="yes">
+        <source>Tab</source>
+        <target state="final">Fane</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext" approved="yes">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target state="final">Organiseret indhold sektioner med klikbare overskrifter til at skifte mellem forskellige visninger og paneler.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text" approved="yes">
+        <source>Basic tab navigation with two tabs.</source>
+        <target state="final">Grundlæggende fanenavigation med to faner.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline" approved="yes">
+        <source>Persistence</source>
+        <target state="final">Vedholdenhed</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text" approved="yes">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target state="final">Ved at tilføje data-store-last tab til fanebladet gemmes den sidst valgte fane i browsersessionen. Dette kræver et stabilt id på fanebladet listeelementet.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline" approved="yes">
+        <source>Validation State</source>
+        <target state="final">Valideringstilstand</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text" approved="yes">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target state="final">Faner der indeholder valideringsfejl fremhæves med en fareindikator. &lt;code&gt;has-validation-error&lt;/code&gt; klassen føjes til &lt;code&gt;nav-item&lt;/code&gt; elementet.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline" approved="yes">
+        <source>Scrollable</source>
+        <target state="final">Scrollable</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text" approved="yes">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target state="final">Når fanebladene ikke passer i én linje, vises der rullepile ved kanterne. Ændr størrelsen på beholderen for at se effekten.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline" approved="yes">
+        <source>Bootstrap Migration</source>
+        <target state="final">Bootstrap migration</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text" approved="yes">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target state="final">Faneblade med Bootstrap data-bs-toggle attributter migreres automatisk til data-typo3-fanen ved runtime. Ankerelementer erstattes med knapper.</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabeller</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext" approved="yes">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target state="final">Brug tabeller til at vise tabeldata. Handlingsikonerne skal altid være i den sidste tabelrækkecelle.</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text" approved="yes">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target state="final"><![CDATA[For at farve tabelrækker kan en klasse føjes til elementet <code>tr</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline" approved="yes">
+        <source>Color (full example)</source>
+        <target state="final">Farve (fuldt eksempel)</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline" approved="yes">
+        <source>Wide tables</source>
+        <target state="final">Brede tabeller</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Tekstareal</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext" approved="yes">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target state="final">Multi-linje tekstindtastningsfelter til indtastning og redigering af længere indhold og formateret tekst.</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Pladsholder</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Standardstørrelse</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Lille størrelse</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline" approved="yes">
+        <source>Trees</source>
+        <target state="final">Træer</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext" approved="yes">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target state="final">Hierarkiske træstrukturer til visning og navigering indlejrede data med udvidelige og sammenklappelige knuder.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline" approved="yes">
+        <source>Collapsible tree</source>
+        <target state="final">Sammenklappeligt træ</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text" approved="yes">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target state="final"><![CDATA[Sammenklappelige træer bruges til at vise konfigurationen på en mere struktureret måde. Lavere niveauer kan åbnes og lukkes, mens indgangene er kollapsede som standard. Hvis en bruger åbner elementer, gemmes denne tilstand i sessionen. Der er yderligere dataattributter, der kan føjes til <code>div. reelist-collapse</code> for at konfigurere kollapstilstand.]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline" approved="yes">
+        <source>File tree</source>
+        <target state="final">Filtræ</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text" approved="yes">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target state="final">Filtræer initialiseres via TypeScript på samme måde som sidetræerne.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Sidetræ</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text" approved="yes">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target state="final">Initialisering af et sidetræ sker via TypeScript som i kodeeksemplet nedenfor.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline" approved="yes">
+        <source>Datetime Component</source>
+        <target state="final">Datetime-komponent</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext" approved="yes">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target state="final">Web komponent til visning af tidsstempler i absolut format (standard) eller relativ format (f.eks. "2 minutter siden"). Anvender Luxon til sprogformatering og respekterer brugerens backend sprogindstilling og TYPO3's konfigurerede datoformater. Understøtter brugerdefinerede Luxon formatstrenge til komplet kontrol over det viste format. Når du bruger relativ tilstand, skal du holde henover tiden for at se den fulde datetime i et værktøjstip.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline" approved="yes">
+        <source>Basic Usage (Absolute Display)</source>
+        <target state="final">Grundlæggende brug (absolut visning)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay" approved="yes">
+        <source>Absolute Display (default)</source>
+        <target state="final">Absolut visning (standard)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp" approved="yes">
+        <source>ISO Timestamp</source>
+        <target state="final">ISO tidsstempel</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline" approved="yes">
+        <source>Relative Time Display</source>
+        <target state="final">Relativ tidsvisning</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text" approved="yes">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target state="final">Ved brug af tilstand="relativ" viser komponenten tidsstempler i relativ format (f.eks. "2 timer siden"). Hold øje med den absolutte datetime.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay" approved="yes">
+        <source>Relative Display</source>
+        <target state="final">Relativ visning</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline" approved="yes">
+        <source>Automatic Updates in Relative Mode</source>
+        <target state="final">Automatiske opdateringer i relativ tilstand</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text" approved="yes">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target state="final">I relativ tilstand opdaterer komponenten automatisk sig selv med adaptiv frekvens baseret på forløbet tid: &lt;1 minut opdateringer hvert sekund, &lt;1 time opdateringer hvert minut, &lt;1 dag hvert 5. minut og &gt;1 dag hvert 30. minut. Ingen konfiguration nødvendig.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated" approved="yes">
+        <source>Last updated:</source>
+        <target state="final">Senest opdateret:</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline" approved="yes">
+        <source>Unix Timestamp Support</source>
+        <target state="final">Unix timestamp understøttelse</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text" approved="yes">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target state="final">Komponenten registrerer og håndterer automatisk Unix timestamps (i sekunder).</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Format</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value" approved="yes">
+        <source>Value</source>
+        <target state="final">Værdi</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay" approved="yes">
+        <source>Absolute Display</source>
+        <target state="final">Absolut visning</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference" approved="yes">
+        <source>ISO Reference</source>
+        <target state="final">ISO reference</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper" approved="yes">
+        <source>Fluid ViewHelper</source>
+        <target state="final">Fluid ViewHelper</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline" approved="yes">
+        <source>Mode Comparison</source>
+        <target state="final">Tilstandssammenligning</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text" approved="yes">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target state="final">Side-for-side sammenligning af absolutte (standard) og relative visningstilstande.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline" approved="yes">
+        <source>Absolute Display Formats</source>
+        <target state="final">Absolutte visningsformater</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text" approved="yes">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target state="final">Formatetattributten er valgfri og bruger TYPO3's konfigurerede datoformat som standard. Tilgængelige værdier: Dato (standard), datetime eller brugerdefinerede Luxon format strenge. TYPO3 konfigurerede formater er defineret i $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] og $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display" approved="yes">
+        <source>Display</source>
+        <target state="final">Vis</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault" approved="yes">
+        <source>date (default - TYPO3 configured date)</source>
+        <target state="final">dato (standard - TYPO3 konfigureret dato)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured" approved="yes">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target state="final">datetime (TYPO3 konfigureret datetime)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline" approved="yes">
+        <source>Custom Format Strings</source>
+        <target state="final">Brugerdefinerede formatstrenge</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text" approved="yes">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target state="final">Formatattributten accepterer også brugerdefinerede Luxon formatstrenge for komplet kontrol over visningsformat.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString" approved="yes">
+        <source>Custom Format String</source>
+        <target state="final">Brugerdefineret formatstreng</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline" approved="yes">
+        <source>Relative Time Without Seconds</source>
+        <target state="final">Relativ tid uden sekunder</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text" approved="yes">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target state="final">Som standard afrunder relativ tilstand op til nærmeste minut. Brug attributten relativt-vis-sekunder til at vise eksakte sekunder i stedet.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds" approved="yes">
+        <source>Without Seconds (Default)</source>
+        <target state="final">Uden sekunder (standard)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds" approved="yes">
+        <source>With Seconds</source>
+        <target state="final">Med sekunder</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline" approved="yes">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target state="final">Med tærskel (vis absolut dato for gamle timestamps)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text" approved="yes">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target state="final">I relativ tilstand skifter attributten tærskeldage til absolut datoformat for tidsstempler ældre end et angivet antal dage.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold" approved="yes">
+        <source>Without Threshold</source>
+        <target state="final">Uden tærskel</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold" approved="yes">
+        <source>With Threshold (90 days)</source>
+        <target state="final">Med tærskel (90 dage)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline" approved="yes">
+        <source>Attributes</source>
+        <target state="final">Attributter</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute" approved="yes">
+        <source>Attribute</source>
+        <target state="final">Egenskab</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type" approved="yes">
+        <source>string (required)</source>
+        <target state="final">streng (påkrævet)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description" approved="yes">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target state="final">ISO 8601 tidsstempel (f.eks. "2024-01-15T10:30:00+01:00") eller Unix timestamp</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">streng (valgfrit)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description" approved="yes">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target state="final">Visningstilstand: "Absolute" (standard) eller "relativ"</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">streng (valgfrit)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description" approved="yes">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target state="final">Format for absolut tilstand: "dato" (standard - bruger $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (bruger ddmmyy + hhhmm) eller brugerdefineret Luxon format streng (f.eks."dd.MM.yyyy HHH:mm")</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type" approved="yes">
+        <source>number (optional)</source>
+        <target state="final">nummer (valgfrit)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description" approved="yes">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target state="final">Skift til absolut datoformat for tidsstempler ældre end N dage (kun for relativ tilstand). Standard: 0 (altid relativ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type" approved="yes">
+        <source>boolean (optional)</source>
+        <target state="final">boolesk (valgfrit)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description" approved="yes">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target state="final">Vis eksakte sekunder i relativ tilstand. Når der ikke er standard, vises tidspunkter inden for sidste minut som "1 minut siden". Når nuværende, vises "X sekunder siden".</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Farve-tokens</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Overflader brugt i TYPO3 backend, kun for <strong>intern brug</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Accent og tilstand</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext" approved="yes">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target state="final"><![CDATA[Tilstandsfulde farvevarianter, der anvendes til interaktive elementer i TYPO3 backend, kun til <strong>intern brug</strong>. Disse omfatter accent farver (primær, sekundær) og semantiske tilstand farver (info, succes, advarsel, fare, bemærkning) med deres respektive standard, hover, fokus, og handicappede varianter.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline" approved="yes">
+        <source>Accent Colors</source>
+        <target state="final">Markeringsfarver</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline" approved="yes">
+        <source>State Colors</source>
+        <target state="final">Tilstandsfarver</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline" approved="yes">
+        <source>Decorative Colors</source>
+        <target state="final">Dekorative farver</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text" approved="yes">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target state="final">Almindelige farvevarianter uden semantisk betydning. Brug disse til visuel sondring, såsom arbejdsområde-indikatorer, kategori-tags, eller bruger-tildelte etiketter, hvor farver er dekorative i stedet for at kommunikere tilstand.</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline" approved="yes">
+        <source>Icons</source>
+        <target state="final">Ikoner</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext" approved="yes">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target state="final">Ikoner kan bruges i backend moduler. TYPO3 sender automatisk den tilsvarende HTML output kode.</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline" approved="yes">
+        <source>Overlay</source>
+        <target state="final">Overlæg</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline" approved="yes">
+        <source>Overview</source>
+        <target state="final">Oversigt</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline" approved="yes">
+        <source>Usage</source>
+        <target state="final">Anvendelse</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline" approved="yes">
+        <source>Bitmap</source>
+        <target state="final">Bitmap</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation" approved="yes">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target state="final">Implementering i fluid via ViewHelper:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration" approved="yes">
+        <source>Registration:</source>
+        <target state="final">Registrerering:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline" approved="yes">
+        <source>SVG</source>
+        <target state="final">SVG</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Skygger</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext" approved="yes">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Skygger brugt i TYPO3 backend, kun til <strong>intern brug</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Overflader</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Overflader brugt i TYPO3 backend, kun for <strong>intern brug</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline" approved="yes">
+        <source>Natural</source>
+        <target state="final">Naturlig</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline" approved="yes">
+        <source>Typography</source>
+        <target state="final">Typografi</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target state="final">Skriftstilarter, størrelser, vægte og tekstformatering retningslinjer anvendes i hele TYPO3 backend.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline" approved="yes">
+        <source>Headings</source>
+        <target state="final">Overskrifter</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text" approved="yes">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target state="final"><![CDATA[Overskrift "H1" er hovedoverskriften i hvert backendmodul. Tilføjes kun én gang til hver backend side.<br>Overskrift "H2" er overskriften for hver sektion i backend moduler. Placeres over hver sektion og bruges flere gange.<br>Overskrift "H3" kan bruges til at opdele afsnitsindhold i logiske enheder. Placeres mellem afsnit inden for sektionen.<br>Overskrift "H4" kan bruges til at opdele meta / footer information.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.headline" approved="yes">
+        <source>Keyboard input</source>
+        <target state="final">Tastaturindtastning</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.text" approved="yes">
+        <source><![CDATA[Use the <code>kbd</code> element to mark up keyboard input or shortcuts. Nest <code>kbd</code> elements to compose key combinations.]]></source>
+        <target state="final"><![CDATA[Brug elementet <code>kbd</code> til at markere tastaturinddata eller genveje. Bundt <code>kbd</code>-elementer til at komponere tastekombinationer.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.sizing.text" approved="yes">
+        <source><![CDATA[Keys scale with the surrounding font size — sized in <code>em</code>, so they fit naturally inside headings, body text and small text without per-context overrides.]]></source>
+        <target state="final"><![CDATA[Nøgleskalaer med den omgivende skriftstørrelse — vis i størrelse i <code>em</code>, så de passer naturligt inde i overskrifter, brødtekst og lille tekst uden ar kontekst overskrives.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Lister</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text" approved="yes">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target state="final"><![CDATA[Som standard er usorterede og sorterede lister formateret med punkttegn og decimaler. Ved at tilføje <code>class="list-unstyled"</code> til ol eller ul tag, er det muligt at strukturere indhold i listeform uden den typiske liste-styling.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline" approved="yes">
+        <source>Ordered list</source>
+        <target state="final">Sorteret liste</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline" approved="yes">
+        <source>Unordered list</source>
+        <target state="final">Usorteret liste</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline" approved="yes">
+        <source>Paragraph</source>
+        <target state="final">Paragraf</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline" approved="yes">
+        <source>Small text</source>
+        <target state="final">Lille tekst</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text" approved="yes">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target state="final">Sidefodsinformation, små meddelelser kan ombrydes i lille tekst-tag.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline" approved="yes">
+        <source>Text color</source>
+        <target state="final">Tekstfarve</target>
+      </trans-unit>
+      <trans-unit id="elements.color.valid" approved="yes">
+        <source>Valid (LLL)</source>
+        <target state="final">Gyldig (LLL)</target>
+      </trans-unit>
+      <trans-unit id="example.code.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopiér</target>
+      </trans-unit>
+      <trans-unit id="example.code.copyToClipboard" approved="yes">
+        <source>Copy code to clipboard</source>
+        <target state="final">Kopiér kode til udklipsholder</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
