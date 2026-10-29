@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: Specify the directory containing the "pdftotext" and "pdfinfo" applications used to extract content from PDF files. Leave empty if not available.</source>
+        <target state="final">مسار محللات PDF: حدِّد المجلد الذي يحتوي على تطبيقي "pdftotext" و "pdfinfo" المستخدَمَين لاستخراج المحتوى من ملفات PDF. اتركه فارغاً إن لم تكن متاحة.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF Parsing Mode: Define how PDF files are split during indexing. "0" indexes the entire file at once. A positive value sets the number of pages per batch (e.g. "5" → pages 1–5, 6–10, …). A negative value sets the number of groups (e.g. "-3" → file split into 3 groups). Allowed range: -100 to 100.</source>
+        <target state="final">وضعُ تحليل PDF: حدِّد كيفية تقسيم ملفات PDF أثناء الفهرسة. "0" يفهرس الملف بأكمله دفعةً واحدة. القيمة الموجبة تحدِّد عدد الصفحات لكل دفعة (مثال: "5" ← الصفحات 1–5، 6–10، ...). القيمة السالبة تحدِّد عدد المجموعات (مثال: "-3" ← تقسيم الملف إلى 3 مجموعات). النطاق المسموح به: -100 إلى 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: Specify the directory containing the "unzip" application used to extract content from OpenOffice.org/Oasis OpenDocument files. Leave empty if not available.</source>
+        <target state="final">مسار أداة الضغط unzip: حدِّد المجلد الذي يحتوي على تطبيق "unzip" المستخدَم لاستخراج المحتوى من ملفات OpenOffice.org/Oasis OpenDocument. اتركه فارغاً إن لم يكن متاحاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: Specify the directory containing the "catdoc" application used to extract content from MS WORD files. Leave empty if not available.</source>
+        <target state="final">مسارُ مُحلِّلِ WORD: حدِّدْ المجلدَ الذي يحتوي على تطبيقِ "catdoc" المستخدَمِ لاستخراجِ المحتوى من ملفاتِ MS WORD. اتركْهُ فارغاً إذا لم يكنْ متاحاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: Specify the directory containing the "xlhtml" application used to extract content from MS EXCEL files. Leave empty if not available.</source>
+        <target state="final">مسارُ مُحلِّلِ EXCEL: حدِّدْ المجلدَ الذي يحتوي على تطبيقِ "xlhtml" المستخدَمِ لاستخراجِ المحتوى من ملفاتِ MS EXCEL. اتركْهُ فارغاً إذا لم يكنْ متاحاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: Specify the directory containing the "ppthtml" application used to extract content from MS POWERPOINT files. Leave empty if not available.</source>
+        <target state="final">مسارُ مُحلِّلِ EXCEL: حدِّدْ المجلدَ الذي يحتوي على تطبيقِ "xlhtml" المستخدَمِ لاستخراجِ المحتوى من ملفاتِ MS EXCEL. اتركْهُ فارغاً إذا لم يكنْ متاحاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: Specify the directory containing the "unrtf" application used to extract content from RTF files. Leave empty if not available.</source>
+        <target state="final">مسارُ مُحلِّلِ RTF: حدِّدْ المجلدَ الذي يحتوي على تطبيقِ "unrtf" المستخدَمِ لاستخراجِ المحتوى من ملفاتِ RTF. اتركْهُ فارغاً إذا لم يكنْ متاحاً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: Limit the amount of full-text data stored (in bytes). Lower values reduce database usage but also restrict sentence-level searching and the length of search result excerpts.</source>
+        <target state="final">طولُ بياناتِ النصِّ الكاملِ: حدِّدْ الحدَّ الأقصى لكميةِ بياناتِ النصِّ الكاملِ المخزَّنةِ (بالبايتِ). القيمُ المنخفضةُ تُقلِّلُ استخدامَ قاعدةِ البياناتِ لكنَّها تُقيِّدُ أيضاً البحثَ على مستوى الجملِ وطولَ مقتطفاتِ نتائجِ البحثِ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: Prevent pages from being indexed during frontend access. Indexing is then performed only by the backend page crawler.</source>
+        <target state="final">تعطيلُ الفهرسةِ في الواجهةِ الأماميةِ: منعُ فهرسةِ الصفحاتِ أثناءَ الوصولِ إليها من الواجهةِ الأماميةِ. تُنفَّذُ الفهرسةُ حينئذٍ فقط عن طريقِ زاحفِ الصفحاتِ في الواجهةِ الخلفيةِ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for Indexed Page: Set the minimum time (in hours) that must pass before an indexed page is eligible for re-indexing, regardless of page changes.</source>
+        <target state="final">الحدُّ الأدنى لـ TTL (بالساعاتِ) للصفحةِ المفهرَسةِ: حدِّدْ الحدَّ الأدنى للوقتِ (بالساعاتِ) الذي يجبُ أن يمرَّ قبلَ أن تصبحَ الصفحةُ المفهرَسةُ مؤهَّلةً لإعادةِ الفهرسةِ، بصرفِ النظرِ عن تغييراتِ الصفحةِ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max External Files to Index: Limit how many external files found on a page are indexed. This helps prevent excessive server load but may leave some documents unindexed.</source>
+        <target state="final">الحدُّ الأقصى للملفاتِ الخارجيةِ المفهرَسةِ: حدِّدْ عددَ الملفاتِ الخارجيةِ الموجودةِ في الصفحةِ التي يتمُّ فهرستُها. يُساعدُ هذا على منعِ الحملِ الزائدِ على الخادمِ لكنَّهُ قد يتركُ بعضَ المستنداتِ دونَ فهرسةٍ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
+        <target state="final">قناعُ البتاتِ للأعلامِ (متقدِّمٌ): حدِّدْ وزنَ بياناتِ HTML الوصفيةِ أثناءَ الفهرسةِ (نطاقُ القيمةِ: 0–255). &lt;title&gt; = 128، &lt;keywords&gt; = 64، &lt;description&gt; = 32. اضبطْهُ على 0 لإعطاءِ هذهِ الحقولِ وزناً إضافياً لا. الافتراضيُّ 192 يُعطي الأولويةَ للعنوانِ والكلماتِ المفتاحيةِ في نتائجِ البحثِ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <target state="final">تجاهل الإضافاتِ: حدِّدْ قائمةً مفصولةً بفواصلَ من امتداداتِ الملفاتِ التي يجبُ على المُحلِّلِ الخارجيِّ تجاهلُها، حتى لو كانتْ مدعومةً.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
+        <target state="final">فهرسةُ روابطِ HTML الخارجيةِ: تفعيلُ فهرسةِ الروابطِ الخارجيةِ عندما يكونُ نوعُ المحتوى الهدفِ "text/html"..</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Enable MySQL specific fulltext search: After toggling this flag the database schema should be updated using System → Maintenance →  Analyze Database Structure.</source>
+        <target state="final">تفعيلُ البحثِ النصيِّ الكاملِ الخاصِّ بـ MySQL: بعدَ تبديلِ هذا الخيارِ يجبُ تحديثُ مخططِ قاعدةِ البياناتِ باستخدامِ النظامِ ← الصيانةُ ← تحليلُ هيكلِ قاعدةِ البياناتِ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.deleteFromIndexAfterEditing" approved="yes">
+        <source>Remove content from index if page or its content is edited</source>
+        <target state="final">إزالة المحتوى من الفِهْرِس إذا تم تعديل الصفحة أو محتوياتها</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
