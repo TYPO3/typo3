@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Trier les sous-pages</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Ordre actuel de la page</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Trier ces pages par</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Vous êtes sur le point de modifier l'ordre des pages ci-dessus. Êtes-vous sûr de vouloir continuer ?</target>
+      </trans-unit>
+      <trans-unit id="sort" approved="yes">
+        <source>Sort</source>
+        <target state="final">Trier</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.title" approved="yes">
+        <source>Sort pages by page title</source>
+        <target state="final">Trier les pages par titre de page</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.title" approved="yes">
+        <source>Sort pages by subtitle</source>
+        <target state="final">Trier les pages par sous-titre</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.title" approved="yes">
+        <source>Sort pages by navigation title</source>
+        <target state="final">Trier les pages par titre de navigation</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change_time.title" approved="yes">
+        <source>Sort pages by change-time</source>
+        <target state="final">Trier les pages par date de modification</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.title" approved="yes">
+        <source>Sort pages by create-time</source>
+        <target state="final">Trier les pages par date de création</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.title" approved="yes">
+        <source>Reverse the page order</source>
+        <target state="final">Inverser l'ordre des pages</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titre de page</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Sous-titre</target>
+      </trans-unit>
+      <trans-unit id="fieldNavTitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Titre de navigation</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Heure de création</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Heure de modification</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titre de page</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Sous-titre</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Titre de navigation</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Heure de modification</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Heure de création</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Inverser l'ordre actuel</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Sous-pages non visibles</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">Certaines sous-pages ne sont pas visibles en raison de restrictions d'accès. Ces pages cachées sont exclues du tri.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Aucune sous-page</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Veuillez sélectionner une page avec des sous-pages</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Non implémenté</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">Cette fonction n'est pas disponible dans l'espace de travail brouillon actuel ; veuillez revenir à l'espace de travail LIVE.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Aucune autorisation d'édition sur cette sous-page. Cette page ne peut pas être re-triée parmi d'autres.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
