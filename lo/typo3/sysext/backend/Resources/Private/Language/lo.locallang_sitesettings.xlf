@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="edit.headline" approved="yes">
+        <source>Site Settings for "%s"</source>
+        <target state="final">ການຕັ້ງຄ່າເວັບໄຊສຳລັບ "%s"</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.title" approved="yes">
+        <source>No settings available</source>
+        <target state="final">ບໍ່ມີການຕັ້ງຄ່າໃຫ້ໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.message" approved="yes">
+        <source>The site '%s' does not provide configurable settings.</source>
+        <target state="final">ເວັບໄຊ '%s' ບໍ່ມີການຕັ້ງຄ່າທີ່ສາມາດກຳນົດໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="edit.yamlExport" approved="yes">
+        <source>YAML export</source>
+        <target state="final">ສົ່ງອອກ YAML</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">ແກ້ໄຂການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="save.message.updated" approved="yes">
+        <source>Settings updated.</source>
+        <target state="final">ອັບເດດການຕັ້ງຄ່າແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="categories.other" approved="yes">
+        <source>Other</source>
+        <target state="final">ອື່ນໆ</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit Site Settings "%s"</source>
+        <target state="final">ແກ້ໄຂການຕັ້ງຄ່າເວັບໄຊ "%s"</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
