@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">كلمة مرور لمرة واحدة لمدة محدودة</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">يُتيح هذا المزود المُصادقة باستخدام رمز لمَرة واحدة يعتمد على الوقت الحالي. كل رمز صالح فقط لمدة 30 ثانية. تحتاج إلى تطبيق أو جهاز OTP الذي يدعم مثل هذه الرموز.</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">يُمكّنُكَ "مُوفر كلمة المرور لمرة واحدة، المستند إلى الوقت" من تعزيز أمان حساباتك من خلال طلب رمز مُكوّن من سِتة أرقام عند كل تسجيل دخول.
+يعتمد هذا المُزود على الأمان المُشترك، والذي سيتم تبادله بين تطبيق OTP (أو الجهاز) و TYPO3. يأخذ كل رمز الوقت الحالي في الاعتبار وهو صالح لمدة 30 ثانية فقط.
+الإعدادات:
+ 1. امسح رمز QR ضوئياً أو أدخل كلمة السر مباشرةً في تطبيقك أو جهازك.
+ 2. أضف اسماً مُحدداً لهذا المزود (اختياري)
+ 3. أدخل الرمز المكون من سِتة أرقام في الحقل المقابل
+ 4. أرسل النموذج لتفعيل المزود.
+ملاحظة: في حال كان التطبيق الخاص بك يدعم الـ otpauth: // urls، يمكنك استرداد عنوان url بالنقر فوق زر المعلومات بجوار كلمة السر.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">رمز الاستعادة</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">يسمح هذا الموفر بالمصادقة باستخدام مجموعة من رموز المرور أحادية الاستخدام، في حال فقدت بيانات اعتماد MFA الأساسية، أو عدم إمكانية الوصول إليها مؤقتاً.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">رموز الاسترداد هي رموز عشوائية مكونة من ثمانية أرقام يمكن استخدامها للمصادقة، في حالة فقدان بيانات اعتماد المصادقة الرئيسية الخاصة بك. كل رمز صالح لمرة واحدة فقط.
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; بمجرد استنفاد جميع رموز الاسترداد، يجب عليك إنشاء مجموعة جديدة. لذلك، تحقق دورياً من كمية الرموز المتبقية في عرض تعديل / تغيير مقدم الخدمة.
+
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; إعداد:
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; 1. انسخ رموز الاسترداد وتخزينها في مكان آمن
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; 2. إضافة اسم محدد لهذا المزود (اختياري)
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; 3. قم بتقديم النموذج لتفعيل المزود - انظر أدناه الملاحظة
+
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; ملاحظة: لما كان رموز الاسترداد يتم تشفيرها وتخزينها بشكل آمن، ويمكن أن تستغرق هذه العملية بعض الوقت.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">أدخل الرمز المُكوّن من ستة أرقام</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">يجب عرض هذا الرمز الآن على جهازك أو في التطبيق الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">تمَّ تجاوزُ الحدِّ الأقصى لمحاولاتِ هذا المزوِّدِ. يُرجى استخدامُ مزوِّدٍ آخرَ أو التواصلُ مع مسؤولِ النظامِ.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">معلومات المُزوّد</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">اسم</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">أدخل الاسم</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">رموز الاستعادة المُتبقية</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">آخر استخدام</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">أبداً</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">آخر تحديث</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">إعادة إنشاء أكواد الاستعادة</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">
+إذا فقدتَ رموزَ الاسترداد الخاصةَ بكَ أو أردتَ الحصولَ على رموزٍ جديدةٍ، يمكنُكَ 					إعادةُ توليدِها عن طريقِ تحديدِ مربعِ الاختيارِ أدناهُ. لديكَ حالياً %d رموزٌ متبقيةٌ                </target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">إعادة إنشاء أكواد الاستعادة</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">الخطوة 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">الخطوة 1 أ</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">الخطوة 1 ب</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">الخطوة 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">الخطوة 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">مسح كود QR المعروض</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">امسح هذا الكود باستخدام تطبيق OTP الخاص بك (مثل Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">نسخ السر المُشترك</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">يمكنك أيضاً إدخال السر المُشترك يدوياً في تطبيق OTP أو جهازك.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">أدخل الاسم (اختياري)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">حدد اسم مُخصص لهذا المزوّد.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">كود الاستعادة</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">نسخ هذه الأكواد وتخزينها في مكان آمن.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">إعادة تحميل أكواد الاستعادة</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">إعادة التحميل</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">الإعداد غير ممكن</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">أكوادُ الاستعادةِ مخصصةٌ فقط كخيارٍ احتياطيٍ، إذا فقدتَ الوصولَ إلى بيانتِ اعتمادِ المصادقةِ متعددةِ العواملِ الرئيسيةِ. لذلك، يرجى تفعيلُ موفرِ المصادقةِ متعددةِ العواملِ الشاملِ MFA أولاً.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">إظهار رابط المصادقة</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">رابط المصادقة</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">في حالة عدم قدرتك على مسح كود QR، ولكن تطبيق OTP الخاص بك يدعم
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; مصادقة عناوين URL المجاورة لـ: أو بدلاً من الأسرار المشتركة الواضحة، يمكنك نسخ و
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; لصق عنوان URL الموضح أدناه. يحتوي عنوان URL على بعض المعلومات مثل المصدر (هذا الموقع)
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; و عنوان بريدك الإلكتروني أو اسم المستخدم. ستعرض معظم تطبيقات OTP هذه المعلومات
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; بعد الأكواد التي تم إنشاؤها.
+				&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt;				                </target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">موافق</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">أدخل الرمز المُكوّن من ستة أرقام</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">أدخل كود الاستعادة المُكوّن من ثمانية أرقام</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">تم تحديث أكواد الاستعادة الخاصة بك تلقائياً!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">يرجى نسخها وتخزينها في مكان آمن: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">تم إعادة إنشاء أكواد الاستعادة الاحتياطية بنجاح</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">يرجى نسخها وتخزينها في مكان آمن: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
