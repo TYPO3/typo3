@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Active TypoScript</source>
+        <target state="final">تفعيل TypoScript</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Active TypoScript for record "%s"</source>
+        <target state="final">تفعيل TypoScript للسجل "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
+        <target state="final">نَظْرَة عامة على تكوين TypoScript الحالي للنظام، مُقسمة إلى ثوابت وأجزاء إعداد. اختياريًا، يمكن عرض القيم الثابتة مباشرة في الإعداد. من الممكن إجراء بحث مستهدف عن القيم وأسماء TypoScript. يمكن أيضًا تصفية قائمة النتائج وفقًا لظروف TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">لم يتم العثور على TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="options.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">عرض التعليقات</target>
+      </trans-unit>
+      <trans-unit id="options.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in setup</source>
+        <target state="final">الثوابت البديلة في الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">السجل المُحدد</target>
+      </trans-unit>
+      <trans-unit id="options.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">فرز المفاتيح أبجديّاً</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">الثوابت</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">الإعداد</target>
+      </trans-unit>
+      <trans-unit id="panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">الشروط</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s من الشروط النَشِطَة</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s حالة نشطة</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">الاستخدام الثابت: [%s]</target>
+      </trans-unit>
+      <trans-unit id="tree.valueWithConstant" approved="yes">
+        <source>Constant usage: %s</source>
+        <target state="final">الاستخدام الثابت: %s</target>
+      </trans-unit>
+      <!-- Edit action -->
+      <trans-unit id="editAction.submodule.title" approved="yes">
+        <source>Edit single property</source>
+        <target state="final">تعديل خاصية واحدة</target>
+      </trans-unit>
+      <trans-unit id="editAction.submodule.titleWithTemplate" approved="yes">
+        <source>Edit single property in TypoScript record "%s"</source>
+        <target state="final">تعديل خاصيّة واحدة في سجل TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">لا يوجد سجل TypoScript في الصفحة الحالية</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Edit TypoScript Record" first.</source>
+        <target state="final">لا يمكنك تعديل الخصائص والقيم إذا لم يكن هناك سجل TypoScript الحالي حيث يمكن تخزين الإعدادات. الرجاء إنشاء إضافة سجل TypoScript في "تعديل سجل TypoScript" أولاً.</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.headline" approved="yes">
+        <source>Add or override child property</source>
+        <target state="final">إضافة أو تجاوز خاصية الفرع</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.btn" approved="yes">
+        <source>Add</source>
+        <target state="final">إضافة</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.headline" approved="yes">
+        <source>Edit current value</source>
+        <target state="final">تعديل القيمة الحالية</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.btn" approved="yes">
+        <source>Update</source>
+        <target state="final">تحديث</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.headline" approved="yes">
+        <source>Clear the object</source>
+        <target state="final">مسح الكائن</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.infotextWithProperty" approved="yes">
+        <source>The object will be cleared via the statement:</source>
+        <target state="final">سيتم مسح الكائن عبر البيان:</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.btn" approved="yes">
+        <source>Clear now</source>
+        <target state="final">مسح الآن</target>
+      </trans-unit>
+      <!-- Update action -->
+      <trans-unit id="updateAction.lineAdded" approved="yes">
+        <source>Line added to current TypoScript record</source>
+        <target state="final">تم إضافة السطر إلى سجل TypoScript الحالي</target>
+      </trans-unit>
+      <trans-unit id="updateAction.lineNotAdded" approved="yes">
+        <source>No line added to current TypoScript record</source>
+        <target state="final">لم يتم إضافة السطر إلى سجل TypoScript الحالي</target>
+      </trans-unit>
+      <trans-unit id="updateAction.noSpaces" approved="yes">
+        <source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
+        <target state="final">يجب إدخال خاصية تحتوي على الأحرف "a-z" أو "A-Z" أو "0-9" أو ".". سيتم اقتباس النُّقَط. لا مسافات أو أحرف خاصة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
