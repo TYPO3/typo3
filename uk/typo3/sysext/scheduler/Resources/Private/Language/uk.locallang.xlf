@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">Заплановані завдання</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">Перевірка налаштувань</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">CLI скрипт</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">Система працює в Режимі Композитора</target>
+      </trans-unit>
+      <trans-unit id="msg.composerMode" approved="yes">
+        <source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+                </source>
+        <target state="final">
+					Система працює в режимі композитора, шлях до виконуваного файлу `typo3` не може бути надійно визначений.
+За замовчуванням команда для запуску в режимі композитора є `vendor/bin/typo3 scheduler:run`.
+                </target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">Останній запуск</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">автоматично</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">Типи бекенда</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">Кількість днів до видалення файлів</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll" approved="yes">
+        <source>Check/uncheck all</source>
+        <target state="final">Поставити/зняти всі відмітки</target>
+      </trans-unit>
+      <trans-unit id="label.class" approved="yes">
+        <source>Task</source>
+        <target state="final">Завдання</target>
+      </trans-unit>
+      <trans-unit id="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType" approved="yes">
+        <source>Definition type</source>
+        <target state="final">Список визначень</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">Проміжок</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron" approved="yes">
+        <source>Cron command</source>
+        <target state="final">Команда Cron</target>
+      </trans-unit>
+      <trans-unit id="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Опис</target>
+      </trans-unit>
+      <trans-unit id="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">Елетрона адреса</target>
+      </trans-unit>
+      <trans-unit id="label.end" approved="yes">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Кінець (ГГ:ХХ ДД-ММ-РРРР)</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" approved="yes">
+        <source>Execute</source>
+        <target state="final">Запустити</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" approved="yes">
+        <source>Execute on next cron job</source>
+        <target state="final">Виконати під час наступного завдання cron</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Частота</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long" approved="yes">
+        <source>Frequency (seconds or cron command)</source>
+        <target state="final">Частота (секунди або команда cron)</target>
+      </trans-unit>
+      <trans-unit id="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">Останнє виконання</target>
+      </trans-unit>
+      <trans-unit id="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Вручну</target>
+      </trans-unit>
+      <trans-unit id="label.manually" approved="yes">
+        <source>manually</source>
+        <target state="final">вручну</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">Наступне виконання</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">Паралельне виконання</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">Дозволити паралельне виконання</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">Серверний час</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">Час сну</target>
+      </trans-unit>
+      <trans-unit id="label.start" approved="yes">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Початок (ГГ:ХХ ДД-ММ-РРРР)</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage" approved="yes">
+        <source>Storage to index</source>
+        <target state="final">Сховище для індексування</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount" approved="yes">
+        <source>Number of files per run</source>
+        <target state="final">Кількість файлів на один запуск</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors" approved="yes">
+        <source>Registered extractors</source>
+        <target state="final">Зареєстровані екстрактори</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" approved="yes">
+        <source>%1$s with priority %2$d</source>
+        <target state="final">%1$s з пріоритетом %2$d</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors" approved="yes">
+        <source>Following extractors have been registered and will be used when running this task</source>
+        <target state="final">Наступні екстрактори були зареєстровані та використовуватимуться під час виконання цього завдання</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">Очистити всі доступні таблиці</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">Таблиця для очищення</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">Таблиця: %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Усі таблиці</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">Видалити записи старші за задану кількість днів</target>
+      </trans-unit>
+      <trans-unit id="label.optimizeDatabaseTables.selectTables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">Таблиці бази даних</target>
+      </trans-unit>
+      <trans-unit id="label.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Статус</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">Повторюваний</target>
+      </trans-unit>
+      <trans-unit id="label.type.single" approved="yes">
+        <source>Single</source>
+        <target state="final">Одинарний</target>
+      </trans-unit>
+      <trans-unit id="label.group" approved="yes">
+        <source>Task group</source>
+        <target state="final">Група завдань</target>
+      </trans-unit>
+      <trans-unit id="label.errorClass" approved="yes">
+        <source>Broken tasks</source>
+        <target state="final">Пошкоджені завдання</target>
+      </trans-unit>
+      <trans-unit id="label.saveAndCreateNewTask" approved="yes">
+        <source>Save and create new task</source>
+        <target state="final">Зберегти та створити нове завдання</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand" approved="yes">
+        <source>Add option</source>
+        <target state="final">Додати опцію</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript" approved="yes">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
+        <target state="final">Сценарій для виконання Планувальника з командного рядка: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.delete" approved="yes">
+        <source>Are you sure you want to delete this task?</source>
+        <target state="final">Ви впевнені, що хочете видалити це завдання?</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError" approved="yes">
+        <source>The task could not be deleted.</source>
+        <target state="final">Завдання не вдалося видалити.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess" approved="yes">
+        <source>The task was successfully deleted.</source>
+        <target state="final">Завдання було успішно видалено.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate" approved="yes">
+        <source>The end date is before the start date.</source>
+        <target state="final">Дата закінчення передує даті початку.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed" approved="yes">
+        <source>Task "%s" with uid "%s" has been executed.</source>
+        <target state="final">Завдання "%s" з uid "%s" було виконано.</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target state="final">Неприпустима частота. Введіть кількість секунд або правильну команду cron. Парсер cron видав: %1$s [код: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun" approved="yes">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target state="final">Інформація про останнє виконання Планувальника є неповною.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target state="final">Недійсна частота. Будь ласка, введіть кількість секунд або дійсну команду cron.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime" approved="yes">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target state="final">Будь ласка, введіть час сну більше або дорівнює 0 (нуль).</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun" approved="yes">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target state="final">Останній запуск планувальника (%1$s) %2$s в %3$s і закінчився %4$s по %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">Запущене завдання не може бути видалено.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask" approved="yes">
+        <source>A running task may not be edited.</source>
+        <target state="final">Запущене завдання не може бути змінене.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask" approved="yes">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target state="final">Завдання не виконується. Немає виконань, які можна зняти.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail" approved="yes">
+        <source>Please enter an email address.</source>
+        <target state="final">Будь ласка, введіть адресу електронної пошти.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency" approved="yes">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target state="final">Частота не була визначена як інтервал або як команда cron.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun" approved="yes">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target state="final">Планувальник ще жодного разу не запускався або інформація про останній запуск була втрачена.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted" approved="yes">
+        <source>Task "%s" with uid "%s" has not been executed.</source>
+        <target state="final">Завдання "%s" з uid "%s" не виконано.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed" approved="yes">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">Помилка виконання завдання "%1$s" з наступним повідомленням: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulingFailed" approved="yes">
+        <source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">Планування завдання "%1$s" не вдалося з таким повідомленням: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.toggleDisableFailed" approved="yes">
+        <source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">Перемикання вимкненого стану завдання "%1$s" не вдалося з таким повідомленням: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.stopTaskFailed" approved="yes">
+        <source>Stopping task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">Не вдалося зупинити завдання "%1$s" із таким повідомленням: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault" approved="yes">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target state="final">Виконання не вдалося, але повідомлення про помилку не може бути отримано (можливо, воно завелике). Вибачте.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport" approved="yes">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target state="final">Помилка виконання: %1$d, %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate" approved="yes">
+        <source>Please define a start date.</source>
+        <target state="final">Будь ласка визначте дату початку.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate" approved="yes">
+        <source>Start date is invalid.</source>
+        <target state="final">Початкова дата є недійсною.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate" approved="yes">
+        <source>End date is invalid.</source>
+        <target state="final">Кінцева дата не є дійсною.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidNumberOfDays" approved="yes">
+        <source>Number of days is invalid.</source>
+        <target state="final">Невірна кількість днів.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingCacheBackends" approved="yes">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target state="final">Деякі з вибраних серверних модулів кешу не існують. Виберіть лише дійсні серверні модулі.</target>
+      </trans-unit>
+      <trans-unit id="msg.noCacheBackendSelected" approved="yes">
+        <source>Please select at least one cache backend.</source>
+        <target state="final">Будь ласка, виберіть принаймні одну резервну копію кешу.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass" approved="yes">
+        <source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target state="final"><![CDATA[<strong>Наведені нижче завдання не працюють.</strong> Якщо ваше завдання не має зареєстрованого класу, вам слід перевстановити розширення, яке їх надає, або просто видалити завдання. У разі помилки «Неможливо десеріалізувати [class]», оголошений клас потрібно видалити з класу завдань, оскільки його використання заборонено з міркувань безпеки. Перевірте також, чи потрібно будь-яке з перелічених завдань відтворювати вручну (що може знадобитися після оновлення розширення через несправні зміни або відсутність сценаріїв міграції).]]></target>
+      </trans-unit>
+      <trans-unit id="msg.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.title" approved="yes">
+        <source>%s registered scheduler tasks can not be executed</source>
+        <target state="final">%s зареєстрованих планувальників не можуть бути виконані</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck" approved="yes">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target state="final">На цьому екрані перевіряється, чи виконано вимоги для запуску планувальника як завдання cron. Він також відображає інформацію про останній запуск Планувальника.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">Поточний час сервера %s.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">Усі дати та час у Планувальнику вимірюються відповідно до часу сервера, оскільки Планувальник виконується виключно на стороні сервера.</target>
+      </trans-unit>
+      <trans-unit id="msg.stop" approved="yes">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target state="final">Ви впевнені, що хочете позначити це завдання як невиконуване? Зверніть увагу, що це не зупинить фактичний сценарій (якщо не впевнені, будь ласка, зверніться до посібника).</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError" approved="yes">
+        <source>The task could not be marked as non-running.</source>
+        <target state="final">Завдання не можна позначити як невиконуване.</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess" approved="yes">
+        <source>The task was successfully marked as non-running.</source>
+        <target state="final">Завдання було успішно позначено як невиконуване.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound" approved="yes">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target state="final">Потрібне завдання (UID: %d) не знайдено.</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError" approved="yes">
+        <source>The task could not be updated.</source>
+        <target state="final">Не вдалося оновити завдання.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingDatabaseTables" approved="yes">
+        <source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+        <target state="final">Деякі з вибраних таблиць бази даних не існують. Виберіть лише дійсні таблиці.</target>
+      </trans-unit>
+      <trans-unit id="msg.noDatabaseTablesSelected" approved="yes">
+        <source>Please select at least one database table.</source>
+        <target state="final">Будь ласка, виберіть принаймні одну таблицю бази даних.</target>
+      </trans-unit>
+      <trans-unit id="msg.unregisteredCommand" approved="yes">
+        <source>Command with identifier "%s" has not been registered.</source>
+        <target state="final">Команда з ідентифікатором "%s" не була зареєстрована.</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingArguments" approved="yes">
+        <source>Error parsing current set of arguments: "%s".</source>
+        <target state="final">Помилка при розборі поточного набору аргументів: "%s.</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingOptions" approved="yes">
+        <source>Error parsing current set of options: "%s".</source>
+        <target state="final">Помилка при розборі поточного набору: "%s.</target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing" approved="yes">
+        <source>Argument "%s" is mandatory.</source>
+        <target state="final">Аргумент "%s" є обов'язковим.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled.</source>
+        <target state="final">Завдання "%s" з uid "%s" увімкнено.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskDisabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been disabled.</source>
+        <target state="final">Завдання "%s" з uid "%s" вимкнено.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabledAndQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+        <target state="final">Завдання «%s» з uid «%s» увімкнено та поставлено в чергу на виконання під час наступного запуску CLI планувальника.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
+        <target state="final">Завдання «%s» з uid «%s» поставлено в чергу на виконання під час наступного запуску CLI планувальника.</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None</source>
+        <target state="final">Жоден</target>
+      </trans-unit>
+      <trans-unit id="status" approved="yes">
+        <source>Status</source>
+        <target state="final">Статус</target>
+      </trans-unit>
+      <trans-unit id="status.progress" approved="yes">
+        <source>Progress</source>
+        <target state="final">Прогрес</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">вимкнено</target>
+      </trans-unit>
+      <trans-unit id="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">невдача</target>
+      </trans-unit>
+      <trans-unit id="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">запізно</target>
+      </trans-unit>
+      <trans-unit id="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">триває</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">заплановано</target>
+      </trans-unit>
+      <trans-unit id="task" approved="yes">
+        <source>Task</source>
+        <target state="final">Завдання</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>TYPO3 Scheduler administration module</source>
+        <target state="final">Модуль керування TYPO3 планувальника</target>
+      </trans-unit>
+      <trans-unit id="action.run_task" approved="yes">
+        <source>Run task</source>
+        <target state="final">Виконати завдання</target>
+      </trans-unit>
+      <trans-unit id="action.run_task_cron" approved="yes">
+        <source>Run task on next cron job</source>
+        <target state="final">Запустити завдання під час наступного завдання cron</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">Кешування фреймворку збирання сміття</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.name" approved="yes">
+        <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
+        <target state="final">[OBSOLETE] Рівень абстракції файлу: завдання індексування</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.description" approved="yes">
+        <source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+        <target state="final">Запускає завдання індексування на основі конфігурації індексування та інформації про сховище/папку.</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">Рівень абстракції файлу: оновити індекс зберігання</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.description" approved="yes">
+        <source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
+        <target state="final">Оновлює дані індексу/кешу сховища; потрібен, лише якщо зміни в сховищі можливі за межами серверної частини (FTP, RemoteStorages).</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">Рівень абстракції файлу: видобуток метаданих у сховищі</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.description" approved="yes">
+        <source>Extracts metadata for all files in storage which have been changed since last run.</source>
+        <target state="final">Витягує метадані для всіх файлів у сховищі, які були змінені після останнього запуску.</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">Збирання сміття для таблиць</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">Збирання сміття FileAdmin</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.name" approved="yes">
+        <source>Execute console commands</source>
+        <target state="final">Виконати команди консолі</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.description" approved="yes">
+        <source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
+        <target state="final">Дозволяє налаштовувати та виконувати звичайні команди консолі через структуру планувальника.</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.name" approved="yes">
+        <source>Optimize MySQL database tables</source>
+        <target state="final">Оптимізація таблиць бази даних MySQL</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.name" approved="yes">
+        <source>Anonymize IP addresses in database tables</source>
+        <target state="final">Анонімізація IP-адрес у таблицях бази даних</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table" approved="yes">
+        <source>Table to anonymize</source>
+        <target state="final">Таблиця для анонімізації</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationTable" approved="yes">
+        <source>Table: %s after %s days</source>
+        <target state="final">Таблиця: %s через %s днів</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Усі таблиці</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.numberOfDays" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">Обробляти записи, старші за вказану кількість днів</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask" approved="yes">
+        <source>Mask level</source>
+        <target state="final">Рівень маски</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.1" approved="yes">
+        <source>Last byte for IPv4 / Interface ID for IPv6</source>
+        <target state="final">Останній байт для IPv4 / ID інтерфейсу для IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.2" approved="yes">
+        <source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+        <target state="final">Останні 2 байти для IPv4 / Interface &amp; SLA ID для IPv6</target>
+      </trans-unit>
+      <trans-unit id="command.example1" approved="yes">
+        <source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
+        <target state="final">Кожен день тижня з понеділка по п'ятницю о 09:00 та 15:00</target>
+      </trans-unit>
+      <trans-unit id="command.example2" approved="yes">
+        <source>Every 2 hours</source>
+        <target state="final">Кожні 2 години</target>
+      </trans-unit>
+      <trans-unit id="command.example3" approved="yes">
+        <source>Every 20 minutes</source>
+        <target state="final">Кожні 20 хвилин</target>
+      </trans-unit>
+      <trans-unit id="command.example4" approved="yes">
+        <source>Every Tuesday at 07:00</source>
+        <target state="final">Кожен вівторок о 07:00</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.noLastRun" approved="yes">
+        <source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+        <target state="final"><![CDATA[Здається, планувальник ще ніколи не запускався. Перевірте свою <a href="%1$s">конфігурацію</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel" approved="yes">
+        <source>Last Scheduler run</source>
+        <target state="final">Останній запуск планувальника</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunValue" approved="yes">
+        <source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+        <target state="final">%1$s о %2$s, Тривалість %3$s, (розпочато %4$s)</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+    </body>
+  </file>
+</xliff>
