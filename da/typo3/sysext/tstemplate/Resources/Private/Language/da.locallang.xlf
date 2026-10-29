@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="noRecordFound.infobox.title" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">Intet TypoScript element på den aktuelle side</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.infobox.message" approved="yes">
+        <source>You need to create a TypoScript record in order to edit your configuration.</source>
+        <target state="final">Du skal oprette et TypoScript element for at redigere din konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.description" approved="yes">
+        <source>The closest TypoScript record is located on page '%s' (uid %s).</source>
+        <target state="final">Det nærmeste TypoScript element er placeret på siden '%s' (uid %s).</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.link.title" approved="yes">
+        <source>Select this TypoScript record</source>
+        <target state="final">Vælg dette TypoScript element</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.headline" approved="yes">
+        <source>Root TypoScript record</source>
+        <target state="final">Root TypoScript element</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.description" approved="yes">
+        <source>Choose this option if you want this page to be the root of a new site.</source>
+        <target state="final">Vælg denne indstilling, hvis du ønsker at denne side skal være roden til et nyt websted.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.link.title" approved="yes">
+        <source>Create a root TypoScript record</source>
+        <target state="final">Opret et root TypoScript element</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.title.placeholder" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">NYT SITE</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.headline" approved="yes">
+        <source>Additional TypoScript record</source>
+        <target state="final">Yderligere TypoScript element</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.description" approved="yes">
+        <source>An additional TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">Et yderligere TypoScript element tillader dig at indtaste TypoScript værdier som kun vil påvirke denne side og undersider.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.link.title" approved="yes">
+        <source>Create an additional TypoScript record</source>
+        <target state="final">Opret et ekstra TypoScript element</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
