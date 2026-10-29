@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">Název pro vyhledávače</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Neindexovat</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">Indexovat tuto stránku</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" approved="yes">
+        <source>No follow</source>
+        <target state="final">Nenásledovat</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" approved="yes">
+        <source>Follow this page</source>
+        <target state="final">Následovat tuto stránku</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" approved="yes">
+        <source>Open Graph Title</source>
+        <target state="final">Open Graph Titulek</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" approved="yes">
+        <source>Open Graph Description</source>
+        <target state="final">Open Graph Popis</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" approved="yes">
+        <source>Open Graph Image</source>
+        <target state="final">Open Graph Obrázek</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" approved="yes">
+        <source>X / Twitter Title</source>
+        <target state="final">X / Twitter Titulek</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" approved="yes">
+        <source>X / Twitter Description</source>
+        <target state="final">X / Twitter popis</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" approved="yes">
+        <source>X / Twitter Image</source>
+        <target state="final">X / Twitter Obrázek</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" approved="yes">
+        <source>Type of card to show</source>
+        <target state="final">Typ zobrazení karty</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" approved="yes">
+        <source>Summary Card</source>
+        <target state="final">Souhrnná karta</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" approved="yes">
+        <source>Summary Card with a large image</source>
+        <target state="final">Souhrnná karta s velkým obrázkem</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" approved="yes">
+        <source>Canonical link</source>
+        <target state="final">Kanonický odkaz</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link.description" approved="yes">
+        <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
+        <target state="final">Kanonická URL adresa je URL adresa stránky, kterou vyhledávače doporučují vybrat jako nejreprezentativnější ze sady duplicitních stránek. Tento proces, často nazývaný deduplikace, pomáhá vyhledávačům zobrazovat ve výsledcích vyhledávání pouze jednu verzi jinak duplicitního obsahu. TYPO3 automaticky nastaví tuto adresu na nejpravděpodobnější URL adresu stránky, pokud není explicitně nastavena – což je s největší pravděpodobností URL adresa samotné stránky. Pokud je zde nastavena, bude stránka odstraněna z XML sitemapy.</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">Změnit frekvenci</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">Nic</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">Vždy</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">Hodinově</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">Denně</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">Týdně</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">Měsíčně</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">Ročně</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nikdy</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorita</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
