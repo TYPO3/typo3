@@ -1,0 +1,1136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name" approved="yes">
+        <source>Form manager</source>
+        <target state="final">Менеджер форм</target>
+      </trans-unit>
+      <trans-unit id="default" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>[Empty]</source>
+        <target state="final">[Empty]</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" approved="yes">
+        <source>Form definition</source>
+        <target state="final">Визначення форми</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Загальне</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" approved="yes">
+        <source>Please select a form definition</source>
+        <target state="final">Будь ласка, оберіть визначення форми</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" approved="yes">
+        <source>Override finisher settings</source>
+        <target state="final">Перевизначити параметри завершення</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty" approved="yes">
+        <source>There are no finishers or finisher options in the current form definition.</source>
+        <target state="final">У поточному визначенні форми немає фінішерів або параметрів фінішера.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier" approved="yes">
+        <source>No form selected.</source>
+        <target state="final">Жодної форми не вибрано.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" approved="yes">
+        <source>Invalid form "%s".</source>
+        <target state="final">Неприпустима форма "%s".</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier" approved="yes">
+        <source>"%s" (no read access).</source>
+        <target state="final">"%s" (не має доступу до читання).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" approved="yes">
+        <source>The form "%s" does not exist.</source>
+        <target state="final">Форма "%s" не існує.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" approved="yes">
+        <source>"%s" (Invalid ext:form configuration).</source>
+        <target state="final">"%s" (недійсна конфігурація ext:form).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" approved="yes">
+        <source>Invalid configuration.</source>
+        <target state="final">Недійсна конфігурація.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Підтвердження</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Текст</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">Запис</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Надіслати електронне повідомлення (відправнику форми)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Тема листа</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Одержувачі</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" approved="yes">
+        <source>Recipient</source>
+        <target state="final">Одержувач</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" approved="yes">
+        <source>Email Address</source>
+        <target state="final">Адреса електронної пошти</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">Ім'я</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Електронна адреса відправника</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Зрозуміла людині назва відправника</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Відповідь одержувачам</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label" approved="yes">
+        <source>Reply-To Recipient</source>
+        <target state="final">Відповідь одержувачу</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Одержувачі CC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label" approved="yes">
+        <source>CC Recipient</source>
+        <target state="final">Одержувач CC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Одержувачі BCC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" approved="yes">
+        <source>BCC Recipient</source>
+        <target state="final">Одержувач BCC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" approved="yes">
+        <source>Add HTML mail part</source>
+        <target state="final">Додайте частину пошти HTML</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Мова перекладу</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Електронний лист отримувачу (ви)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Тема листа</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipients.label" approved="yes">
+        <source>Email addresses and human-readable names of the recipients</source>
+        <target state="final">Адреси електронної пошти та зрозумілі для людини імена одержувачів</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Електронна адреса відправника</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Зрозуміле людині ім'я відправника</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Відповідь одержувачам</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Одержувачі CC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Одержувачі BCC</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Додати частину HTML</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Мова перекладу</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" approved="yes">
+        <source>Additional link parameter</source>
+        <target state="final">Додатковий параметр посилання</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.fragment.label" approved="yes">
+        <source>Add fragment to the redirect link</source>
+        <target state="final">Додайте фрагмент до посилання перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title" approved="yes">
+        <source>Delete error</source>
+        <target state="final">Помилка видалення</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body" approved="yes">
+        <source>The form "%s" could not be deleted.</source>
+        <target state="final">Не вдалося видалити форму "%s".</target>
+      </trans-unit>
+      <trans-unit id="formManager.headline" approved="yes">
+        <source>Form Management</source>
+        <target state="final">Керування формами</target>
+      </trans-unit>
+      <trans-unit id="formManager.create_new_form" approved="yes">
+        <source>Create new form</source>
+        <target state="final">Створити нову форму</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Form name</source>
+        <target state="final">Назва форми</target>
+      </trans-unit>
+      <trans-unit id="formManager.location" approved="yes">
+        <source>Location</source>
+        <target state="final">Розташування</target>
+      </trans-unit>
+      <trans-unit id="formManager.references" approved="yes">
+        <source>References</source>
+        <target state="final">Посилання</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Параметри</target>
+      </trans-unit>
+      <trans-unit id="formManager.edit_form" approved="yes">
+        <source>Edit this form</source>
+        <target state="final">Редагувати цю форму</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_this_form" approved="yes">
+        <source>Duplicate this form</source>
+        <target state="final">Дублювати дану форму</target>
+      </trans-unit>
+      <trans-unit id="formManager.delete_form" approved="yes">
+        <source>Delete this form</source>
+        <target state="final">Видалити цю форму</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" approved="yes">
+        <source>Standard</source>
+        <target state="final">Стандартний</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" approved="yes">
+        <source>Blank form</source>
+        <target state="final">Порожня форма</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" approved="yes">
+        <source>Simple contact form (ext:form example)</source>
+        <target state="final">Проста контактна форма (приклад ext:form)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.header" approved="yes">
+        <source>Form editor</source>
+        <target state="final">Редактор форм</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Завантаження...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Завантаження...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final">Зберегти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button" approved="yes">
+        <source>Undo</source>
+        <target state="final">Відмінити</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button" approved="yes">
+        <source>Redo</source>
+        <target state="final">Відновити</target>
+      </trans-unit>
+      <trans-unit id="formEditor.new_page_button" approved="yes">
+        <source>Create new step</source>
+        <target state="final">Створити новий крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.previous_step_button" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Попередній крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.next_step_button" approved="yes">
+        <source>Next step</source>
+        <target state="final">Наступний крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.preview_mode_button" approved="yes">
+        <source>Preview mode</source>
+        <target state="final">Режим попереднього перегляду</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_mode_button" approved="yes">
+        <source>Edit mode</source>
+        <target state="final">Режим редагування</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure" approved="yes">
+        <source>Structure</source>
+        <target state="final">Структура</target>
+      </trans-unit>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">Вставити елементи</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" approved="yes">
+        <source>Required</source>
+        <target state="final">Обов'язково</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label" approved="yes">
+        <source>Not a number</source>
+        <target state="final">Не число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" approved="yes">
+        <source>Invalid email address</source>
+        <target state="final">Некоректна адреса електронної пошти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" approved="yes">
+        <source>Invalid form element</source>
+        <target state="final">Некоректний елемент форми</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" approved="yes">
+        <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+        <target state="final">Недійсний формат розміру файлу, дійсний, напр. "10B|К|М|Г"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label" approved="yes">
+        <source>Invalid pattern</source>
+        <target state="final">Недійсний шаблон</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label" approved="yes">
+        <source>Basic elements</source>
+        <target state="final">Основні елементи</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Спеціальні елементи</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label" approved="yes">
+        <source>Select elements</source>
+        <target state="final">Обрати елементи</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label" approved="yes">
+        <source>Advanced elements</source>
+        <target state="final">Розширені елементи</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label" approved="yes">
+        <source>Container elements</source>
+        <target state="final">Елементи контейнеру</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label" approved="yes">
+        <source>Step types</source>
+        <target state="final">Типи кроку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" approved="yes">
+        <source>Form name</source>
+        <target state="final">Назва форми</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Зберегти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage" approved="yes">
+        <source>The form has been successfully saved.</source>
+        <target state="final">Форма успішно збережена.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Зберегти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" approved="yes">
+        <source>The form could not be saved:</source>
+        <target state="final">Не вдалося зберегти форму:</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" approved="yes">
+        <source>New element</source>
+        <target state="final">Новий елемент</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle" approved="yes">
+        <source>New step</source>
+        <target state="final">Новий крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle" approved="yes">
+        <source>Remove element?</source>
+        <target state="final">Видалити елемент?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" approved="yes">
+        <source>Remove</source>
+        <target state="final">Видалити</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" approved="yes">
+        <source>Error</source>
+        <target state="final">Помилка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" approved="yes">
+        <source>There must be at least one step within your form.</source>
+        <target state="final">У вашій формі має бути принаймні один крок.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Крок {0} із {1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" approved="yes">
+        <source>Minimum</source>
+        <target state="final">Мінімум</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" approved="yes">
+        <source>Maximum</source>
+        <target state="final">Максимум</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Заповнювач</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">Значення за замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Візерунок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Валідатори</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Додати валідатор</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Буквено-цифровий</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Текст не у форматі XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Довжина стрічки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" approved="yes">
+        <source>Email</source>
+        <target state="final">Ел. пошта</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Ціле число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Число з рухомою комою</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Числовий діапазон</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Регулярний вираз</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Кількість представлених значень</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Буквено-цифровий</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Текст не у форматі XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Довжина стрічки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" approved="yes">
+        <source>Email</source>
+        <target state="final">Ел. пошта</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Ціле число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Число з плаваючою комою</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Числовий діапазон</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Регулярний вираз</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Регулярний вираз</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Кількість поданих значень</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" approved="yes">
+        <source>First option (empty value)</source>
+        <target state="final">Перший параметр (порожнє значення)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" approved="yes">
+        <source>Choices</source>
+        <target state="final">Вибір</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Валідатори</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Додати валідатор</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" approved="yes">
+        <source>Uploads save path</source>
+        <target state="final">Відвантаження шляху до збереження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Валідатори</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Додати валідатор</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Розмір файлу</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Розмір файлу</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" approved="yes">
+        <source>Submit label</source>
+        <target state="final">Мітка Подання</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" approved="yes">
+        <source>Submit</source>
+        <target state="final">Подати</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label" approved="yes">
+        <source>Finishers</source>
+        <target state="final">Завершувачі</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label" approved="yes">
+        <source>Add finisher</source>
+        <target state="final">Додати завершувача</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Надіслати електронне повідомлення (відправнику форми)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Електронний лист отримувачу (ви)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Переспрямувати на сторінку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Видалити завантаження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Повідомлення підтвердження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Надіслати електронне повідомлення (відправнику форми)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Тема</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Одержувачі</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" approved="yes">
+        <source>Email Address</source>
+        <target state="final">Адреса електронної пошти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">Ім'я</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Адреса відправника</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Ім'я відправника</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Відповідь одержувачам</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Одержувачі CC</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Одержувачі BCC</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Додати частину HTML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Прикріпити завантаження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Мова перекладу</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Електронний лист отримувачу (ви)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Тема</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Одержувачі</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Адреса відправника</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Ім'я відправника</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Відповідь одержувачам</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Одержувачі CC</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Одержувачі BCC</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Додати частину HTML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Прикріпити завантаження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Мова перекладу</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Переспрямувати на сторінку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" approved="yes">
+        <source>Additional parameters</source>
+        <target state="final">Додаткові параметри</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.label" approved="yes">
+        <source>URL fragment</source>
+        <target state="final">Фрагмент URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Видалити завантаження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Повідомлення підтвердження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Uid елемента вмісту</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Текст</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" approved="yes">
+        <source>Execute a closure</source>
+        <target state="final">Виконати замикання</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" approved="yes">
+        <source>Flash message</source>
+        <target state="final">Флеш-повідомлення</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" approved="yes">
+        <source>Save the mail to the Database</source>
+        <target state="final">Збережіть лист до бази даних</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Мітка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Мітка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" approved="yes">
+        <source>Description</source>
+        <target state="final">Опис</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" approved="yes">
+        <source>Field required</source>
+        <target state="final">Обов'язкове поле</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Спеціальне повідомлення про помилку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Проміжок дат</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" approved="yes">
+        <source>Grid viewport configuration</source>
+        <target state="final">Налаштування вигляду сітки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" approved="yes">
+        <source>Extra small</source>
+        <target state="final">Дуже маленький</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" approved="yes">
+        <source>Small</source>
+        <target state="final">Маленький</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" approved="yes">
+        <source>Medium</source>
+        <target state="final">Середній</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" approved="yes">
+        <source>Large</source>
+        <target state="final">Великий</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" approved="yes">
+        <source>Extra large</source>
+        <target state="final">Збільшений</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" approved="yes">
+        <source>Extra extra large</source>
+        <target state="final">Дуже великий</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" approved="yes">
+        <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+        <target state="final">Кількість стовпців для області перегляду "{@viewPortLabel}"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Назва кроку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Позначка попередньої кнопки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Попередній крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Мітка наступної кнопки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Наступний крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label" approved="yes">
+        <source>Summary step</source>
+        <target state="final">Підсумковий крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Назва кроку</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Мітка кнопки "Попереднє"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Попередній крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Мітка кнопки "Наступне"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Наступний крок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label" approved="yes">
+        <source>Fieldset</source>
+        <target state="final">Набір полів</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label" approved="yes">
+        <source>Fieldset name</source>
+        <target state="final">Назва набору полів</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label" approved="yes">
+        <source>Grid: Row</source>
+        <target state="final">Сітка: Ряд</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label" approved="yes">
+        <source>Row name (not visible within frontend)</source>
+        <target state="final">Ім'я рядка (не відображається в інтерфейсі)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Текст</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" approved="yes">
+        <source>Email address</source>
+        <target state="final">Адреса електронної пошти</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">Номер телефону</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Число</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" approved="yes">
+        <source>Date</source>
+        <target state="final">Дата</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" approved="yes">
+        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+        <target state="final">Дата у форматі Р-м-д (наприклад 2018-03-17)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Частота</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Проміжок дат</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Проміжок дат</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" approved="yes">
+        <source>Minimum date</source>
+        <target state="final">Мінімальна дата</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" approved="yes">
+        <source>Maximum date</source>
+        <target state="final">Максимальна дата</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" approved="yes">
+        <source>Password</source>
+        <target state="final">Пароль</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label" approved="yes">
+        <source>Advanced password</source>
+        <target state="final">Розширений пароль</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" approved="yes">
+        <source>Confirmation label</source>
+        <target state="final">Мітка підтвердження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Підтвердження</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Текстова область</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" approved="yes">
+        <source>Checkbox</source>
+        <target state="final">Прапорець</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label" approved="yes">
+        <source>Multi checkbox</source>
+        <target state="final">Мульти-чекбокс</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label" approved="yes">
+        <source>Multi select</source>
+        <target state="final">Множинний вибір</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" approved="yes">
+        <source>Radio button</source>
+        <target state="final">Радіо-кнопка</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label" approved="yes">
+        <source>Single select</source>
+        <target state="final">Вибір однієї відповіді</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" approved="yes">
+        <source>Date/time</source>
+        <target state="final">Дата/час</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label" approved="yes">
+        <source>Static text</source>
+        <target state="final">Статичний текст</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">Заголовок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Текст</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Приховано</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" approved="yes">
+        <source>Value</source>
+        <target state="final">Значення</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" approved="yes">
+        <source>Content element</source>
+        <target state="final">Елемент вмісту</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement" approved="yes">
+        <source>No content element selected</source>
+        <target state="final">Не вибрано елемент вмісту</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Uid елемента вмісту</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" approved="yes">
+        <source>File upload</source>
+        <target state="final">Завантаження файлу</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Дозволені типи файлів mime</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" approved="yes">
+        <source>Documents (doc)</source>
+        <target state="final">Документи (doc)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" approved="yes">
+        <source>Documents (docx)</source>
+        <target state="final">Документи (docx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" approved="yes">
+        <source>Documents (xls)</source>
+        <target state="final">Документи (xls)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" approved="yes">
+        <source>Documents (xlsx)</source>
+        <target state="final">Документи (xlsx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" approved="yes">
+        <source>Documents (pdf)</source>
+        <target state="final">Документи (pdf)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" approved="yes">
+        <source>Documents (odt)</source>
+        <target state="final">Документи (odt)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" approved="yes">
+        <source>Documents (ods)</source>
+        <target state="final">Документи (ods)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" approved="yes">
+        <source>Image upload</source>
+        <target state="final">Завантаження зображення</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Дозволені типи файлів mime</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" approved="yes">
+        <source>Images (jpg)</source>
+        <target state="final">Зображення (jpg)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" approved="yes">
+        <source>Images (png)</source>
+        <target state="final">Зображення (png)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" approved="yes">
+        <source>Images (bmp)</source>
+        <target state="final">Зображення (bmp)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement" approved="yes">
+        <source>Unknown element</source>
+        <target state="final">Невідомий елемент</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">Створити новий елемент</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Видалити</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title" approved="yes">
+        <source>Insert formelement identifier</source>
+        <target state="final">Вставте ідентифікатор елемента форми</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement.remove" approved="yes">
+        <source>Remove this Element</source>
+        <target state="final">Видалити цей елемент</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.add" approved="yes">
+        <source>Add a new row</source>
+        <target state="final">Додати новий рядок</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.remove" approved="yes">
+        <source>Remove this row</source>
+        <target state="final">Видалити цей рядок</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
