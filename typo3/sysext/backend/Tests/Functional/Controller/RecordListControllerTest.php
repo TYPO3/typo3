@@ -50,7 +50,7 @@ final class RecordListControllerTest extends FunctionalTestCase
         'ES' => ['id' => 3, 'title' => 'Spanish', 'locale' => 'es_ES.UTF8'],
     ];
 
-    protected array $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['impexp', 'workspaces'];
     private BackendUserAuthentication $backendUser;
 
     protected function setUp(): void
@@ -292,6 +292,45 @@ final class RecordListControllerTest extends FunctionalTestCase
 
         self::assertMatchesRegularExpression('/<a [^>]*data-dispatch-action="TYPO3.WindowManager.localOpen"[^>]*>(?:(?!<\/a>).)*View webpage<\/a>/s', $body);
         self::assertStringNotContainsString('<typo3-qrcode-modal-button', $body);
+    }
+
+    #[Test]
+    public function singleTableViewOfPageTranslationsIsRendered(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('records', [], []);
+
+        // "Expand table" below "Page Translation" uses the pseudo table name "pages_translated"
+        $request = $this->createRequest(1100, $site, $moduleData, ['table' => 'pages_translated', 'languages' => [0, 1]]);
+        $body = (string)$this->get(RecordListController::class)->mainAction($request)->getBody();
+
+        self::assertStringContainsString('FR: Welcome', $body);
+        self::assertStringNotContainsString('/record/importexport/export', $body);
+    }
+
+    #[Test]
+    public function singleTableViewRendersExportButtonForResolvedTable(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('records', [], []);
+
+        $request = $this->createRequest(1100, $site, $moduleData, ['table' => 'pages']);
+        $body = (string)$this->get(RecordListController::class)->mainAction($request)->getBody();
+
+        self::assertStringContainsString('/record/importexport/export', $body);
+        self::assertStringContainsString('tx_impexp%5Blist%5D%5B0%5D=pages:1100', $body);
+    }
+
+    #[Test]
+    public function singleTableViewOfUnknownTableIsRendered(): void
+    {
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');
+        $moduleData = new ModuleData('records', [], []);
+
+        $request = $this->createRequest(1100, $site, $moduleData, ['table' => 'doesnotexist']);
+        $response = $this->get(RecordListController::class)->mainAction($request);
+
+        self::assertSame(200, $response->getStatusCode());
     }
 
     public static function searchBoxVisibilityDataProvider(): \Generator

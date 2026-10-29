@@ -3540,6 +3540,11 @@ class DatabaseRecordList
         $this->showOnlyTranslatedRecords = $showOnlyTranslatedRecords;
     }
 
+    public function isShowingOnlyTranslatedRecords(): bool
+    {
+        return $this->showOnlyTranslatedRecords;
+    }
+
     /**
      * Creates data attributes to be handles in moddule `TYPO3/CMS/Backend/ActionDispatcher`
      */
