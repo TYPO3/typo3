@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="wizard.button.next" x-unused-since="15.0">
+        <source>Next</source>
+        <target>crwdns55330:0crwdne55330:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.button.prev" x-unused-since="15.0">
+        <source>Previous</source>
+        <target>crwdns81052:0crwdne81052:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.button.cancel" x-unused-since="15.0">
+        <source>Cancel</source>
+        <target>crwdns55332:0crwdne55332:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.progress" x-unused-since="15.0">
+        <source>Step {0} of {1}</source>
+        <target>crwdns55334:0{0}crwdnd55334:0{1}crwdne55334:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.progressStep.configure" x-unused-since="15.0">
+        <source>Configure</source>
+        <target>crwdns81058:0crwdne81058:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.progressStep.finish" x-unused-since="15.0">
+        <source>Finish</source>
+        <target>crwdns342846:0crwdne342846:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.processing.title" x-unused-since="15.0">
+        <source>Processing...</source>
+        <target>crwdns55336:0crwdne55336:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.required">
+        <source>Required fields</source>
+        <target>crwdns393712:0crwdne393712:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
