@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Included TypoScript</source>
+        <target state="final">TypoScript inclusi</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Included TypoScript for record "%s"</source>
+        <target state="final">TypoScript inclusi per il record "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">Panoramica dei TypoScript inclusi e relativo ordine per la pagina corrente.</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">Nessun TypoScript trovato.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Record selezionato</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Costanti</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configurazione</target>
+      </trans-unit>
+      <trans-unit id="panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">Avvisi dello scanner di sintassi</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configurazione</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">%s avviso sintassi</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">%s avvisi sintassi</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">Mostra il frammento di codice interessato</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">Riga non valida in "%1$s", numero di riga "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">Parentesi graffa in eccesso in "%1$s", numero di riga "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">Parentesi graffa mancante in "%1$s", numero di riga "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">L'importazione non trova un file in "%1$s", numero di riga "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">Mostra codice</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">Mostra codice comprensivo di possibili inclusioni/importazioni</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Azzera</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.root" approved="yes">
+        <source>Root</source>
+        <target state="final">Root</target>
+      </trans-unit>
+      <trans-unit id="tree.child.sysTemplateRecord" approved="yes">
+        <source>TypoScript record (page UID %s)</source>
+        <target state="final">Record TypoScript (UID di pagina %s)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">Incluso tramite "@import"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">Condizione (then)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">Condizione (else)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">Condizione (end)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScript" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">Incluso tramite "$GLOBALS"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">Incluso tramite "$GLOBALS"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel" approved="yes">
+        <source>Default content rendering</source>
+        <target state="final">Rendering di default di contenuto</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ExtensionStatic" approved="yes">
+        <source>TypoScript set (loaded automatically)</source>
+        <target state="final">Configurazione TypoScript (caricato automaticamente)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.File" approved="yes">
+        <source>Part of a TypoScript set</source>
+        <target state="final">Parte di una configurazione TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileDatabase" approved="yes">
+        <source>TypoScript set</source>
+        <target state="final">Configurazione TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileFile" approved="yes">
+        <source>TypoScript set (included via file)</source>
+        <target state="final">Configurazione TypoScript (incluso tramite file)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Root" approved="yes">
+        <source>Root</source>
+        <target state="final">Root</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">Segmento di codice</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">Sito</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SiteTemplate" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">Configurazione del sito</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SysTemplate" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">Record TypoScript</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
