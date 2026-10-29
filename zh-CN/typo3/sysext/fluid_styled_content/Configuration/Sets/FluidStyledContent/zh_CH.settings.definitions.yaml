@@ -1,0 +1,7 @@
+categories:
+  fsc: null
+settings:
+  styles.content.textmedia.linkWrap.newWindow:
+    default: false
+  styles.content.textmedia.linkWrap.lightboxEnabled:
+    default: false
