@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <trans-unit id="group_default">
+        <source>Default</source>
+        <target>crwdns391010:0crwdne391010:0</target>
+      </trans-unit>
+      <trans-unit id="group_pages">
+        <source>Pages</source>
+        <target>crwdns391012:0crwdne391012:0</target>
+      </trans-unit>
+      <trans-unit id="group_records">
+        <source>Records</source>
+        <target>crwdns391014:0crwdne391014:0</target>
+      </trans-unit>
+      <trans-unit id="group_files">
+        <source>Files</source>
+        <target>crwdns391016:0crwdne391016:0</target>
+      </trans-unit>
+      <trans-unit id="group_tools">
+        <source>Tools</source>
+        <target>crwdns391018:0crwdne391018:0</target>
+      </trans-unit>
+      <trans-unit id="group_miscellaneous">
+        <source>Miscellaneous</source>
+        <target>crwdns391020:0crwdne391020:0</target>
+      </trans-unit>
+      <trans-unit id="global">
+        <source>Global</source>
+        <target>crwdns391022:0crwdne391022:0</target>
+      </trans-unit>
+      <trans-unit id="all">
+        <source>All</source>
+        <target>crwdns391024:0crwdne391024:0</target>
+      </trans-unit>
+      <!-- UI labels -->
+      <trans-unit id="title">
+        <source>Bookmarks</source>
+        <target>crwdns391026:0crwdne391026:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>You have not added any bookmarks yet. Use the share icon on any backend page to create one.</source>
+        <target>crwdns392662:0crwdne392662:0</target>
+      </trans-unit>
+      <trans-unit id="notGrouped">
+        <source>Not grouped</source>
+        <target>crwdns391030:0crwdne391030:0</target>
+      </trans-unit>
+      <trans-unit id="empty">
+        <source>No bookmarks yet. Add bookmarks using the share icon on pages throughout the backend.</source>
+        <target>crwdns391032:0crwdne391032:0</target>
+      </trans-unit>
+      <trans-unit id="manage">
+        <source>Manage bookmarks</source>
+        <target>crwdns391034:0crwdne391034:0</target>
+      </trans-unit>
+      <trans-unit id="delete">
+        <source>Delete bookmark</source>
+        <target>crwdns391036:0crwdne391036:0</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle">
+        <source>Title</source>
+        <target>crwdns391038:0crwdne391038:0</target>
+      </trans-unit>
+      <trans-unit id="fieldGroup">
+        <source>Group</source>
+        <target>crwdns391040:0crwdne391040:0</target>
+      </trans-unit>
+      <!-- Success notifications for bookmarks -->
+      <trans-unit id="success.created.title">
+        <source>Bookmark created</source>
+        <target>crwdns391042:0crwdne391042:0</target>
+      </trans-unit>
+      <trans-unit id="success.created.message">
+        <source>The bookmark was created.</source>
+        <target>crwdns391044:0crwdne391044:0</target>
+      </trans-unit>
+      <trans-unit id="success.updated.title">
+        <source>Bookmark updated</source>
+        <target>crwdns391046:0crwdne391046:0</target>
+      </trans-unit>
+      <trans-unit id="success.updated.message">
+        <source>Bookmark updated successfully.</source>
+        <target>crwdns391048:0crwdne391048:0</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.title">
+        <source>Bookmark deleted</source>
+        <target>crwdns391050:0crwdne391050:0</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.message">
+        <source>Bookmark deleted successfully.</source>
+        <target>crwdns391052:0crwdne391052:0</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.title">
+        <source>Bookmarks deleted</source>
+        <target>crwdns391054:0crwdne391054:0</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.message">
+        <source>%d bookmark(s) deleted.</source>
+        <target>crwdns391056:0%dcrwdne391056:0</target>
+      </trans-unit>
+      <trans-unit id="success.moved.title">
+        <source>Bookmarks moved</source>
+        <target>crwdns391058:0crwdne391058:0</target>
+      </trans-unit>
+      <trans-unit id="success.moved.message">
+        <source>%d bookmark(s) moved.</source>
+        <target>crwdns391060:0%dcrwdne391060:0</target>
+      </trans-unit>
+      <!-- Success notifications for groups -->
+      <trans-unit id="success.groupCreated.title">
+        <source>Group created</source>
+        <target>crwdns391062:0crwdne391062:0</target>
+      </trans-unit>
+      <trans-unit id="success.groupCreated.message">
+        <source>Group created successfully.</source>
+        <target>crwdns391064:0crwdne391064:0</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.title">
+        <source>Group updated</source>
+        <target>crwdns391066:0crwdne391066:0</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.message">
+        <source>Group updated successfully.</source>
+        <target>crwdns391068:0crwdne391068:0</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.title">
+        <source>Group deleted</source>
+        <target>crwdns391070:0crwdne391070:0</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.message">
+        <source>Group deleted successfully.</source>
+        <target>crwdns391072:0crwdne391072:0</target>
+      </trans-unit>
+      <!-- Error notifications for bookmarks -->
+      <trans-unit id="error.unknown.message">
+        <source>An unexpected error occurred.</source>
+        <target>crwdns391074:0crwdne391074:0</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.message">
+        <source>Bookmark not found.</source>
+        <target>crwdns391076:0crwdne391076:0</target>
+      </trans-unit>
+      <trans-unit id="error.accessDenied.message">
+        <source>You do not have permission to edit this bookmark.</source>
+        <target>crwdns391078:0crwdne391078:0</target>
+      </trans-unit>
+      <trans-unit id="error.globalGroupNotAllowed.message">
+        <source>Only administrators can assign bookmarks to global groups.</source>
+        <target>crwdns391080:0crwdne391080:0</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.title">
+        <source>Bookmark creation failed</source>
+        <target>crwdns391082:0crwdne391082:0</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.message">
+        <source>The bookmark could not be created.</source>
+        <target>crwdns391084:0crwdne391084:0</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.title">
+        <source>Bookmark update failed</source>
+        <target>crwdns391086:0crwdne391086:0</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.message">
+        <source>The bookmark could not be updated.</source>
+        <target>crwdns391088:0crwdne391088:0</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.title">
+        <source>Bookmark deletion failed</source>
+        <target>crwdns391090:0crwdne391090:0</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.message">
+        <source>The bookmarks could not be deleted.</source>
+        <target>crwdns391092:0crwdne391092:0</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.title">
+        <source>Move failed</source>
+        <target>crwdns391094:0crwdne391094:0</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.message">
+        <source>The bookmarks could not be moved.</source>
+        <target>crwdns391096:0crwdne391096:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingRoute.message">
+        <source>The bookmark could not be created because route information is missing.</source>
+        <target>crwdns391098:0crwdne391098:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkId.message">
+        <source>Missing bookmark ID.</source>
+        <target>crwdns391100:0crwdne391100:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkIds.message">
+        <source>Missing bookmark IDs.</source>
+        <target>crwdns391102:0crwdne391102:0</target>
+      </trans-unit>
+      <!-- Error notifications for groups -->
+      <trans-unit id="error.groupCreateFailed.title">
+        <source>Group creation failed</source>
+        <target>crwdns391104:0crwdne391104:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupCreateFailed.message">
+        <source>The group could not be created.</source>
+        <target>crwdns391106:0crwdne391106:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.title">
+        <source>Group update failed</source>
+        <target>crwdns391108:0crwdne391108:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.message">
+        <source>The group could not be updated.</source>
+        <target>crwdns391110:0crwdne391110:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.title">
+        <source>Group deletion failed</source>
+        <target>crwdns391112:0crwdne391112:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.message">
+        <source>The group could not be deleted.</source>
+        <target>crwdns391114:0crwdne391114:0</target>
+      </trans-unit>
+      <trans-unit id="error.groupReorderFailed.message">
+        <source>The groups could not be reordered.</source>
+        <target>crwdns391116:0crwdne391116:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupId.message">
+        <source>Missing group ID.</source>
+        <target>crwdns391118:0crwdne391118:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupIds.message">
+        <source>Missing group IDs.</source>
+        <target>crwdns391120:0crwdne391120:0</target>
+      </trans-unit>
+      <trans-unit id="error.missingLabel.message">
+        <source>Group label is required.</source>
+        <target>crwdns391122:0crwdne391122:0</target>
+      </trans-unit>
+      <!-- Button labels -->
+      <trans-unit id="action.create">
+        <source>Create bookmark</source>
+        <target>crwdns391124:0crwdne391124:0</target>
+      </trans-unit>
+      <trans-unit id="action.remove">
+        <source>Remove bookmark</source>
+        <target>crwdns391126:0crwdne391126:0</target>
+      </trans-unit>
+      <trans-unit id="action.save">
+        <source>Save</source>
+        <target>crwdns391128:0crwdne391128:0</target>
+      </trans-unit>
+      <trans-unit id="action.cancel">
+        <source>Cancel</source>
+        <target>crwdns391130:0crwdne391130:0</target>
+      </trans-unit>
+      <trans-unit id="action.delete">
+        <source>Delete</source>
+        <target>crwdns391132:0crwdne391132:0</target>
+      </trans-unit>
+      <!-- Edit view labels -->
+      <trans-unit id="details">
+        <source>Details</source>
+        <target>crwdns391134:0crwdne391134:0</target>
+      </trans-unit>
+      <trans-unit id="details.route">
+        <source>Route</source>
+        <target>crwdns391136:0crwdne391136:0</target>
+      </trans-unit>
+      <trans-unit id="details.url">
+        <source>URL</source>
+        <target>crwdns391138:0crwdne391138:0</target>
+      </trans-unit>
+      <trans-unit id="details.parameters">
+        <source>Parameters</source>
+        <target>crwdns391140:0crwdne391140:0</target>
+      </trans-unit>
+      <!-- Confirmation dialogs -->
+      <trans-unit id="confirmDelete.title">
+        <source>Delete bookmark</source>
+        <target>crwdns391142:0crwdne391142:0</target>
+      </trans-unit>
+      <trans-unit id="confirmDelete.message">
+        <source>Delete the bookmark permanently? You cannot undo this action.</source>
+        <target>crwdns392664:0crwdne392664:0</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.title">
+        <source>Delete bookmarks</source>
+        <target>crwdns391146:0crwdne391146:0</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.message">
+        <source>Delete the %d bookmark(s) permanently? You cannot undo this action.</source>
+        <target>crwdns392666:0%dcrwdne392666:0</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.title">
+        <source>Delete group</source>
+        <target>crwdns391150:0crwdne391150:0</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.message">
+        <source>Delete the bookmark group "%s"? Bookmarks in this group will be moved to the Default group.</source>
+        <target>crwdns392668:0%scrwdne392668:0</target>
+      </trans-unit>
+      <!-- Manager view labels -->
+      <trans-unit id="manager.selectAll">
+        <source>Select all</source>
+        <target>crwdns391154:0crwdne391154:0</target>
+      </trans-unit>
+      <trans-unit id="manager.deselectAll">
+        <source>Deselect all</source>
+        <target>crwdns391156:0crwdne391156:0</target>
+      </trans-unit>
+      <trans-unit id="manager.moveToGroup">
+        <source>Move to group</source>
+        <target>crwdns391158:0crwdne391158:0</target>
+      </trans-unit>
+      <trans-unit id="manager.deleteSelected">
+        <source>Delete</source>
+        <target>crwdns391160:0crwdne391160:0</target>
+      </trans-unit>
+      <trans-unit id="manager.manageGroups">
+        <source>Manage Groups</source>
+        <target>crwdns391162:0crwdne391162:0</target>
+      </trans-unit>
+      <trans-unit id="manager.newGroup">
+        <source>New Group</source>
+        <target>crwdns391164:0crwdne391164:0</target>
+      </trans-unit>
+      <trans-unit id="manager.createGroup">
+        <source>Create Group</source>
+        <target>crwdns391166:0crwdne391166:0</target>
+      </trans-unit>
+      <trans-unit id="manager.editGroup">
+        <source>Edit Group</source>
+        <target>crwdns391168:0crwdne391168:0</target>
+      </trans-unit>
+      <trans-unit id="manager.noGroups">
+        <source>You have not created any groups yet. Click "New Group" to create one.</source>
+        <target>crwdns391170:0crwdne391170:0</target>
+      </trans-unit>
+      <trans-unit id="manager.label">
+        <source>Label</source>
+        <target>crwdns391172:0crwdne391172:0</target>
+      </trans-unit>
+      <trans-unit id="manager.back">
+        <source>Back</source>
+        <target>crwdns391174:0crwdne391174:0</target>
+      </trans-unit>
+      <trans-unit id="manager.editBookmark">
+        <source>Edit bookmark</source>
+        <target>crwdns391176:0crwdne391176:0</target>
+      </trans-unit>
+      <trans-unit id="manager.dragToReorder">
+        <source>Drag to reorder</source>
+        <target>crwdns391178:0crwdne391178:0</target>
+      </trans-unit>
+      <trans-unit id="manager.moveUp">
+        <source>Move up</source>
+        <target>crwdns391180:0crwdne391180:0</target>
+      </trans-unit>
+      <trans-unit id="manager.moveDown">
+        <source>Move down</source>
+        <target>crwdns391182:0crwdne391182:0</target>
+      </trans-unit>
+      <trans-unit id="manager.locked">
+        <source>This bookmark cannot be edited</source>
+        <target>crwdns391184:0crwdne391184:0</target>
+      </trans-unit>
+      <trans-unit id="manager.notAccessible">
+        <source>Not accessible</source>
+        <target>crwdns391186:0crwdne391186:0</target>
+      </trans-unit>
+      <trans-unit id="groupType.user">
+        <source>My Groups</source>
+        <target>crwdns391188:0crwdne391188:0</target>
+      </trans-unit>
+      <trans-unit id="groupType.system">
+        <source>System Groups</source>
+        <target>crwdns391190:0crwdne391190:0</target>
+      </trans-unit>
+      <trans-unit id="groupType.global">
+        <source>Global Groups</source>
+        <target>crwdns391192:0crwdne391192:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
