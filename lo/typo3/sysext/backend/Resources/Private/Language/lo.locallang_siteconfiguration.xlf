@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Setup</source>
+        <target state="final">ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">ຕົວລະບຸເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" approved="yes">
+        <source>No root pages available</source>
+        <target state="final">ບໍ່ມີໜ້າຫຼັກ (Root page) ໃຫ້ໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" approved="yes">
+        <source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+        <target state="final">ກະລຸນາສ້າງໜ້າຫຼັກຢ່າງໜ້ອຍໜຶ່ງໜ້າໃນໂມດູນການຈັດວາງ (Layout). ໜ້າຫຼັກຕ້ອງເປັນໜ້າເນື້ອຫາທີ່ຢູ່ໃນລະດັບສູງສຸດ (ບໍ່ແມ່ນໂຟນເດີ ຫຼື ຕົວຂັ້ນ) ຫຼື ມີການເປີດໃຊ້ງານ "Root Page" (ຄຸນສົມບັດໜ້າ → ແຖບ ພຶດຕິກຳ).</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.link.label" approved="yes">
+        <source>Open the documentation</source>
+        <target state="final">ເປີດເອກະສານຄູ່ມື</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">ເພີ່ມການກຳນົດຄ່າໃໝ່ສຳລັບເວັບໄຊນີ້</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">ແກ້ໄຂການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">ແກ້ໄຂການຕັ້ງຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable" approved="yes">
+        <source>This site provides no configurable settings</source>
+        <target state="final">ເວັບໄຊນີ້ບໍ່ມີການຕັ້ງຄ່າທີ່ສາມາດກຳນົດໄດ້</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">ລຶບການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">URL ພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.title" approved="yes">
+        <source>Pages without a site configuration</source>
+        <target state="final">ໜ້າທີ່ບໍ່ມີການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.description" approved="yes">
+        <source>The following root pages have no site configuration:</source>
+        <target state="final">ໜ້າຫຼັກຕໍ່ໄປນີ້ບໍ່ມີການກຳນົດຄ່າເວັບໄຊ:</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">ການກຳນົດຄ່າເວັບໄຊທີ່ບໍ່ໄດ້ຖືກມອບໝາຍ</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" approved="yes">
+        <source>The following site configurations don't belong to any page anymore and can be removed.</source>
+        <target state="final">ການກຳນົດຄ່າເວັບໄຊຕໍ່ໄປນີ້ບໍ່ໄດ້ຂຶ້ນກັບໜ້າໃດໆອີກແລ້ວ ແລະ ສາມາດລຶບອອກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.title" approved="yes">
+        <source>Invalid site set configurations</source>
+        <target state="final">ການກຳນົດຄ່າຊຸດເວັບໄຊ (Site set) ບໍ່ຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.description" approved="yes">
+        <source>The following site sets contain errors and therefore could not be loaded.</source>
+        <target state="final">ຊຸດເວັບໄຊຕໍ່ໄປນີ້ມີຂໍ້ຜິດພາດ ຈຶ່ງບໍ່ສາມາດໂຫຼດໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.set" approved="yes">
+        <source>Set</source>
+        <target state="final">ຊຸດ</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.error" approved="yes">
+        <source>Error</source>
+        <target state="final">ຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">ຈຸດເຂົ້າເຖິງ (Entry points) ຊ້ຳກັນ</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">ຈຸດເຂົ້າເຖິງຕໍ່ໄປນີ້ຖືກນຳໃຊ້ຫຼາຍກວ່າໜຶ່ງຄັ້ງ:</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">ໜ້າຫຼັກຊ້ຳກັນ</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">ໜ້າທີ່ມີ ID "%1s" ຖືກນຳໃຊ້ໃນການກຳນົດຄ່າເວັບໄຊຕໍ່ໄປນີ້:</target>
+      </trans-unit>
+      <trans-unit id="overview.btn.details" approved="yes">
+        <source>View details</source>
+        <target state="final">ເບິ່ງລາຍລະອຽດ</target>
+      </trans-unit>
+      <trans-unit id="overview.entry_point" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">ຈຸດເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="overview.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">ການຈັດການຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="overview.status.title" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.multiple" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+        <target state="final"><![CDATA[ການຕິດຕັ້ງນີ້ປະກອບມີ <strong>%s ເວັບໄຊທີ່ຖືກກຳນົດຄ່າ</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.single" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+        <target state="final"><![CDATA[ການຕິດຕັ້ງນີ້ປະກອບມີ <strong>%s ເວັບໄຊທີ່ຖືກກຳນົດຄ່າ</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple" approved="yes">
+        <source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s ໜ້າຫຼັກ</strong> ຍັງບໍ່ມີການກຳນົດຄ່າເວັບໄຊ.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.single" approved="yes">
+        <source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s ໜ້າ</strong> ຍັງບໍ່ມີການກຳນົດຄ່າເວັບໄຊ.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.multiple" approved="yes">
+        <source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+        <target state="final"><![CDATA[ປະຈຸບັນມີ <strong>%s ການກຳນົດຄ່າເວັບໄຊ</strong> ທີ່ບໍ່ໄດ້ຖືກມອບໝາຍໃຫ້ກັບໜ້າໃດໆ.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.single" approved="yes">
+        <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+        <target state="final"><![CDATA[ປະຈຸບັນມີ <strong>%s ການກຳນົດຄ່າເວັບໄຊ</strong> ທີ່ບໍ່ໄດ້ຖືກມອບໝາຍໃຫ້ກັບໜ້າໃດໆ.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="overview.languages.amount" approved="yes">
+        <source>and %s more</source>
+        <target state="final">ແລະ ອີກ %s</target>
+      </trans-unit>
+      <trans-unit id="overview.root_pages_without_site_configuration.title" approved="yes">
+        <source>Sites</source>
+        <target state="final">ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets" approved="yes">
+        <source>Dependencies to site sets</source>
+        <target state="final">ສ່ວນກ່ຽວຂ້ອງກັບຊຸດເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">ແມ່ນ</target>
+      </trans-unit>
+      <trans-unit id="overview.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">ເສັ້ນທາງຄົງທີ່ (Static routes)</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.title" approved="yes">
+        <source>No configured sites available</source>
+        <target state="final">ບໍ່ມີເວັບໄຊທີ່ກຳນົດຄ່າໄວ້ໃຫ້ໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.message" approved="yes">
+        <source>At least one root page must have a site configuration.</source>
+        <target state="final">ຢ່າງໜ້ອຍໜຶ່ງໜ້າຫຼັກຕ້ອງມີການກຳນົດຄ່າເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="overview.none" approved="yes">
+        <source>None</source>
+        <target state="final">ບໍ່ມີ</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_site_identifier" approved="yes">
+        <source>Setup of "%s"</source>
+        <target state="final">ການຕັ້ງຄ່າຂອງ "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_page_title" approved="yes">
+        <source>Setup of site "%s"</source>
+        <target state="final">ການຕັ້ງຄ່າຂອງເວັບໄຊ "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.not_configured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">ຍັງບໍ່ໄດ້ກຳນົດຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">ການຈັດການຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.headline" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">ການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language" approved="yes">
+        <source>Language</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">ຄຳນຳໜ້າ URL ແບບເຕັມ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">ເສັ້ນທາງຄົງທີ່ (Static routes)</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.route_enhancers" approved="yes">
+        <source>Route enhancers</source>
+        <target state="final">ຕົວເສີມເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.headline" approved="yes">
+        <source>Active settings</source>
+        <target state="final">ການຕັ້ງຄ່າທີ່ກຳລັງໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.custom_site_settings" approved="yes">
+        <source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+        <target state="final">ການຕັ້ງຄ່າພາຍໃນການກຳນົດຄ່າເວັບໄຊ (ຕົວຢ່າງ: ຜ່ານ 'settings.yaml')</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.headline" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">ສ່ວນກ່ຽວຂ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.text" approved="yes">
+        <source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+        <target state="final"><![CDATA[ການຕັ້ງຄ່າສາມາດຖືກເກັບໄວ້ໂດຍກົງຜ່ານການກຳນົດຄ່າເວັບໄຊ, ຫຼື ໂດຍທາງອ້ອມໂດຍການໂຫຼດພວກມັນເປັນສ່ວນກ່ຽວຂ້ອງຂອງຊຸດເວັບໄຊອື່ນ.<br>ສ່ວນກ່ຽວຂ້ອງຕໍ່ໄປນີ້ຖືກເກັບໄວ້ໃນການກຳນົດຄ່າເວັບໄຊ:]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.headline" approved="yes">
+        <source>Site settings</source>
+        <target state="final">ການຕັ້ງຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.message" approved="yes">
+        <source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+        <target state="final"><![CDATA[ການຕັ້ງຄ່າຈະຖືກສະແດງຢູ່ທີ່ນີ້ທັນທີທີ່ມີຢູ່ໃນໄຟລ໌ <code>settings.yaml</code> ໃນໂຟນເດີເວັບໄຊ ຫຼື ມີສ່ວນກ່ຽວຂ້ອງກັບຊຸດເວັບໄຊຢ່າງໜ້ອຍໜຶ່ງຢ່າງໃນການກຳນົດຄ່າເວັບໄຊ.]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.title" approved="yes">
+        <source>No site settings were found for this site</source>
+        <target state="final">ບໍ່ພົບການຕັ້ງຄ່າເວັບໄຊສຳລັບເວັບໄຊນີ້</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">ແກ້ໄຂການຕັ້ງຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="edit.site_configuration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">ແກ້ໄຂການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="edit.typeLabel" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">ການຕັ້ງຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="edit.createNewSite" approved="yes">
+        <source>Create new site</source>
+        <target state="final">ສ້າງເວັບໄຊໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">ປ່ຽນຊື່ຕົວລະບຸແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">ຕົວລະບຸເວັບໄຊ "%1s" ທີ່ລະບຸມາມີຢູ່ແລ້ວ. ມັນໄດ້ຖືກປ່ຽນຊື່ເປັນ "%2s". ບາງທີເຈົ້າອາດຕ້ອງການແກ້ໄຂເວັບໄຊອີກຄັ້ງ ແລະ ຕັ້ງຊື່ໃຫ້ດີກວ່າເກົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">ຕົວລະບຸບໍ່ໄດ້ຖືກປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">ຕົວລະບຸເວັບໄຊ "%1s" ທີ່ລະບຸມາມີຢູ່ແລ້ວ ແລະ ຊີ້ໄປຫາເວັບໄຊອື່ນ. ຕົວລະບຸ "%2s" ທີ່ມີຢູ່ສຳລັບເວັບໄຊນີ້ຈະຖືກຮັກສາໄວ້ຄືເກົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">ບໍ່ໄດ້ບັນທຶກການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">ຫ້ອງຂໍ້ມູນ "%1s" ແມ່ນຈຳເປັນຕ້ອງປ້ອນ, ແຕ່ຍັງບໍ່ທັນມີການລະບຸຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">ລຶບລະຫັດຂໍ້ຜິດພາດທີ່ຊ້ຳກັນອອກແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">ພົບການກຳນົດຄ່າການຈັດການຂໍ້ຜິດພາດສອງອັນສຳລັບລະຫັດ "%1s". ນີ້ຈະເປັນການກຳນົດຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ອັນທີ່ເກີນມາໄດ້ຖືກລຶບອອກແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">ລຶບການກຳນົດຄ່າພາສາທີ່ຊ້ຳກັນອອກແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">ພົບການກຳນົດຄ່າພາສາສອງອັນສຳລັບພາສາ "%1s". ນີ້ຈະເປັນການກຳນົດຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ອັນທີ່ເກີນມາໄດ້ຖືກລຶບອອກແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="labels.detail" approved="yes">
+        <source>View Site Configuration "%s"</source>
+        <target state="final">ເບິ່ງການກຳນົດຄ່າເວັບໄຊ "%s"</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings" approved="yes">
+        <source>Edit Site Settings</source>
+        <target state="final">ແກ້ໄຂການຕັ້ງຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration" approved="yes">
+        <source>Edit Site</source>
+        <target state="final">ແກ້ໄຂເວັບໄຊ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
