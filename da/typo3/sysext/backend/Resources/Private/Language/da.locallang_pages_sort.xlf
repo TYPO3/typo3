@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Sortér undersider</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Aktuelle sidesortering</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Sortér disse sider ved</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Du er ved at ændre sorteringen af siderne herover. Er du sikker på at du vil fortsætte?</target>
+      </trans-unit>
+      <trans-unit id="sort" approved="yes">
+        <source>Sort</source>
+        <target state="final">Sortér</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.title" approved="yes">
+        <source>Sort pages by page title</source>
+        <target state="final">Sortér sider efter sidetitel</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.description" approved="yes">
+        <source>The pages will be sorted by their page title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret efter deres sidetitel. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.title" approved="yes">
+        <source>Sort pages by subtitle</source>
+        <target state="final">Sortér sider efter undertitel</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.description" approved="yes">
+        <source>The pages will be sorted by their subtitle. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret efter deres undertitel. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.title" approved="yes">
+        <source>Sort pages by navigation title</source>
+        <target state="final">Sortér sider efter navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.description" approved="yes">
+        <source>The pages will be sorted by their navigation title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret efter deres navigationstitel. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change_time.title" approved="yes">
+        <source>Sort pages by change-time</source>
+        <target state="final">Sortér sider efter ændringstidspunkt</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change-time.description" approved="yes">
+        <source>The pages will be sorted by their change-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret efter deres ændringstidspunkt. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.title" approved="yes">
+        <source>Sort pages by create-time</source>
+        <target state="final">Sortér sider efter oprettelsestidspunkt</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.description" approved="yes">
+        <source>The pages will be sorted by their create-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret efter deres oprettelsestidspunkt. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.title" approved="yes">
+        <source>Reverse the page order</source>
+        <target state="final">Omvend sidesortering</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.description" approved="yes">
+        <source>The pages will be sorted by reversing the current page order. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Siderne vil blive sorteret omvendt efter sidetitel. Fortsæt? Du kan gendanne den forrige sortering ved hjælp af funktionen 'Historik/Fortryd'.</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetitel</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Undertitel</target>
+      </trans-unit>
+      <trans-unit id="fieldNavTitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Oprettet-tid</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Ændret-tid</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Undertitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Ændret-tid</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Oprettet-tid</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Spejlvend aktuelle sortering</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Usynlige undersider</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">Nogle undersider er ikke synlige på grund af adgangsbegrænsninger. Disse skjulte sider er udelukket fra sortering.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Ingen undersider</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Vælg venligst en side med undersider.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Ikke implementeret</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">Denne funktion er ikke tilgængelig i det nuværende kladde-arbejdsområde. Skift venligst tilbage til LIVE-arbejdsområdet.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Ingen redigerings-tilladelser på denne underside. Siden kan ikke blive gen-sorteret blandt øvrige.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
