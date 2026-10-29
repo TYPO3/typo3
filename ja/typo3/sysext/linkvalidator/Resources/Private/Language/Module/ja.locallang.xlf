@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="list.editField" approved="yes">
+        <source>Edit only the field containing this broken link</source>
+        <target state="final">この壊れたリンクを含むフィールドのみ編集</target>
+      </trans-unit>
+      <!-- external linktype check errors -->
+      <trans-unit id="linkcheck.error.external.generic" approved="yes">
+        <source>External link is broken.</source>
+        <target state="final">外部リンクが壊れています。</target>
+      </trans-unit>
+      <!-- HTTP status code error messages -->
+      <trans-unit id="list.report.error.httpstatuscode.305" approved="yes">
+        <source>Use proxy (305).</source>
+        <target state="final">プロキシを使用する (305)。</target>
+      </trans-unit>
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <!-- Modal content -->
+    </body>
+  </file>
+</xliff>
