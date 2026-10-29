@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/pagetrees.xlf" date="2026-11-10T13:37:37Z" product-name="pagetrees" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Demo Page Trees</source>
+        <target state="final">Demonstraciniai puslapių medžiai</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing and demonstration purposes.</source>
+        <target state="final">Kurkite ir valdykite pavyzdinius puslapių medžius su TCA demonstraciniais įrašais arba turinio elementais testavimo ir demonstravimo tikslais.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Valdyti pavyzdinius puslapių medžius</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
