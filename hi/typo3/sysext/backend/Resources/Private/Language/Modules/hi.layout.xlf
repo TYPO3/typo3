@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/layout.xlf" date="2026-11-10T13:37:37Z" product-name="layout" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage page layout and structured content editing</source>
+        <target state="final">पेज लेआउट और व्यवस्थित कंटेंट एडिटिंग को मैनेज करें</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The Layout module provides a structured space for editing page content. It allows you to manage the visual layout of a page, arrange content elements in the correct columns, and maintain the overall structure of your site.</source>
+        <target state="final">लेआउट मॉड्यूल, पृष्ठ के कंटेंट को एडिट करने के लिए एक व्यवस्थित जगह देता है। यह आपको पृष्ठ के विज़ुअल लेआउट को मैनेज करने, कंटेंट के एलिमेंट्स को सही कॉलम में लगाने और अपनी साइट के पूरे स्ट्रक्चर को बनाए रखने की सुविधा देता है।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Layout</source>
+        <target state="final">लेआउट</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
