@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Derinti (Debug)</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoErrorsAndSQL" approved="yes">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+        <target state="final">(%1$u klaidos / įspėjimai, SQL: %2$ux / %3$u ms)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Žurnalas</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Žurnalo pranešimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Komponentas</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Lygis</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Grupuoti pagal komponentą</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Grupuoti pagal lygį</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Rodyti tik lygius, lygius arba aukštesnius nei</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Žurnalo įrašų nėra.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Įvykiai</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">Užklausų informacija</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Užklausa</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Užklausos</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">Atgalinis sekimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">SQL derinimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">SQL užklausa</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Skaičius</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Bendras laikas [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total" approved="yes">
+        <source>Total</source>
+        <target state="final">Iš viso</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Puslapio pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Naudojamas tiekėjas</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Tiekėjas</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Praleisti tiekėjai (nepateikė pavadinimo)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">Visi tiekėjai patikrinti eilės tvarka</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Negalima gauti puslapio pavadinimo (tiekėjų) informacijos, kai puslapis yra spartinančiojoje atmintinėje.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Apsilankykite šiame puslapyje be spartinančiosios atmintinės arba išjunkite spartinančiąją atmintinę šiame administravimo skydelyje.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.eventClassName" approved="yes">
+        <source>Event class name</source>
+        <target state="final">Įvykio klasės pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.count" approved="yes">
+        <source>Dispatch count (%1d)</source>
+        <target state="final">Išsiuntimų skaičius (%1d)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
