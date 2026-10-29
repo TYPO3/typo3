@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/palettes.xlf" date="2025-01-22T20:22:33Z" product-name="palettes" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="general" approved="yes">
+        <source>General</source>
+        <target state="final">عام</target>
+      </trans-unit>
+      <trans-unit id="account" approved="yes">
+        <source>Account</source>
+        <target state="final">الحساب</target>
+      </trans-unit>
+      <trans-unit id="authentication" approved="yes">
+        <source>Authentication</source>
+        <target state="final">المُصادقة</target>
+      </trans-unit>
+      <trans-unit id="permission_languages" approved="yes">
+        <source>Language Permissions</source>
+        <target state="final">أذونات اللغة</target>
+      </trans-unit>
+      <trans-unit id="permission_general" approved="yes">
+        <source>General Permissions</source>
+        <target state="final">الأذونات العامة</target>
+      </trans-unit>
+      <trans-unit id="permission_specific" approved="yes">
+        <source>Specific Permissions</source>
+        <target state="final">أُذُونات مُحدّدة</target>
+      </trans-unit>
+      <trans-unit id="standard" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">الظهور</target>
+      </trans-unit>
+      <trans-unit id="access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">تواريخ النشر وحقوق الوصول</target>
+      </trans-unit>
+      <trans-unit id="abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">مُلخّص</target>
+      </trans-unit>
+      <trans-unit id="metatags" approved="yes">
+        <source>Meta Tags</source>
+        <target state="final">Meta Tags</target>
+      </trans-unit>
+      <trans-unit id="editorial" approved="yes">
+        <source>Editorial</source>
+        <target state="final">مُقَدِّمَة</target>
+      </trans-unit>
+      <trans-unit id="layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">تخطيط</target>
+      </trans-unit>
+      <trans-unit id="page_layout" approved="yes">
+        <source>Page Layout</source>
+        <target state="final">تصميم الصفحة</target>
+      </trans-unit>
+      <trans-unit id="use_as_container" approved="yes">
+        <source>Use as Container</source>
+        <target state="final">استخدام كحاوية</target>
+      </trans-unit>
+      <trans-unit id="replace" approved="yes">
+        <source>Replace Content</source>
+        <target state="final">استبدال المحتوى</target>
+      </trans-unit>
+      <trans-unit id="links" approved="yes">
+        <source>Links to this Page</source>
+        <target state="final">روابط هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="caching" approved="yes">
+        <source>Caching</source>
+        <target state="final">التخزين المؤقت</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">اللغة</target>
+      </trans-unit>
+      <trans-unit id="miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">متنوعات</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">ملفات</target>
+      </trans-unit>
+      <trans-unit id="storage" approved="yes">
+        <source>Storage Page</source>
+        <target state="final">صفحة التخزين</target>
+      </trans-unit>
+      <trans-unit id="config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين (Configuration)</target>
+      </trans-unit>
+      <trans-unit id="headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">العناوين</target>
+      </trans-unit>
+      <trans-unit id="header" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="content_layout" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">تصميم عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="media_behaviour" approved="yes">
+        <source>Media Behavior</source>
+        <target state="final">سلوك الوسائط</target>
+      </trans-unit>
+      <trans-unit id="accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">إمكانية الوصول</target>
+      </trans-unit>
+      <trans-unit id="downloads_layout" approved="yes">
+        <source>Downloads Layout</source>
+        <target state="final">تنسيق التنزيلات</target>
+      </trans-unit>
+      <trans-unit id="table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">تصميم الجدول</target>
+      </trans-unit>
+      <trans-unit id="links_appearance" approved="yes">
+        <source>Links</source>
+        <target state="final">الروابط</target>
+      </trans-unit>
+      <trans-unit id="settings_gallery" approved="yes">
+        <source>Gallery Settings</source>
+        <target state="final">إعدادات المعرض</target>
+      </trans-unit>
+      <trans-unit id="media_adjustments" approved="yes">
+        <source>Media Adjustments</source>
+        <target state="final">تعديلات الوَسائط</target>
+      </trans-unit>
+      <trans-unit id="metrics" approved="yes">
+        <source>Metrics</source>
+        <target state="final">المقاييس</target>
+      </trans-unit>
+      <trans-unit id="geolocation" approved="yes">
+        <source>Geo Location</source>
+        <target state="final">الموقع الجغرافي</target>
+      </trans-unit>
+      <trans-unit id="contentdate" approved="yes">
+        <source>Content Date</source>
+        <target state="final">تاريخ المحتوى</target>
+      </trans-unit>
+      <trans-unit id="gps" approved="yes">
+        <source>GPS</source>
+        <target state="final">نظام GPS</target>
+      </trans-unit>
+      <trans-unit id="seo" approved="yes">
+        <source>General SEO Settings</source>
+        <target state="final">إعدادات SEO العامَّة</target>
+      </trans-unit>
+      <trans-unit id="robots" approved="yes">
+        <source>Robot instructions</source>
+        <target state="final">تعليمات Robot</target>
+      </trans-unit>
+      <trans-unit id="opengraph" approved="yes">
+        <source>Open Graph (Facebook)</source>
+        <target state="final">الصورة المُصغرة التي ستظهر في (Facebook)</target>
+      </trans-unit>
+      <trans-unit id="twittercards" approved="yes">
+        <source>X / Twitter Cards</source>
+        <target state="final">بطاقات X / تويتر</target>
+      </trans-unit>
+      <trans-unit id="canonical" approved="yes">
+        <source>Canonical</source>
+        <target state="final">مُتَعارَف</target>
+      </trans-unit>
+      <trans-unit id="sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">فِهْرِس الصفحة "Sitemap"</target>
+      </trans-unit>
+      <trans-unit id="additional" approved="yes">
+        <source>Additional Configuration</source>
+        <target state="final">التكوينات الإضافية</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
