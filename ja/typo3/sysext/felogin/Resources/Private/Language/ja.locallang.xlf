@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="username" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="change_password_description" approved="yes">
+        <source>Please enter your new password twice.</source>
+        <target state="final">新しいパスワードを2回入力してください。</target>
+      </trans-unit>
+      <trans-unit id="password_requirement" approved="yes">
+        <source>Ensure that your new password matches the following requirements:</source>
+        <target state="final">新しいパスワードが以下の要件に一致していることを確認してください：</target>
+      </trans-unit>
+      <trans-unit id="change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">エラー：リンクのプレフィックスがありません。次のいずれかをあなたのtyposcript：plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">パスワードをお忘れですか？</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
