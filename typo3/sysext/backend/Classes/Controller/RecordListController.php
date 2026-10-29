@@ -449,7 +449,7 @@ class RecordListController
                     ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
                 $view->addButtonToButtonBar($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
-            } elseif (($createNewRecordButton = $dbList->createActionButtonNewRecord($this->table)) !== null) {
+            } elseif ($dbList->table !== '' && ($createNewRecordButton = $dbList->createActionButtonNewRecord($dbList->table)) !== null) {
                 // In single table view, render the specific create new button
                 $view->addButtonToButtonBar($createNewRecordButton);
             }
@@ -533,13 +533,14 @@ class RecordListController
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
             $view->addButtonToButtonBar($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
-        if ($this->table
+        if ($dbList->table !== ''
+            && !$dbList->isShowingOnlyTranslatedRecords()
             && !($this->modTSconfig['noExportRecordsLinks'] ?? false)
             && $this->getBackendUserAuthentication()->isExportEnabled()
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$this->table . ':' . $this->pageContext->pageId]]]);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$dbList->table . ':' . $this->pageContext->pageId]]]);
                 $exportButton = $this->componentFactory->createLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
