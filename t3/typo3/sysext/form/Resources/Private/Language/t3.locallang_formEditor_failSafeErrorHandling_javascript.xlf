@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf" date="2019-04-27T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.error.headline">
+        <source>The form editor has stopped working.</source>
+        <target>crwdns380442:0crwdne380442:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.error.message">
+        <source>Please contact your administrator.</source>
+        <target>crwdns56978:0crwdne56978:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.error.technicalReason">
+        <source>Technical Reason:</source>
+        <target>crwdns56980:0crwdne56980:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
