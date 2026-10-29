@@ -1,0 +1,1754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name" approved="yes">
+        <source>Form manager</source>
+        <target state="final">مدير النموذج</target>
+      </trans-unit>
+      <trans-unit id="default" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>[Empty]</source>
+        <target state="final">[Empty]</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" approved="yes">
+        <source>Form definition</source>
+        <target state="final">تعريف النموذج</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">عام</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" approved="yes">
+        <source>Please select a form definition</source>
+        <target state="final">الرجاء تحديد تعريف النموذج</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" approved="yes">
+        <source>Override finisher settings</source>
+        <target state="final">تجاوز إعدادات اللمسات الأخيرة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty" approved="yes">
+        <source>There are no finishers or finisher options in the current form definition.</source>
+        <target state="final">لا يوجد أي لمسات أخيرة أو خيارات أخيرة في تعريف النموذج الحالي.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier" approved="yes">
+        <source>No form selected.</source>
+        <target state="final">لم يتم تحديد أي نموذج.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" approved="yes">
+        <source>Invalid form "%s".</source>
+        <target state="final">نموذج غير صالح "%s".</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier" approved="yes">
+        <source>"%s" (no read access).</source>
+        <target state="final">"%s" (لا يوجد صَلاحِيَة للقراءة).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" approved="yes">
+        <source>The form "%s" does not exist.</source>
+        <target state="final">النموذج "%s" غير موجود.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" approved="yes">
+        <source>"%s" (Invalid ext:form configuration).</source>
+        <target state="final">"%s" (تكوين ext:form غير صالح).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.text" approved="yes">
+        <source>Invalid ext:form configuration in form "%s": %s</source>
+        <target state="final">تكوين ext:form غير صالح في شكل "%s": %s</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" approved="yes">
+        <source>Invalid configuration.</source>
+        <target state="final">تكوين غير صالح.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">تأكيد</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">السجل</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">إرسال بريد إلكتروني إلى المُرسل (مُقدّم النموذج)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">المُستلِمون</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" approved="yes">
+        <source>Recipient</source>
+        <target state="final">المُستلم</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" approved="yes">
+        <source>Email Address</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">الاسم</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">عنوان البريد الإلكتروني للمُرسل</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">اسم المُرسل بشكل واضح ومقروء</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">الرد على المُستلِمِين</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label" approved="yes">
+        <source>Reply-To Recipient</source>
+        <target state="final">الرد على المُستلِم</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">إرسال نسخة إلى المُستلِمين (CC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label" approved="yes">
+        <source>CC Recipient</source>
+        <target state="final">إرسال نسخة إلى المُستلِم (CC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">إرسال نسخة مخفيّة الوجهة إلى المُستلِمين (BCC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" approved="yes">
+        <source>BCC Recipient</source>
+        <target state="final">إرسال نسخة مخفيّة الوجهة إلى المُستلِم (BCC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" approved="yes">
+        <source>Add HTML mail part</source>
+        <target state="final">إضافة جزء من HTML إلى البريد</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">لغة الترجمة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">تلقائي</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">الرسالة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">عنوان</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">البريد الإلكتروني إلى المُستلم (أنت)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipients.label" approved="yes">
+        <source>Email addresses and human-readable names of the recipients</source>
+        <target state="final">عناوين البريد الإلكتروني وأسماء المُستلمين القابلة للقراءة بشكل واضح</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">عنوان البريد الإلكتروني للمُرسل</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">اسم المُرسل بشكل واضح ومقروء</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">الرد على المُستلِمِين</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">إرسال نسخة إلى المُستلِمين (CC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">إرسال نسخة مخفيّة الوجهة إلى المُستلِمين (BCC)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">إضافة جزء من HTML إلى البريد</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">لغة الترجمة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">تلقائي</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">الرسالة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" approved="yes">
+        <source>Redirect</source>
+        <target state="final">إعادة توجيه</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" approved="yes">
+        <source>Additional link parameter</source>
+        <target state="final">مُتَغيّر الرابط الإضافي</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.fragment.label" approved="yes">
+        <source>Add fragment to the redirect link</source>
+        <target state="final">إضافة جزء إلى رابط إعادة التوجيه</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title" approved="yes">
+        <source>Delete error</source>
+        <target state="final">حذف الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body" approved="yes">
+        <source>The form "%s" could not be deleted.</source>
+        <target state="final">تعذّر حذف النموذج "%s".</target>
+      </trans-unit>
+      <trans-unit id="formManager.headline" approved="yes">
+        <source>Form Management</source>
+        <target state="final">إدارة النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.create_new_form" approved="yes">
+        <source>Create new form</source>
+        <target state="final">إنشاء نموذج جديد</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Form name</source>
+        <target state="final">اسم النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">النزاهة</target>
+      </trans-unit>
+      <trans-unit id="formManager.location" approved="yes">
+        <source>Location</source>
+        <target state="final">الموقع</target>
+      </trans-unit>
+      <trans-unit id="formManager.references" approved="yes">
+        <source>References</source>
+        <target state="final">المراجع</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">الخيارات</target>
+      </trans-unit>
+      <trans-unit id="formManager.edit_form" approved="yes">
+        <source>Edit this form</source>
+        <target state="final">تعديل هذا النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_this_form" approved="yes">
+        <source>Duplicate this form</source>
+        <target state="final">تكرار هذا النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.delete_form" approved="yes">
+        <source>Delete this form</source>
+        <target state="final">حذف هذا النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.title" approved="yes">
+        <source>No forms exist</source>
+        <target state="final">لا توجد نماذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.message" approved="yes">
+        <source>Once created, forms will be displayed here.</source>
+        <target state="final">بمجرد إنشائها، ستُعرَض النماذج هنا.</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found_by_search_term.message" approved="yes">
+        <source>There are currently no forms found containing the search term "%1s".</source>
+        <target state="final">لم يتم العثور حالياً على أيّة نماذج تحتوي على مصطلح البحث هذا "%1s".</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_search_term" approved="yes">
+        <source>Remove search term</source>
+        <target state="final">إزالة مصطلح البحث</target>
+      </trans-unit>
+      <trans-unit id="formManager.invalid" approved="yes">
+        <source>Invalid form definition</source>
+        <target state="final">تعريفُ النموذج غير صالح</target>
+      </trans-unit>
+      <trans-unit id="formManager.readOnly" approved="yes">
+        <source>Read only</source>
+        <target state="final">للقراءة فقط</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_identifier" approved="yes">
+        <source>Duplicate identifier</source>
+        <target state="final">تكرار المُعرّف</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.form" approved="yes">
+        <source>form</source>
+        <target state="final">النموذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.forms" approved="yes">
+        <source>forms</source>
+        <target state="final">النماذج</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" approved="yes">
+        <source>Standard</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" approved="yes">
+        <source>Blank form</source>
+        <target state="final">نموذج فارغ</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" approved="yes">
+        <source>Simple contact form (ext:form example)</source>
+        <target state="final">نموذج تواصل بسيط (ext:form مثال)</target>
+      </trans-unit>
+      <trans-unit id="formManager.showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">إظهار السجل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.header" approved="yes">
+        <source>Form editor</source>
+        <target state="final">محرر النموذج</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">جارِ التحميل...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner" approved="yes">
+        <source>Loading...</source>
+        <target state="final">جارٍ التحميل...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final"> حفظ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_button" approved="yes">
+        <source>Edit form properties</source>
+        <target state="final">تعديل خصائص النموذج</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button" approved="yes">
+        <source>Undo</source>
+        <target state="final">تراجع</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button" approved="yes">
+        <source>Redo</source>
+        <target state="final">إعادة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_structure" approved="yes">
+        <source>Toggle structure</source>
+        <target state="final">تبديل الهيكل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_inspector" approved="yes">
+        <source>Toggle inspector</source>
+        <target state="final">تبديل المُراقب</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_expand_inspector" approved="yes">
+        <source>Show inspector</source>
+        <target state="final">عرض المُدقّق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_collapse_inspector" approved="yes">
+        <source>Hide inspector</source>
+        <target state="final">إخفاء المُدقّق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.new_page_button" approved="yes">
+        <source>Create new step</source>
+        <target state="final">إنشاء خطوة جديدة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.previous_step_button" approved="yes">
+        <source>Previous step</source>
+        <target state="final">الخطوة السابقة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.next_step_button" approved="yes">
+        <source>Next step</source>
+        <target state="final">الخطوة التالية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty" approved="yes">
+        <source>Step name is not set</source>
+        <target state="final">لم يتم تعيين اسم الخطوة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.preview_mode_button" approved="yes">
+        <source>Preview mode</source>
+        <target state="final">وضع المُعاينة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_mode_button" approved="yes">
+        <source>Edit mode</source>
+        <target state="final">وضع التعديل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure" approved="yes">
+        <source>Structure</source>
+        <target state="final">الهيكل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">إدراج عناصر</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" approved="yes">
+        <source>Required</source>
+        <target state="final">مطلُوب</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label" approved="yes">
+        <source>Not a number</source>
+        <target state="final">ليس رقماً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" approved="yes">
+        <source>Invalid email address</source>
+        <target state="final">عنوان البريد الإلكتروني غير صالح</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" approved="yes">
+        <source>Invalid form element</source>
+        <target state="final">عنصر النموذج غير صالح</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" approved="yes">
+        <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+        <target state="final">تنسيق حجم المِلَفّ غير صالح، صالح مثل "10B|K|M|G"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label" approved="yes">
+        <source>Invalid date format. Use Y-m-d (e.g. 2018-03-17) or a relative expression (e.g. today, -18 years)</source>
+        <target state="final">تنسيقُ التاريخ غير صالح. استخدم Y-m-d (مثال: 2018-03-17) أو تعبيراً نسبياً (مثال: today, -18 years)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label" approved="yes">
+        <source>Invalid pattern</source>
+        <target state="final">نَمَط غير صالح</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label" approved="yes">
+        <source>Basic elements</source>
+        <target state="final">عناصر أساسية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">عناصر خاصة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label" approved="yes">
+        <source>Select elements</source>
+        <target state="final">حَدّد العناصر</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label" approved="yes">
+        <source>Advanced elements</source>
+        <target state="final">عناصر مُتَقدِمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label" approved="yes">
+        <source>Container elements</source>
+        <target state="final">عناصر الحاوية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label" approved="yes">
+        <source>Step types</source>
+        <target state="final">أنواع الخُطُوات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" approved="yes">
+        <source>Form name</source>
+        <target state="final">اسم النموذج</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">حفظ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage" approved="yes">
+        <source>The form has been successfully saved.</source>
+        <target state="final">تم حفظ النموذج بنجاح.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final"> حفظ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" approved="yes">
+        <source>The form could not be saved:</source>
+        <target state="final">تَعذّر حفظ النموذج:</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" approved="yes">
+        <source>New element</source>
+        <target state="final">عنصر جديد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle" approved="yes">
+        <source>New step</source>
+        <target state="final">خُطوة جديدة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle" approved="yes">
+        <source>Remove element?</source>
+        <target state="final">إزالة العنصر؟</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogMessage" approved="yes">
+        <source>Remove this element?</source>
+        <target state="final">إزالة هذا العنصر؟</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" approved="yes">
+        <source>Remove</source>
+        <target state="final">إزالة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancelButton" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" approved="yes">
+        <source>Error</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" approved="yes">
+        <source>There must be at least one step within your form.</source>
+        <target state="final">يجب أن يكون هناك خُطوة واحدة على الأقل في النموذج الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogMessage" approved="yes">
+        <source>You currently have unsaved changes. Closing the form will discard them. Continue?</source>
+        <target state="final">لديك حالياً تغييراتٌ غير محفوظة. سيؤدي إغلاق النموذج إلى تجاهلها. هل تريد المتابعة؟</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogTitle" approved="yes">
+        <source>Quit without saving?</source>
+        <target state="final">الخروج دون حفظ؟</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.confirmButton" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">إلغاء التغييرات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.cancelButton" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">مُتابعة التعديل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">الخطوة {0} من {1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" approved="yes">
+        <source>Minimum</source>
+        <target state="final">الحد الأدنى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" approved="yes">
+        <source>Maximum</source>
+        <target state="final">الحد الأقصى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">النص البديل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">القيمة الافتراضية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" approved="yes">
+        <source>Pattern</source>
+        <target state="final">النمط</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.description" approved="yes">
+        <source>Additional client-side validation as JavaScript regular expression</source>
+        <target state="final">التحقق الإضافي من جانب العميل كتعبيرٍ منتظم بـ JavaScript</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" approved="yes">
+        <source>Step</source>
+        <target state="final">الخطوة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">المُدقّقُون</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">إضافة مُدقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">أبجدي رقمي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">نص ليس XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label" approved="yes">
+        <source>String length</source>
+        <target state="final">طول النص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" approved="yes">
+        <source>Email</source>
+        <target state="final">البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">عدد صحيح</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">العدد الفاصل العائم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">رقم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">نطاق الرقم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">التعبير العادي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">عدد القِيم المُقدَّمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">أبجدي رقمي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ الخطأ التي تُعرَض عند فشل التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">نص ليس XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ الخطأ التي تُعرَض عند فشل التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" approved="yes">
+        <source>String length</source>
+        <target state="final">طول النص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ الخطأ التي تُعرَض عند فشل التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" approved="yes">
+        <source>Email</source>
+        <target state="final">البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالة الخطأ التي ستظهر إذا لم تنجح عملية التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">عدد صحيح</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالة الخطأ التي ستظهر إذا لم تنجح عملية التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">العدد الفاصل العائم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالة الخطأ التي ستظهر إذا لم تنجح عملية التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" approved="yes">
+        <source>Number</source>
+        <target state="final">رقم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">نطاق الأرقام</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالة الخطأ التي ستظهر إذا لم تنجح عملية التحققرسالة الخطأ التي ستظهر إذا لم تنجح عملية التحقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">التعبير العادي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">التعبير العادي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description" approved="yes">
+        <source>Enter a valid PHP PCRE regular expression here.</source>
+        <target state="final">أدخِلْ هنا تعبيراً منتظماً صالحاً من نوعِ PHP PCRE.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ خطأٍ تُعرَضُ إذا لم تنجحِ عمليةُ التحقُّقِ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">عدد القِيم المُقدَّمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ خطأٍ تُعرَضُ إذا لم تنجحِ عمليةُ التحقُّقِ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" approved="yes">
+        <source>First option (empty value)</source>
+        <target state="final">الخيار الأول (قيمة فارغة)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.description" approved="yes">
+        <source>If set, this label will be shown as first option.</source>
+        <target state="final">إذا تمَّ ضبطُهُ، سيُعرَضُ هذا التسميةُ كخيارٍ أوَّلٍ.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" approved="yes">
+        <source>Choices</source>
+        <target state="final">الخيارات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">المُدقّقُون</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">إضافة مُدقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" approved="yes">
+        <source>Uploads save path</source>
+        <target state="final">تحميلات مسار الحفظ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">المُدقّقُون</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">إضافة مُدقق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" approved="yes">
+        <source>File size</source>
+        <target state="final">حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of files</source>
+        <target state="final">عدد الملفات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" approved="yes">
+        <source>File size</source>
+        <target state="final">حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of uploaded files</source>
+        <target state="final">عدد الملفات المُحمّلة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" approved="yes">
+        <source>Submit label</source>
+        <target state="final">إرسال التسمية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" approved="yes">
+        <source>Submit</source>
+        <target state="final">إرسال</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label" approved="yes">
+        <source>Finishers</source>
+        <target state="final">اللمسات الأخيرة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label" approved="yes">
+        <source>Add finisher</source>
+        <target state="final">إضافة لمسة أخيرة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">إرسال بريد إلكتروني إلى المُرسل (مُقدّم النموذج)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">إرسال بريد إلكتروني إلى المُستلم (أنت)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">إعادة التوجيه إلى صفحة ما</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">حذف التحميلات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">رسالة التأكيد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">إرسال بريد إلكتروني إلى المُرسل (مِن مُقدّم النموذج)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">الموضوع</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">الرسالة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.description" approved="yes">
+        <source>Optional custom message. Use {formValues} as a placeholder to include the submitted form data at that position. If empty, only the form data table will be shown.</source>
+        <target state="final">رسالةٌ مخصَّصةٌ اختياريةٌ. استخدِمْ {formValues} كعنصرِ نائبٍ لتضمينِ بياناتِ النموذجِ المُرسَلةِ في ذلكَ الموضعِ. إذا كانتْ فارغةً، سيُعرَضُ جدولُ بياناتِ النموذجِ فقط.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">المُستلِمون</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description" approved="yes">
+        <source>The email addresses and names of the website visitors to which the email should be sent.</source>
+        <target state="final">عناوينُ البريدِ الإلكترونيِّ وأسماءُ زوارِ الموقعِ الذين يجبُ إرسالُ البريدِ الإلكترونيِّ إليهم.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" approved="yes">
+        <source>Email Address</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">الاسم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">عنوان المُرسِل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.description" approved="yes">
+        <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
+        <target state="final">عنوان البريد الإلكتروني للمُرسِل (على سبيل المثال عنوان البريد الإلكتروني لشركتك) الذي يظهر في البريد الإلكتروني لزوّار الموقع.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">اسم المُرسِل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.description" approved="yes">
+        <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
+        <target state="final">عنوان البريد الإلكتروني للمُرسِل (على سبيل المثال اسم شركتك) الذي يظهر في البريد الإلكتروني لزوّار الموقع.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">الرد على المُستلِمِين</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">إرسال نسخة إلى المُستلِمين (CC)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">إرسال نسخة مخفيّة الوجهة إلى المُستلِمين (BCC)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">إضافة جزء من HTML إلى البريد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description" approved="yes">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target state="final">في حالة التفعيل، سوف يحتوي البريد الإلكتروني على نص مُجرّد وجزء من HTML، وإلا فقط جزء نص مُجرّد.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">إرفاق التحميلات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">لغة الترجمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">تلقائي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.description" approved="yes">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target state="final">العنوان الذي يظهر في البريد الإلكتروني. العنوان يتم تقديمه في قسم الترويسة أعلى البريد الإلكتروني. لا تخلط بين هذا الحقل وبين موضوع بريدك الإلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">إرسال بريد إلكتروني إلى المُستلم (أنت)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">الموضوع</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">الرسالة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.description" approved="yes">
+        <source>Optional custom message. Use {formValues} once as a placeholder to include the submitted form data at that position (only the first occurrence is replaced). If empty, only the form data table will be shown.</source>
+        <target state="final">رسالةٌ مخصَّصةٌ اختياريةٌ. استخدِمْ {formValues} مرةً واحدةً كعنصرِ نائبٍ لتضمينِ بياناتِ النموذجِ المُرسَلةِ في ذلكَ الموضعِ (يُستبدَلُ التكرارُ الأوَّلُ فقط). إذا كانتْ فارغةً، سيُعرَضُ جدولُ بياناتِ النموذجِ فقط.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">المُستلِمون</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description" approved="yes">
+        <source>The email addresses and names of the recipients to which the email should be sent (e.g. your company's email addresses).</source>
+        <target state="final">عناوين البريد الإلكتروني وأسماء المُستلِمين التي يجب إرسال البريد الإلكتروني إليها (على سبيل المثال عناوين البريد الإلكتروني لشركتك).</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">عنوان المُرسِل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.description" approved="yes">
+        <source>The email address of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to select a form element which contains the website visitor's email address instead.</source>
+        <target state="final">عنوانُ البريدِ الإلكترونيِّ للمُرسِلِ الذي يظهرُ في عميلِ البريدِ الإلكترونيِّ الخاصِّ بكَ. استخدِمْ القائمةَ المنسدلةَ "إدراجُ معرِّفِ عنصرِ النموذجِ" إذا كنتَ بحاجةٍ إلى تحديدِ عنصرِ نموذجٍ يحتوي على عنوانِ البريدِ الإلكترونيِّ لزائرِ الموقعِ بدلاً من ذلكَ.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">اسم المُرسِل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.description" approved="yes">
+        <source>The name of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to choose one or more form elements which contain the website visitor's name</source>
+        <target state="final">اسمُ المُرسِلِ الذي يظهرُ في عميلِ البريدِ الإلكترونيِّ الخاصِّ بكَ. استخدِمْ القائمةَ المنسدلةَ "إدراجُ معرِّفِ عنصرِ النموذجِ" إذا كنتَ بحاجةٍ إلى اختيارِ عنصرٍ أو أكثرَ من عناصرِ النموذجِ التي تحتوي على اسمِ زائرِ الموقعِ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">الرد على المُستلِمِين</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">إرسال نسخة إلى المُستلِمين (CC)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">إرسال نسخة مخفيّة الوجهة إلى المُستلِمين (BCC)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">إضافة جزء من HTML إلى البريد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.description" approved="yes">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target state="final">إذا تمَّ تفعيلُهُ، سيحتوي البريدُ الإلكترونيُّ على جزءٍ نصيٍّ عاديٍّ وجزءٍ بتنسيقِ HTML، وإلا فسيحتوي على جزءٍ نصيٍّ عاديٍّ فقط.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">إرفاق التحميلات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">لغة الترجمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">تلقائي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.description" approved="yes">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target state="final">العنوان الذي يظهر في البريد الإلكتروني. العنوان يتم تقديمه في قسم الترويسة أعلى البريد الإلكتروني. لا تخلط بين هذا الحقل وبين موضوع بريدك الإلكتروني.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">إعادة التوجيه إلى صفحة ما</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" approved="yes">
+        <source>Additional parameters</source>
+        <target state="final">مُتَغيّرات إضافيّة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.label" approved="yes">
+        <source>URL fragment</source>
+        <target state="final">مقطع URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.description" approved="yes">
+        <source>You can use a content element identifier as URL fragment or set a custom fragment identifier.</source>
+        <target state="final">يمكنك استخدام مُعرّف عنصر المحتوى كأجزاء URL أو تعيين مقطع مُعرّف مُخصص.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">حذف التحميلات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">تأكيد الرسالة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">المُعرّف uid لعنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">النصوص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.description" approved="yes">
+        <source>Will be ignored if "Content element" is set</source>
+        <target state="final">سيتم تجاهله إذا تم تعيين "عنصر المحتوى"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" approved="yes">
+        <source>Execute a closure</source>
+        <target state="final">تنفيذ الإغلاق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" approved="yes">
+        <source>Flash message</source>
+        <target state="final">رسالة سريعة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" approved="yes">
+        <source>Save the mail to the Database</source>
+        <target state="final">حفظ البريد الإلكتروني في قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">التسمية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">التسمية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.enabled.label" approved="yes">
+        <source>Field visible</source>
+        <target state="final">إظهار الحقل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.label" approved="yes">
+        <source>Autocomplete</source>
+        <target state="final">الإكمال التلقائي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.none" approved="yes">
+        <source>None</source>
+        <target state="final">لا شَيْء</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.off" approved="yes">
+        <source>off - disable the autocomplete functionality</source>
+        <target state="final">إيقاف - تعطيل وظيفة الإكمال التلقائي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.name" approved="yes">
+        <source>name - Full name</source>
+        <target state="final">الاسم - الاسم الكامل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix" approved="yes">
+        <source>Prefix or title (e.g., "Mr.", "Ms.", "Dr.")</source>
+        <target state="final">بادئة أو عنوان (على سبيل المثال "السيد "،"السيدة"، "م."، "د.")</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.given-name" approved="yes">
+        <source>given-name - first name</source>
+        <target state="final">الاسم - الاسم الأول</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.additional-name" approved="yes">
+        <source>additional-name - middle name</source>
+        <target state="final">اسم إضافي - الاسم الأوسط</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.family-name" approved="yes">
+        <source>family-name - last name</source>
+        <target state="final">اسم العائلة - الكُنية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-suffix" approved="yes">
+        <source>honorific-suffix - Name suffix (e.g., "Jr.", "II")</source>
+        <target state="final">تذييل الاسم (مثلاً: "Jr.", "المحترم")</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.nickname" approved="yes">
+        <source>Nickname, screen name</source>
+        <target state="final">اللقب، الاسم الشائع</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization-title" approved="yes">
+        <source>organization-title - Job title</source>
+        <target state="final">الموقع في المؤسسة - الوَصف الوظيفي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.username" approved="yes">
+        <source>username</source>
+        <target state="final">اسم المستخدم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization" approved="yes">
+        <source>organization - Company name</source>
+        <target state="final">المنظمة - اسم الشركة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line1" approved="yes">
+        <source>address-line1 - Street address, line 1</source>
+        <target state="final">عنوان-السطر1 - عنوان الشارع، السطر1</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line2" approved="yes">
+        <source>address-line2 - Street address, line 2</source>
+        <target state="final">عنوان-السطر1 - عنوان الشارع، السطر1</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level1" approved="yes">
+        <source>address-level1 - State, Canton etc</source>
+        <target state="final">العنوان - المستوى 1 - الدولة، المقاطعة والخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level2" approved="yes">
+        <source>address-level2 - City</source>
+        <target state="final">العنوان المستوى 2 - المدينة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country-name" approved="yes">
+        <source>country-name</source>
+        <target state="final">اسم الدولة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.postal-code" approved="yes">
+        <source>postal-code - ZIP</source>
+        <target state="final">الرمز البريدي - ZIP</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel" approved="yes">
+        <source>tel - Full telephone number</source>
+        <target state="final">الهاتف - رَقَم الهاتف كاملاً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.impp" approved="yes">
+        <source>impp - URL representing an instant messaging protocol endpoint</source>
+        <target state="final">impp - يُمثّل عنوان URL نقطة نهاية بروتوكول الرسائل الفورية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.sex" approved="yes">
+        <source>sex - Gender identity</source>
+        <target state="final">الجنس</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.language" approved="yes">
+        <source>language - Preferred language</source>
+        <target state="final">اللغة - اللغة المُفضّلة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.street-address" approved="yes">
+        <source>street-address</source>
+        <target state="final">عنوان الشارع</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-country-code" approved="yes">
+        <source>tel-country-code - Country code component of the telephone number</source>
+        <target state="final">رمز هاتف البلد - مُكوّن رمز البلد لرقم الهاتف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-national" approved="yes">
+        <source>tel-national - Telephone number without the county code</source>
+        <target state="final">الهاتف المحلّي - رَقَم الهاتف دون رمز المقاطعة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-area-code" approved="yes">
+        <source>tel-area-code - Area code component of the telephone number</source>
+        <target state="final">رمز منطقة الهاتف - مُكوّن رمز المنطقة لرقم الهاتف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-local" approved="yes">
+        <source>tel-local - Telephone number without the country code and area code component</source>
+        <target state="final">الهاتف الأرضي - رَقَم الهاتف دون رمز البلد ورمز المنطقة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-extension" approved="yes">
+        <source>tel-extension - Telephone number internal extension code</source>
+        <target state="final">المُلحق الهاتفي -رَقَم هاتف رمز الملحق الداخلي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.url" approved="yes">
+        <source>url - Home page</source>
+        <target state="final">رابط - الصفحة الرئيسة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.new-password" approved="yes">
+        <source>new-password - A new password to create / change</source>
+        <target state="final">كلمة المرور الجديدة - كلمة المرور الجديدة لإنشاء / تغيير</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.current-password" approved="yes">
+        <source>current-password - Current password for the selected username</source>
+        <target state="final">كلمة المرور الحالية - كلمة المرور الحالية لاسم المستخدم المُحدد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-day" approved="yes">
+        <source>bday-day - Day component of birthday</source>
+        <target state="final">يوم الميلاد - مُكوّن اليوم لعيد الميلاد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-month" approved="yes">
+        <source>bday-month - Month component of birthday</source>
+        <target state="final">شهر الميلاد - مُكوّن الشهر لعيد الميلاد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-year" approved="yes">
+        <source>bday-year - Year component of birthday</source>
+        <target state="final">سنة الميلاد - مُكوّن السنة لعيد الميلاد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.photo" approved="yes">
+        <source>photo</source>
+        <target state="final">صورة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.email" approved="yes">
+        <source>email</source>
+        <target state="final">البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday" approved="yes">
+        <source>bday - Birthday</source>
+        <target state="final">عيد الميلاد - يوم الميلاد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country" approved="yes">
+        <source>country - Country code</source>
+        <target state="final">البلد - رمز البلد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" approved="yes">
+        <source>Field required</source>
+        <target state="final">حقل مطلوب</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">تخصيص رسالة الخطأ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">رسالةُ خطأٍ تُعرَضُ إذا لم تنجحِ عمليةُ التحقُّقِ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">الفترة الزمنية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" approved="yes">
+        <source>Grid viewport configuration</source>
+        <target state="final">إعدادات عرض الشبكة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" approved="yes">
+        <source>Extra small</source>
+        <target state="final">صغير جداً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" approved="yes">
+        <source>Small</source>
+        <target state="final">صغير</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" approved="yes">
+        <source>Medium</source>
+        <target state="final">متوسط</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" approved="yes">
+        <source>Large</source>
+        <target state="final">كبير</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" approved="yes">
+        <source>Extra large</source>
+        <target state="final">كبير جداً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" approved="yes">
+        <source>Extra extra large</source>
+        <target state="final">كبير جداً جداً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" approved="yes">
+        <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+        <target state="final">عدد الأعمدة لشاشة العرض "{@viewPortLabel}"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description" approved="yes">
+        <source>Leave empty for auto calculation</source>
+        <target state="final">اتركه فارغاً للحساب التلقائي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" approved="yes">
+        <source>Step</source>
+        <target state="final">الخطوة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.description" approved="yes">
+        <source>A form step that can be customized with various elements</source>
+        <target state="final">يمكن تخصيص خطوة النموذج مع عناصر مختلفة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">اسم الخطوة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">تسمية زر الشريحة السابقة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">الخطوة السابقة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">تسمية الزر التالي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">الخطوة التالية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label" approved="yes">
+        <source>Summary step</source>
+        <target state="final">الخطوة المُوجَزة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.description" approved="yes">
+        <source>A form step that displays all entered values for review before submission</source>
+        <target state="final">خطوة نموذجية تعرض جميع القيم المدخلة للمراجعة قبل الإرسال</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">اسم الخطوة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">تسمية الزر السابق</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">الخطوة السابقة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">تسمية الزر التالي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">الخطوة التالية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label" approved="yes">
+        <source>Fieldset</source>
+        <target state="final">مجموعة الحُقُول</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.description" approved="yes">
+        <source>A container used to group related form elements, improving accessibility and providing content-based structure</source>
+        <target state="final">حاوية تُستخدم لتجميع عناصر النموذج ذات الصلة، مما يحسن إمكانية الوصول ويوفر بنية قائمة على المحتوى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label" approved="yes">
+        <source>Fieldset name</source>
+        <target state="final">إسم مجموعة الحقول</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.label" approved="yes">
+        <source>Grid: Column</source>
+        <target state="final">الشبكي: العمود</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.description" approved="yes">
+        <source>A container element for arranging fields, providing visual structure</source>
+        <target state="final">عنصر حاوية لترتيب الحقول، يوفر بنية بصرية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.editor.label.label" approved="yes">
+        <source>Name (not visible within frontend)</source>
+        <target state="final">الاسم (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label" approved="yes">
+        <source>Grid: Row</source>
+        <target state="final">شبكة: صف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.description" approved="yes">
+        <source>A container element for arranging fields side by side, providing visual structuring</source>
+        <target state="final">عنصر حاوية لترتيب الحقول جنباً إلى جنب، مما يوفر هيكلاً بصرياً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label" approved="yes">
+        <source>Row name (not visible within frontend)</source>
+        <target state="final">اسم الصف (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.description" approved="yes">
+        <source>A single-line text field</source>
+        <target state="final">حقل نص ذو سطر واحد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" approved="yes">
+        <source>Email address</source>
+        <target state="final">عنوان البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.description" approved="yes">
+        <source>A text field for inputting an email address</source>
+        <target state="final">حقل نص لإدخال عنوان بريد إلكتروني</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">رقم الهاتف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.description" approved="yes">
+        <source>A text field for inputting a phone number</source>
+        <target state="final">حقل نص لإدخال رقم الهاتف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" approved="yes">
+        <source>URL</source>
+        <target state="final">رابط URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.description" approved="yes">
+        <source>A text field for inputting a URL</source>
+        <target state="final">حقل نص لإدخال عنوان URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">رقم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.description" approved="yes">
+        <source>A text field for inputting numbers, with browser controls to adjust the value in predefined steps</source>
+        <target state="final">حقل نص لإدخال الأرقام، مع ضوابط المتصفح لضبط القيمة في خطوات محددة مسبقاً</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">رقم</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" approved="yes">
+        <source>Date</source>
+        <target state="final">التاريخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.description" approved="yes">
+        <source>A text field for inputting a date in a single line</source>
+        <target state="final">حقل نصّي لإدخال التاريخ في سطر واحد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" approved="yes">
+        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+        <target state="final">تاريخ بصيغة Y-m-d (مثل 2018-03-17)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.description" approved="yes">
+        <source>Specify the number of days between each occurrence of this event.</source>
+        <target state="final">حدد عدد الأيام بين كل تكرار لهذا الحدث.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">التردّد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">نطاق التاريخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">نطاق التاريخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" approved="yes">
+        <source>Minimum date</source>
+        <target state="final">الحد الأدنى للتاريخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" approved="yes">
+        <source>Maximum date</source>
+        <target state="final">الحد الأقصى للتاريخ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" approved="yes">
+        <source>Password</source>
+        <target state="final">كلمة المرور</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.description" approved="yes">
+        <source>A text field for entering a password</source>
+        <target state="final">حقل نصّي لإدخال كلمة المرور</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label" approved="yes">
+        <source>Advanced password</source>
+        <target state="final">كلمة المرور مُتقدِمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.description" approved="yes">
+        <source>A text field for entering and confirming a password</source>
+        <target state="final">حقل نصّي لإدخال وتأكيد كلمة المرور</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" approved="yes">
+        <source>Confirmation label</source>
+        <target state="final">تسمية التأكيد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">التأكيد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" approved="yes">
+        <source>Textarea</source>
+        <target state="final">حقل نَصّي</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.description" approved="yes">
+        <source>A multi-line text field for entering extended or continuous text</source>
+        <target state="final">حقل نصّي متعدد الأسطر لإدخال نص موسّع أو متواصل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" approved="yes">
+        <source>Checkbox</source>
+        <target state="final">مربع الاختيار</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.description" approved="yes">
+        <source>An element for creating a single checkbox</source>
+        <target state="final">عنصر لإنشاء خانة اختيار واحدة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.label" approved="yes">
+        <source>Country select</source>
+        <target state="final">اختيار الدولة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.description" approved="yes">
+        <source>An element to select a country</source>
+        <target state="final">عنصر لاختيار بلد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label" approved="yes">
+        <source>Multi checkbox</source>
+        <target state="final">مُربع الاختيار المُتعدد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.description" approved="yes">
+        <source>An element for creating multiple checkboxes</source>
+        <target state="final">عنصر لإنشاء مربعات اختيار متعددة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label" approved="yes">
+        <source>Multi select</source>
+        <target state="final">اختيار متعدد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.description" approved="yes">
+        <source>An element for creating a field that allows multiple selections</source>
+        <target state="final">عنصر لإنشاء حقل يسمح بتحديدات متعددة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" approved="yes">
+        <source>Radio button</source>
+        <target state="final">زر اختيار</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.description" approved="yes">
+        <source>An element for displaying one or more radio buttons</source>
+        <target state="final">عنصر لعرض واحد أو أكثر من أزرار الراديو</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label" approved="yes">
+        <source>Single select</source>
+        <target state="final">اختيار واحد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.description" approved="yes">
+        <source>An element for creating a dropdown list for selecting a single option</source>
+        <target state="final">عنصر لإنشاء قائمة منسدلة لاختيار خيار واحد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" approved="yes">
+        <source>Date/time</source>
+        <target state="final">التاريخ/الوقت</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label" approved="yes">
+        <source>Static text</source>
+        <target state="final">نص ثابت</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.description" approved="yes">
+        <source>A field for displaying text content</source>
+        <target state="final">حقل لعرض محتوى النص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" approved="yes">
+        <source>Hidden</source>
+        <target state="final">إخفاء</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.description" approved="yes">
+        <source>A field that is not displayed in the frontend</source>
+        <target state="final">حقل لا يتم عرضه في الواجهة الأمامية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" approved="yes">
+        <source>Value</source>
+        <target state="final">القيمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" approved="yes">
+        <source>Content element</source>
+        <target state="final">عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.description" approved="yes">
+        <source>A field for displaying any content element from your website</source>
+        <target state="final">حقل لعرض أي عنصر محتوى من موقع الويب الخاص بك</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement" approved="yes">
+        <source>No content element selected</source>
+        <target state="final">لم يتم تحديد عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">UID عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" approved="yes">
+        <source>File upload</source>
+        <target state="final">تحميل الملف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.description" approved="yes">
+        <source>An element for uploading a file</source>
+        <target state="final">عنصر لتحميل ملف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">السماح بأنواع mime الملفات</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.maximumFileSize.label" approved="yes">
+        <source>
+Your servers' maximum upload file size is {0}. Be aware setting higher values can result in errors when submitting the form.
+If you need higher values contact your administrator for help.
+        </source>
+        <target state="final">
+الحد الأقصى لحجم مِلَفّ التحميل الخاص بك على الخادم هو {0}. كن على علم أن تعيين قيم أعلى قد يؤدي إلى حدوث أخطاء عند إرسال النموذج.
+ إذا كنت بحاجة إلى قيم أعلى فاتصل بالمسؤول الخاص بك للمساعدة.
+        </target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" approved="yes">
+        <source>Documents (doc)</source>
+        <target state="final">المستندات (doc)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" approved="yes">
+        <source>Documents (docx)</source>
+        <target state="final">المستندات (docx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" approved="yes">
+        <source>Documents (xls)</source>
+        <target state="final">المستندات (xls)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" approved="yes">
+        <source>Documents (xlsx)</source>
+        <target state="final">المستندات (xlsx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" approved="yes">
+        <source>Documents (pdf)</source>
+        <target state="final">المستندات (pdf)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" approved="yes">
+        <source>Documents (odt)</source>
+        <target state="final">المستندات (odt)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" approved="yes">
+        <source>Documents (ods)</source>
+        <target state="final">المستندات (ods)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.multiple.label" approved="yes">
+        <source>Allow multiple upload</source>
+        <target state="final">السماح بالتحميل المُتعدّد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowRemoval.label" approved="yes">
+        <source>Allow removal of uploaded files</source>
+        <target state="final">السماح بحذف الملفات المُحمَّلة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" approved="yes">
+        <source>Image upload</source>
+        <target state="final">تحميل الصورة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.description" approved="yes">
+        <source>An element for uploading an image</source>
+        <target state="final">عنصر لتحميل صورة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">أنواع ملفات mime المسموح بها</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" approved="yes">
+        <source>Images (jpg)</source>
+        <target state="final">الصُوُر (jpg)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" approved="yes">
+        <source>Images (png)</source>
+        <target state="final">الصُوُر (png)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" approved="yes">
+        <source>Images (bmp)</source>
+        <target state="final">الصُوُر (bmp)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect" approved="yes">
+        <source>Country Select</source>
+        <target state="final">اختيار الدولة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.prioritizedCountries.label" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">الدُوُل ذات الأولوية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.onlyCountries.label" approved="yes">
+        <source>Only countries</source>
+        <target state="final">فقط الدُوُل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label" approved="yes">
+        <source>Exclude countries</source>
+        <target state="final">استبعاد الدُوُل</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement" approved="yes">
+        <source>Unknown element</source>
+        <target state="final">عنصر غير معروف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">إنشاء عنصر جديد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">إزالة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title" approved="yes">
+        <source>Insert formelement identifier</source>
+        <target state="final">أدخل مُعرّف العنصر</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement.remove" approved="yes">
+        <source>Remove this Element</source>
+        <target state="final">إزالة هذا العنصر</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.add" approved="yes">
+        <source>Add a new row</source>
+        <target state="final">إضافة صف جديد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.remove" approved="yes">
+        <source>Remove this row</source>
+        <target state="final">إزالة هذا الصف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.move" approved="yes">
+        <source>Move this row</source>
+        <target state="final">نقل هذا الصف</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.label" approved="yes">
+        <source>Label</source>
+        <target state="final">التسمية</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.value" approved="yes">
+        <source>Value</source>
+        <target state="final">القيمة</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.selected" approved="yes">
+        <source>Selected</source>
+        <target state="final">مُحدد</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.noResults" approved="yes">
+        <source>Unfortunately no element type matches your query, please try a different one.</source>
+        <target state="final">لسوء الحظ، لا يوجد نوع عنصر يطابق الاستعلام الخاص بك، يرجى تجرِبة عنصر مختلف.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.placeholder" approved="yes">
+        <source>Search for any element type</source>
+        <target state="final">البحث عن أي نوع من العناصر</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.noResults" approved="yes">
+        <source>Unfortunately no step type matches your query, please try a different one.</source>
+        <target state="final">لسوء الحظ، لا يوجد نوع من الخطوات يطابق الاستعلام الخاص بك، يرجى تجرِبة خطوة مختلف.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.placeholder" approved="yes">
+        <source>Search for any step type</source>
+        <target state="final">البحث عن أي نوع من الخطوات</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.label" approved="yes">
+        <source>Database</source>
+        <target state="final">قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.description" approved="yes">
+        <source>Store the form as a record in the database. Recommended for most use cases, because it treats forms as user-generated content and allows integrated versioning.</source>
+        <target state="final">حفظُ النموذج كسجلٍّ في قاعدة البيانات. مُوصى به لمعظم حالات الاستخدام، لأنه يتعامل مع النماذج كمحتوى مُنشأ من قِبَل المستخدم ويتيح الإصدار المتكامل.</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.label" approved="yes">
+        <source>Extension</source>
+        <target state="final">الإضافة</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.description" approved="yes">
+        <source>Store the form inside an extension. Such forms are then not meant for editing, but provided as-is.</source>
+        <target state="final">حفظُ النموذج داخل إضافة. لا تكون هذه النماذج مخصصةً للتحرير، بل تُقدَّم كما هي.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
