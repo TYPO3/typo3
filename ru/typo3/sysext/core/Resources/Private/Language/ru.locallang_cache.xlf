@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="page.label" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Очистить кеш этой страницы</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Очистить кеш внешнего интерфейса</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Очистка кеша внешнего интерфейс и кэшей, связанных со страницами.</target>
+      </trans-unit>
+      <trans-unit id="group.all.label" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Очистить все кеши</target>
+      </trans-unit>
+      <trans-unit id="group.all.description" approved="yes">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target state="final">Очистка кэшей внешнего интерфейса и страниц, всех системных кэшей, включая локализацию, конфигурацию расширений, кэши файлов и кодов операций. Восстановление этих кэшей может занять некоторое время.</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title" approved="yes">
+        <source>Caches cleared</source>
+        <target state="final">Caches cleared</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message" approved="yes">
+        <source>Caches have been cleared.</source>
+        <target state="final">Кэш-память очищена.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Произошла ошибка</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" approved="yes">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target state="final">При очистке кэша произошла ошибка. Возможно, некоторые кэши не были успешно очищены.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title" approved="yes">
+        <source>Page cache cleared</source>
+        <target state="final">Кэш страницы очищен</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message" approved="yes">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target state="final">Кэш страниц для '%s' был очищен.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title" approved="yes">
+        <source>Page cache not cleared</source>
+        <target state="final">Кэш страницы не очищен</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message" approved="yes">
+        <source>Page cache could not be cleared.</source>
+        <target state="final">Невозможно очистить кэш страницы.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title" approved="yes">
+        <source>Frontend caches cleared</source>
+        <target state="final">Кэши внешнего интерфейса очищены</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message" approved="yes">
+        <source>Frontend caches have been cleared.</source>
+        <target state="final">Кеши внешнего интерфейса очищены.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title" approved="yes">
+        <source>All caches cleared</source>
+        <target state="final">Все кеши очищены</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message" approved="yes">
+        <source>All caches have been cleared.</source>
+        <target state="final">Все кеши были очищены.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
