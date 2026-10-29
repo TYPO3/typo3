@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects" approved="yes">
+        <source>Conflicting Redirects</source>
+        <target state="final">Widersprüchliche Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none" approved="yes">
+        <source>None</source>
+        <target state="final">Keine</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count" approved="yes">
+        <source>%1$s conflicting redirects</source>
+        <target state="final">%1$s widersprüchliche Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message" approved="yes">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target state="final">Diese Weiterleitungen verursachen einen Konflikt, da es Seiten gibt, die noch mit der gleichen URL erreichbar sind.</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState" approved="yes">
+        <source>Redirects integrity check</source>
+        <target state="final">Integritätsprüfung der Weiterleitungen</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.title" approved="yes">
+        <source>List of conflicting redirects may not be up to date</source>
+        <target state="final">Die Liste der widersprüchlichen Weiterleitungen ist möglicherweise nicht aktuell</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.message" approved="yes">
+        <source>Regularly run the console command redirects:checkintegrity.</source>
+        <target state="final">Führen Sie regelmäßig das Konsolen-Kommando redirects:checkintegrity aus.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
