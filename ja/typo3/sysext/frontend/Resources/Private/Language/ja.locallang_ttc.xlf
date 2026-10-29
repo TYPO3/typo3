@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">未使用</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">中央</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">右</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">左</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">レイアウト１</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">レイアウト２</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">レイアウト３</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">画像を追加</target>
+      </trans-unit>
+      <trans-unit id="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">カラム</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">一つのファイルを選択</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">ファイルを追加</target>
+      </trans-unit>
+      <trans-unit id="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">選択したメディアファイル</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">ファイル名順</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">プラグインオプション</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">カテゴリの選択</target>
+      </trans-unit>
+      <trans-unit id="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">カテゴリフィールド</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">メディア</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">プラグイン</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">公開日時</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">有効期限</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">表示設定</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">画像</target>
+      </trans-unit>
+      <trans-unit id="group.default" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">典型的なページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="group.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">一覧</target>
+      </trans-unit>
+      <trans-unit id="group.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">メニュー</target>
+      </trans-unit>
+      <trans-unit id="group.forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">フォームエレメント</target>
+      </trans-unit>
+      <trans-unit id="group.special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">特別なエレメント</target>
+      </trans-unit>
+      <trans-unit id="group.plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">プラグイン</target>
+      </trans-unit>
+      <trans-unit id="CType.header" approved="yes">
+        <source>Header Only</source>
+        <target state="final">ヘッダーのみ</target>
+      </trans-unit>
+      <trans-unit id="CType.header.description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">ヘッダーのみ追加します。</target>
+      </trans-unit>
+      <trans-unit id="CType.text" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">通常のテキストエレメント</target>
+      </trans-unit>
+      <trans-unit id="CType.text.description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">ヘッダーと本文フィールドを持つ通常のテキストエレメント。</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">テキスト &amp; 画像</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic.description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">任意の数の画像が通常のテキストエレメントの周りにラップされます。</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">テキスト &amp; メディア</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia.description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">任意の数の画像が通常のテキストエレメントの周りにラップされます。</target>
+      </trans-unit>
+      <trans-unit id="CType.image" approved="yes">
+        <source>Images Only</source>
+        <target state="final">画像のみ</target>
+      </trans-unit>
+      <trans-unit id="CType.image.description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">図表番号付きで列と行に並べられた画像の数。</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">箇条書きリスト</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets.description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">単一の箇条書きリスト。</target>
+      </trans-unit>
+      <trans-unit id="CType.table" approved="yes">
+        <source>Table</source>
+        <target state="final">表</target>
+      </trans-unit>
+      <trans-unit id="CType.table.description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">簡単な表。</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads" approved="yes">
+        <source>File Links</source>
+        <target state="final">ファイルのリンク</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads.description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">ダウンロードするファイルのリストを作成します。</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">分類されたコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">分類されたページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">サブページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">最近更新されたページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">最近更新されたページのメニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">関連ページ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">キーワードに基づく関連ページのメニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">セクションインデックス</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">セクションメニューのためにマークされたページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">選択したページからサブページのセクションインデックス</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">サイトマップ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap.description" approved="yes">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target state="final">現在のサイトのすべてのサブページの拡張メニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">選択したページのサイトマップ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">選択したページのすべてのサブページの展開メニュー</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut" approved="yes">
+        <source>Insert records</source>
+        <target state="final">レコードの挿入</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut.description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">このエレメントを使用すると、他のコンテンツエレメントを埋め込むことができます。</target>
+      </trans-unit>
+      <trans-unit id="CType.list" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">一般的なプラグイン</target>
+      </trans-unit>
+      <trans-unit id="CType.list.description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">以下のオプションの中に見つからないプラグインを挿入するには、このエレメントタイプを選択します。</target>
+      </trans-unit>
+      <trans-unit id="CType.div" approved="yes">
+        <source>Divider</source>
+        <target state="final">区切り線</target>
+      </trans-unit>
+      <trans-unit id="CType.div.description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">このエレメントは視覚的な分割線を挿入します。分割線はデフォルトでは水平線です。</target>
+      </trans-unit>
+      <trans-unit id="CType.html" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">プレーンHTML</target>
+      </trans-unit>
+      <trans-unit id="CType.html.description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">この要素を使用すると、生の HTML コードをページに挿入できます。</target>
+      </trans-unit>
+      <trans-unit id="asset_references" approved="yes">
+        <source>Media elements</source>
+        <target state="final">メディアエレメント</target>
+      </trans-unit>
+      <trans-unit id="asset_references.addFileReference" approved="yes">
+        <source>Add media file</source>
+        <target state="final">メディアファイルを追加</target>
+      </trans-unit>
+      <trans-unit id="uploads_description" approved="yes">
+        <source>Display description</source>
+        <target state="final">説明を表示</target>
+      </trans-unit>
+      <trans-unit id="uploads_type" approved="yes">
+        <source>Display file/icon/thumbnail</source>
+        <target state="final">ファイル/アイコン/サムネイルを表示</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.0" approved="yes">
+        <source>Only file name</source>
+        <target state="final">ファイル名のみ</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.1" approved="yes">
+        <source>File name and file extension icon</source>
+        <target state="final">ファイル名とファイル拡張子アイコン</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.2" approved="yes">
+        <source>File name and thumbnail (if possible)</source>
+        <target state="final">ファイル名とサムネイル（可能な場合）</target>
+      </trans-unit>
+      <trans-unit id="table_class" approved="yes">
+        <source>Table style</source>
+        <target state="final">表のスタイル</target>
+      </trans-unit>
+      <trans-unit id="table_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">デフォルト</target>
+      </trans-unit>
+      <trans-unit id="table_class.striped" approved="yes">
+        <source>Striped</source>
+        <target state="final">縞模様</target>
+      </trans-unit>
+      <trans-unit id="table_class.bordered" approved="yes">
+        <source>Bordered</source>
+        <target state="final">外枠</target>
+      </trans-unit>
+      <trans-unit id="table_caption" approved="yes">
+        <source>Table caption</source>
+        <target state="final">テーブルの図表番号</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter" approved="yes">
+        <source>Field Delimiter</source>
+        <target state="final">フィールド区切り記号</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.124" approved="yes">
+        <source>| (Pipe)</source>
+        <target state="final">| （パイプ）</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.59" approved="yes">
+        <source>; (Semicolon)</source>
+        <target state="final">;（セミコロン）</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.58" approved="yes">
+        <source>: (Colon)</source>
+        <target state="final">: (コロン)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.44" approved="yes">
+        <source>, (Comma)</source>
+        <target state="final">,（コンマ）</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.9" approved="yes">
+        <source>⇥ (Tab)</source>
+        <target state="final">⇥ (タブ)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure" approved="yes">
+        <source>Text enclosure</source>
+        <target state="final">テキストエンクロージャー名</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">なし</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.39" approved="yes">
+        <source>' (Single quotes)</source>
+        <target state="final">' (シングルクォート)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.34" approved="yes">
+        <source>" (Double quotes)</source>
+        <target state="final">" (ダブルクォート)</target>
+      </trans-unit>
+      <trans-unit id="table_header_position" approved="yes">
+        <source>Table header position</source>
+        <target state="final">テーブルヘッダの位置</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.0" approved="yes">
+        <source>No header</source>
+        <target state="final">ヘッダーなし</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.1" approved="yes">
+        <source>Top</source>
+        <target state="final">上部</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.2" approved="yes">
+        <source>Left</source>
+        <target state="final">左</target>
+      </trans-unit>
+      <trans-unit id="table_tfoot" approved="yes">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="final">テーブルフッターを使用 (最後の行を &lt;tfoot&gt; タグでラップ)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
