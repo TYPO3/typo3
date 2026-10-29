@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">Titel für Suchmaschinen</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Nicht in den Suchindex aufnehmen</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">Diese Seite indizieren</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" approved="yes">
+        <source>No follow</source>
+        <target state="final">Links auf dieser Seite nicht folgen</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" approved="yes">
+        <source>Follow this page</source>
+        <target state="final">Dieser Seite folgen</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" approved="yes">
+        <source>Open Graph Title</source>
+        <target state="final">OpenGraph-Titel</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" approved="yes">
+        <source>Open Graph Description</source>
+        <target state="final">OpenGraph-Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" approved="yes">
+        <source>Open Graph Image</source>
+        <target state="final">OpenGraph-Bild</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" approved="yes">
+        <source>X / Twitter Title</source>
+        <target state="final">X / Twitter Titel</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" approved="yes">
+        <source>X / Twitter Description</source>
+        <target state="final">X / Twitter Beschreibung</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" approved="yes">
+        <source>X / Twitter Image</source>
+        <target state="final">X / Twitter Bild</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" approved="yes">
+        <source>Type of card to show</source>
+        <target state="final">Kartentyp, der angezeigt werden soll</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" approved="yes">
+        <source>Summary Card</source>
+        <target state="final">Karte "Zusammenfassung"</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" approved="yes">
+        <source>Summary Card with a large image</source>
+        <target state="final">Karte "Zusammenfassung mit großem Bild"</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" approved="yes">
+        <source>Canonical link</source>
+        <target state="final">Kanonischer Link</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link.description" approved="yes">
+        <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
+        <target state="final">Eine kanonische URL ist die URL einer Seite, die Suchmaschinen als repräsentativste aus einer Reihe von doppelten Seiten auswählen sollten. Dieser oft als Deduplizierung bezeichnete Prozess hilft Suchmaschinen dabei, nur eine Version des ansonsten doppelten Inhalts in ihren Suchergebnissen anzuzeigen. TYPO3 setzt diese automatisch auf die wahrscheinlichste URL der Seite, sofern sie nicht explizit festgelegt wurde – dies ist höchstwahrscheinlich die URL der Seite selbst. Wenn sie hier festgelegt wird, wird die Seite aus der XML-Sitemap entfernt.</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">Änderungshäufigkeit</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">Keine</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">Immer</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">Stündlich</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">Täglich</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">Wöchentlich</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">Monatlich</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">Jährlich</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorität</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
