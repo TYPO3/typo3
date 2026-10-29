@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Рабочие области</target>
+      </trans-unit>
+      <trans-unit id="indicator.workspacePrefix" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Рабочая область</target>
+      </trans-unit>
+      <trans-unit id="noResults" approved="yes">
+        <source>No records found.</source>
+        <target state="final">Записи не найдены.</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="entireWorkspace" approved="yes">
+        <source>Entire workspace:</source>
+        <target state="final">Вся рабочая область:</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Выбор группового действия</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">Укажите действие для выбранного</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">Выбор действия для этапа</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>item</source>
+        <target state="final">элемент</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">элементы</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Отображение записей</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">рецензия и публикация</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Список рабочих областей</target>
+      </trans-unit>
+      <trans-unit id="editorInLive" approved="yes">
+        <source>You are in LIVE workspace. Please select a draft workspace from the top bar menu before you can review and publish changes.</source>
+        <target state="final">Вы находитесь в ОПЕРАТИВНОЙ рабочей области. Перед просмотром и публикацией изменений, выберите проект в верхней панели меню перед тем, как вы сможете просмотреть и опубликовать изменения.</target>
+      </trans-unit>
+      <trans-unit id="moduleOnPageIdZero" approved="yes">
+        <source>Please select a page in the page tree to review and publish changes.</source>
+        <target state="final">Выберите страницу в дереве страниц для просмотра и публикации изменений.</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.title" approved="yes">
+        <source>No workspace set up</source>
+        <target state="final">Рабочая область не настроена</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.message" approved="yes">
+        <source>There are currently no workspace records configured in the database. To use the workspace functionality, at least one workspace must be set up on the root page.</source>
+        <target state="final">В настоящее время в базе данных не настроены записи рабочего пространства. Чтобы использовать функционал рабочей области, на корневой странице должна быть установлена хотя бы одна рабочая область.</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" approved="yes">
+        <source>Create a workspace</source>
+        <target state="final">Создать рабочую область</target>
+      </trans-unit>
+      <trans-unit id="button.editWorkspaceSettings" approved="yes">
+        <source>Edit workspace settings</source>
+        <target state="final">Правка настроек рабочей области</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Переслать на стадию</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Публиковать В ЖИВУЮ</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Обработано %d элементов</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">инициализация</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publish" approved="yes">
+        <source>Publish version of record</source>
+        <target state="final">Опубликовать версию записи</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Подтверждаете публикацию рабочей области целиком?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Подтверждаете отмену изменений во всей рабочей области целиком?</target>
+      </trans-unit>
+      <trans-unit id="window.publish.title" approved="yes">
+        <source>Publish version</source>
+        <target state="final">Опубликованная версия</target>
+      </trans-unit>
+      <trans-unit id="window.publish.message" approved="yes">
+        <source>Do you really want to publish this version?</source>
+        <target state="final">Do you really want to publish this version?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Подтверждаете публикацию выбранных элементов?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Подтверждаете отмену изменений в выбранных элементах?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.affectWholeWorkspace" approved="yes">
+        <source>Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</source>
+        <target state="final">Обратите внимание, что это повлияет на все изменения в текущей рабочей области, которых может быть больше, чем видно на экране.</target>
+      </trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Сформировать ссылки на предпросмотр страницы</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">Показать изменения</target>
+      </trans-unit>
+      <trans-unit id="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Ссылка на предварительный просмотр</target>
+      </trans-unit>
+      <trans-unit id="previewLink.open" approved="yes">
+        <source>Open preview</source>
+        <target state="final">Открыть предпросмотр</target>
+      </trans-unit>
+      <trans-unit id="previewLink.copy" approved="yes">
+        <source>Copy preview link</source>
+        <target state="final">Скопировать ссылку предварительного просмотра</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Сервер не ответил об успешном выполнении действия.</target>
+      </trans-unit>
+      <trans-unit id="error.dispatch.title" approved="yes">
+        <source>Workspace action failed</source>
+        <target state="final">Не удалось выполнить действие в рабочей области</target>
+      </trans-unit>
+      <trans-unit id="error.dispatch.unavailable" approved="yes">
+        <source>The server could not be reached or sent an unexpected response. Please try again.</source>
+        <target state="final">Не удалось подключиться к серверу или получен неожиданный ответ. Пожалуйста, попробуйте снова.</target>
+      </trans-unit>
+      <trans-unit id="error.listUnavailable" approved="yes">
+        <source>The list of changes could not be loaded. Check the reported error and the TYPO3 log for details.</source>
+        <target state="final">Не удалось загрузить список изменений. Подробности смотрите в сообщении об ошибке и в журнале TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="error.dispatch.unknown" approved="yes">
+        <source>The server reported an error without further details.</source>
+        <target state="final">Сервер сообщил об ошибке без дополнительных подробностей.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Подробнее...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Разница</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Изменение</target>
+      </trans-unit>
+      <trans-unit id="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Текущая стадия</target>
+      </trans-unit>
+      <trans-unit id="column.last_change" approved="yes">
+        <source>Last changed</source>
+        <target state="final">Последнее изменение</target>
+      </trans-unit>
+      <trans-unit id="column.last_change.value" approved="yes">
+        <source>{last_change, date, medium} {last_change, time, medium}</source>
+        <target state="final">{last_change, date, medium} {last_change, time, medium}</target>
+      </trans-unit>
+      <trans-unit id="column.editor.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">Неизвестно</target>
+      </trans-unit>
+      <trans-unit id="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Действия</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Путь</target>
+      </trans-unit>
+      <trans-unit id="column.wsTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction" approved="yes">
+        <source>Action</source>
+        <target state="final">Действие</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">удалено</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.hidden" approved="yes">
+        <source>hidden</source>
+        <target state="final">скрыто</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.modified" approved="yes">
+        <source>modified</source>
+        <target state="final">изменено</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.moved" approved="yes">
+        <source>moved</source>
+        <target state="final">перемещено</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.new" approved="yes">
+        <source>created</source>
+        <target state="final">создано</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.unchanged" approved="yes">
+        <source>unchanged</source>
+        <target state="final">без изменений</target>
+      </trans-unit>
+      <trans-unit id="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">РО ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Оперативная ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Рабочая область</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Оперативная путь</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Целостность</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Просмотр элемента</target>
+      </trans-unit>
+      <trans-unit id="tooltip.qrCode" approved="yes">
+        <source>Preview QR code</source>
+        <target state="final">Предварительный просмотр QR-кода</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Править элемент</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Открыть версию страницы</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Отправить запись на предыдущий этап</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Отправить запись на следующий этап</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardVersion" approved="yes">
+        <source>Discard version of record</source>
+        <target state="final">Отказ от версии записи</target>
+      </trans-unit>
+      <trans-unit id="tooltip.expand" approved="yes">
+        <source>Expand element and show relations</source>
+        <target state="final">Развернуть элементы и показать связи</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Показать историю версий рабочей области</target>
+      </trans-unit>
+      <trans-unit id="window.discard.title" approved="yes">
+        <source>Discard version of record</source>
+        <target state="final">Отказ от версии записи</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Отменить все рабочие версии текущей страницы.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Подтверждаете отмену этой версии из рабочей области?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Подтверждаете отмену всех версий на странице?</target>
+      </trans-unit>
+      <trans-unit id="window.publishAll.title" approved="yes">
+        <source>Publish all workspace versions of current page.</source>
+        <target state="final">Опубликовать все версии рабочей области текущей страницы.</target>
+      </trans-unit>
+      <trans-unit id="window.publishAll.message" approved="yes">
+        <source>Do you really want to publish all versions from this page directly?</source>
+        <target state="final">Подтверждаете публикацию всех версий этой страницы?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Подготовка к групповому действию</target>
+      </trans-unit>
+      <trans-unit id="window.version.published" approved="yes">
+        <source>Published version</source>
+        <target state="final">Опубликованная версия</target>
+      </trans-unit>
+      <trans-unit id="window.version.staged" approved="yes">
+        <source>Staged version</source>
+        <target state="final">Этапированная версия</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Подготовка к выполнению действий над выбранным</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" approved="yes">
+        <source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</source>
+        <target state="final">Желаемый для использования этап имеет ошибки, и не может использоваться. Используйте мастер обновления в install tool для исправления.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Невозможно найти запись элемента.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Запись элемента уже на стадии редактирования, а ранних этапов не существует.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">Выбранный(е) элемент(ы) будут направлены на</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Выбрать все</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Снять выделение</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Отправить письмо</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Дополнительные получатели</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">Один получатель в строке</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Комментарии</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">Записывать изменения</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">Информация о "{0}"</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">Отчёт об изменениях</target>
+      </trans-unit>
+      <trans-unit id="comment.tstamp.value" approved="yes">
+        <source>{tstamp, date, medium} {tstamp, time, medium}</source>
+        <target state="final">{tstamp, date, medium} {tstamp, time, medium}</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Комментарии</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">История</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">История записи "{0}"</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Этап не найден</target>
+      </trans-unit>
+      <trans-unit id="info.newpage" approved="yes">
+        <source>New Page</source>
+        <target state="final">Новая страница</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Просматриваемая страница была создана в рабочей области и не имеет аналога на живом сайте.</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">В живую</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Щелкните по элементу для скрытия рабочей версии и просмотра живой версии страницы.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Рабочая область</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Щелкните по элементу для скрытия живой версии и просмотра рабочей версии страницы.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Слайдер</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Вертикальный</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Горизонтальный</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Публикация</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish_directly" approved="yes">
+        <source>Publish directly</source>
+        <target state="final">Опубликовать напрямую</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Удаление</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">Сформировать ссылки предпросмотра области</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">Элемент находится на рабочем этапе "%s", изменения вернут его на этап "%s".</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">Оперативная область</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">Версия области</target>
+      </trans-unit>
+      <trans-unit id="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;Шаг текущего этапа&lt;/b&gt;: {0} (&lt;b&gt;{1}&lt;/b&gt;/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;Путь&lt;/b&gt;: {0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">Этап {0}</target>
+      </trans-unit>
+      <trans-unit id="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[Пользовательский комментарий для &lt;b&gt;шага {0} на этапе&lt;/b&gt; "{1}"]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">все языки</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">все языки</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[Запись "%s" зависит от записи на языке по умолчанию]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA[Запись на языке по умолчанию для записи "%s"]]></target>
+      </trans-unit>
+      <trans-unit id="window.integrity_warning.title" approved="yes">
+        <source>Integrity Warning</source>
+        <target state="final">Предупреждение о целостности</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesDescription" approved="yes">
+        <source>The integrity check discovered several issues, see status icons in front of each record for further details.</source>
+        <target state="final">Проверка целостности выявила несколько ошибок, для детальной информации смотрите значки статуса напротив каждой записи.</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Настаиваете на продолжении?</target>
+      </trans-unit>
+      <trans-unit id="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Информация</target>
+      </trans-unit>
+      <trans-unit id="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Предупреждение</target>
+      </trans-unit>
+      <trans-unit id="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Ошибки</target>
+      </trans-unit>
+      <trans-unit id="iframe.livePreview" approved="yes">
+        <source>Preview of the live record</source>
+        <target state="final">Preview of the live record</target>
+      </trans-unit>
+      <trans-unit id="iframe.workspacePreview" approved="yes">
+        <source>Preview of the record in workspace %s</source>
+        <target state="final">Просмотр записи в рабочей области %s</target>
+      </trans-unit>
+      <trans-unit id="workingTable.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Глубина</target>
+      </trans-unit>
+      <trans-unit id="workingTable.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Языки</target>
+      </trans-unit>
+      <trans-unit id="workingTable.stages" approved="yes">
+        <source>Stages</source>
+        <target state="final">Этапы</target>
+      </trans-unit>
+      <trans-unit id="status.has_changes" approved="yes">
+        <source>Record was changed in this workspace</source>
+        <target state="final">Запись была изменена в этой рабочей области</target>
+      </trans-unit>
+      <trans-unit id="status.contains_changes" approved="yes">
+        <source>Record contains version records</source>
+        <target state="final">Запись содержит записи версий</target>
+      </trans-unit>
+      <trans-unit id="status.is_new" approved="yes">
+        <source>Record was created in this workspace</source>
+        <target state="final">Запись была создана в этой рабочей области</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Selected workspace</source>
+        <target state="final">Выбранная рабочая область</target>
+      </trans-unit>
+      <trans-unit id="action.switchToWorkspace" approved="yes">
+        <source>Switch to workspace</source>
+        <target state="final">Переключиться на рабочую область</target>
+      </trans-unit>
+      <trans-unit id="action.selectWorkspace" approved="yes">
+        <source>Select workspace</source>
+        <target state="final">Выбрать рабочую область</target>
+      </trans-unit>
+      <trans-unit id="workspaceInfo.live.title" approved="yes">
+        <source>LIVE</source>
+        <target state="final">ОПЕРАТИВНОЕ</target>
+      </trans-unit>
+      <trans-unit id="workspaceInfo.live.description" approved="yes">
+        <source>Changes made in this workspace are published immediately and are directly visible on the live website.</source>
+        <target state="final">Изменения, внесенные в это рабочее пространство, немедленно публикуются и видны непосредственно на работающем веб-сайте.</target>
+      </trans-unit>
+      <trans-unit id="userSetting.showWorkspaceLiveIndicator" approved="yes">
+        <source>Enable workspace Live indicator</source>
+        <target state="final">Включить индикатор работы рабочей области в режиме реального времени</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
