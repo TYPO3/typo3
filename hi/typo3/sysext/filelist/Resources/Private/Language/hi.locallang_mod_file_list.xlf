@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">क्लिपबोर्ड दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">क्लिपबोर्ड सामग्री में पेस्ट करें</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">पेस्ट इन टू: इस फोल्डर में कल्पबोर्ड कंटेंट डाला गया</target>
+      </trans-unit>
+      <trans-unit id="editMarked" approved="yes">
+        <source>Edit Metadata</source>
+        <target state="final">मेटाडेटा संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="editColumns" approved="yes">
+        <source>Edit specific Metadata</source>
+        <target state="final">विशिष्ट मेटाडेटा संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="deleteMarked" approved="yes">
+        <source>Delete marked items</source>
+        <target state="final">मार्क की गई आइटम हटाएं</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">क्लिपबोर्ड में स्थानांतरित करें</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">क्लिपबोर्ड से हटाएं</target>
+      </trans-unit>
+      <trans-unit id="deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked items from this folder?</source>
+        <target state="final">क्या आप वाकई इस फ़ोल्डर में सभी मार्क की गई आइटम को हटाना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">साइज</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">लेखन-पठन</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">फाइल्स</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">टेम्पररी फाइल्स</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">रीसाइक्लर</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">अनुमति नहीं</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">आप स्टोरेज में फोल्डर का उपयोग करने की कोशिश कर रहे हैं जो ब्राउज़ करने योग्य नहीं।</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">फोल्डर परमिशन मिसिंग</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">आप के पास फ़ोल्डर "%s" के लिए एक्सेस नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" approved="yes">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target state="final">स्थानीय संग्रहण के लिए आधार फ़ोल्डर अनुपलब्ध है या इसकी अनुमति नहीं है</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" approved="yes">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target state="final">सत्यापित करें कि संग्रहण "%s" के लिए आधार फ़ोल्डर मौजूद है और उस तक पहुंच की अनुमति है।</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">फ़िल्टर नहीं मिला.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">फ़ोल्डर "%s" एक्सेस नहीं किया जा सकता। पेरेन्ट फ़ोल्डर का उपयोग करने की कोशिश कर रहे है।</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">ट्रांसलेट मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">%s के लिए फाइल के मेटाडेटा बना रहे है</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">%s के लिए इस फाइल के मेटाडेटा को एडिट करे</target>
+      </trans-unit>
+      <trans-unit id="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">पैरामीटर त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">टारगेट डिरेक्ट्री नहीं था!</target>
+      </trans-unit>
+      <trans-unit id="reloadMetadata" approved="yes">
+        <source>Reload Metadata</source>
+        <target state="final">मेटाडेटा पुनः लोड करें</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Media %1$d - %2$d</source>
+        <target state="final">मीडिया %1$d - %2$d</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
