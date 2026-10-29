@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_db.xlf" date="2023-01-11T20:22:32Z" product-name="webhooks" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="webhooks" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">Webhooks</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook" approved="yes">
+        <source>System webhooks</source>
+        <target state="final">System webhooks</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name.description" approved="yes">
+        <source>Meaningful name of the webhook</source>
+        <target state="final">Betydeligt navn på webhook</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url.description" approved="yes">
+        <source>Target URL that should be called.</source>
+        <target state="final">Mål URL, der skal kaldes.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.method" approved="yes">
+        <source>HTTP Method</source>
+        <target state="final">HTTP Metode</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl" approved="yes">
+        <source>Verify SSL</source>
+        <target state="final">Bekræft SSL</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl.description" approved="yes">
+        <source>Verify that the connection is secure and valid, this setting should only be disabled in case a verification is not possible.</source>
+        <target state="final">Kontroller, at forbindelsen er sikker og gyldig. Denne indstilling bør kun deaktiveres, hvis en bekræftelse ikke er mulig.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers" approved="yes">
+        <source>Additional Headers</source>
+        <target state="final">Yderligere headers</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers.description" approved="yes">
+        <source>Additional headers that should be added to the HTTP request. Data must be provided as valid JSON string.</source>
+        <target state="final">Yderligere headers, der skal tilføjes til HTTP-anmodningen. Data skal leveres som gyldig JSON-streng.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikator</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier.description" approved="yes">
+        <source>This is your unique webhook identifier</source>
+        <target state="final">Dette er din unikke webhook-identifikator</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">Webhook udløser</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">Secret</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.description" approved="yes">
+        <source>The secret is mandatory to create a hash that is sent with the request. The secret can be used to verify the payload has not been modified, see the documentation for more details.</source>
+        <target state="final">Secret er obligatorisk for at oprette en hash, der sendes med anmodningen. Secret kan bruges til at verificere at data ikke er blevet ændret. Se dokumentationen for flere detaljer.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.passwordGenerator" approved="yes">
+        <source>Generate secret</source>
+        <target state="final">Generér secret token</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.description" approved="yes">
+        <source>Trigger the webhook, ...</source>
+        <target state="final">Trigger webhook, ...</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.select" approved="yes">
+        <source>Select a trigger</source>
+        <target state="final">Vælg en trigger</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification" approved="yes">
+        <source>... when a page is added or changed</source>
+        <target state="final">... når en side er tilføjet eller ændret</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-login-error" approved="yes">
+        <source>... when an error occurs on log in</source>
+        <target state="final">... når der opstår en fejl ved log ind</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-mfa-error" approved="yes">
+        <source>... when an error occurs on multi-factor authentication</source>
+        <target state="final">... når en fejl opstår ved multi-faktor godkendelse</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-added" approved="yes">
+        <source>... when a file is added</source>
+        <target state="final">... når en fil er tilføjet</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-removed" approved="yes">
+        <source>... when a file is removed</source>
+        <target state="final">... når en fil fjernes</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-updated" approved="yes">
+        <source>... when a file is updated</source>
+        <target state="final">... når en fil opdateres</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">Lager PID</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">Vælg den side, hvor et nyt element er oprettet.</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the webhook.</source>
+        <target state="final">Generel konfiguration af webhook.</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings" approved="yes">
+        <source>HTTP Settings</source>
+        <target state="final">HTTP indstillinger</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings.description" approved="yes">
+        <source>Advanced HTTP request settings.</source>
+        <target state="final">Avanceret HTTP anmodning indstillinger.</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">Yderligere konfiguration</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected webhook type</source>
+        <target state="final">Specifik konfiguration for den valgte webhook-type</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
