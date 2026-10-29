@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lo">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Status</source>
+        <target>ສະຖານະ</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Overview of site and page status information</source>
+        <target>ພາບລວມຂໍ້ມູນສະຖານະຂອງເວັບໄຊ ແລະ ໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Review site and page information to assess the state and structure of your installation. Additional sections may be available depending on installed extensions and user permissions.</source>
+        <target>ກວດກາຂໍ້ມູນເວັບໄຊ ແລະ ໜ້າເວັບ ເພື່ອປະເມີນສະຖານະ ແລະ ໂຄງສ້າງຂອງການຕິດຕັ້ງຂອງທ່ານ. ສ່ວນເພີ່ມເຕີມອາດຈະມີໃຫ້ໃຊ້ ໂດຍຂຶ້ນກັບສ່ວນຂະຫຍາຍທີ່ຕິດຕັ້ງ ແລະ ສິດທິຂອງຜູ້ໃຊ້.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
