@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid/Resources/Private/Language/locallang.xlf" date="2012-03-30T23:43:57Z" product-name="fluid" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagination.previous">
+        <source>previous</source>
+        <target>crwdns132294:0crwdne132294:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next">
+        <source>next</source>
+        <target>crwdns132296:0crwdne132296:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.first">
+        <source>first</source>
+        <target>crwdns132298:0crwdne132298:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.last">
+        <source>last</source>
+        <target>crwdns132300:0crwdne132300:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.records">
+        <source>Records</source>
+        <target>crwdns132302:0crwdne132302:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.page">
+        <source>Page</source>
+        <target>crwdns132304:0crwdne132304:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns132306:0crwdne132306:0</target>
+      </trans-unit>
+      <trans-unit id="viewhelper.format.bytes.units">
+        <source>B,KB,MB,GB,TB,PB,EB,ZB,YB</source>
+        <target>crwdns114836:0crwdne114836:0</target>
+      </trans-unit>
+      <trans-unit id="fluidNamespaces">
+        <source>Fluid: Global ViewHelper Namespaces</source>
+        <target>crwdns391244:0crwdne391244:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
