@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task" approved="yes">
+        <source>Scheduler task</source>
+        <target state="final">Taak in taakplanner</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.tasktype" approved="yes">
+        <source>Task type</source>
+        <target state="final">Type taak</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.task_group" approved="yes">
+        <source>Belongs to task group</source>
+        <target state="final">Behoort tot taakgroep</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Prioriteit</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.high" approved="yes">
+        <source>High</source>
+        <target state="final">Hoog</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.regular" approved="yes">
+        <source>Regular</source>
+        <target state="final">Normaal</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.low" approved="yes">
+        <source>Low</source>
+        <target state="final">Laag</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschrijving</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.parameters" approved="yes">
+        <source>Settings</source>
+        <target state="final">Instellingen</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.execution_details" approved="yes">
+        <source>Schedule</source>
+        <target state="final">Planning</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.nextexecution" approved="yes">
+        <source>Next run planned at</source>
+        <target state="final">Volgende uitvoering gepland op</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_time" approved="yes">
+        <source>Last run started at</source>
+        <target state="final">Laatste uitvoering gestart om</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_failure" approved="yes">
+        <source>Error details from last run</source>
+        <target state="final">Foutgegevens van laatste uitvoering</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_context" approved="yes">
+        <source>Last run via</source>
+        <target state="final">Laatst uitgevoerd via</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.number_of_days" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">Items die ouder zijn dan het aangegeven aantal dagen behandelen</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.selected_tables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">Databasetabellen</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.file_storage" approved="yes">
+        <source>File storage</source>
+        <target state="final">Bestandsopslag</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group" approved="yes">
+        <source>Scheduler task group</source>
+        <target state="final">Taakplannergroep</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName" approved="yes">
+        <source>Group name</source>
+        <target state="final">Groepnaam</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color" approved="yes">
+        <source>Color</source>
+        <target state="final">Kleur</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.typo3Orange" approved="yes">
+        <source>TYPO3 Orange</source>
+        <target state="final">TYPO3 Oranje</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.white" approved="yes">
+        <source>White</source>
+        <target state="final">Wit</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.gray" approved="yes">
+        <source>Gray</source>
+        <target state="final">Grijs</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.black" approved="yes">
+        <source>Black</source>
+        <target state="final">Zwart</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.blue" approved="yes">
+        <source>Blue</source>
+        <target state="final">Blauw</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.purple" approved="yes">
+        <source>Purple</source>
+        <target state="final">Paars</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.teal" approved="yes">
+        <source>Teal</source>
+        <target state="final">Blauwgroen</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.green" approved="yes">
+        <source>Green</source>
+        <target state="final">Groen</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.magenta" approved="yes">
+        <source>Magenta</source>
+        <target state="final">Magenta</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.yellow" approved="yes">
+        <source>Yellow</source>
+        <target state="final">Geel</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.red" approved="yes">
+        <source>Red</source>
+        <target state="final">Rood</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beschrijving</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
