@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>QR Codes</source>
+        <target state="final">رُمُوز الاستجابة السريعة QR</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>QR Codes Administration</source>
+        <target state="final">إدارة رُمُوز الاستجابة السريعة QR</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Generate and customize QR codes to provide quick, scannable access to your digital content.</source>
+        <target state="final">إنشاء وتخصيص رُمُوز الاستجابة السريعة QR لتوفير الوصول السريع القابل للمسح إلى المحتوى الرقمي الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>QR Code Management</source>
+        <target state="final">إدارة رُمُوز الاستجابة السريعة QR</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add QR Code</source>
+        <target state="final">إضافة رمز QR</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
