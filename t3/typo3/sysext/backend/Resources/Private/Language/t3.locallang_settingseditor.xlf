@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_settingseditor.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="settingseditor.mode.minimal">
+        <source>Minimal</source>
+        <target>crwdns371112:0crwdne371112:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.basic">
+        <source>Basic</source>
+        <target>crwdns371062:0crwdne371062:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.advanced">
+        <source>Advanced</source>
+        <target>crwdns371064:0crwdne371064:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.resetSetting">
+        <source>Reset setting</source>
+        <target>crwdns371080:0crwdne371080:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copySettingsIdentifier">
+        <source>Copy identifier</source>
+        <target>crwdns371082:0crwdne371082:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copyAsYaml">
+        <source>Copy as YAML</source>
+        <target>crwdns371084:0crwdne371084:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermVisuallyHiddenLabel">
+        <source>Search settings</source>
+        <target>crwdns371086:0crwdne371086:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermPlaceholder">
+        <source>Search settings</source>
+        <target>crwdns371088:0crwdne371088:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsTitle">
+        <source>No settings were found.</source>
+        <target>crwdns371090:0crwdne371090:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsMessage">
+        <source>The search filters by setting value, label, description or identifier.</source>
+        <target>crwdns371092:0crwdne371092:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsResetButtonLabel">
+        <source>Reset filter</source>
+        <target>crwdns371094:0crwdne371094:0</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.type.page.button">
+        <source>Select page</source>
+        <target>crwdns372820:0crwdne372820:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
