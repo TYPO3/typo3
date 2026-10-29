@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="reactions" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Reactions</source>
+        <target state="final">Reaktioner</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage incoming HTTP webhooks to external system</source>
+        <target state="final">Håndtér indgående HTTP webhooks til eksternt system</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Configure secure endpoints that allow external services to trigger actions in TYPO3. Respond to webhooks from GitHub, payment providers, form services, and other platforms to automate workflows.</source>
+        <target state="final">Konfigurér sikre endepunkter, der tillader eksterne tjenester at udløse handlinger i TYPO3. Svar til webhooks fra GitHub, betalingsudbydere, formulartjenester og andre platforme til automatisering af arbejdsprocesser.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Reactions — Manage Incoming HTTP Webhooks</source>
+        <target state="final">Reaktioner — Administrér Indgående HTTP Webhooks</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.title" approved="yes">
+        <source>No reactions found!</source>
+        <target state="final">Ingen reaktioner fundet!</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.message" approved="yes">
+        <source>There are currently no reaction records found in the database.</source>
+        <target state="final">Der findes i øjeblikket ingen reaktionselementer i databasen.</target>
+      </trans-unit>
+      <trans-unit id="reaction_create" approved="yes">
+        <source>Create new reaction</source>
+        <target state="final">Opret ny reaktion</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.title" approved="yes">
+        <source>Create your first reaction</source>
+        <target state="final">Opret din første reaktion</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.message" approved="yes">
+        <source>Choose what TYPO3 should do when an external system calls it. Each reaction gets its own endpoint and secret.</source>
+        <target state="final">Vælg hvad TYPO3 skal gøre, når et eksternt system kalder det. Hver reaktion får sit eget slutpunkt og sin secret.</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create" approved="yes">
+        <source>Create reaction</source>
+        <target state="final">Opret reaktion</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create.title" approved="yes">
+        <source>Create a reaction of type "%s"</source>
+        <target state="final">Opret en reaktion af typen "%s"</target>
+      </trans-unit>
+      <trans-unit id="column.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Mål</target>
+      </trans-unit>
+      <trans-unit id="target.page_missing" approved="yes">
+        <source>Page %s does not exist</source>
+        <target state="final">Side %s findes ikke</target>
+      </trans-unit>
+      <trans-unit id="user.missing" approved="yes">
+        <source>No user</source>
+        <target state="final">Ingen bruger</target>
+      </trans-unit>
+      <trans-unit id="user.not_found" approved="yes">
+        <source>User %s does not exist</source>
+        <target state="final">Bruger %s findes ikke</target>
+      </trans-unit>
+      <trans-unit id="user.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="last_call.never" approved="yes">
+        <source>never</source>
+        <target state="final">aldrig</target>
+      </trans-unit>
+      <trans-unit id="last_call.status" approved="yes">
+        <source>HTTP %s</source>
+        <target state="final">HTTP %s</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.title" approved="yes">
+        <source>No reactions found</source>
+        <target state="final">Ingen reaktioner fundet</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no reactions could be found.</source>
+        <target state="final">Med de aktuelle filtre aktiveret, kunne der ikke findes nogen omdirigering.</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Fjern alle filtre</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_implementation_class" approved="yes">
+        <source>Implementation class for reaction type "%s" is missing.</source>
+        <target state="final">Implementeringsklasse for reaktionstype "%s" mangler.</target>
+      </trans-unit>
+      <trans-unit id="reaction_example" approved="yes">
+        <source>Example</source>
+        <target state="final">Eksempel</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out" approved="yes">
+        <source>Try Out</source>
+        <target state="final">Prøv det</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out_title" approved="yes">
+        <source>Try Out: %s</source>
+        <target state="final">Prøv det: %s</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_hint" approved="yes">
+        <source>Send this request from an external system. Replace the placeholder with the secret of the reaction and customize the field values.</source>
+        <target state="final">Send denne anmodning fra et eksternt system. Erstat pladsholderen med hemmelighed(secret) bag reaktion og tilpas feltværdierne.</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_copy" approved="yes">
+        <source>Copy example</source>
+        <target state="final">Kopiér eksempel</target>
+      </trans-unit>
+      <trans-unit id="dry_run" approved="yes">
+        <source>Dry run</source>
+        <target state="final">Tør kørsel</target>
+      </trans-unit>
+      <trans-unit id="dry_run_hint" approved="yes">
+        <source>Resolves a payload against the field map as the user this reaction impersonates. No record is written and the secret is not checked. The target table may still reject a value when the record is actually written.</source>
+        <target state="final">Fastsætter data mod feltmapning som brugeren af denne reaktion udgiver sig for at være. Intet element er skrevet og hemmeligheden(secret) er ikke markeret. Måltabellen kan stadig afvise en værdi, når elementet er skrevet.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_error" approved="yes">
+        <source>The dry run could not be resolved.</source>
+        <target state="final">Tør kørsel kunne ikke fastsættes.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_payload" approved="yes">
+        <source>Payload</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="dry_run_submit" approved="yes">
+        <source>Execute dry run</source>
+        <target state="final">Udfør tør kørsel</target>
+      </trans-unit>
+      <trans-unit id="dry_run_invalid_json" approved="yes">
+        <source>The payload is not a JSON object. The endpoint treats such a request as an empty payload.</source>
+        <target state="final">Data er ikke et JSON-objekt. Slutpunktet behandler en sådan anmodning som tom data.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_no_record" approved="yes">
+        <source>No record would be created</source>
+        <target state="final">Intet element ville blive oprettet</target>
+      </trans-unit>
+      <trans-unit id="dry_run_record" approved="yes">
+        <source>A record would be created in table "%1$s" on page %2$s, as user "%3$s".</source>
+        <target state="final">Et element vil blive oprettet i tabellen "%1$s" på side %2$s, som bruger "%3$s".</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.disabled" approved="yes">
+        <source>The reaction is disabled, so the endpoint rejects every request.</source>
+        <target state="final">Reaktionen er deaktiveret, så slutpunktet afviser enhver anmodning.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.scheduled" approved="yes">
+        <source>The reaction is not active yet, so the endpoint rejects every request until its start date.</source>
+        <target state="final">Reaktionen er ikke aktiv endnu, så slutpunktet afviser henver forespørgsel indtil dens startdato.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.expired" approved="yes">
+        <source>The reaction has expired, so the endpoint rejects every request.</source>
+        <target state="final">Reaktionen er udløbet, så slutpunktet afviser enhver anmodning.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.noUser" approved="yes">
+        <source>The reaction impersonates no backend user, or one that is disabled or deleted, so there is nobody to write the record as.</source>
+        <target state="final">Reaktionen udgiver sig ikke for at være en backendbruger, eller en, der er deaktiveret eller slettet, så der er ingen til at skrive elementet som.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.tableNotPermitted" approved="yes">
+        <source>The impersonated user may not modify records of the target table.</source>
+        <target state="final">Den der udgiver sig for at være bruger må ikke ændre registreringer af måltabellen.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageMissing" approved="yes">
+        <source>The storage page does not exist.</source>
+        <target state="final">Lagersiden findes ikke.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageNotPermitted" approved="yes">
+        <source>The impersonated user may not create records on the storage page.</source>
+        <target state="final">Den der udgiver sig for at være bruger må ikke oprette optegnelser på lagringssiden.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_fields" approved="yes">
+        <source>Fields resolved from the payload</source>
+        <target state="final">Felter opløses af data</target>
+      </trans-unit>
+      <trans-unit id="dry_run_skipped" approved="yes">
+        <source>Fields that would be skipped</source>
+        <target state="final">Felter, der ville blive sprunget over</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notMappable" approved="yes">
+        <source>The target table offers no such field.</source>
+        <target state="final">Måltabellen tilbyder ikke sådan et felt.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notPermitted" approved="yes">
+        <source>The impersonated user may not write this field.</source>
+        <target state="final">Den der udgiver sig for at være bruger kan ikke skrive dette felt.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.placeholderUnresolved" approved="yes">
+        <source>The payload carries no value under the path of the placeholder.</source>
+        <target state="final">Data medfører ingen værdi under stien for pladsholderen.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.resolvedToNothing" approved="yes">
+        <source>The payload carries nothing under the path of the placeholder.</source>
+        <target state="final">Data bærer intet under stien til pladsholderen.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotHoldable" approved="yes">
+        <source>The checkbox cannot hold this value.</source>
+        <target state="final">Afkrydsningsfeltet kan ikke indeholde denne værdi.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotOffered" approved="yes">
+        <source>The field does not offer this value.</source>
+        <target state="final">Feltet tilbyder ikke denne værdi.</target>
+      </trans-unit>
+      <trans-unit id="reaction_endpoint" approved="yes">
+        <source>Endpoint</source>
+        <target state="final">Slutpunkt</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtrer</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Nulstil</target>
+      </trans-unit>
+      <trans-unit id="filter.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type" approved="yes">
+        <source>Reaction Type</source>
+        <target state="final">Reaktions-type</target>
+      </trans-unit>
+      <trans-unit id="filter.onlyEnabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Aktiveret</target>
+      </trans-unit>
+      <trans-unit id="filter.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Vis alle</target>
+      </trans-unit>
+      <trans-unit id="filter.called.ever" approved="yes">
+        <source>Called at least once</source>
+        <target state="final">Kaldet mindst én gang</target>
+      </trans-unit>
+      <trans-unit id="filter.called.never" approved="yes">
+        <source>Never called</source>
+        <target state="final">Aldrig kaldet</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Vis alle</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">forrige</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">næste</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">første</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">sidste</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Elementer</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete reactions</source>
+        <target state="final">Slet reaktioner</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked reactions? You can restore deleted reactions from the TYPO3 recycler.</source>
+        <target state="final">Slet alle markerede reaktioner? Du kan gendanne slettede reaktioner fra TYPO3's papirkurv.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
