@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="extensionmanager" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>TYPO3 Extension Manager</source>
+        <target>crwdns379058:0crwdne379058:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Manages TYPO3 extensions from a central repository. TYPO3 extensions include plugins, modules, class extensions, configuration code, etc.</source>
+        <target>crwdns379060:0crwdne379060:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Extensions</source>
+        <target>crwdns379062:0crwdne379062:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
