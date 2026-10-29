@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/pagetrees.xlf" date="2026-11-10T13:37:37Z" product-name="pagetrees" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Demo Page Trees</source>
+        <target state="final">Деревья демо страниц</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing and demonstration purposes.</source>
+        <target state="final">Создавайте деревья страниц с демонстрационными записями или элементами материалов TCA для тестирования и демонстрации и управляйте ими.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Управление примерами деревьев страниц</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
