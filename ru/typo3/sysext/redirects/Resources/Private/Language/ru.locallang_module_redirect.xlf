@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Глобальное перенаправление (любой домен)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Управление перенаправлением</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Добавить перенаправление</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" approved="yes">
+        <source>No redirects found</source>
+        <target state="final">Переадресаций не найдено</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Не найдено записей в базе данных о перенаправлении.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Создать перенаправление</target>
+      </trans-unit>
+      <trans-unit id="noAccessPermissions.title" approved="yes">
+        <source>Access denied</source>
+        <target state="final">Доступ запрещен</target>
+      </trans-unit>
+      <trans-unit id="noAccessPermissions.message" approved="yes">
+        <source>You are not allowed to list or modify redirects due to insufficient permissions.</source>
+        <target state="final">Вам не разрешено изменять список перенаправлений из-за недостаточных разрешений.</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found</source>
+        <target state="final">Переадресаций не найдено</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target state="final">С текущем набором фильтров переадресаций не найдено.</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Удалить фильтрацию</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать всё</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Код состояния</target>
+      </trans-unit>
+      <trans-unit id="filter.creationType" approved="yes">
+        <source>Creation type</source>
+        <target state="final">Тип создания</target>
+      </trans-unit>
+      <trans-unit id="filter.creationType.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="filter.createdBy.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать всё</target>
+      </trans-unit>
+      <trans-unit id="filter.protected" approved="yes">
+        <source>Protected</source>
+        <target state="final">Защищено</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.unprotected" approved="yes">
+        <source>unprotected</source>
+        <target state="final">не защищено</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.protected" approved="yes">
+        <source>protected</source>
+        <target state="final">защищено</target>
+      </trans-unit>
+      <trans-unit id="filter.integrityStatus" approved="yes">
+        <source>Integrity status</source>
+        <target state="final">Статус целостности</target>
+      </trans-unit>
+      <trans-unit id="filter.integrityStatus.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="filter.neverHit" approved="yes">
+        <source>Never hit</source>
+        <target state="final">Обращения отсутствуют</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Сброс</target>
+      </trans-unit>
+      <trans-unit id="record_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Отключено</target>
+      </trans-unit>
+      <trans-unit id="source_path.placeholder" approved="yes">
+        <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
+        <target state="final">/my-path/ или #^/my-path/$# (при включении regex)</target>
+      </trans-unit>
+      <trans-unit id="short_url.source_path.placeholder" approved="yes">
+        <source>e.g. /AbCdEfGh</source>
+        <target state="final">например, /AbCdEfGh</target>
+      </trans-unit>
+      <trans-unit id="short_url.copy" approved="yes">
+        <source>Copy Short URL to clipboard</source>
+        <target state="final">Скопировать короткий URL в буфер обмена</target>
+      </trans-unit>
+      <trans-unit id="pageID" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID страницы</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Код состояния</target>
+      </trans-unit>
+      <trans-unit id="hit_reset" approved="yes">
+        <source>Reset hit counter</source>
+        <target state="final">Сброс счетчика событий</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.title" approved="yes">
+        <source>Reset the hit counter of this record?</source>
+        <target state="final">Сбросить счетчик событий этой записи?</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.content" approved="yes">
+        <source>Are you sure you want to reset the hit counter of this record?</source>
+        <target state="final">Подтверждаете сброс счётчика событий этой записи?</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Никогда</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">перейти к</target>
+      </trans-unit>
+      <trans-unit id="view_redirect" approved="yes">
+        <source>View redirect</source>
+        <target state="final">Просмотр перенаправления</target>
+      </trans-unit>
+      <trans-unit id="overview.tableHead.protected" approved="yes">
+        <source>Protected</source>
+        <target state="final">Защищено</target>
+      </trans-unit>
+      <trans-unit id="overview.tableField.protected.no" approved="yes">
+        <source>No</source>
+        <target state="final">Нет</target>
+      </trans-unit>
+      <trans-unit id="overview.tableField.protected.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Да</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete redirects</source>
+        <target state="final">Удалить перенаправления</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked redirects? You can restore deleted redirects from the TYPO3 recycler.</source>
+        <target state="final">Удалить все отмеченные реакции? Вы можете восстановить удаленные реакции из корзины TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
