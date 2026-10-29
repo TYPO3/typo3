@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">История/Отмена</target>
+      </trans-unit>
+      <trans-unit id="headline.titleOf" approved="yes">
+        <source>of</source>
+        <target state="final">из</target>
+      </trans-unit>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Время</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Пользователь</target>
+      </trans-unit>
+      <trans-unit id="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Рабочая область</target>
+      </trans-unit>
+      <trans-unit id="column.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Действие</target>
+      </trans-unit>
+      <trans-unit id="column.recordTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">Различия</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Изменения записи</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Возврат</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Нажмите, чтобы вернуться назад</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">Восстановить все отображенные изменения</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">Восстановить текущую запись</target>
+      </trans-unit>
+      <trans-unit id="rollback.confirm" approved="yes">
+        <source>Are you sure you want to roll back these changes? Records may be deleted, restored or overwritten.</source>
+        <target state="final">Вы уверены, что хотите отменить эти изменения? Записи могут быть удалены, восстановлены или перезаписаны.</target>
+      </trans-unit>
+      <trans-unit id="rollback.confirm.button" approved="yes">
+        <source>Roll back</source>
+        <target state="final">Откатиться назад</target>
+      </trans-unit>
+      <trans-unit id="rollback.operation" approved="yes">
+        <source>Undo this operation</source>
+        <target state="final">Отменить эту операцию</target>
+      </trans-unit>
+      <trans-unit id="rollback.operation.confirm" approved="yes">
+        <source>This restores every record of this operation to the state it had before. Changes made to those records afterwards are overwritten.</source>
+        <target state="final">Это вернет все записи об этой операции в прежнее состояние. Последующие изменения в этих записях будут перезаписаны.</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Восстановить текущее поле</target>
+      </trans-unit>
+      <trans-unit id="userNotFound" approved="yes">
+        <source>Not found (non-existent user)</source>
+        <target state="final">Не найдено (несуществующий пользователь)</target>
+      </trans-unit>
+      <trans-unit id="externalChange" approved="yes">
+        <source>Automated process (missing user information)</source>
+        <target state="final">Автоматический процесс (отсутствует информация пользователя)</target>
+      </trans-unit>
+      <trans-unit id="frontendUser" approved="yes">
+        <source>Frontend user</source>
+        <target state="final">Пользователь сайта</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">через</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" approved="yes">
+        <source>Rollback all changes to this state (preview)</source>
+        <target state="final">Откат всех изменений к этому состоянию (предпросмотр)</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">отметить это изменение</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">Снять отметку изменения</target>
+      </trans-unit>
+      <trans-unit id="elementHistory" approved="yes">
+        <source>You are currently seeing the history for an element</source>
+        <target state="final">Сейчас просматривается история элемента</target>
+      </trans-unit>
+      <trans-unit id="elementHistory_link" approved="yes">
+        <source>Show the full page history</source>
+        <target state="final">Просмотреть всю историю страницы</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">Ограничить историю до текущего элемента</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in green colored text and the red colored text are the old values which were removed.</source>
+        <target state="final">В столбце Различия выводятся изменения при каждом изменении записей. Изменения отображаются в зеленом цвете, а красным цветом – старые удаленные значения.</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">Вернуть расширенный вид</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.1" approved="yes">
+        <source>created</source>
+        <target state="final">создано</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.2" approved="yes">
+        <source>modified</source>
+        <target state="final">изменено</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.3" approved="yes">
+        <source>moved</source>
+        <target state="final">перемещено</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.4" approved="yes">
+        <source>deleted</source>
+        <target state="final">удалено</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.5" approved="yes">
+        <source>undeleted</source>
+        <target state="final">восстановлено</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.6" approved="yes">
+        <source>stage changed</source>
+        <target state="final">этап изменен</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.7" approved="yes">
+        <source>published</source>
+        <target state="final">опубликовано</target>
+      </trans-unit>
+      <trans-unit id="historyRow.movedFromTo" approved="yes">
+        <source>Moved from %s to %s</source>
+        <target state="final">Перемещено из %s в %s</target>
+      </trans-unit>
+      <trans-unit id="historyRow.movedWithinPage" approved="yes">
+        <source>Position changed on the same page</source>
+        <target state="final">Позиция изменена на той же странице</target>
+      </trans-unit>
+      <trans-unit id="historyRow.stageComment" approved="yes">
+        <source>Comment</source>
+        <target state="final">Комментарий</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.insert" approved="yes">
+        <source>The record has been deleted and will be restored again with the rollback.</source>
+        <target state="final">Запись была удалена и будет восстановлена с откатом.</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.delete" approved="yes">
+        <source>The record will be deleted with the rollback.</source>
+        <target state="final">Запись будет удалена с откатом.</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.move" approved="yes">
+        <source>The record will be moved back to %s with the rollback.</source>
+        <target state="final">После отката запись будет перемещена обратно в %s.</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.moveWithinPage" approved="yes">
+        <source>The previous position of the record on this page will be restored.</source>
+        <target state="final">Будет восстановлена предыдущая позиция записи на этой странице.</target>
+      </trans-unit>
+      <trans-unit id="undelete" approved="yes">
+        <source>undelete</source>
+        <target state="final">восстановить</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" approved="yes">
+        <source>Preview for rollback</source>
+        <target state="final">Предпросмотр для отката</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences.description" approved="yes">
+        <source>It is possible to rollback either individual fields or entire elements. Alternatively, all displayed changes can be rolled back.</source>
+        <target state="final">Откат возможен как по отдельным полям, так и по всем элементам. Также возможен возврат всех отображаемых изменений.</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Параметры</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">Вывести записи</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">ALL</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">помеченные</target>
+      </trans-unit>
+      <trans-unit id="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">Показать разницу</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Показать подэлементы</target>
+      </trans-unit>
+      <trans-unit id="groupByOperation" approved="yes">
+        <source>Group by operation</source>
+        <target state="final">Группировать по операциям</target>
+      </trans-unit>
+      <trans-unit id="operationGroup.records" approved="yes">
+        <source>{count, plural, one {This operation changed # record} other {This operation changed # records}}</source>
+        <target state="final">{count, plural, one {Операция изменила # запись} few {Операция изменила # записи} many {Операция изменила # записей} other {Операция изменила # записи}}</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Нет</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Да</target>
+      </trans-unit>
+      <trans-unit id="noDifferences" approved="yes">
+        <source>There are no differences to the current page</source>
+        <target state="final">Нет различий для текущей страницы</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" approved="yes">
+        <source>Editing is blocked for non-admins</source>
+        <target state="final">Редактирование заблокировано для не администраторов</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
