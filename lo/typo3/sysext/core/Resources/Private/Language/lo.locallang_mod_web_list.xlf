@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">ວາງໃສ່ຫຼັງຈາກ: ເນື້ອໃນຈາກຄລິບບອດຈະຖືກແຊກໃສ່ຫຼັງຈາກບັນທຶກນີ້</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">ວາງໃສ່ໃນ: ເນື້ອໃນຈາກຄລິບບອດຈະຖືກແຊກໃສ່ໃນໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">ວາງເນື້ອໃນຈາກຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">ໝາຍທັງໝົດ/ບໍ່ໝາຍເລີຍ</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">ຍ້າຍບັນທຶກທີ່ເລືອກໄປຍັງຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">ໝາຍລາຍການທີ່ຊ້ຳກັນ</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">ແກ້ໄຂລາຍການທີ່ໝາຍໄວ້</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">ລຶບລາຍການທີ່ໝາຍໄວ້</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບບັນທຶກທີ່ໝາຍໄວ້ທັງໝົດອອກຈາກຕາຕະລາງ '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">ແກ້ໄຂບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New record</source>
+        <target state="final">ສ້າງບັນທຶກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="newRecordOfType" approved="yes">
+        <source>New %s</source>
+        <target state="final">%s ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">ສ້າງໜ້າໃໝ່ຖັດຈາກໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">ສ້າງບັນທຶກໃໝ່ຖັດຈາກບັນທຶກນີ້</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">ສ້າງບັນທຶກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">ຍ້າຍຂຶ້ນໃນລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">ຍ້າຍລົງໃນລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">ປ່ຽນຕຳແໜ່ງອົງປະກອບເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">ຍ້າຍໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">ເຊື່ອງບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">ຍົກເລີກການເຊື່ອງບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">ເຊື່ອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">ຍົກເລີກການເຊື່ອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">ຍ້າຍໜ້ານີ້ໄປໄວ້ໃນຕຳແໜ່ງຖັດຈາກໜ້າແມ່ປະຈຸບັນ (ເຂົ້າຂ້າງໃນ)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">ຍ້າຍໜ້ານີ້ໃຫ້ເປັນໜ້າຍ່ອຍຂອງໜ້າທາງເທິງ (ອອກຂ້າງນອກ)</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">ປະຫວັດ/ຍົກເລີກການກະທຳ</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">ສະແດງເວີຊັນ</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">ກຳນົດສິດການເຂົ້າເຖິງສຳລັບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">ມຸມມອງແບບຂະຫຍາຍ</target>
+      </trans-unit>
+      <trans-unit id="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">ລາຍຊື່ຕາຕະລາງທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">ລາຍຊື່ສະເພາະຕາຕະລາງນີ້</target>
+      </trans-unit>
+      <trans-unit id="collapseExpandTable" approved="yes">
+        <source>Collapse and expand records of table "%s"</source>
+        <target state="final">ຫຍໍ້ ແລະ ຂະຫຍາຍ ບັນທຶກຂອງຕາຕະລາງ "%s"</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">ສະແດງຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">ແກ້ໄຂທຸກຟີວທີ່ສະແດງຂອງບັນທຶກໃນລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">ແກ້ໄຂຟີວ '%s' ຂອງບັນທຶກໃນລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບບັນທຶກ '%s'?</target>
+      </trans-unit>
+      <trans-unit id="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">ມຸມມອງການແປພາສາທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">ທຸກພາສາ</target>
+      </trans-unit>
+      <trans-unit id="Localize" approved="yes">
+        <source>Localize to</source>
+        <target state="final">ແປເປັນພາສາທ້ອງຖິ່ນເປັນ</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">ກຳລັງເບິ່ງບັນທຶກຂອງ</target>
+      </trans-unit>
+      <trans-unit id="pageIndicator" approved="yes">
+        <source>Page %1$s of %2$d</source>
+        <target state="final">ໜ້າ %1$s ຈາກ %2$d</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Records %1$d - %2$d</source>
+        <target state="final">ບັນທຶກ %1$d - %2$d</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" approved="yes">
+        <source>Missing TCA definition</source>
+        <target state="final">ຂາດການກຳນົດຄ່າ TCA</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessage" approved="yes">
+        <source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+        <target state="final">ບໍ່ພົບຟີວສຳລັບຕາຕະລາງ "%s". $TCA['%s']['columns'] ບໍ່ມີການກຳນົດຄ່າທີ່ຈຳເປັນ.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOnThisPage" approved="yes">
+        <source>There are no records on this page.</source>
+        <target state="final">ບໍ່ມີບັນທຶກໃດໆໃນໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOfTypeOnThisPage" approved="yes">
+        <source>There are no records of type "%s" on this page.</source>
+        <target state="final">ບໍ່ມີບັນທຶກປະເພດ "%s" ໃນໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">ປິດ</target>
+      </trans-unit>
+      <trans-unit id="button.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ຕົກລົງ</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
