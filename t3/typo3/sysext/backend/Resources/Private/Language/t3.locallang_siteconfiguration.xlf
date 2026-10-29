@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="overview.title">
+        <source>Setup</source>
+        <target>crwdns380922:0crwdne380922:0</target>
+      </trans-unit>
+      <trans-unit id="overview.site">
+        <source>Site</source>
+        <target>crwdns50848:0crwdne50848:0</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier">
+        <source>Site identifier</source>
+        <target>crwdns276387:0crwdne276387:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title">
+        <source>No root pages available</source>
+        <target>crwdns380924:0crwdne380924:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message">
+        <source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+        <target>crwdns380926:0crwdne380926:0</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.link.label">
+        <source>Open the documentation</source>
+        <target>crwdns380928:0crwdne380928:0</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration">
+        <source>Add new site configuration for this site</source>
+        <target>crwdns50858:0crwdne50858:0</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration">
+        <source>Edit site configuration</source>
+        <target>crwdns334694:0crwdne334694:0</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings">
+        <source>Edit site settings</source>
+        <target>crwdns342604:0crwdne342604:0</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable">
+        <source>This site provides no configurable settings</source>
+        <target>crwdns342606:0crwdne342606:0</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration">
+        <source>Delete site configuration</source>
+        <target>crwdns50860:0crwdne50860:0</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl">
+        <source>Base URL</source>
+        <target>crwdns276389:0crwdne276389:0</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.title">
+        <source>Pages without a site configuration</source>
+        <target>crwdns380930:0crwdne380930:0</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.description">
+        <source>The following root pages have no site configuration:</source>
+        <target>crwdns380932:0crwdne380932:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title">
+        <source>Unassigned site configurations</source>
+        <target>crwdns50866:0crwdne50866:0</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description">
+        <source>The following site configurations don't belong to any page anymore and can be removed.</source>
+        <target>crwdns380934:0crwdne380934:0</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.title">
+        <source>Invalid site set configurations</source>
+        <target>crwdns369854:0crwdne369854:0</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.description">
+        <source>The following site sets contain errors and therefore could not be loaded.</source>
+        <target>crwdns369856:0crwdne369856:0</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.set">
+        <source>Set</source>
+        <target>crwdns369858:0crwdne369858:0</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.error">
+        <source>Error</source>
+        <target>crwdns369860:0crwdne369860:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints">
+        <source>Duplicated Entrypoints</source>
+        <target>crwdns85836:0crwdne85836:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing">
+        <source>The following entry points are used more than once:</source>
+        <target>crwdns85834:0crwdne85834:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage">
+        <source>Duplicated root pages</source>
+        <target>crwdns226617:0crwdne226617:0</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target>crwdns226619:0%1scrwdne226619:0</target>
+      </trans-unit>
+      <trans-unit id="overview.btn.details">
+        <source>View details</source>
+        <target>crwdns380936:0crwdne380936:0</target>
+      </trans-unit>
+      <trans-unit id="overview.entry_point">
+        <source>Entry Point</source>
+        <target>crwdns380938:0crwdne380938:0</target>
+      </trans-unit>
+      <trans-unit id="overview.error_handling">
+        <source>Error handling</source>
+        <target>crwdns380940:0crwdne380940:0</target>
+      </trans-unit>
+      <trans-unit id="overview.status.title">
+        <source>Status</source>
+        <target>crwdns381014:0crwdne381014:0</target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.multiple">
+        <source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+        <target><![CDATA[crwdns380944:0%scrwdne380944:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.single">
+        <source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+        <target><![CDATA[crwdns380946:0%scrwdne380946:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple">
+        <source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+        <target><![CDATA[crwdns380948:0%scrwdne380948:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.single">
+        <source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+        <target><![CDATA[crwdns380950:0%scrwdne380950:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.multiple">
+        <source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+        <target><![CDATA[crwdns380952:0%scrwdne380952:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.single">
+        <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+        <target><![CDATA[crwdns380954:0%scrwdne380954:0]]></target>
+      </trans-unit>
+      <trans-unit id="overview.languages">
+        <source>Languages</source>
+        <target>crwdns380956:0crwdne380956:0</target>
+      </trans-unit>
+      <trans-unit id="overview.languages.amount">
+        <source>and %s more</source>
+        <target>crwdns380958:0%scrwdne380958:0</target>
+      </trans-unit>
+      <trans-unit id="overview.root_pages_without_site_configuration.title">
+        <source>Sites</source>
+        <target>crwdns380960:0crwdne380960:0</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets">
+        <source>Dependencies to site sets</source>
+        <target>crwdns380962:0crwdne380962:0</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets.yes">
+        <source>Yes</source>
+        <target>crwdns380964:0crwdne380964:0</target>
+      </trans-unit>
+      <trans-unit id="overview.static_routes">
+        <source>Static routes</source>
+        <target>crwdns380966:0crwdne380966:0</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.title">
+        <source>No configured sites available</source>
+        <target>crwdns380968:0crwdne380968:0</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.message">
+        <source>At least one root page must have a site configuration.</source>
+        <target>crwdns380970:0crwdne380970:0</target>
+      </trans-unit>
+      <trans-unit id="overview.none">
+        <source>None</source>
+        <target>crwdns380972:0crwdne380972:0</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_site_identifier">
+        <source>Setup of "%s"</source>
+        <target>crwdns380974:0%scrwdne380974:0</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_page_title">
+        <source>Setup of site "%s"</source>
+        <target>crwdns380976:0%scrwdne380976:0</target>
+      </trans-unit>
+      <trans-unit id="detail.not_configured">
+        <source>Not configured.</source>
+        <target>crwdns380978:0crwdne380978:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.error_handling">
+        <source>Error handling</source>
+        <target>crwdns380980:0crwdne380980:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.headline">
+        <source>Site configuration</source>
+        <target>crwdns380982:0crwdne380982:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages">
+        <source>Languages</source>
+        <target>crwdns380984:0crwdne380984:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language">
+        <source>Language</source>
+        <target>crwdns380986:0crwdne380986:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url">
+        <source>Full URL prefix</source>
+        <target>crwdns380988:0crwdne380988:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.static_routes">
+        <source>Static routes</source>
+        <target>crwdns380990:0crwdne380990:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.route_enhancers">
+        <source>Route enhancers</source>
+        <target>crwdns384114:0crwdne384114:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.headline">
+        <source>Active settings</source>
+        <target>crwdns380992:0crwdne380992:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.custom_site_settings">
+        <source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+        <target>crwdns380994:0crwdne380994:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.headline">
+        <source>Dependencies</source>
+        <target>crwdns380996:0crwdne380996:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.text">
+        <source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+        <target><![CDATA[crwdns380998:0crwdne380998:0]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.headline">
+        <source>Site settings</source>
+        <target>crwdns381000:0crwdne381000:0</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.message">
+        <source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+        <target><![CDATA[crwdns381002:0crwdne381002:0]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.title">
+        <source>No site settings were found for this site</source>
+        <target>crwdns381004:0crwdne381004:0</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings">
+        <source>Edit site settings</source>
+        <target>crwdns342608:0crwdne342608:0</target>
+      </trans-unit>
+      <trans-unit id="edit.site_configuration">
+        <source>Edit site configuration</source>
+        <target>crwdns381006:0crwdne381006:0</target>
+      </trans-unit>
+      <trans-unit id="edit.typeLabel">
+        <source>Site configuration</source>
+        <target>crwdns393672:0crwdne393672:0</target>
+      </trans-unit>
+      <trans-unit id="edit.createNewSite">
+        <source>Create new site</source>
+        <target>crwdns393674:0crwdne393674:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title">
+        <source>Renamed identifier</source>
+        <target>crwdns50870:0crwdne50870:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target>crwdns50872:0%1scrwdnd50872:0%2scrwdne50872:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title">
+        <source>Identifier not changed</source>
+        <target>crwdns50874:0crwdne50874:0</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target>crwdns92448:0%1scrwdnd92448:0%2scrwdne92448:0</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title">
+        <source>Site configuration not saved</source>
+        <target>crwdns50878:0crwdne50878:0</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target>crwdns50880:0%1scrwdne50880:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title">
+        <source>Duplicate error code removed</source>
+        <target>crwdns50882:0crwdne50882:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target>crwdns50884:0%1scrwdne50884:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title">
+        <source>Duplicate language configuration removed</source>
+        <target>crwdns50886:0crwdne50886:0</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target>crwdns50888:0%1scrwdne50888:0</target>
+      </trans-unit>
+      <trans-unit id="labels.detail">
+        <source>View Site Configuration "%s"</source>
+        <target>crwdns381008:0%scrwdne381008:0</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings">
+        <source>Edit Site Settings</source>
+        <target>crwdns390250:0crwdne390250:0</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration">
+        <source>Edit Site</source>
+        <target>crwdns390252:0crwdne390252:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
