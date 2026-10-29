@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="adminLog">
+        <source>Administration log</source>
+        <target>crwdns51098:0crwdne51098:0</target>
+      </trans-unit>
+      <trans-unit id="allUsers">
+        <source>[All users]</source>
+        <target>crwdns51100:0crwdne51100:0</target>
+      </trans-unit>
+      <trans-unit id="any">
+        <source>[Any]</source>
+        <target>crwdns51102:0crwdne51102:0</target>
+      </trans-unit>
+      <trans-unit id="viaUser">
+        <source>via</source>
+        <target>crwdns51104:0crwdne51104:0</target>
+      </trans-unit>
+      <trans-unit id="live">
+        <source>LIVE</source>
+        <target>crwdns51106:0crwdne51106:0</target>
+      </trans-unit>
+      <trans-unit id="draft">
+        <source>Draft</source>
+        <target>crwdns51108:0crwdne51108:0</target>
+      </trans-unit>
+      <trans-unit id="self">
+        <source>Self</source>
+        <target>crwdns51110:0crwdne51110:0</target>
+      </trans-unit>
+      <trans-unit id="userGroup">
+        <source>Group</source>
+        <target>crwdns51112:0crwdne51112:0</target>
+      </trans-unit>
+      <trans-unit id="set">
+        <source>Filter</source>
+        <target>crwdns141527:0crwdne141527:0</target>
+      </trans-unit>
+      <trans-unit id="reset">
+        <source>Reset</source>
+        <target>crwdns141529:0crwdne141529:0</target>
+      </trans-unit>
+      <trans-unit id="all">
+        <source>[all]</source>
+        <target>crwdns141531:0crwdne141531:0</target>
+      </trans-unit>
+      <trans-unit id="actionAll">
+        <source>All</source>
+        <target>crwdns51144:0crwdne51144:0</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase">
+        <source>Database</source>
+        <target>crwdns51146:0crwdne51146:0</target>
+      </trans-unit>
+      <trans-unit id="actionFile">
+        <source>File</source>
+        <target>crwdns51148:0crwdne51148:0</target>
+      </trans-unit>
+      <trans-unit id="actionCache">
+        <source>Cache</source>
+        <target>crwdns51150:0crwdne51150:0</target>
+      </trans-unit>
+      <trans-unit id="actionSettings">
+        <source>Settings</source>
+        <target>crwdns51152:0crwdne51152:0</target>
+      </trans-unit>
+      <trans-unit id="actionLogin">
+        <source>Login</source>
+        <target>crwdns51154:0crwdne51154:0</target>
+      </trans-unit>
+      <trans-unit id="actionErrors">
+        <source>Errors</source>
+        <target>crwdns51156:0crwdne51156:0</target>
+      </trans-unit>
+      <trans-unit id="group">
+        <source>Group</source>
+        <target>crwdns51158:0crwdne51158:0</target>
+      </trans-unit>
+      <trans-unit id="user">
+        <source>User</source>
+        <target>crwdns51160:0crwdne51160:0</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users</source>
+        <target>crwdns51162:0crwdne51162:0</target>
+      </trans-unit>
+      <trans-unit id="time">
+        <source>Time</source>
+        <target>crwdns51164:0crwdne51164:0</target>
+      </trans-unit>
+      <trans-unit id="max">
+        <source>Max</source>
+        <target>crwdns51166:0crwdne51166:0</target>
+      </trans-unit>
+      <trans-unit id="showHistory">
+        <source>Show History</source>
+        <target>crwdns51170:0crwdne51170:0</target>
+      </trans-unit>
+      <trans-unit id="action">
+        <source>Action</source>
+        <target>crwdns51172:0crwdne51172:0</target>
+      </trans-unit>
+      <trans-unit id="channel">
+        <source>Channel</source>
+        <target>crwdns141533:0crwdne141533:0</target>
+      </trans-unit>
+      <trans-unit id="levels">
+        <source>Levels</source>
+        <target>crwdns141535:0crwdne141535:0</target>
+      </trans-unit>
+      <trans-unit id="workspace">
+        <source>Workspace</source>
+        <target>crwdns51174:0crwdne51174:0</target>
+      </trans-unit>
+      <trans-unit id="overview">
+        <source>Overview</source>
+        <target>crwdns51180:0crwdne51180:0</target>
+      </trans-unit>
+      <trans-unit id="type_1">
+        <source>DB</source>
+        <target>crwdns51192:0crwdne51192:0</target>
+      </trans-unit>
+      <trans-unit id="action_1_1">
+        <source>Insert</source>
+        <target>crwdns51194:0crwdne51194:0</target>
+      </trans-unit>
+      <trans-unit id="action_1_2">
+        <source>Update</source>
+        <target>crwdns51196:0crwdne51196:0</target>
+      </trans-unit>
+      <trans-unit id="action_1_3">
+        <source>Delete</source>
+        <target>crwdns51198:0crwdne51198:0</target>
+      </trans-unit>
+      <trans-unit id="action_1_4">
+        <source>Move</source>
+        <target>crwdns51200:0crwdne51200:0</target>
+      </trans-unit>
+      <trans-unit id="action_1_5">
+        <source>Check</source>
+        <target>crwdns51202:0crwdne51202:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target>crwdns51204:0%scrwdnd51204:0%scrwdne51204:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target>crwdns51206:0%scrwdnd51206:0%scrwdnd51206:0%scrwdne51206:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target>crwdns51208:0%scrwdnd51208:0%scrwdnd51208:0%scrwdne51208:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target>crwdns51210:0%scrwdne51210:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target>crwdns51212:0%scrwdnd51212:0%scrwdne51212:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10">
+        <source>Record '%s' (%s) was updated.</source>
+        <target>crwdns51214:0%scrwdnd51214:0%scrwdne51214:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12">
+        <source>MySQL error: '%s' (%s)</source>
+        <target>crwdns51216:0%scrwdnd51216:0%scrwdne51216:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target>crwdns51218:0%scrwdnd51218:0%scrwdnd51218:0%scrwdne51218:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target>crwdns51220:0%scrwdnd51220:0%scrwdnd51220:0%scrwdnd51220:0%scrwdne51220:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target>crwdns51222:0%scrwdnd51222:0%scrwdnd51222:0%scrwdnd51222:0%scrwdne51222:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target>crwdns51224:0%scrwdnd51224:0%scrwdnd51224:0%scrwdnd51224:0%scrwdne51224:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target>crwdns51226:0%scrwdnd51226:0%scrwdnd51226:0%scrwdnd51226:0%scrwdne51226:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target>crwdns51228:0%scrwdnd51228:0%scrwdnd51228:0%scrwdne51228:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target>crwdns51230:0%scrwdnd51230:0%scrwdnd51230:0%scrwdne51230:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target>crwdns51232:0%scrwdnd51232:0%scrwdne51232:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target>crwdns51234:0%scrwdnd51234:0%scrwdne51234:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target>crwdns51236:0%scrwdne51236:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target>crwdns51238:0%scrwdnd51238:0%scrwdne51238:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3">
+        <source>Too few items in the list of values. (%s)</source>
+        <target>crwdns51240:0%scrwdne51240:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target>crwdns51242:0%scrwdnd51242:0%scrwdne51242:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target>crwdns51244:0%scrwdnd51244:0%scrwdnd51244:0%scrwdne51244:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target>crwdns51246:0%scrwdnd51246:0%scrwdne51246:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target>crwdns51248:0%scrwdnd51248:0%scrwdnd51248:0%scrwdnd51248:0%scrwdne51248:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target>crwdns51250:0%scrwdnd51250:0%scrwdnd51250:0%scrwdne51250:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target>crwdns51252:0%scrwdnd51252:0%scrwdne51252:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target>crwdns51254:0%scrwdnd51254:0%scrwdnd51254:0%scrwdne51254:0</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_4">
+        <source>The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.</source>
+        <target>crwdns51256:0%scrwdnd51256:0%scrwdnd51256:0%scrwdne51256:0</target>
+      </trans-unit>
+      <trans-unit id="type_2">
+        <source>FILE</source>
+        <target>crwdns51258:0crwdne51258:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_1">
+        <source>Upload</source>
+        <target>crwdns51260:0crwdne51260:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_2">
+        <source>Copy</source>
+        <target>crwdns51262:0crwdne51262:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_3">
+        <source>Move</source>
+        <target>crwdns51264:0crwdne51264:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_4">
+        <source>Delete</source>
+        <target>crwdns51266:0crwdne51266:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_5">
+        <source>Rename</source>
+        <target>crwdns51268:0crwdne51268:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_6">
+        <source>New</source>
+        <target>crwdns51270:0crwdne51270:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_7">
+        <source>Unzip</source>
+        <target>crwdns51272:0crwdne51272:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_8">
+        <source>New file</source>
+        <target>crwdns51274:0crwdne51274:0</target>
+      </trans-unit>
+      <trans-unit id="action_2_9">
+        <source>Edit</source>
+        <target>crwdns51276:0crwdne51276:0</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target>crwdns51278:0%scrwdnd51278:0%scrwdnd51278:0%scrwdne51278:0 </target>
+      </trans-unit>
+      <trans-unit id="type_3">
+        <source>CACHE</source>
+        <target>crwdns51280:0crwdne51280:0</target>
+      </trans-unit>
+      <trans-unit id="action_3_1">
+        <source>Clear Cache</source>
+        <target>crwdns51282:0crwdne51282:0</target>
+      </trans-unit>
+      <trans-unit id="type_4">
+        <source>EXTENSION</source>
+        <target>crwdns51284:0crwdne51284:0</target>
+      </trans-unit>
+      <trans-unit id="type_5">
+        <source>ERROR</source>
+        <target>crwdns51286:0crwdne51286:0</target>
+      </trans-unit>
+      <trans-unit id="action_5_0">
+        <source>Error handler</source>
+        <target>crwdns51288:0crwdne51288:0</target>
+      </trans-unit>
+      <trans-unit id="type_254">
+        <source>SETTING</source>
+        <target>crwdns51290:0crwdne51290:0</target>
+      </trans-unit>
+      <trans-unit id="action_254_1">
+        <source>Change</source>
+        <target>crwdns51292:0crwdne51292:0</target>
+      </trans-unit>
+      <trans-unit id="type_255">
+        <source>LOGIN</source>
+        <target>crwdns51294:0crwdne51294:0</target>
+      </trans-unit>
+      <trans-unit id="action_255_1">
+        <source>LOGIN</source>
+        <target>crwdns51296:0crwdne51296:0</target>
+      </trans-unit>
+      <trans-unit id="action_255_2">
+        <source>LOGOUT</source>
+        <target>crwdns51298:0crwdne51298:0</target>
+      </trans-unit>
+      <trans-unit id="action_255_3">
+        <source>ATTEMPT</source>
+        <target>crwdns51300:0crwdne51300:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_title">
+        <source>Admin Changelog</source>
+        <target>crwdns51302:0crwdne51302:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0">
+        <source>All users</source>
+        <target>crwdns51304:0crwdne51304:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1">
+        <source>Self</source>
+        <target>crwdns51306:0crwdne51306:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0">
+        <source>This week</source>
+        <target>crwdns51308:0crwdne51308:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1">
+        <source>Last week</source>
+        <target>crwdns51310:0crwdne51310:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2">
+        <source>Last 7 days</source>
+        <target>crwdns51312:0crwdne51312:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10">
+        <source>This month</source>
+        <target>crwdns51314:0crwdne51314:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11">
+        <source>Last month</source>
+        <target>crwdns51316:0crwdne51316:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12">
+        <source>Last 31 days</source>
+        <target>crwdns51318:0crwdne51318:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20">
+        <source>No limit</source>
+        <target>crwdns51320:0crwdne51320:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time">
+        <source>Time</source>
+        <target>crwdns51322:0crwdne51322:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user">
+        <source>User</source>
+        <target>crwdns51324:0crwdne51324:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action">
+        <source>Action</source>
+        <target>crwdns51328:0crwdne51328:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_channel">
+        <source>Channel</source>
+        <target>crwdns141537:0crwdne141537:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types">
+        <source>Type</source>
+        <target>crwdns51330:0crwdne51330:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_level">
+        <source>Level</source>
+        <target>crwdns141539:0crwdne141539:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table">
+        <source>Table</source>
+        <target>crwdns51332:0crwdne51332:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details">
+        <source>Details</source>
+        <target>crwdns51334:0crwdne51334:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers">
+        <source>Users</source>
+        <target>crwdns51336:0crwdne51336:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuPageId">
+        <source>Page</source>
+        <target>crwdns211220:0crwdne211220:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth">
+        <source>Depth</source>
+        <target>crwdns51338:0crwdne51338:0</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime">
+        <source>Time</source>
+        <target>crwdns51340:0crwdne51340:0</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod">
+        <source><![CDATA[We have found %1$d error(s). Please check your <a href="%2$s">system log</a>.]]></source>
+        <target><![CDATA[crwdns277393:0%1$dcrwdnd277393:0%2$scrwdne277393:0]]></target>
+      </trans-unit>
+      <trans-unit id="actions">
+        <source>Actions</source>
+        <target>crwdns51344:0crwdne51344:0</target>
+      </trans-unit>
+      <trans-unit id="actions.delete">
+        <source>Delete similar errors</source>
+        <target>crwdns51346:0crwdne51346:0</target>
+      </trans-unit>
+      <trans-unit id="actions.deleteWarnings">
+        <source>Delete similar warnings</source>
+        <target>crwdns51348:0crwdne51348:0</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message">
+        <source>Total entries deleted: %1$d</source>
+        <target>crwdns51350:0%1$dcrwdne51350:0</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.noRowFound">
+        <source>Log entry could not be found.</source>
+        <target>crwdns51352:0crwdne51352:0</target>
+      </trans-unit>
+      <trans-unit id="info.noRecords.message">
+        <source>No records found.</source>
+        <target>crwdns335678:0crwdne335678:0</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.title">
+        <source>No page selected</source>
+        <target>crwdns211222:0crwdne211222:0</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.message">
+        <source>Select a page to display logs for.</source>
+        <target>crwdns211224:0crwdne211224:0</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title">
+        <source>No access!</source>
+        <target>crwdns211226:0crwdne211226:0</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message">
+        <source>You don't have access to the selected page.</source>
+        <target>crwdns211228:0crwdne211228:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
