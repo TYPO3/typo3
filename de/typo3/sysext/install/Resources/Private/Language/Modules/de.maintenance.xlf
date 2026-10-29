@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Modules/maintenance.xlf" date="2026-11-10T13:37:37Z" product-name="maintenance" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Maintenance</source>
+        <target state="final">Wartung</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.</source>
+        <target state="final">Bietet einen einfachen Link zum Installations-Tool. Beachte, dass das Installations-Tool (in typo3/install/) aktiviert sein muss.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Maintenance</source>
+        <target state="final">Wartung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
