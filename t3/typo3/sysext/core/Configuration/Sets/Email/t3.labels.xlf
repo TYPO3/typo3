@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Configuration/Sets/Email/labels.xlf" date="2026-10-28T13:37:00Z" product-name="core" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Email Configuration</source>
+        <target>crwdns416343:0crwdne416343:0</target>
+      </trans-unit>
+      <trans-unit id="categories.email">
+        <source>Email Configuration</source>
+        <target>crwdns416345:0crwdne416345:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.format">
+        <source>Email format</source>
+        <target>crwdns416347:0crwdne416347:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.email.format">
+        <source>The format to use for sending emails (html, plain, both). If empty, the global configuration is used.</source>
+        <target>crwdns416349:0crwdne416349:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.templateRootPaths">
+        <source>Email Template Root Paths</source>
+        <target>crwdns416351:0crwdne416351:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.email.templateRootPaths">
+        <source>Array of paths to email templates. These are merged with the global mail template paths. Format: "EXT:my_extension/Resources/Private/Templates/Email".</source>
+        <target>crwdns416353:0crwdne416353:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.layoutRootPaths">
+        <source>Email Layout Root Paths</source>
+        <target>crwdns416355:0crwdne416355:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.email.layoutRootPaths">
+        <source>Array of paths to email layouts. These are merged with the global mail layout paths. Format: "EXT:my_extension/Resources/Private/Layout/".</source>
+        <target>crwdns416357:0crwdne416357:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.partialRootPaths">
+        <source>Email Partial Root Paths</source>
+        <target>crwdns416359:0crwdne416359:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.email.partialRootPaths">
+        <source>Array of paths to email partials. These are merged with the global mail partial paths. Format: "EXT:my_extension/Resources/Private/Partials/Email".</source>
+        <target>crwdns416361:0crwdne416361:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.">
+        <source>None - inherit format</source>
+        <target>crwdns416363:0crwdne416363:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.html">
+        <source>HTML</source>
+        <target>crwdns416365:0crwdne416365:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.plain">
+        <source>Plain-text</source>
+        <target>crwdns416367:0crwdne416367:0</target>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.both">
+        <source>Both (HTML and plain-text)</source>
+        <target>crwdns416369:0crwdne416369:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
