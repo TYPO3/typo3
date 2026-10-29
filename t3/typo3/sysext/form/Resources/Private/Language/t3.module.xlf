@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Build custom forms</source>
+        <target>crwdns379070:0crwdne379070:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
+        <target>crwdns379072:0crwdne379072:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Forms</source>
+        <target>crwdns379074:0crwdne379074:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
