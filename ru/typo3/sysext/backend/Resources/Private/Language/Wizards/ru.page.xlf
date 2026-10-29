@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/page.xlf" date="2025-03-03T00:00:00Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <!-- Step: doktype selection -->
+      <trans-unit id="step.doktype.headline" approved="yes">
+        <source>Select page type</source>
+        <target state="final">Выберите тип страницы</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.title" approved="yes">
+        <source>Invalid page type</source>
+        <target state="final">Неверный тип страницы</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.message" approved="yes">
+        <source>The selected page type is not allowed here. Please choose a different type.</source>
+        <target state="final">Выбранный тип страницы здесь не поддерживается. Выберите другой тип.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.filter.noResults" approved="yes">
+        <source>No matching page type found.</source>
+        <target state="final">Соответствующий тип страницы не найден.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.load_error" approved="yes">
+        <source>Failed to fetch available page types. This is likely due to missing permissions.</source>
+        <target state="final">Не удалось получить доступные типы страниц. Вероятно, это связано с отсутствием необходимых разрешений.</target>
+      </trans-unit>
+      <trans-unit id="step.setup" approved="yes">
+        <source>Page Setup</source>
+        <target state="final">Настройки страницы</target>
+      </trans-unit>
+      <trans-unit id="step.link" approved="yes">
+        <source>Link Configuration</source>
+        <target state="final">Конфигурация ссылки</target>
+      </trans-unit>
+      <trans-unit id="step.shortcut" approved="yes">
+        <source>Shortcut Configuration</source>
+        <target state="final">Конфигурация ярлыка</target>
+      </trans-unit>
+      <trans-unit id="step.mounting" approved="yes">
+        <source>Mounting Configuration</source>
+        <target state="final">Конфигурация монтирования</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.title" approved="yes">
+        <source>Page created</source>
+        <target state="final">Страница создана</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.description" approved="yes">
+        <source>The page has been successfully created. Click "Finish" to be redirected to the newly created page.</source>
+        <target state="final">Страница успешно создана. Нажмите «Готово» для перехода на новую страницу.</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.button.create_another_page" approved="yes">
+        <source>Create another page</source>
+        <target state="final">Создать другую страницу</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
