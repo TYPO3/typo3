@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">Panoramica Albero delle Pagine</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">Impostazioni di base</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Cache ed Età</target>
+      </trans-unit>
+      <trans-unit id="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">Panoramica record</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts" approved="yes">
+        <source>Layouts</source>
+        <target state="final">Layout</target>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout" approved="yes">
+        <source>Actual backend layout</source>
+        <target state="final">Layout corrente di backend</target>
+      </trans-unit>
+      <trans-unit id="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Panoramica della localizzazione</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">Modifica contenuto pagina</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage" approved="yes">
+        <source>Edit translated page content</source>
+        <target state="final">Modifica il contenuto della pagina tradotta</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Visualizza pagina</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage" approved="yes">
+        <source>View translated page</source>
+        <target state="final">Visualizza pagina tradotta</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Modifica proprietà pagina</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties" approved="yes">
+        <source>Edit translated page properties</source>
+        <target state="final">Modifica le proprietà della pagina tradotta</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">Modifica le proprietà di tutte le pagine</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties" approved="yes">
+        <source>Edit all translated page properties</source>
+        <target state="final">Modifica le proprietà di tutte le pagine tradotte</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre" approved="yes">
+        <source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
+        <target state="final">Esistono più record di pagine tradotte per questa lingua, ma uno solo è consentito. Per favore rimuovi i record aggiuntivi.</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">Crea nuove traduzioni della pagina</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">Numero di Elementi di Contenuto</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Profondità</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipo</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang" approved="yes">
+        <source>Language</source>
+        <target state="final">Lingua</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title" approved="yes">
+        <source>No access</source>
+        <target state="final">Accesso negato</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message" approved="yes">
+        <source>You don't have access to this module.</source>
+        <target state="final">Non hai accesso a questo modulo.</target>
+      </trans-unit>
+      <trans-unit id="info.noContent.message" approved="yes">
+        <source>There are no page information available.</source>
+        <target state="final">Non ci sono informazioni disponibili sulla pagina.</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">Seleziona una pagina dall'Albero delle Pagine.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
