@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation" approved="yes">
+        <source>TYPO3 Online Documentation</source>
+        <target state="final">TYPO3 Онлайн документация</target>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow" approved="yes">
+        <source>opens in a new window</source>
+        <target state="final">отваря се в нов прозорец</target>
+      </trans-unit>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Няма регистрирани модули. Моля свържете се с вашия системен администратор.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Покажи референции</target>
+      </trans-unit>
+      <trans-unit id="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" approved="yes">
+        <source>Footnote</source>
+        <target state="final">Бележка</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled</source>
+        <target state="final">Внимание: Активиран е клавиш за главни бувки</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password" approved="yes">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+        <target state="final">Паролата, която току-що поставихте, има начални и/или крайни интервали.</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link" approved="yes">
+        <source>Remove whitespace</source>
+        <target state="final">Премахване на празен интервал</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript</source>
+        <target state="final">Моля активирайте JavaScript</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" approved="yes">
+        <source>Please activate Cookies</source>
+        <target state="final">Моля активирайте Бисквитките</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
+        <target state="final">TYPO3 разчита на HTTP referrers от съображения за сигурност в бекенда. Изглежда, че браузърът ви не е успял да изпрати тази информация, което може да се дължи на настройки за поверителност или сигурност.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Проверка на данни за вход...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Повече за TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 лого</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Дарение</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Записът с uid %2$s от таблица %1$s не може да бъде получен от базата от данни. Тази несъответствие на данните може да възникне ако базовия запис е бил изтрит, но свързаният запис от таблица %3$s с uid %4$s все още сочи към него. За корекция на тази ситуация, изтрийте свързания запис или възстановете изтрития запис чрез използване на модула Кошче.
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label" approved="yes">
+        <source>Module Menu</source>
+        <target state="final">Модулно меню</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title" approved="yes">
+        <source>No module access</source>
+        <target state="final">Няма достъп до модула</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Кеш на страница</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Успешно почистен кеш на страница</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" approved="yes">
+        <source>Page cache could not be cleared</source>
+        <target state="final">Кешът на страница не може да бъде почистен</target>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing" approved="yes">
+        <source>[title missing]</source>
+        <target state="final">[липсва заглавие]</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Създайте нова папка</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Име на вашата нова папка</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Създай папка</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title" approved="yes">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target state="final">Заместителят на този запис ще бъде изтрит след публикуването на записа от това работно пространство.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title" approved="yes">
+        <source>%s%s on page "%s" [%d]</source>
+        <target state="final">%s%s на страница "%s" [%d]</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel" approved="yes">
+        <source>Database records</source>
+        <target state="final">Записи от базата от данни</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.overview" approved="yes">
+        <source>Module overview</source>
+        <target state="final">Преглед на модула</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Отвори модула</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">Отвори модул %1$s</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.title" approved="yes">
+        <source>No modules available</source>
+        <target state="final">Няма налични модули</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.message" approved="yes">
+        <source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+        <target state="final">Няма налични подмодули или вие нямате достъп до никой от тях. Моля свърцете се с вашия администратор, ако мислите, че е грешка.</target>
+      </trans-unit>
+      <trans-unit id="theme" approved="yes">
+        <source>Theme</source>
+        <target state="final">Тема</target>
+      </trans-unit>
+      <trans-unit id="theme.classic" approved="yes">
+        <source>Classic</source>
+        <target state="final">Класическа</target>
+      </trans-unit>
+      <trans-unit id="theme.modern" approved="yes">
+        <source>Modern</source>
+        <target state="final">Модерна</target>
+      </trans-unit>
+      <trans-unit id="theme.fresh" approved="yes">
+        <source>Fresh</source>
+        <target state="final">Свежа</target>
+      </trans-unit>
+      <trans-unit id="colorScheme" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Схема на цветовете</target>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme" approved="yes">
+        <source>Toggle color scheme between light and dark mode</source>
+        <target state="final">Превключете схемата на цветовета между светъл и тъмен режим</target>
+      </trans-unit>
+      <trans-unit id="colorSchemeToggleDisabled" approved="yes">
+        <source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+        <target state="final">Поради твоите текущи настройки за достъпност, цветовата схема не може да бъде променена.</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto" approved="yes">
+        <source>Auto detect</source>
+        <target state="final">Автоматично откриване</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.light" approved="yes">
+        <source>Light mode</source>
+        <target state="final">Светъл режим</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark" approved="yes">
+        <source>Dark mode</source>
+        <target state="final">Тъмен режим</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_translation" approved="yes">
+        <source>Found translation</source>
+        <target state="final">Намерен е превод</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_translation" approved="yes">
+        <source>Found in translation: %s</source>
+        <target state="final">Намерен в превод: %s</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_multiple_translations" approved="yes">
+        <source>Found in multiple translations</source>
+        <target state="final">Намерен в множество преводи</target>
+      </trans-unit>
+      <trans-unit id="pageTree.searchResult" approved="yes">
+        <source>Search result</source>
+        <target state="final">Резултат от търсене</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation" approved="yes">
+        <source>Navigation</source>
+        <target state="final">Навигация</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.show" approved="yes">
+        <source>Show navigation</source>
+        <target state="final">Покажи навигация</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.hide" approved="yes">
+        <source>Hide navigation</source>
+        <target state="final">Скрий навигация</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
