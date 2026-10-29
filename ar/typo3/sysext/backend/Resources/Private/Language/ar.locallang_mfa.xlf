@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Multi-factor Authentication Overview</source>
+        <target state="final">نظرة عامة على المصادقة مُتعددة العوامل</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">نشط</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">مُقفل</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">المُزوّد الافتراضي</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" approved="yes">
+        <source>Unlock %s</source>
+        <target state="final">غير مُقفل %s</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" approved="yes">
+        <source>Unlock</source>
+        <target state="final">غير مُقفل</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">تعديل %s</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" approved="yes">
+        <source>Edit / Change</source>
+        <target state="final">تعديل / تغيير</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">غير مُفعّلة %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">غير مُفعّلة</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" approved="yes">
+        <source>Setup %s</source>
+        <target state="final">الإعداد %s</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">الإعداد</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" approved="yes">
+        <source>Multi-factor authentication required</source>
+        <target state="final">المُصادقة مُتعددة العوامل مطلوبة</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.message" approved="yes">
+        <source>
+          Your installation requires MFA. Therefore please setup one of the following providers to be able to continue to use the backend.
+        </source>
+        <target state="final">
+يتطلَّبُ نظامُكَ المصادقةَ متعدِّدةَ العواملِ (MFA). لذا يُرجى إعدادُ أحدِ المزوِّدينَ التالينَ لتتمكَّنَ من الاستمرارِ في استخدامِ الواجهةِ الخلفيةِ        </target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" approved="yes">
+        <source>No multi-factor authentication providers</source>
+        <target state="final">المصادقة المتعددة العوامل غير مُجهّزة أو مُتوفرة</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.message" approved="yes">
+        <source>There are currently no multi-factor authentication providers available.</source>
+        <target state="final">لا يوجد حالياً مُزوديّ مصادقة متعددي العوامل.</target>
+      </trans-unit>
+      <trans-unit id="noprovider_error_message" approved="yes">
+        <source>
+          Multi-factor authentification (MFA) setup is required, but no providers are currently available for you to activate. This might be a misconfiguration, so please contact your administrator for assistance.
+        </source>
+        <target state="final">
+إعدادُ المصادقةِ متعدِّدةِ العواملِ (MFA) مطلوبٌ، لكنْ لا يوجدُ حالياً أيُّ مزوِّدٍ متاحٍ لكَ لتفعيلِهِ. قد يكونُ هذا بسببِ خطأٍ في الإعدادِ، لذا يُرجى التواصلُ مع مسؤولِ النظامِ للحصولِ على المساعدةِ        </target>
+      </trans-unit>
+      <trans-unit id="providerNotFound" approved="yes">
+        <source>Selected MFA provider was not found</source>
+        <target state="final">لم يُعثَرْ على مزوِّدِ المصادقةِ متعدِّدةِ العواملِ (MFA) المحدَّدِ</target>
+      </trans-unit>
+      <trans-unit id="providerNotActive" approved="yes">
+        <source>This action requires an active MFA provider.</source>
+        <target state="final">يستلزمُ هذا الإجراءُ مزوِّدَ مصادقةٍ متعدِّدةَ العواملِ (MFA) نشطاً.</target>
+      </trans-unit>
+      <trans-unit id="providerActive" approved="yes">
+        <source>This action requires an inactive MFA provider.</source>
+        <target state="final">يستلزمُ هذا الإجراءُ مزوِّدَ مصادقةٍ متعدِّدةَ العواملِ (MFA) غيرَ نشطٍ.</target>
+      </trans-unit>
+      <trans-unit id="providerIsLocked" approved="yes">
+        <source>This action requires an unlocked MFA provider.</source>
+        <target state="final">يستلزمُ هذا الإجراءُ مزوِّدَ مصادقةٍ متعدِّدةَ العواملِ (MFA) غيرَ مقفَّلٍ.</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions" approved="yes">
+        <source>Setup instructions</source>
+        <target state="final">تعليمات الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions.close" approved="yes">
+        <source>Close setup instructions</source>
+        <target state="final">إغلاق تعليمات الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="setup.title" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">الإعداد %s</target>
+      </trans-unit>
+      <trans-unit id="edit.title" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">تعديل %s</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">المُزوّد الافتراضي</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.description" approved="yes">
+        <source>Select this as your default provider for login into the TYPO3 backend.</source>
+        <target state="final">حدد هذا كمُزوّد افتراضي لتسجيل الدخول إلى الواجهة الخلفية لـ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.inputLabel" approved="yes">
+        <source>Use as default provider</source>
+        <target state="final">استخدام كمُزوّد افتراضي</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider" approved="yes">
+        <source>Deactivate provider</source>
+        <target state="final">إلغاء تنشيط المُزوّد</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.description" approved="yes">
+        <source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+        <target state="final">إذا كنت لا تريد استخدام هذا المُزوّد بعد الآن، يمكنك إلغاء تنشيطه هنا.</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">تعطيل %s</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkText" approved="yes">
+        <source>Deactivate this provider</source>
+        <target state="final">تعطيل المُزوّد</target>
+      </trans-unit>
+      <trans-unit id="activate.failure" approved="yes">
+        <source>Could not activate MFA provider %s. Please try again.</source>
+        <target state="final">تعذر تنشيط مُزوّد MFA %s. الرجاء المحاولة مرة أخرى.</target>
+      </trans-unit>
+      <trans-unit id="activate.success" approved="yes">
+        <source>Successfully activated MFA provider %s.</source>
+        <target state="final">تم تفعيل مُزوّد MFA بنجاح %s.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.failure" approved="yes">
+        <source>Could not deactivate MFA provider %s. Please try again.</source>
+        <target state="final">تعذر إلغاء تنشيط مُزوّد MFA %s. الرجاء المحاولة مرة أخرى.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.success" approved="yes">
+        <source>Successfully deactivated MFA provider %s.</source>
+        <target state="final">تم تعطيل مُزوّد MFA بنجاح %s.</target>
+      </trans-unit>
+      <trans-unit id="unlock.failure" approved="yes">
+        <source>Could not unlock MFA provider %s. Please try again.</source>
+        <target state="final">تعذر إلغاء قفل مُزوّد MFA %s. الرجاء المحاولة مرة أخرى.</target>
+      </trans-unit>
+      <trans-unit id="unlock.success" approved="yes">
+        <source>Successfully unlocked MFA provider %s.</source>
+        <target state="final">تم إلغاء قفل مُزوّد MFA بنجاح %s.</target>
+      </trans-unit>
+      <trans-unit id="save.failure" approved="yes">
+        <source>Could not update MFA provider %s. Please try again.</source>
+        <target state="final">تعذر تحديث مُزوّد MFA %s. الرجاء المحاولة مرة أخرى.</target>
+      </trans-unit>
+      <trans-unit id="save.success" approved="yes">
+        <source>Successfully updated MFA provider %s.</source>
+        <target state="final">تم تحديث مُزوّد MFA بنجاح %s.</target>
+      </trans-unit>
+      <trans-unit id="auth.authError" approved="yes">
+        <source>Authentication was not successful.</source>
+        <target state="final">المصادقة غير ناجحة.</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">التحقق</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">رجوع</target>
+      </trans-unit>
+      <trans-unit id="auth.locked" approved="yes">
+        <source>This provider is locked. Unlocking may require administrative intervention. Recovery codes can be used to circumvent the lock.</source>
+        <target state="final">هذا المُزوّد مقفولٌ. قد يتطلبُ فتحُ القفلِ تدخلاً إداريّاً. يمكنُ استخدامُ Recovery codes لتجاوزِ القفلِ.</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders" approved="yes">
+        <source>Alternative providers</source>
+        <target state="final">المُزودون  البُدلاء</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders.use" approved="yes">
+        <source>Use %s</source>
+        <target state="final">استخدم %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.setupProvider" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">إعداد %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.title" approved="yes">
+        <source>Set up MFA</source>
+        <target state="final">إعداد MFA</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.message" approved="yes">
+        <source>
+          %s requires you setting up MFA to secure your account. Please select one of the available providers below.
+        </source>
+        <target state="final">
+يتطلَّبُ %s منكَ إعدادَ المصادقةِ متعدِّدةِ العواملِ (MFA) لتأمينِ حسابِكَ. يُرجى تحديدُ أحدِ المزوِّدينَ المتاحينَ أدناهُ        </target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">رجوع</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">الإعداد</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.title" approved="yes">
+        <source>MFA setup successful</source>
+        <target state="final">تم إعداد MFA بنجاح</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.message" approved="yes">
+        <source>
+          You have successfully activated MFA provider %s. This provider was also automatically set as your default provider. You can change this at any time in your user settings.
+        </source>
+        <target state="final">
+لقد نجحتَ في تفعيلِ مزوِّدِ المصادقةِ متعدِّدةِ العواملِ (MFA) %s. تمَّ أيضاً تعيينُ هذا المزوِّدِ تلقائياً كمزوِّدِكَ الافتراضيِّ. يمكنُكَ تغييرُ هذا في أيِّ وقتٍ من إعداداتِ المستخدمِ الخاصةِ بكَ        </target>
+      </trans-unit>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">نجاح</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">حدث خطأ ما!</target>
+      </trans-unit>
+      <trans-unit id="ajax.invalidRequest" approved="yes">
+        <source>Invalid request could not be processed</source>
+        <target state="final">تعذر معالجة الطلب الغير صالح</target>
+      </trans-unit>
+      <trans-unit id="ajax.insufficientPermissions" approved="yes">
+        <source>Your are not allowed to perform this action</source>
+        <target state="final">غير مسموح لك بعمل هذا الإجراء</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersNotDeactivated" approved="yes">
+        <source>No provider has been deactivated</source>
+        <target state="final">لم يتم تعطيل أي مُزوّد</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersDeactivated" approved="yes">
+        <source>Successfully deactivated all active providers for user %s</source>
+        <target state="final">تم تعطيل جميع المُزودين النشطين للمستخدم %s بنجاح</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotFound" approved="yes">
+        <source>Provider %s could not be found</source>
+        <target state="final">تعذر العثور على المُزوّد %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotDeactivated" approved="yes">
+        <source>Could not deactivate provider %s</source>
+        <target state="final">تعذر تعطيل المزُوّد %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerDeactivated" approved="yes">
+        <source>Successfully deactivated provider %s for user %s</source>
+        <target state="final">تم تعطيل المُزوّد %s الخاص بالمستخدم بنجاح %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
