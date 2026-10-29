@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Omdirigeringer</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects" approved="yes">
+        <source>Conflicting Redirects</source>
+        <target state="final">Modstridende omdirigeringer</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none" approved="yes">
+        <source>None</source>
+        <target state="final">Ingen</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count" approved="yes">
+        <source>%1$s conflicting redirects</source>
+        <target state="final">%1$s modstridende omdirigeringer</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message" approved="yes">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target state="final">Disse omdirigeringer forårsager en konflikt eftersom at der er sider som stadig er tilgængelige med den samme URL.</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState" approved="yes">
+        <source>Redirects integrity check</source>
+        <target state="final">Omdirigerer integritetstjek</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.title" approved="yes">
+        <source>List of conflicting redirects may not be up to date</source>
+        <target state="final">Liste over modstridende omdirigeringer er muligvis ikke opdateret</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.message" approved="yes">
+        <source>Regularly run the console command redirects:checkintegrity.</source>
+        <target state="final">Kør regelmæssigt konsolkommandoen redirects:checkintegrity.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
