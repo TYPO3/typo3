@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>QR Codes</source>
+        <target>crwdns384048:0crwdne384048:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>QR Codes Administration</source>
+        <target>crwdns384050:0crwdne384050:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Generate and customize QR codes to provide quick, scannable access to your digital content.</source>
+        <target>crwdns393414:0crwdne393414:0</target>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>QR Code Management</source>
+        <target>crwdns384054:0crwdne384054:0</target>
+      </trans-unit>
+      <trans-unit id="add_text">
+        <source>Add QR Code</source>
+        <target>crwdns384056:0crwdne384056:0</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message">
+        <source>No QR Code could be found with the current set of filters applied.</source>
+        <target>crwdns393416:0crwdne393416:0</target>
+      </trans-unit>
+      <trans-unit id="not_found.title">
+        <source>No QR Codes found</source>
+        <target>crwdns393418:0crwdne393418:0</target>
+      </trans-unit>
+      <trans-unit id="not_found.message">
+        <source>There are currently no QR Codes found in the database.</source>
+        <target>crwdns384062:0crwdne384062:0</target>
+      </trans-unit>
+      <trans-unit id="create">
+        <source>Create new QR Code</source>
+        <target>crwdns384064:0crwdne384064:0</target>
+      </trans-unit>
+      <trans-unit id="delete.title">
+        <source>Delete QR Codes</source>
+        <target>crwdns384066:0crwdne384066:0</target>
+      </trans-unit>
+      <trans-unit id="delete.message">
+        <source>Delete all marked QR Codes permanently? You cannot undo this action.</source>
+        <target>crwdns393420:0crwdne393420:0</target>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+        <target>crwdns384070:0crwdne384070:0</target>
+      </trans-unit>
+      <trans-unit id="show">
+        <source>Show QR Code</source>
+        <target>crwdns384072:0crwdne384072:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
