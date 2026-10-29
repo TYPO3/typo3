@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Šiukšlinė</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Restore or permanently remove deleted records</source>
+        <target state="final">Atkurkite arba negrįžtamai pašalinkite ištrintus įrašus</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
+        <target state="final">Leidžia atkurti ištrintus įrašus arba negrįžtamai pašalinti juos iš duomenų bazės. Palaikomi veiksmai su vienu įrašu, keliais įrašais ir rekursyviai, pvz., atkuriant puslapį kartu su visais jo turinio elementais. Prieš atlikdami veiksmus, peržiūrėkite ištrintus įrašus filtruodami pagal puslapį arba lentelę.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
