@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">Password monouso a scadenza</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">Questo provider consente di autenticarsi con un codice di accesso monouso basato sull'ora corrente.
+					Ogni codice è valido solo per 30 secondi. Hai bisogno di un'applicazione o dispositivo OTP, che supporti tali token.</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">Il provider di password monouso a scadenza (TOTP) ti consente di rafforzare la sicurezza dei tuoi account richiedendo un codice a sei cifre su ogni accesso.
+Questo provider si basa su una chiave segreta condivisa, che verrà scambiata tra l'applicazione o il dispositivo OTP e TYPO3. Ogni codice riporta l'ora corrente ed è valido solo per 30 secondi.
+
+					Impostazione:
+					1. Scansiona il codice QR o inserisci direttamente la chiave segreta condivisa nell'applicazione o nel dispositivo
+					2. Aggiungi un nome specifico per questo provider (opzionale)
+					3. Inserisci il codice generato a sei cifre nel campo corrispondente
+					4. Invia il modulo per attivare il provider.
+
+					Nota: nel caso in cui l'applicazione supporti il protocollo otpauth://, è possibile recuperare l'url cliccando sul pulsante info accanto al chiave segreta condivisa.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Codici di recupero</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">Questo provider permette di autenticarsi con un insieme di codici monouso, nel caso tu abbia perduto
+					le tue credenziali MFA primarie o semplicemente tu non abbia accesso a queste temporaneamente.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">I codici di recupero sono codici casuali a otto cifre che possono essere utilizzati per autenticarsi, nel caso in cui le credenziali principali siano state perse. Ogni codice è valido solo una volta.
+					Non appena tutti i codici di recupero saranno esauriti, sarà necessario generarne una nuova serie. Pertanto, controlla periodicamente la quantità di codici rimanenti in Modifica / Cambia del provider.
+
+					Configurazione:
+					1. Copiare i codici di recupero e memorizzarli in un luogo sicuro
+					2. Aggiungi un nome specifico per questo provider (opzionale)
+					3. Invia il modulo per attivare il provider - vedi nota sotto
+
+					Nota: dal momento che i codici di recupero sono crittografati e memorizzati in modo sicuro, questo processo può richiedere un po' di tempo.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">Inserisci il codice generato a sei cifre</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">Questo codice dovrebbe ora essere visualizzato sul tuo dispositivo o nella tua applicazione.</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">Il numero massimo di tentativi per questo provider sono superati. Utilizza un altro provider o contatta il tuo amministratore.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">Informazioni provider</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nome</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">Inserisci un nome</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">Codici di recupero rimanenti</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">Ultimo utilizzato</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">Mai</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">Ultimo aggiornamento</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Rigenera i codici di recupero</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">
+					Se hai perso i tuoi codici di recupero o vuoi solo ottenerne di nuovi, puoi
+					rigenerarli spuntando l'opzione qui sotto. Hai attualmente %d codici rimasti.
+                </target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Rigenera i codici di recupero</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">Passo 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">Passo 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">Passo 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">Passo 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">Passo 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">Scansiona il codice QR visualizzato</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">Scansiona questo codice con l'applicazione OTP (es. Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">Copia la chiave segreta condivisa</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">È inoltre possibile inserire manualmente la chiave segreta condivisa nell'applicazione o nel dispositivo OTP.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">Inserisci un nome (opzionale)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">Specifica un nome personalizzato per questo provider.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Codici di recupero</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">Copia questi codici e custodiscili in un luogo sicuro.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">Ricarica i codici di recupero</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">Ricarica</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">Impostazione non possibile</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">I codici di recupero sono intesi solo come un ripiego se perdi l'accesso alle tue credenziali di autenticazione multi-fattore. Pertanto, prima di tutto devi attivare un provider MFA.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">Mostra URL di autenticazione</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">URL di Autenticazione</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">Nel caso in cui non fossi in grado di scansionare il codice QR, ma la tua applicazione OTP supporta
+					URL di autenticazione o in sostituzione di chiavi segrete condivise, puoi copiare e
+					incollare l'URL mostrato di seguito. L'URL contiene alcune informazioni, come l'emittente (questo sito),
+					il tuo indirizzo email o il nome utente. La maggior parte delle applicazioni OTP mostrerà queste informazioni
+					accanto ai codici generati.
+                </target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">Inserire il codice a sei cifre</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">Inserisci un codice di recupero a otto cifre</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">I tuoi codici di recupero sono stati aggiornati automaticamente</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Si prega di copiarli e conservarli in un luogo sicuro: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">Codici di recupero rigenerati con successo</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Si prega di copiarli e conservarli in un luogo sicuro: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
