@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Globalne przekierowanie (dowolna domena)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Zarządzanie przekierowaniem</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Dodaj przekierowanie</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Obecnie nie znaleziono żadnych rekordów przekierowania w bazie danych.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Utwórz nowe przekierowanie</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target state="final">Z aktualnie używanym zestawem filtrów, nie można znaleźć przekierowania.</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Usuń wszystkie filtry</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Pokaż wszystkie</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Kod statusu</target>
+      </trans-unit>
+      <trans-unit id="source_path.placeholder" approved="yes">
+        <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
+        <target state="final">/moja-sciezka/ lub #^/moja-sciezka/$# (gdy włączone wyrażenia regularne)</target>
+      </trans-unit>
+      <trans-unit id="pageID" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID strony</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Kod statusu</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nigdy</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">Idź do</target>
+      </trans-unit>
+      <trans-unit id="view_redirect" approved="yes">
+        <source>View redirect</source>
+        <target state="final">Zobacz przekierowanie</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
