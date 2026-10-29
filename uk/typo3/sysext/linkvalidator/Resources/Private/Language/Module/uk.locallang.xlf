@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Перевірка посилань</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Внутрішні посилання</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Посилання на файли</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Зовнішні посилання</target>
+      </trans-unit>
+      <trans-unit id="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Список пошкоджених посилань</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Остання перевірка</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Немає інформації про помилку.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Стався цикл перенаправлення. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.tooManyRedirects" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Занадто багато перенаправлень.</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Файл не існує.</target>
+      </trans-unit>
+      <!-- external linktype check errors -->
+      <trans-unit id="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Не вдалося розкрити хост. Даний віддалений хост не розкрито.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Помилка при отриманні даних по мережі.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Виникла помилка (%s): "%s".</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Виняток: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Помилка мережі/недійсний домен</target>
+      </trans-unit>
+      <!-- HTTP status code error messages -->
+      <trans-unit id="list.report.error.httpstatuscode.300" approved="yes">
+        <source>Multiple Choices (300).</source>
+        <target state="final">Множинний вибір (300).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Доступ до цієї адреси не дозволено (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Внутрішня помилка сервера (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Зовнішнє посилання повернуло код помилки HTTP (%s).</target>
+      </trans-unit>
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <trans-unit id="list.report.error.libcurl.1" approved="yes">
+        <source>Unsupported protocol.</source>
+        <target state="final">Протокол не підтримується.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.2" approved="yes">
+        <source>Initialization failed.</source>
+        <target state="final">Помилка ініціалізації.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.3" approved="yes">
+        <source>The URL was not properly formatted.</source>
+        <target state="final">Неправильний формат URL-адреси.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.4" approved="yes">
+        <source>Feature not supported.</source>
+        <target state="final">Функція не підтримується.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.5" approved="yes">
+        <source>Couldn't resolve proxy.</source>
+        <target state="final">Не вдалося знайти проксі-сервер.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.6" approved="yes">
+        <source>Couldn't resolve host.</source>
+        <target state="final">Не вдалося знайти хост.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.7" approved="yes">
+        <source>Failed to connect to host or proxy.</source>
+        <target state="final">Помилка з'єднання з сервером або проксі.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.8" approved="yes">
+        <source>The remote server sent data that could not be parsed.</source>
+        <target state="final">Віддалений сервер надіслав дані, які неможливо проаналізувати.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.9" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Доступ заборонено.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.16" approved="yes">
+        <source>Generic HTTP/2 error.</source>
+        <target state="final">Загальна помилка HTTP/2.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.18" approved="yes">
+        <source>A file transfer was shorter or larger than expected.</source>
+        <target state="final">Процес передачі файлів був коротшим або тривалішим, ніж очікувалося.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.28" approved="yes">
+        <source>Timeout: The remote server possibly took too long to answer.</source>
+        <target state="final">Тайм-аут: віддалений сервер можливо потребував більше часу для відповіді.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.35" approved="yes">
+        <source>Problem with SSl / TLS handshake.</source>
+        <target state="final">Проблема з рукостисканням SSl / TLS.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.47" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Занадто багато перенаправлень.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.55" approved="yes">
+        <source>General network error. Send failed.</source>
+        <target state="final">Загальна помилка мережі. Відправити запит не вдалося.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.56" approved="yes">
+        <source>General network error. Receive failed.</source>
+        <target state="final">Загальна помилка мережі. Отримати запит не вдалося.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.60" approved="yes">
+        <source>The remote server's SSL certificate was deemed not OK.</source>
+        <target state="final">SSL сертифікат віддаленого сервера був визнаний неправильним.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.63" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Перевищено максимальний розмір файлу.</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Гаразд</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">Ви не маєте доступу до цих списків.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Перевірка посилань, зачекайте.</target>
+      </trans-unit>
+      <trans-unit id="needs-recheck" approved="yes">
+        <source>Needs recheck</source>
+        <target state="final">Потребує повторної перевірки</target>
+      </trans-unit>
+      <!-- Modal content -->
+    </body>
+  </file>
+</xliff>
