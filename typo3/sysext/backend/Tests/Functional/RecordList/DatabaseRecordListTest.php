@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\RecordList\Event\AfterRecordListRowPreparedEvent;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -458,5 +459,62 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         self::assertContains('records', $this->recordList->getFieldsToSelect('tt_content', []));
+    }
+
+    #[Test]
+    #[DataProvider('visibilityToggleDataProvider')]
+    public function visibilityToggleIsRenderedOnlyIfUserMayEditTheDisabledField(bool $excluded, string $nonExcludeFields, bool $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_record_list_editor.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_groups')->update(
+            'be_groups',
+            ['non_exclude_fields' => $nonExcludeFields],
+            ['uid' => 9]
+        );
+        $GLOBALS['TCA']['tt_content']['columns']['hidden']['exclude'] = $excluded;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        // editor
+        $backendUser = $this->setUpBackendUser(9);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(
+            new ServerRequest('http://localhost/')
+                ->withAttribute('route', new Route('/typo3/module/content/records', ['_identifier' => 'records']))
+        );
+        $record = new RawRecord(1, 1, [
+            'uid' => 1,
+            'pid' => 1,
+            'CType' => 'text',
+            'hidden' => 0,
+            'sys_language_uid' => 0,
+            'editlock' => 0,
+        ], new ComputedProperties(), 'tt_content.text');
+
+        $control = $recordList->makeControl($record);
+
+        self::assertSame($expected, str_contains($control, 'data-datahandler-action="visibility"'));
+    }
+
+    public static function visibilityToggleDataProvider(): array
+    {
+        return [
+            'not excluded field without field permission' => [
+                'excluded' => false,
+                'nonExcludeFields' => '',
+                'expected' => true,
+            ],
+            'excluded field without field permission' => [
+                'excluded' => true,
+                'nonExcludeFields' => '',
+                'expected' => false,
+            ],
+            'excluded field with field permission' => [
+                'excluded' => true,
+                'nonExcludeFields' => 'tt_content:hidden',
+                'expected' => true,
+            ],
+        ];
     }
 }

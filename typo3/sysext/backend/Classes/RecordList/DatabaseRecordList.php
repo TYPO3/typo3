@@ -1821,7 +1821,7 @@ class DatabaseRecordList
             // "Hide/Unhide" links:
             $hiddenField = $schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName() : '';
             if (!empty($hiddenField)
-                && ($schema->getField($hiddenField)->supportsAccessControl() || $backendUser->check('non_exclude_fields', $table . ':' . $hiddenField))
+                && (!$schema->getField($hiddenField)->supportsAccessControl() || $backendUser->check('non_exclude_fields', $table . ':' . $hiddenField))
             ) {
                 if (!$permsEdit || $isDeletePlaceHolder || $this->isRecordCurrentBackendUser($record)) {
                     $hideButton = null;

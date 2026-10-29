@@ -1,0 +1,6 @@
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin"
+,9,0,"editor",9,0,0
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","explicit_allowdeny"
+,9,0,"editors",0,1,"tt_content","tt_content","tt_content:CType:text"
