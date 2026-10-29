@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="filelist" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Listing of media resources in registered storages</source>
+        <target>crwdns380876:0crwdne380876:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This is the media administration system. Through this module you can upload, copy, move and delete files on the system.</source>
+        <target>crwdns380878:0crwdne380878:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Media</source>
+        <target>crwdns380880:0crwdne380880:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
