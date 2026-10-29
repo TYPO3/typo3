@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importeren</target>
+      </trans-unit>
+      <trans-unit id="export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exporteren</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Importeer / Exporteer</target>
+      </trans-unit>
+      <trans-unit id="title_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importeren</target>
+      </trans-unit>
+      <trans-unit id="title_export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exporteren</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuratie</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">OPGESLAGEN BESTAND</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Opgeslagen in "%s", bytes %s</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Er zijn problemen opgetreden bij het opslaan van het bestand</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Verkeerd pad: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Bestand &amp; Preset</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Geavanceerde opties</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Berichten</target>
+      </trans-unit>
+      <trans-unit id="execlistqu_structureToBeExported" approved="yes">
+        <source>Structure to be exported</source>
+        <target state="final">Te exporteren structuur</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_toggle_all_disabled_records" approved="yes">
+        <source>Toggle disabled records</source>
+        <target state="final">Uitgeschakelde records inschakelen</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportPagetreeConfiguration" approved="yes">
+        <source>Export pagetree configuration</source>
+        <target state="final">Exportconfiguratie voor paginaboom</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_pageId" approved="yes">
+        <source>Page ID</source>
+        <target state="final">Pagina-ID</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tree" approved="yes">
+        <source>Tree</source>
+        <target state="final">Boom</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Boom niet ge-exporteerd - alleen tabellen op de pagina.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Tabellen op deze pagina</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">Niveau's</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeTables" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Ingesloten tabellen</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportSingleRecord" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Enkel record exporteren</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportTablesFromPages" approved="yes">
+        <source>Export tables from pages</source>
+        <target state="final">Tabellen van pagina's exporteren</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablePids" approved="yes">
+        <source>Table/Pids</source>
+        <target state="final">Tabellen/Pid's</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tableListEntry" approved="yes">
+        <source>Table "%s" from %s</source>
+        <target state="final">Tabel "%s" van %s</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_relationsAndExclusions" approved="yes">
+        <source>Relations and Exclusions</source>
+        <target state="final">Relaties en uitzonderingen</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeRelationsToTables" approved="yes">
+        <source>Include relations to tables</source>
+        <target state="final">Relaties naar tabellen insluiten</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_useStaticRelationsFor" approved="yes">
+        <source>Use static relations for tables</source>
+        <target state="final">Statische relaties voor tabellen gebruiken</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_showStaticRelations" approved="yes">
+        <source>Show static relations</source>
+        <target state="final">Statische relaties tonen</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeElements" approved="yes">
+        <source>Exclude elements</source>
+        <target state="final">Elementen uitsluiten</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_clearAllManualExclusions" approved="yes">
+        <source>Clear all manual exclusions</source>
+        <target state="final">Alle handmatige uitsluitingen opheffen</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noManuallyExcludedElementsYet" approved="yes">
+        <source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+        <target state="final">Er zijn nog geen elementen handmatig uitgesloten. Een element is uit te sluiten met de selectievakjes in het overzicht hier onder.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeDisabledElements" approved="yes">
+        <source>Exclude disabled elements</source>
+        <target state="final">Uitgeschakelde elementen uitsluiten</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiseer</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_files" approved="yes">
+        <source>Files</source>
+        <target state="final">Bestanden</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile" approved="yes">
+        <source>Save files in extra folder beside the export file</source>
+        <target state="final">Bestanden opslaan in extra folder naast het exportbestand</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit" approved="yes">
+        <source>(supported for "Save to filename" only)</source>
+        <target state="final">(alleen ondersteuning voor "Opslaan naar bestandsnaam")</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_siteConfigurations" approved="yes">
+        <source>Site configurations</source>
+        <target state="final">Siteconfiguraties</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_includeSiteConfigurations" approved="yes">
+        <source>Include site configurations for exported root pages (admin only)</source>
+        <target state="final">Inclusief site-configuraties voor geëxporteerde hoofdpagina's (alleen admin)</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_extensionDependencies" approved="yes">
+        <source>Extension dependencies</source>
+        <target state="final">Afhankelijkheden van extensies</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_selectExtensionsThatThe" approved="yes">
+        <source>Select extensions that the exported content depends on</source>
+        <target state="final">Extensies kiezen waarvan de geëxporteerde inhoud afhankelijk is</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiseer</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_presets" approved="yes">
+        <source>Presets</source>
+        <target state="final">Voorinstellingen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_selectPreset" approved="yes">
+        <source>Select preset</source>
+        <target state="final">Voorinstelling kiezen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Laad</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Bevestigen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Weet u het zeker?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijder</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Samenvoegen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_titleOfNewPreset" approved="yes">
+        <source>Title of new preset</source>
+        <target state="final">Titel van nieuwe voorinstelling</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_public" approved="yes">
+        <source>Public</source>
+        <target state="final">Openbaar</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_outputOptions" approved="yes">
+        <source>Output options</source>
+        <target state="final">Uitvoeropties</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Opmerkingen</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d_compressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D bestand /gecomprimeerd</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D bestand</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_fileFormat" approved="yes">
+        <source>File format</source>
+        <target state="final">Bestandsformaat</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_filenameSavedInS" approved="yes">
+        <source>Filename (saved in "%s")</source>
+        <target state="final">Bestandsnaam (opgeslagen in "%s")</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">Download export</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Opslaan als bestandsnaam</target>
+      </trans-unit>
+      <trans-unit id="importdata_selectFileToImport" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Het te importeren bestand selecteren</target>
+      </trans-unit>
+      <trans-unit id="importdata_file" approved="yes">
+        <source>File</source>
+        <target state="final">Bestand</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" approved="yes">
+        <source>From path: %s</source>
+        <target state="final">Van pad: %s</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">NOTITIE: Er is geen decompressor aanwezig voor gecomprimeerde bestanden!</target>
+      </trans-unit>
+      <trans-unit id="importdata_importOptions" approved="yes">
+        <source>Import Options</source>
+        <target state="final">Importopties</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiseer</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Actualiseer records</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Voor deze optie dient de structuur van de import reeds te bestaan op de server en de inhoud met nieuwe inhoud geactualiseerd te worden!</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">Negeer PID verschillen globaal</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" approved="yes">
+        <source>The position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">De positie van de bijgewerkte elementen zal niet worden bijgewerkt overeenkomstig de structuur van het invoerbestand.</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">Forceer ALLE UID waardes</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" approved="yes">
+        <source>BE VERY CAREFUL WITH THIS: the original UID value of all imported records will be forced to be the same (Admin Only).</source>
+        <target state="final">WEES HIER ZEER VOORZICHTIG MEE: de originele UID-waarde van alle geïmporteerde records zal hetzelfde blijven (Alleen Admins).</target>
+      </trans-unit>
+      <trans-unit id="importdata_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Opties</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Toon verschillen in records niet</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" approved="yes">
+        <source>Hides the resulting differences for each field of every imported records in the preview table.</source>
+        <target state="final">Verbergt de verschillen die hieruit voortvloeien voor elk veld van elke geïmporteerde records in de preview tabel.</target>
+      </trans-unit>
+      <trans-unit id="importdata_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Actie</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Preview</target>
+      </trans-unit>
+      <trans-unit id="importdata_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importeren</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Nieuwe import</target>
+      </trans-unit>
+      <trans-unit id="importdata_enableLogging" approved="yes">
+        <source>Enable logging</source>
+        <target state="final">Logboek bijhouden</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual database actions during import to the log</source>
+        <target state="final">Schrijf individuele database-acties tijdens import naar het logboek</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there might be hundred of entries generated.</source>
+        <target state="final">Dit is standaard uitgeschakeld aangezien er wellicht honderden items gegenereerd worden.</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadFileFromLocal" approved="yes">
+        <source>Upload file from local computer</source>
+        <target state="final">Bestand uploaden van lokale computer</target>
+      </trans-unit>
+      <trans-unit id="importdata_browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">Bladeren</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadStatus" approved="yes">
+        <source>Upload status</source>
+        <target state="final">Uploadstatus</target>
+      </trans-unit>
+      <trans-unit id="importdata_success" approved="yes">
+        <source>Success</source>
+        <target state="final">Succes</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">FOUT: Geen bestand geupload - was het te groot? Controleer systeemlog</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_invalidExtension" approved="yes">
+        <source>Only import files with the extensions "t3d" or "xml" can be uploaded.</source>
+        <target state="final">Alleen bestanden importeren met de extensies "t3d" of "xml".</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Upload</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_error" approved="yes">
+        <source>Upload error</source>
+        <target state="final">Fout bij uploaden</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_nodata" approved="yes">
+        <source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
+        <target state="final">De importmodule heeft geen data ontvangen. Dit kan gebeuren door een fout bij het uploaden van een groot bestand. Controleer of het bestand groter is dan de post_max_size en upload_max_filesize instellingen van de server.</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Metadata</target>
+      </trans-unit>
+      <trans-unit id="importdata_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="importdata_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="importdata_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Opmerkingen</target>
+      </trans-unit>
+      <trans-unit id="importdata_packager" approved="yes">
+        <source>Packager</source>
+        <target state="final">Inpakprogramma</target>
+      </trans-unit>
+      <trans-unit id="importdata_email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-mail</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData_1387" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Metadata</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurations" approved="yes">
+        <source>Site Configurations</source>
+        <target state="final">Siteconfiguraties</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurationsAdminOnly" approved="yes">
+        <source>This import contains site configurations that will not be imported because importing site configurations requires administrator privileges.</source>
+        <target state="final">Deze import bevat siteconfiguraties die niet zullen worden geïmporteerd, omdat het importeren van siteconfiguraties beheerdersrechten vereist.</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteIdentifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteWebsiteTitle" approved="yes">
+        <source>Website Title</source>
+        <target state="final">Titel website</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteBase" approved="yes">
+        <source>Base</source>
+        <target state="final">Basis</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteRootPage" approved="yes">
+        <source>Root Page</source>
+        <target state="final">Root-pagina</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Talen</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageId" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageLocale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Landinstelling</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteDependencies" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">Afhankelijkheden</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Berichten</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureHasBeenImported" approved="yes">
+        <source>Structure has been imported, here is the result</source>
+        <target state="final">Structuur is geïmporteerd, hier zijn de resultaten</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureNotImported" approved="yes">
+        <source>The Import has failed, refer to the messages tab to view errors</source>
+        <target state="final"/>
+      </trans-unit>
+      <trans-unit id="importdata_no_default_upload_folder" approved="yes">
+        <source>No default upload folder</source>
+        <target state="final">Geen standaard uploadmap</target>
+      </trans-unit>
+      <trans-unit id="filterpage_structureToBeImported" approved="yes">
+        <source>Structure to be imported</source>
+        <target state="final">Te importeren structuur</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" approved="yes">
+        <source>[ ALL tables ]</source>
+        <target state="final">[ ALLE tabellen ]</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_controls" approved="yes">
+        <source>Controls</source>
+        <target state="final">Besturing</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_message" approved="yes">
+        <source>Message</source>
+        <target state="final">Bericht</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_updateMode" approved="yes">
+        <source>Update Mode</source>
+        <target state="final">Bijwerkmodus</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_currentPath" approved="yes">
+        <source>Current Path</source>
+        <target state="final">Huidig pad</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_result" approved="yes">
+        <source>Result</source>
+        <target state="final">Resultaat</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_insidePagetree" approved="yes">
+        <source>Inside pagetree</source>
+        <target state="final">In paginaboom</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_outsidePagetree" approved="yes">
+        <source>Outside pagetree</source>
+        <target state="final">Buiten paginaboom</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_softReferencesFiles" approved="yes">
+        <source>Soft References Files</source>
+        <target state="final">Zachte referenties bestanden</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiseer</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Invoegen</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Importeer als nieuw</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Negeer PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">Respecteer PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">Forceer UID [%s] (Admin)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Uitsluiten</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_descr" approved="yes">
+        <source>Descr</source>
+        <target state="final">Omschr</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_value" approved="yes">
+        <source>Value</source>
+        <target state="final">Waarde</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Bewerkbaar:</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Uitsluiten</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_printerror_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Omschrijving</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
