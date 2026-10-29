@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod" approved="yes">
+        <source>Installation Method</source>
+        <target state="final">Método de instalação</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.classic" approved="yes">
+        <source>Classic mode</source>
+        <target state="final">Modo clássico</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.composer" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Modo compositor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
