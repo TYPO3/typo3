@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">បើក​ក្នុង​វិនដវ៍​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">ត្រឡប់​ក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">បង្កើត​សតខាត់​សម្រាប់​ទំព័រ​នេះ?</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">អ្នក​ប្រើ '%s' បាន​ចាប់ផ្ដើម​កែ​ទិន្នន័យ %s មុន ។</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">អ្នក​ប្រើ '%s' បាន​ចាប់ផ្ដើម​កែ​មាតិកា​លើ​ទំព័រ​នេះ %s មុន ។</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">%s '%s' បាន​ចាប់ផ្ដើម​កែ​ទិន្នន័យ %s មុន ។</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">%s '%s' បាន​ចាប់ផ្ដើម​កែ​មាតិកា​លើ​ទំព័រ​នេះ %s មុន ។</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">អ្នក​ប្រើ</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">អ្នកប្រើ BE</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">អ្នកប្រើ FE</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-មិន​ស្គាល់-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">បង្ហាញ​ទិន្នន័យ</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">ទីតាំង</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">កំណត់​សម្រង់​ឡើងវិញ</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">តារាង</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">ឡើង​លើ​មួយ​ដំណាក់</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">ពន្លា​តារាង</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">បំព្រួញ​តារាង</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">ទំព័រ​នេះ|​លំដាប់​ទី​១​ចុះ|​លំដាប់​ទី​២​ចុះ|​លំដាប់​ទី​៣​ចុះ|​លំដាប់​ទី​៤​ចុះ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">ទំព័រ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">សុំ​ទោស! អ្នក​មិន​មាន​សិទ្ធិ​ក្នុង​ការ​ធ្វើការ​កែប្រែ​នេះ​ទេ ។</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">ចំណាំ៖ កន្លែង​នេះ អាច​កែ​បាន​តែ​ជាមួយ​កម្មវិធី​អត្ថបទ​សម្បូណ៌ ។ មិន​មាន​កម្មវិធី​អត្ថបទ​ណា​មួយ​​បាន​ដំណើរការ​នៅ​ឡើយ​ទេ ។</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">បិទ​ដំណើរការ​កម្មវិធី​អត្ថបទ​សម្បូណ៌ (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">ឧបករណ៍​បញ្ជា</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">ទីតាំង</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">ភាសា</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">កំណត់​លើ​ប្រឡោះ</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ស្វែងរក</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">បើក​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">ទាញយក​ឯកសារ CSV</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">គ្មាន​ចំណងជើង</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">បោះបង់</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">បាន​លាក់</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">ចាប់ផ្ដើម</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">ចប់</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">បង្ហាញ​ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">បង្ហាញ​បញ្ជី​រាយ​ទិន្នន័យ</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">ថ្ងៃ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">ទំព័រ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">លំដាប់​ទី ១</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">លំដាប់​ទី ២</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">លំដាប់​ទី ៣</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">លំដាប់​ទី ៤</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">មិន​កំណត់</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">អនុញ្ញាត</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">មិន​អនុញ្ញាត</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">ស្វ័យ​ប្រវត្តិ</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">បង្ហាញ</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">បើក​ឋានានុក្រម​ពី​ម៉ាស៊ីន​បម្រើ​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">បើក​បញ្ជី​ពី​ម៉ាស៊ីន​បម្រើ​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">បិទ</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">កែ</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">បង្កើត​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">បង្កើត %s ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">បង្កើត %s ថ្មី លើ​ទំព័រ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">បង្កើត %s ថ្មី​លើ​លំដាប់​គោល</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">កែ %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">កែ %s "%s" លើ​ទំព័រ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">កែ %s លើ​ទំព័រ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">កែ %s "%s" លើ​លំដាប់​គោល</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">ថែម​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">បិទ/បើក​ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">ធាតុ​បាន​ជ្រើសរើស</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">ធាតុ​ដែល​មាន</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">ដក​ចេញ​ធាតុ​ដែល​បាន​ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ធាតុ​ដែល​បាន​ជ្រើស​ទៅ​លើ​បំផុត</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">ប្ដុរ​ទីតាំង​ធាតុ​ដែល​បាន​ជ្រើស​ទៅ​លើ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ធាតុ​ដែល​បាន​ជ្រើស​ទៅ​ក្រោម</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">ប្ដុរ​ទីតាំង​ធាតុ​ដែល​បាន​ជ្រើស​ទៅ​ក្រោម​បំផុត</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">ប្ដុរ​ទីតាំង​ធាតុ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">រុករក​ទិន្នន័យ</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">បញ្ចូល​ឯកសារ %s ពី​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">បញ្ចូល​ទិន្នន័យ %s ពី​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[គ្រប់​តារាង]</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">បង្ហាញ​រូបតូច​លើ​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">ចម្លង​ធាតុ​ជំនួស​ឱ្យ​ការផ្លាស់ប្ដូរ​ទីតាំង</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">ឃ្លិបបត #</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">ត្រឡប់​ការជ្រើសរើស</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">រើស​ប្រអប់​ធីក​ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">ធីក​ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">មិន​ធីក​ទាំង​អស់</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">បាន​កែប្រែ​ក្នុង​ភាសា​ដើម</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">ពន្លា​ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">បង្កើត​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ស្វែងរក</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">កំបុង​ស្វែងរក...</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">គ្រប់គ្រង​កំណែ</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">ទុក​បណ្ដោះអាសន្ន​/​ផ្សាយ</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">ផ្សាយ​កំណែ​នៃ​ទំព័រ​នេះ ព្រម​ទាំង​មាតិកា</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">កម្មវិធី​បើក​មើល​ធាតុ​របស់ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">បង្ហាញ​ធាតុ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">ទូទៅ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">ប្រវែង</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">ទំហំ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">ភិចសែល</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">តារាង</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">ទិន្នន័យ​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">បន្ទាប់</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">ផ្ទុក​ឯកសារ​ឡើង</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">ផ្ទុក​ឯកសារ​ឡើង</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">កំពុងដំណើរការ​ក្នុងការ​ផ្ទុក​ឯកសារ...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">ការផ្ទុកឯកសារ {0} ចេញពី​ឯកសារ​ច្រើន {1}។</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">ប្ដូរ​ឈ្មោះ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">បោះបង់</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">ទីតាំង​ផ្ទុក​ឡើង​មិន​ត្រឹមត្រូវ</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">បើក​ទំព័រ​ម្ដង​ទៀត​នឹង​បាត់​ទិន្នន័យ​ដែល​មាន​នេះ។ តើ​អ្នក​ចង់​បន្ត​ទៀត​ទេ?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">ទេ! កត់ត្រា​ចេញ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">កំពុង​កត់ត្រា​ចូល</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">ការកត់ត្រា​ចូល​បរាជ័យ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">ពាក្យ​សម្ងាត់​មិន​ត្រឹមត្រូវ ។</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">បើក​ការកត់ត្រា​ចូល TYPO3 ម្ដង​ទៀត (អ្នក​ប្រើ៖ %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">ឈ្មោះ​អ្នក​ប្រើ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">ពាក្យ​សម្ងាត់</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">កត់ត្រា​ចូល</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">បិទ</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">សូម​មេត្តា​រង់ចាំ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">ផ្នែក​ខាង​ក្រោយ​នៃ TYPO3 កំពុង​ត្រូវ​បាន​បិទ​ដើម្បី​ជួសជុល ។ សូម​កុំ​បិទ​ផ្ទាំង​បើក​វែបសាយ​នេះ ផ្ទាំង​ខាង​ក្រោយ​នេះ​នឹង​ត្រឡប់​មក​វិញ​ដោយ​ខ្លួន​ឯង បន្ទាប់​ពី​ការ​ជួសជុល​រួច ។</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">ការកត់ត្រាចូល TYPO3 របស់​អ្នក​ជិត​​ផុតកំណត់ ។ សូម​ធ្វើការ​បញ្ជាក់ ប្រសិន​បើ​អ្នក​ចង់​រក្សា​ការកត់ត្រា​ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">ការកត់ត្រាចូល​របស់ TYPO3 ផុត​កំណត់</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">ការកត់ត្រាចូល TYPO3 របស់​អ្នក​បាន​ផុត​កំណត់ ។ អ្នក​ត្រូវ​កត់ត្រាចូល​ម្ដង​ទៀត ប្រសិន​បើ​អ្នក​ចង់​បន្ត ។ បើ​ពុំ​នោះ​ទេ អ្នក​អាច​បិទ​វិនដូវ៍​ប្រាវសឺ​ ។</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">សូម​រើស​ធាតុ​មួយ ឬ លើស​ពី​នោះ​ពី​បញ្ជី មុន​ពេល​អ្នក​អាច​កែ​បាន ។</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">ប្ដូរ​ទីតាំង "%s" ទៅ​ក្នុង "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">ប្ដូរ​ទីតាំង "%s" ទៅ​បន្ទាប់ "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">ចម្លង "%s" ទៅ​ក្នុង "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">ចម្លង "%s" ទៅ​បន្ទាប់ "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">ចម្លង​គ្រប់​ធាតុ (%s) ពី​ឃ្លិបបត ទៅ​ក្នុង "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">ចម្លង​គ្រប់​ធាតុ (%s) ពី​ឃ្លិបបត​ទៅ​ទីតាំង​បន្ទាប់​ពី "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ធាតុ (%s) ពី​ឃ្លិបបត​ទៅ​ក្នុង "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ធាតុ (%s) ពី​ឃ្លិបបត​ទៅទីតាំង​បន្ទាប់​ពី "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[មឺនុយ]</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">បិទ</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">បញ្ជា​របស់​អ្នក​គ្រប់គ្រង</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">កែ</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">យក​ចេញ</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">ឯកសារមិនត្រូវបានលុប</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">សឺមុី​មិនត្រូវបានលុប</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">ឯសារ​ត្រូវបានលុប</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">ឯកសារ "%s" ត្រូវបានលុប​ដោយជោគជ័យ។</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">សឺមុី​ត្រូវបានលុប</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">សឺមុី "%s" ​ត្រូវបានលុបដោយជោគជ័យ។</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">បិទ</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">សម្អាត</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">ចម្លង</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">កាត់</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">បង្ហាញ</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">កែ</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">ផេសថ៍​ទៅ​ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">ផេសថ៍​ទៅ​បន្ទាប់</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">ឈប់​ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">ឈប់​ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">លាក់</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">ឈប់​លាក់</target>
+      </trans-unit>
+      <trans-unit id="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">ត្រឡប់​ទៅបណ្ដាញ</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">បិត​បណ្ដាញ</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">ផ្ទុក​ឯកសារ​ឡើង</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">ប្ដូរ​ឈ្មោះ</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">បើក</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">មិន​ខ្ចប់</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">ព័ត៌មាន</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">បង្កើត​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">បង្កើត %s ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">ម៉ោនថ៍​ជា​ឋានានុក្រម​គោល</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">ចម្លង​ទំព័រ​ទៅ​ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">ចម្លង​ទំព័រ​ទៅ​បន្ទាប់</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ទំព័រ​ទៅ​ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">ប្ដូរ​ទីតាំង​ទំព័រ​ទៅ​បន្ទាប់</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">ចម្លង​សឺមី​ទៅ​ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">ប្ដូរ​ទីតាំង​សឺមី​ទៅ​ក្នុង</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">បង្កើត​ទំនាក់ទំនង​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">សកម្មភាព​លើ​ឋានានុក្រម</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">សកម្មភាព​លើ​ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">លាក់​ឋានានុក្រម</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">ពន្លា​ឋានានុក្រម</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">ជម្រើស​ផ្សេង​ទៀត...</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">មិន​ទាន់​កំណត់​តម្លៃ​របស់ fileDenyPattern ទៅ​តម្លៃ​ដើម៖ %s ។ បើ TYPO3 ដើរ​លើ Apache ការ​ដាក់​តម្លៃ​អាច​ធ្វើ​ឱ្យ​ផ្នែក​ខាង​ក្រោយ​ដំណើរការ ឬ​ក៏​​អ្នក​ប្រើ​ផ្នែក​ខាង​មុខ​អាច​ដំណើរការ​កូដ​ php ។</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">តម្លៃ​បច្ចុប្បន្ន​របស់ fileDenyPattern អាច​ឱ្យ​អ្នក​អាប់ឡូត/​បង្កើត​ហ្វៃល៍​ថ្មី​ជាមួយ​នឹង​ឈ្មោះ ".htaccess" ។ បើ TYPO3 ដើរ​លើ Apache វា​នឹង​បើក​ដំណើរការ​ផ្នែក​ខាង​ក្រោយ ហើយ​អ្នក​ប្រើ​ផ្នែក​ខាង​មុខ អាច​បង្កើត និង​ដំណើរការ​កូដ php បាន ។ សូម​កំណត់​តម្លៃ fileDenyPattern ម្ដង​ទៀត​ឱ្យ​ដូច​តម្លៃ​ដើម​វិញ ។</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">ឧបករណ៍​ដំឡើង នៅ​កំពុង​ដំណើរការ។ លុប​ឯកសារ "%s" បន្ទាប់​ពី​អ្នក​​ដំឡើង TYPO3 ចប់។</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">ការផ្ទៀងផ្ទាត់​សុវត្ថិភាព​នៃ​ទម្រង់​នេះ​បរាជ័យ ។ សូម​បើក​ទម្រង់​នេះ ហើយ​​បញ្ជូន​ម្ដង​ទៀត ។</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">អ៊‍ិកស្តិនសិន "%s" មិន​ត្រូវ​បាន​ដំឡើង ។</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">សូម​កុំ​ដាក់​តំណ​ទៅ​ទំព័រ​នេះ ។</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">SQL មានកំហុស​កើតឡើង។​នេះ​អាច​បង្ហាញ​ពីភាពខុសគ្នា​រវាង​គ្រោងការណ៍ TCA និង​ឃ្លាំងផ្ទុកទិន្នន័យ។ សូមព្យាយាម​ប្រៀបធៀប​ឃ្លាំងផ្ទុកទិន្នន័យ​នៅ​ក្នុង​ឧបករណ៍​ការដំឡើង។</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">កំហុសក្នុង​ឃ្លាំងផ្ទុកទិន្នន័យ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
