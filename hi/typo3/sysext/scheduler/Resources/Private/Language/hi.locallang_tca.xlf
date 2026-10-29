@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task" approved="yes">
+        <source>Scheduler task</source>
+        <target state="final">शेड्यूलर टास्क</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.tasktype" approved="yes">
+        <source>Task type</source>
+        <target state="final">कार्य प्रकार</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.task_group" approved="yes">
+        <source>Belongs to task group</source>
+        <target state="final">कार्य समूह के अंतर्गत आता है</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">प्राथमिकता</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.high" approved="yes">
+        <source>High</source>
+        <target state="final">उच्च</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.regular" approved="yes">
+        <source>Regular</source>
+        <target state="final">नियमित</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.priority.low" approved="yes">
+        <source>Low</source>
+        <target state="final">कम</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.description" approved="yes">
+        <source>Description</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.parameters" approved="yes">
+        <source>Settings</source>
+        <target state="final">सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.execution_details" approved="yes">
+        <source>Schedule</source>
+        <target state="final">शेड्यूल</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.nextexecution" approved="yes">
+        <source>Next run planned at</source>
+        <target state="final">अगला रन निर्धारित समय पर</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_time" approved="yes">
+        <source>Last run started at</source>
+        <target state="final">आखिरी रन शुरू हुआ</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_failure" approved="yes">
+        <source>Error details from last run</source>
+        <target state="final">पिछले रन से त्रुटि विवरण</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_context" approved="yes">
+        <source>Last run via</source>
+        <target state="final">के माध्यम से अंतिम बार चलाएँ</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.number_of_days" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">दिए गए दिनों से पुरानी प्रविष्टियों को संभालें</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.selected_tables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">डाटाबेस टेबल्स</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.file_storage" approved="yes">
+        <source>File storage</source>
+        <target state="final">फाइल स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group" approved="yes">
+        <source>Scheduler task group</source>
+        <target state="final">अनुसूचक कार्य समूह</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName" approved="yes">
+        <source>Group name</source>
+        <target state="final">ग्रुप का नाम</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color" approved="yes">
+        <source>Color</source>
+        <target state="final">रंग</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.typo3Orange" approved="yes">
+        <source>TYPO3 Orange</source>
+        <target state="final">TYPO3 ऑरेंज</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.white" approved="yes">
+        <source>White</source>
+        <target state="final">सफ़ेद</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.gray" approved="yes">
+        <source>Gray</source>
+        <target state="final">स्लेटी</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.black" approved="yes">
+        <source>Black</source>
+        <target state="final">काला</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.blue" approved="yes">
+        <source>Blue</source>
+        <target state="final">नीला</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.purple" approved="yes">
+        <source>Purple</source>
+        <target state="final">बैंगनी</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.teal" approved="yes">
+        <source>Teal</source>
+        <target state="final">टील</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.green" approved="yes">
+        <source>Green</source>
+        <target state="final">हरा</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.magenta" approved="yes">
+        <source>Magenta</source>
+        <target state="final">मैजेंटा</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.yellow" approved="yes">
+        <source>Yellow</source>
+        <target state="final">पीला</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.color.red" approved="yes">
+        <source>Red</source>
+        <target state="final">लाल</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.description" approved="yes">
+        <source>Description</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
