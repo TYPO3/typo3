@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Vsebina</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Rob</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ime (ni vidno na strani)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ime (ni vidno na strani)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ime (ni vidno na strani)</target>
+      </trans-unit>
+      <trans-unit id="header.description.ALT" approved="yes">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target state="final">Ime ne bo prikazano v glavi nad elementom, temveč bo uporabljeno kot referenca v menijih.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skrito</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">Neoštevilčen seznam</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">Oštevilčen seznam</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Dodaj sliko</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 ravni</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 ravni</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 ravni</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Datoteke</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Izberi posamezne datoteke</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Dodaj datoteko</target>
+      </trans-unit>
+      <trans-unit id="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">Datoteka</target>
+      </trans-unit>
+      <trans-unit id="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Zbirke dokumentov</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">Razvrsti seznam datotek</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">brez razvrščanja</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">po končnicah datotek</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">po imenu datoteke</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">po vrsti datoteke</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">po velikosti datoteke</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">po datumu nastanka datoteke</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">po datumu spremembe datoteke</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">po naslovu metapodatkov o datoteki</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">Smer razvrščanja</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">Naraščajoče (privzeto)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Padajoče</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Cilj</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Novo okno</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">Brez</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Merilo pred</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Merilo za</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">Brez okvirja</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Možnosti vtičnika</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Izbrane strani</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Shramba zapisov</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Besedilo</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Predstavnost</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Vtičnik</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Datum objave</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Datum izteka</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Pravice dostopa uporabniške skupine</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Seznam</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Dostop</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Videz</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Slike</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Dostopnost</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Besedilo s predstavnostno vsebino</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads" approved="yes">
+        <source>File Links</source>
+        <target state="final">Povezave do datotek</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Kategorizirane strani</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Strani za izbrane kategorije</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Strani</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sekcijski meni</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Zemljevid spletnega mesta</target>
+      </trans-unit>
+      <trans-unit id="CType.list" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Splošni vtičnik</target>
+      </trans-unit>
+      <trans-unit id="CType.list.description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Izberite to vrsto elementa, če želite vstaviti vtičnik, ki ga ni mogoče najti med spodnjimi možnostmi.</target>
+      </trans-unit>
+      <trans-unit id="uploads_description" approved="yes">
+        <source>Display description</source>
+        <target state="final">Prikaži opis</target>
+      </trans-unit>
+      <trans-unit id="uploads_type" approved="yes">
+        <source>Display file/icon/thumbnail</source>
+        <target state="final">Prikaži datoteko/ikono/sličico</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.0" approved="yes">
+        <source>Only file name</source>
+        <target state="final">Samo ime datoteke</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.1" approved="yes">
+        <source>File name and file extension icon</source>
+        <target state="final">Ime datoteke in ikona razširitve datoteke</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.2" approved="yes">
+        <source>File name and thumbnail (if possible)</source>
+        <target state="final">Ime datoteke in sličica (če je mogoče)</target>
+      </trans-unit>
+      <trans-unit id="table_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">Brez</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
