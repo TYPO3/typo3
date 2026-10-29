@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
+        <target state="final">De module biedt het aanmaken van een paginaboom met TCA demo-records van inhoudselementen.&lt;br /&gt;Daarnaast worden de meest bekende backend componenten die TYPO3 CMS meelevert gepresenteerd.</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Interactively explore TYPO3 backend UI components, design tokens, and example page trees for testing and demonstration.</source>
+        <target state="final">Verken componenten van de TYPO3 backend interface, ontwerp-tokens en een voorbeeld paginaboom op interactieve wijze voor testen en demonstraties.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">Stijlgids</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
