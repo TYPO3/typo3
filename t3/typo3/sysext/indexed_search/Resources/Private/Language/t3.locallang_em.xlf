@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools">
+        <source>Path to PDF parsers: Specify the directory containing the "pdftotext" and "pdfinfo" applications used to extract content from PDF files. Leave empty if not available.</source>
+        <target>crwdns393828:0crwdne393828:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode">
+        <source>PDF Parsing Mode: Define how PDF files are split during indexing. "0" indexes the entire file at once. A positive value sets the number of pages per batch (e.g. "5" → pages 1–5, 6–10, …). A negative value sets the number of groups (e.g. "-3" → file split into 3 groups). Allowed range: -100 to 100.</source>
+        <target>crwdns393830:0crwdne393830:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip">
+        <source>Path to unzip: Specify the directory containing the "unzip" application used to extract content from OpenOffice.org/Oasis OpenDocument files. Leave empty if not available.</source>
+        <target>crwdns393832:0crwdne393832:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc">
+        <source>Path to WORD parser: Specify the directory containing the "catdoc" application used to extract content from MS WORD files. Leave empty if not available.</source>
+        <target>crwdns393834:0crwdne393834:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml">
+        <source>Path to EXCEL parser: Specify the directory containing the "xlhtml" application used to extract content from MS EXCEL files. Leave empty if not available.</source>
+        <target>crwdns393836:0crwdne393836:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml">
+        <source>Path to POWERPOINT parser: Specify the directory containing the "ppthtml" application used to extract content from MS POWERPOINT files. Leave empty if not available.</source>
+        <target>crwdns393838:0crwdne393838:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf">
+        <source>Path to RTF parser: Specify the directory containing the "unrtf" application used to extract content from RTF files. Leave empty if not available.</source>
+        <target>crwdns393840:0crwdne393840:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength">
+        <source>Full Text Data Length: Limit the amount of full-text data stored (in bytes). Lower values reduce database usage but also restrict sentence-level searching and the length of search result excerpts.</source>
+        <target>crwdns393842:0crwdne393842:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing">
+        <source>Disable Indexing in Frontend: Prevent pages from being indexed during frontend access. Indexing is then performed only by the backend page crawler.</source>
+        <target>crwdns393844:0crwdne393844:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge">
+        <source>Min TTL (hours) for Indexed Page: Set the minimum time (in hours) that must pass before an indexed page is eligible for re-indexing, regardless of page changes.</source>
+        <target>crwdns393846:0crwdne393846:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles">
+        <source>Max External Files to Index: Limit how many external files found on a page are indexed. This helps prevent excessive server load but may leave some documents unindexed.</source>
+        <target>crwdns393848:0crwdne393848:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask">
+        <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
+        <target>crwdns393850:0crwdne393850:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions">
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <target>crwdns393852:0crwdne393852:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs">
+        <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
+        <target>crwdns393854:0crwdne393854:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext">
+        <source>Enable MySQL specific fulltext search: After toggling this flag the database schema should be updated using System → Maintenance →  Analyze Database Structure.</source>
+        <target>crwdns393856:0crwdne393856:0</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.deleteFromIndexAfterEditing">
+        <source>Remove content from index if page or its content is edited</source>
+        <target>crwdns141811:0crwdne141811:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
