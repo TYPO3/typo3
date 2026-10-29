@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Панель керування</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Додати віджет</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Додати віджет</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">Видалити</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">Видалити віджет</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">Ви впевнені, що хочете видалити цей віджет?</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">Під час отримання інформації для цього віджета сталася помилка. Спробуйте ще раз, і якщо проблема не зникне, зверніться до адміністратора.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">Моя інформаційна панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">Створіть нову інформаційну панель із деякими загальними віджетами TYPO3 на ній</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">Порожня панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">Ваша інформаційна панель буде створена без будь-яких віджетів.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">Додати інформаційну панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">Додати інформаційну панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">Налаштування інформаційної панелі</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">Зберегти інформаційну панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">Видалити інформаційну панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">Ви впевнені, що хочете видалити цю інформаційну панель?</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Так, видалити</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">Заголовок інформаційної панелі</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">Початок роботи з TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">Додайте ярлик до посібника з початку роботи з TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">Не знайомі з TYPO3? У нашому посібнику з початку роботи ви дізнаєтеся про основи використання TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">Посібник для початківців</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Посилання на шаблон TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">Додайте ярлик до довідника шаблону TYPO3 TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">Цей документ є довідником, який використовується для пошуку шаблонів TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Довідник шаблону TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">TSconfig посилання</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">Додайте ярлик до TYPO3 TSconfig Reference.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">Цей документ описує TSconfig та його параметри.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">Довідник TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">Новини TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">Додати список новин проекту TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">Більше новин TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">Про TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">Деякі загальні відомості про TYPO3 і використовувану версію</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS система управління вмістом корпоративного класу з відкритим кодом, використовується на міжнародному рівні для створення та керування веб-сайтами всіх типів, від невеликих сайтів для некомерційного використання до багатомовних корпоративних рішень для великих корпорацій.&lt;br /&gt;&lt;br /&gt;Для отримання додаткової інформації відвідайте &lt;a href="https://typo3.org/typo3-cms/" target="_blank"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS &lt;b&gt;вільно доступна&lt;/b&gt; за &lt;a href="https://typo3.org/typo3-cms/overview/licenses/" target="_blank"&gt;TYPO3-ліцензією (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Ви використовуєте версію %s - Авторське право %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Логотип TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">Кількість помилок у системному журналі</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">Показує кількість помилок у системному журналі за останній місяць, згрупованих за датою</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">Показати всі помилки в журналі</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">Кількість помилок</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">Тип серверних користувачів</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">Показує кількість звичайних користувачів і адміністраторів</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">Звичайні користувачі</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">Адміністратори</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">Помилка входу в систему</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">За останні 24 години</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">Інформація про кількість невдалих входів за останні 24 години.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">Рекомендації щодо безпеки TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">Додайте список порад щодо безпеки з проекту TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">Більше порад щодо безпеки TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Загальне</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">TYPO3 спільнота</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Новини</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Документація</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">Системна інфрмація</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">Без віджетів</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">На цій інформаційній панелі ще немає віджетів. Ви можете додати віджети зараз, натиснувши кнопку нижче.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">Додати віджет</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
