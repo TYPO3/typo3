@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Wstaw za: Zawartość schowka jest wstawiana za tym rekordem</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Wstaw do: Zawartość schowka jest wstawiana na tej stronie</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Wstaw zawartość ze schowka</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Zaznacz/Odznacz wszystkie</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Przenieś zaznaczone rekordy do schowka</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Zaznacz duplikaty</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Edytuj zaznaczone</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Usuń zaznaczone</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Czy jesteś pewien, że chcesz usunąć wszystkie zaznaczone rekordy z tabeli '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" approved="yes">
+        <source>Info</source>
+        <target state="final">Informacje</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Edytuj rekord</target>
+      </trans-unit>
+      <trans-unit id="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Edytuj właściwości strony</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Nowy rekord</target>
+      </trans-unit>
+      <trans-unit id="newRecordOfType" approved="yes">
+        <source>New %s</source>
+        <target state="final">Nowy %s</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Utwórz nową stronę za tą stroną</target>
+      </trans-unit>
+      <trans-unit id="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Stwórz nowy rekord za tym rekordem</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Stwórz nowy rekord</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Przesuń w górę listy</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Przesuń w dół listy</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Przenieś element zawartości</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Przenieś stronę</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Ukryj rekord</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Odkryj rekord</target>
+      </trans-unit>
+      <trans-unit id="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Ukryj stronę</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Odkryj stronę</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Przenieś stronę o poziom w górę (obok rodzica)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Przenieś stronę jako podstronę dla strony powyżej</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Usuń</target>
+      </trans-unit>
+      <trans-unit id="history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Historia/Przywróć</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Wyświetl wersje</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Ustaw uprawnienia dla strony</target>
+      </trans-unit>
+      <trans-unit id="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Widok rozszerzony</target>
+      </trans-unit>
+      <trans-unit id="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Wyświetl wszystkie tabele</target>
+      </trans-unit>
+      <trans-unit id="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Wyświetl tylko tę tabelę</target>
+      </trans-unit>
+      <trans-unit id="collapseExpandTable" approved="yes">
+        <source>Collapse and expand records of table "%s"</source>
+        <target state="final">Zwiń i rozwiń rekordy tabeli "%s"</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Pokaż schowek</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Edytuj wszystkie pokazane pola w rekordach</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Edytuj '%s' pole w rekordach</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Czy jesteś pewien, że chcesz usunąć ten rekord? '%s'</target>
+      </trans-unit>
+      <trans-unit id="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Widok lokalizacji</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Domyślny</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Wszystkie języki</target>
+      </trans-unit>
+      <trans-unit id="Localize" approved="yes">
+        <source>Localize to</source>
+        <target state="final">Zlokalizuj do</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Pokazuje rekordy</target>
+      </trans-unit>
+      <trans-unit id="pageIndicator" approved="yes">
+        <source>Page %1$s of %2$d</source>
+        <target state="final">Strona %1$s z %2$d</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Records %1$d - %2$d</source>
+        <target state="final">Rekordy %1$d - %2$d</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" approved="yes">
+        <source>Missing TCA definition</source>
+        <target state="final">Brakująca definicja TCA</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessage" approved="yes">
+        <source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+        <target state="final">Nie znaleziono pól dla tabeli "%s". $TCA['%s']['columns'] nie zawiera niezbędnych definicji.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOnThisPage" approved="yes">
+        <source>There are no records on this page.</source>
+        <target state="final">Ta strona nie zawiera rekordów.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOfTypeOnThisPage" approved="yes">
+        <source>There are no records of type "%s" on this page.</source>
+        <target state="final">Brak rekordów typu "%s" na tej stronie.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anuluj</target>
+      </trans-unit>
+      <trans-unit id="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zamknij</target>
+      </trans-unit>
+      <trans-unit id="button.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Usuń</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
