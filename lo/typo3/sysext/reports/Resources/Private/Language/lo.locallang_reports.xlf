@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ຕົກລົງ</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">ກວດພົບຄ່າທີ່ບໍ່ຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">ບໍ່ປອດໄພ</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">ເປີດໃຊ້ງານແບບຖາວອນ</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">ເປີດໃຊ້ງານແບບຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">ວ່າງເປົ່າ</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">ບໍ່ມີ</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">ການເຊື່ອມຕໍ່ລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">ການກວດສອບລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">ອັບເດດສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">ອັບເດດບໍ່ສຳເລັດ</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">ກວດພົບໜຶ່ງ ຫຼື ຫຼາຍບັນຫາໃນການຕິດຕັ້ງ TYPO3 ຂອງທ່ານ. ກະລຸນາກວດສອບ %sລາຍງານສະຖານະ%s ສຳລັບຂໍ້ມູນເພີ່ມເຕີມ.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">ລາຍງານນີ້ປະກອບມີທຸກການແຈ້ງເຕືອນສະຖານະລະບົບຈາກການຕິດຕັ້ງ TYPO3 ຂອງທ່ານ. ກະລຸນາກວດສອບ %sລາຍງານສະຖານະ%s ສຳລັບຂໍ້ມູນເພີ່ມເຕີມ.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">ລະບົບ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">ຄວາມປອດໄພ</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">ການກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">ດັດຊະນີການອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">ຊັ້ນນາມມະທຳຂອງໄຟລ໌ (FAL)</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">ໄຟລ໌ທີ່ຖືກໝາຍວ່າຫາຍສາບສູນ</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">ໄຟລ໌ເຫຼົ່ານີ້ຖືກໝາຍວ່າຫາຍສາບສູນ. ກະລຸນາກູ້ຄືນໄຟລ໌ ແລະ ເປີດໃຊ້ງານຕົວເຮັດດັດຊະນີ (indexer) ເພື່ອລ້າງເຄື່ອງໝາຍການຫາຍສາບສູນອອກ.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">ການກຳນົດຄ່າ Memcached</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">ສິດການເຂົ້າເຖິງຂອງໄຟລ໌ທີ່ຖືກສ້າງຂຶ້ນ</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">ໄຟລ໌ທີ່ສ້າງໂດຍ TYPO3 ຖືກກຳນົດໃຫ້ທຸກຄົນສາມາດຂຽນຂໍ້ມູນລົງໄດ້. ຂຶ້ນຢູ່ກັບການກຳນົດຄ່າເຊີເວີຂອງທ່ານ, ສິ່ງນີ້ອາດສົ່ງຜົນກະທົບຕໍ່ຄວາມປອດໄພ. ປົກກະຕິແລ້ວ ຄວນກຳນົດຄ່າ create mask ເພື່ອບໍ່ອະນຸຍາດໃຫ້ "ບຸກຄົນອື່ນ" ສາມາດຂຽນໄຟລ໌ໄດ້. ຄ່າເລີ່ມຕົ້ນທີ່ເໝາະສົມແມ່ນ '0660' ສຳລັບ $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. ເຊິ່ງສາມາດຕັ້ງຄ່າໄດ້ໃນເຄື່ອງມືການຕິດຕັ້ງ (install tool).</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">ສິດການເຂົ້າເຖິງຂອງໂຟນເດີທີ່ຖືກສ້າງຂຶ້ນ</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">ໂຟນເດີທີ່ສ້າງໂດຍ TYPO3 ຖືກກຳນົດໃຫ້ທຸກຄົນສາມາດຂຽນຂໍ້ມູນລົງໄດ້. ຂຶ້ນຢູ່ກັບການກຳນົດຄ່າເຊີເວີຂອງທ່ານ, ສິ່ງນີ້ອາດສົ່ງຜົນກະທົບຕໍ່ຄວາມປອດໄພ. ປົກກະຕິແລ້ວ ຄວນກຳນົດຄ່າ create mask ເພື່ອບໍ່ອະນຸຍາດໃຫ້ "ບຸກຄົນອື່ນ" ສາມາດຂຽນລົງໃນໂຟນເດີໄດ້. ຄ່າເລີ່ມຕົ້ນທີ່ເໝາະສົມແມ່ນ '2770' ສຳລັບ $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. ເຊິ່ງສາມາດຕັ້ງຄ່າໄດ້ໃນເຄື່ອງມືການຕິດຕັ້ງ (install tool).</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">ຊຸດຕົວອັກສອນຂອງຖານຂໍ້ມູນ MySQL</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">ການກວດສອບຊຸດຕົວອັກສອນຂອງຖານຂໍ້ມູນລົ້ມເຫຼວ, ໄດ້ຮັບຄ່າ "%1$s" ແທນທີ່ຈະແມ່ນ "character_set_database"</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">ຖານຂໍ້ມູນເລີ່ມຕົ້ນຂອງທ່ານໃຊ້ຊຸດຕົວອັກສອນ "%1$s", ແຕ່ TYPO3 ຮອງຮັບສະເພາະ "utf8", "utf8mb3" ຫຼື "utf8mb4" ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">ຖານຂໍ້ມູນເລີ່ມຕົ້ນຂອງທ່ານໃຊ້ utf-8. ທຸກຢ່າງຮຽບຮ້ອຍດີ.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">ຖານຂໍ້ມູນເລີ່ມຕົ້ນຂອງທ່ານໃຊ້ຊຸດຕົວອັກສອນອື່ນ, ແຕ່ທຸກຕາຕະລາງໃຊ້ utf-8. ຖືວ່າຮຽບຮ້ອຍດີ. ແນວໃດກໍຕາມ, ທ່ານຄວນພິຈາລະນາແກ້ໄຂການຈັດລຽງລຳດັບຂໍ້ມູນ (collation) ຂອງຖານຂໍ້ມູນ ແລະ ກວດສອບການຕັ້ງຄ່າການສ້າງຕາຕະລາງ.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">ຖານຂໍ້ມູນເລີ່ມຕົ້ນຂອງທ່ານຖືກຕັ້ງຄ່າໃຫ້ສ້າງຕາຕະລາງດ້ວຍຊຸດຕົວອັກສອນ "%1$s", ແຕ່ພັດມີຕາຕະລາງ ຫຼື ຄໍລຳ ທີ່ໃຊ້ການຈັດລຽງລຳດັບຂໍ້ມູນ (collation) ທີ່ແຕກຕ່າງກັນ. ກະລຸນາແກ້ໄຂຕາຕະລາງເຫຼົ່ານີ້ເພື່ອຫຼີກເວັ້ນຂໍ້ຜິດພາດ "illegal mix of collations".</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">ການເຊື່ອມຕໍ່ສ່ວນຫຼັງແບບເຂົ້າລະຫັດ (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">ການເຂົ້າເຖິງສ່ວນຫຼັງ (backend) ຂອງທ່ານບໍ່ໄດ້ປອດໄພຍ້ອນບໍ່ໄດ້ໃຊ້ HTTPS ແຕ່ພັດໃຊ້ HTTP ເຊິ່ງຈະສົ່ງຂໍ້ມູນທັງໝົດຂອງທ່ານ (ລວມທັງລະຫັດຜ່ານ) ຜ່ານການເຊື່ອມຕໍ່ທີ່ບໍ່ປອດໄພ. ເວັບໄຊສະໄໝໃໝ່ທັງໝົດຄວນໃຊ້ HTTPS, ຍົກເວັ້ນບາງເວັບໄຊທີ່ມີລະບົບຄວາມປອດໄພແບບອື່ນ ເຊັ່ນ: ການຕິດຕັ້ງໃນລະບົບເຄືອຂ່າຍພາຍໃນ (intranet) ບາງແຫ່ງທີ່ອາດຈະໃຊ້ HTTP ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">ສ່ວນຫຼັງສາມາດເຂົ້າເຖິງໄດ້ຜ່ານ HTTPS ເທົ່ານັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[ຂໍແນະນຳຢ່າງຍິ່ງໃຫ້ເປີດໃຊ້ງານຕົວເລືອກ (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">ຮູບແບບ Host ທີ່ເຊື່ອຖືໄດ້</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">ຄີເຂົ້າລະຫັດ (Encryption Key)</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">ຮູບແບບການປະຕິເສດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">ການປ້ອງກັນການອັບໂຫຼດ .htaccess</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">ຕົວຈັດການຂໍ້ຍົກເວັ້ນ / ການລາຍງານຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" approved="yes">
+        <source>XML/T3D export files</source>
+        <target state="final">ໄຟລ໌ສົ່ງອອກ XML/T3D</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">Display Errors ຖືກຕັ້ງເປັນ 1 - ຂໍ້ຜິດພາດຈະຖືກສະແດງຜ່ານ DebugExceptionHandler ລວມທັງລາຍລະອຽດຂັ້ນຕອນການເຮັດວຽກ (stack traces).</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">Debug Exception Handler ຖືກເປີດໃຊ້ງານໃນບໍລິບົດການຜະລິດ (Production Context) - ຈະສະແດງຂໍ້ຄວາມຂໍ້ຜິດພາດແບບເຕັມລວມທັງລາຍລະອຽດຂັ້ນຕອນການເຮັດວຽກ (stack traces).</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files were found:</source>
+        <target state="final">ກວດພົບໄຟລ໌ທີ່ສົ່ງອອກດັ່ງຕໍ່ໄປນີ້:</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" approved="yes">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target state="final">ຂໍແນະນຳໃຫ້ລຶບໄຟລ໌ທີ່ສົ່ງອອກ ເພື່ອຫຼີກເວັ້ນການຮົ່ວໄຫຼຂອງຂໍ້ມູນທີ່ສົ່ງອອກໄປຫາຜູ້ໃຊ້ສ່ວນຫຼັງ (backend users) ທີ່ມີສິດການເຂົ້າເຖິງຕ່ຳກວ່າ ຫຼື ແຕກຕ່າງຈາກຜູ້ໃຊ້ທີ່ເປັນຄົນສ້າງໄຟລ໌ສົ່ງອອກນັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">ເຄື່ອງມືການຕິດຕັ້ງ (Install Tool)</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">ໂມດູນ PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">ມີໜຶ່ງ ຫຼື ຫຼາຍໂມດູນຫາຍໄປ.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">ໂມດູນ PHP ຕໍ່ໄປນີ້ຫາຍໄປ: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">ທ່ານຈຳເປັນຕ້ອງຕິດຕັ້ງ ແລະ ເປີດໃຊ້ງານໂມດູນເຫຼົ່ານີ້ເພື່ອໃຫ້ TYPO3 ເຮັດວຽກໄດ້ຢ່າງຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">ຢ່າງໃດຢ່າງໜຶ່ງໃນນີ້: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">ຕິດຕັ້ງໂມດູນທີ່ຈຳເປັນທັງໝົດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">ເຄື່ອງມືການຕິດຕັ້ງຖືກເປີດໃຊ້ງານຊົ່ວຄາວ. ກະລຸນາລຶບໄຟລ໌ "%s" ເມື່ອທ່ານຕັ້ງຄ່າ TYPO3 ສຳເລັດແລ້ວ. ຖ້າບໍ່ໄດ້ໃຊ້ງານ ເຄື່ອງມືການຕິດຕັ້ງຈະຖືກປິດໃຊ້ງານໂດຍອັດຕະໂນມັດໃນອີກ %s ນາທີ.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">ອັບເດດສະຖານະລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">ດຳເນີນການກວດສອບສະຖານະລະບົບ ແລະ ສົ່ງການແຈ້ງເຕືອນຫາກກວດພົບບັນຫາ.</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">ສົ່ງການແຈ້ງເຕືອນໄປຫາ: %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">ທີ່ຢູື່ອີເມລສຳລັບການແຈ້ງເຕືອນ (ໜຶ່ງລາຍການຕໍ່ແຖວ)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">ທີ່ຢູື່ອີເມລສຳລັບການແຈ້ງເຕືອນວ່າງເປົ່າ ຫຼື ບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">ສົ່ງອີເມລແຈ້ງເຕືອນສະເໝີ (ບໍ່ແມ່ນສະເພາະຕອນມີຂໍ້ຜິດພາດ ຫຼື ຄຳເຕືອນ).</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">ການແຈ້ງເຕືອນສະຖານະລະບົບສຳລັບເວັບໄຊ %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">ບັນຫາ</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">ມີການໃຊ້ XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">ລະບົບຂອງທ່ານມີການລົງທະບຽນ XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS ສາມາດຂຽນທັບເມທອດ (methods) ຫຼື ຄລາສ (classes) ຂອງລະບົບຫຼັກ ຫຼື ສ່ວນເສີມອື່ນໆ. ນີ້ບໍ່ແມ່ນສິ່ງທີ່ບໍ່ດີສະເໝີໄປ, ແຕ່ XCLASS ເຫຼົ່ານັ້ນອາດຈະໃຊ້ວຽກບໍ່ໄດ້ໃນລະຫວ່າງການອັບເກຣດສ່ວນເສີມ ຫຼື ລະບົບຫຼັກ. ທ່ານຄວນຕິດຕາມເບິ່ງຄວາມເຂົ້າກັນໄດ້ຂອງສ່ວນເສີມ ແລະ ກວດສອບໃຫ້ແນ່ໃຈວ່າການເຮັດວຽກທີ່ຕ້ອງການຍັງຄືເກົ່າຫຼັງຈາກການອັບເດດ.</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2$s ລົງທະບຽນ XCLASS ຂອງ %1$s</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing" approved="yes">
+        <source>Image Processing</source>
+        <target state="final">ການປະມວນຜົນຮູບພາບ</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp" approved="yes">
+        <source>WebP support and availability</source>
+        <target state="final">ການຮອງຮັບ ແລະ ການພ້ອມໃຊ້ງານຂອງ WebP</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled" approved="yes">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target state="final">ການປະມວນຜົນຮູບພາບຜ່ານ ImageMagick/GraphicsMagick ຖືກປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_configured" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+        <target state="final">ການສ້າງຮູບພາບ WebP ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext]. ຈະບໍ່ມີການສ້າງໄຟລ໌ຮູບພາບ WebP.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">ການສ້າງຮູບພາບ WebP ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext], ແຕ່ມັນຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_available" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
+        <target state="final">ການສ້າງຮູບພາບ WebP ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext], ແຕ່ມັນບໍ່ໄດ້ຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick. ກະລຸນາອັບເດດສະພາບແວດລ້ອມລະບົບຂອງທ່ານ ຫຼື ປິດການຮອງຮັບ WebP ໃນການກຳນົດຄ່າຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available_and_configured" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">ການສ້າງຮູບພາບ WebP ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext] ແລະ ຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick — ທຸກຢ່າງຖືກກຳນົດຄ່າຢ່າງຖືກຕ້ອງແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif" approved="yes">
+        <source>AVIF support and availability</source>
+        <target state="final">ການຮອງຮັບ ແລະ ການພ້ອມໃຊ້ງານຂອງ AVIF</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_configured" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+        <target state="final">ການສ້າງຮູບພາບ AVIF ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext]. ຈະບໍ່ມີການສ້າງໄຟລ໌ຮູບພາບ AVIF.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">ການສ້າງຮູບພາບ AVIF ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext], ແຕ່ມັນຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_available" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+        <target state="final">ການສ້າງຮູບພາບ AVIF ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext], ແຕ່ມັນບໍ່ໄດ້ຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick. ກະລຸນາອັບເດດສະພາບແວດລ້ອມລະບົບຂອງທ່ານ ຫຼື ປິດການຮອງຮັບ AVIF ໃນການກຳນົດຄ່າຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available_and_configured" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">ການສ້າງຮູບພາບ AVIF ຖືກເປີດໃຊ້ງານໃນ $TYPO3_CONF_VARS[GFX][imagefile_ext] ແລະ ຖືກຮອງຮັບໂດຍ ImageMagick/GraphicsMagick — ທຸກຢ່າງຖືກກຳນົດຄ່າຢ່າງຖືກຕ້ອງແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="status_problem_notification_cli_disclaimer" approved="yes">
+        <source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+        <target state="final">ລາຍງານນີ້ຖືກສ້າງຂຶ້ນມາຈາກບໍລິບົດ Command Line Interface (CLI). ການຕັ້ງຄ່າ PHP ແລະ ໂມດູນຕ່າງໆ ອາດຈະແຕກຕ່າງຈາກອັນທີ່ກຳນົດໄວ້ສຳລັບຂະບວນການຂອງເວັບເຊີເວີ, ຕົວຢ່າງເຊັ່ນ: ເມື່ອນຳໃຊ້ໄຟລ໌ php.ini ທີ່ແຕກຕ່າງກັນ. ໃນກໍລະນີທີ່ມີບັນຫາ, ໃຫ້ປຽບທຽບລາຍງານນີ້ ກັບລາຍງານທີ່ສ້າງຂຶ້ນຜ່ານໂມດູນລາຍງານຂອງລະບົບຫຼັງບ້ານ (backend) ສະເໝີ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
