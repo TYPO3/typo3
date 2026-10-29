@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="width" approved="yes">
+        <source>Width</source>
+        <target state="final">عرض</target>
+      </trans-unit>
+      <trans-unit id="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">تبلت</target>
+      </trans-unit>
+      <trans-unit id="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">تلفن همراه</target>
+      </trans-unit>
+      <trans-unit id="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">اندازۀ دلخواه</target>
+      </trans-unit>
+      <trans-unit id="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">اندازۀ خودکار</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">بازآوری صفحه</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">زبان</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
