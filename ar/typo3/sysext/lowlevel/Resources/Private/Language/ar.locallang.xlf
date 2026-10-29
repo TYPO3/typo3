@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">التكوين للعَرض</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline" approved="yes">
+        <source>Configuration of "%1s"</source>
+        <target state="final">التكوين الخاص بـ "%1s"</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (تكوين إعدادات المستخدم)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">طُرق الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP Middlewares (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations" approved="yes">
+        <source>Content Security Policy Mutations</source>
+        <target state="final">تغييرات سياسة أمان المحتوى</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Event Listeners (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" approved="yes">
+        <source>Soft Reference Parsers</source>
+        <target state="final">مُوزعِي المراجع المرنة</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems" approved="yes">
+        <source>Backend Toolbar Items</source>
+        <target state="final">عناصر شريط أدوات الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage" approved="yes">
+        <source>Symfony Expression Language Providers</source>
+        <target state="final">مُزودي لغة Symfony Expression</target>
+      </trans-unit>
+      <trans-unit id="translationDomainList" approved="yes">
+        <source>Translation Domain List</source>
+        <target state="final">قائمة نطاق الترجمة</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares" approved="yes">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target state="final">المكونات الوَسِيطَة لمُحرّك تعاليم الـ DBAL</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">نموذج: تكوين YAML</target>
+      </trans-unit>
+      <trans-unit id="backendModules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">وحدات الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">جدول الأُذُونات لكل نوع صفحة</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">البحث في جميع السجلات</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">البحث</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">البحث الكامل</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">تحديد السجلات</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">عد النتائج</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">شرح الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">تصدير CSV</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" approved="yes">
+        <source>The query returned no results.</source>
+        <target state="final">لم يُسفر الاستعلام عن أي نتائج.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions" approved="yes">
+        <source>Query options</source>
+        <target state="final">خيارات الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL" approved="yes">
+        <source>Full SQL query</source>
+        <target state="final">استعلام SQL الكامل</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error" approved="yes">
+        <source>SQL error</source>
+        <target state="final">خطأ SQL</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings" approved="yes">
+        <source>Query compilation</source>
+        <target state="final">تجميع الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage" approved="yes">
+        <source>Load/save query</source>
+        <target state="final">تحميل/حفظ الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">النتيجة</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound" approved="yes">
+        <source>records found.</source>
+        <target state="final">تم العثور على سجلات.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound" approved="yes">
+        <source>No records found.</source>
+        <target state="final">لم يتم العثور على سجلات.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label" approved="yes">
+        <source>Delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label" approved="yes">
+        <source>Load</source>
+        <target state="final">تحميل</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label" approved="yes">
+        <source>Save</source>
+        <target state="final"> حفظ</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label" approved="yes">
+        <source>Group by</source>
+        <target state="final">تجميع حسب</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">محدود</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label" approved="yes">
+        <source>Result type</source>
+        <target state="final">نوع النتيجة</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label" approved="yes">
+        <source>Order by</source>
+        <target state="final">الترتيب حسب</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">تنازليً</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label" approved="yes">
+        <source>Search type</source>
+        <target state="final">نوع البحث</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label" approved="yes">
+        <source>Query</source>
+        <target state="final">الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label" approved="yes">
+        <source>Fields</source>
+        <target state="final">الحقول</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label" approved="yes">
+        <source>Table</source>
+        <target state="final">الجدول</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label" approved="yes">
+        <source>Saved queries</source>
+        <target state="final">الاستعلامات المحفوظة</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0" approved="yes">
+        <source>[New]</source>
+        <target state="final">[جديد]</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" approved="yes">
+        <source>Negate</source>
+        <target state="final">الإنكار</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">إظهار أجزاء SQL</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">استخدام المقاطع المُنسّقَة والمُسميات والتواريخ بدلاً من القيم الأصلية للنتائج</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+        <target state="final">لا تستخدم القيم الأصلية بين قوسين كبادئة للنتائج المصنّفة</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">فرز خيارات مربع التحديد للعلاقات حسب التسمية وليس حسب القيمة</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">إظهار حتى المُدخلات المحذوفة (مع أزرار إلغاء الحذف)</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">لم يتم العثور على نتائج لـ "%s".</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword" approved="yes">
+        <source>Enter a search term to search for records</source>
+        <target state="final">أدخل مصطلح بحث للبحث عن السجلات</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">العدّ</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">البحث في قاعدة البيانات بأكملها</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
