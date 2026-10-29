@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="linkvalidator" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Check Links</source>
+        <target state="final">Vérifier les liens</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Validate links to external URLs and internal resources</source>
+        <target state="final">Vérifier les liens vers des URL externes et des ressources internes</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Identify broken or unreachable external URLs and internal resources.</source>
+        <target state="final">Identifiez les URLs externes et les ressources internes inaccessibles.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
