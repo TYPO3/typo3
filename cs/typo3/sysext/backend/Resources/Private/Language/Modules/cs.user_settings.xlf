@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/user_settings.xlf" date="2026-04-08T12:00:00Z" product-name="typo3-cms-backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Personal profile settings</source>
+        <target state="final">Nastavení osobního profilu</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
+        <target state="final">Tento modul vám umožňuje přizpůsobit si uživatelský profil v administraci. Zde můžete změnit aktuální jazyk systému, jméno a e-mailovou adresu. Můžete zde také nastavit další obecné funkce systému.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>User Settings</source>
+        <target state="final">Uživatelská nastavení</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
