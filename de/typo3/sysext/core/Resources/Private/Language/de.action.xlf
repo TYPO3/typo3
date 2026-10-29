@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="cancel">
+      <segment state="final">
+        <source>Cancel</source>
+        <target>Abbrechen</target>
+      </segment>
+    </unit>
+    <unit id="delete">
+      <segment state="final">
+        <source>Delete</source>
+        <target>Löschen</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
