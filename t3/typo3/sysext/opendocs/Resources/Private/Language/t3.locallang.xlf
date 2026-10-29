@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:opendocs/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="opendocs" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="toolbaritem">
+        <source>Recently opened documents</source>
+        <target>crwdns393070:0crwdne393070:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.headline">
+        <source>Recently opened documents</source>
+        <target>crwdns393072:0crwdne393072:0</target>
+      </trans-unit>
+      <trans-unit id="recentDocuments.emptyList">
+        <source>No documents were opened recently.</source>
+        <target>crwdns393074:0crwdne393074:0</target>
+      </trans-unit>
+      <trans-unit id="recentDocuments.lastOpened">
+        <source>Last opened</source>
+        <target>crwdns393076:0crwdne393076:0</target>
+      </trans-unit>
+      <trans-unit id="recentDocuments.path">
+        <source>Path</source>
+        <target>crwdns393078:0crwdne393078:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
