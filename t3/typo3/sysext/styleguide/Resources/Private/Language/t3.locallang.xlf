@@ -1,0 +1,2184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline">
+        <source>Components</source>
+        <target>crwdns379640:0crwdne379640:0</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title">
+        <source>Open %1s component</source>
+        <target>crwdns379642:0%1scrwdne379642:0</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline">
+        <source>Manage example page trees</source>
+        <target>crwdns379644:0crwdne379644:0</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline">
+        <source>Styles</source>
+        <target>crwdns379646:0crwdne379646:0</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title">
+        <source>Open %1s style</source>
+        <target>crwdns379648:0%1scrwdne379648:0</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder">
+        <source>GifBuilder</source>
+        <target>crwdns415765:0crwdne415765:0</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder.description">
+        <source>Live demos of every GIFBUILDER object — BOX, ELLIPSE, TEXT (with niceText and shadow variants), OUTLINE, EMBOSS, standalone SHADOW — plus every EFFECT value, the ADJUST tone curves, and the CROP / SCALE / IMAGE composites, all rendered through the real GifBuilder pipeline.</source>
+        <target>crwdns415767:0crwdne415767:0</target>
+      </trans-unit>
+      <trans-unit id="styleguide">
+        <source>Styleguide</source>
+        <target>crwdns379650:0crwdne379650:0</target>
+      </trans-unit>
+      <trans-unit id="action.accordion">
+        <source>Accordion</source>
+        <target>crwdns379652:0crwdne379652:0</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target>crwdns380626:0crwdne380626:0</target>
+      </trans-unit>
+      <trans-unit id="action.avatar">
+        <source>Avatar</source>
+        <target>crwdns379654:0crwdne379654:0</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target>crwdns380628:0crwdne380628:0</target>
+      </trans-unit>
+      <trans-unit id="action.badges">
+        <source>Badges</source>
+        <target>crwdns379656:0crwdne379656:0</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target>crwdns380630:0crwdne380630:0</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs">
+        <source>Breadcrumbs</source>
+        <target>crwdns379658:0crwdne379658:0</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target>crwdns380632:0crwdne380632:0</target>
+      </trans-unit>
+      <trans-unit id="action.buttons">
+        <source>Buttons</source>
+        <target>crwdns379660:0crwdne379660:0</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target>crwdns380634:0crwdne380634:0</target>
+      </trans-unit>
+      <trans-unit id="action.cards">
+        <source>Cards</source>
+        <target>crwdns379662:0crwdne379662:0</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target>crwdns380636:0crwdne380636:0</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes">
+        <source>Checkboxes</source>
+        <target>crwdns379664:0crwdne379664:0</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target>crwdns380638:0crwdne380638:0</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes">
+        <source>Comboboxes</source>
+        <target>crwdns379666:0crwdne379666:0</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target>crwdns380640:0crwdne380640:0</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation">
+        <source>Content Navigation</source>
+        <target>crwdns386060:0crwdne386060:0</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target>crwdns386062:0crwdne386062:0</target>
+      </trans-unit>
+      <trans-unit id="action.datetime">
+        <source>Datetime / Relative Time</source>
+        <target>crwdns392538:0crwdne392538:0</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target>crwdns392540:0crwdne392540:0</target>
+      </trans-unit>
+      <trans-unit id="action.exception">
+        <source>Exception</source>
+        <target>crwdns415769:0crwdne415769:0</target>
+      </trans-unit>
+      <trans-unit id="action.exception.description">
+        <source>Shows how an exception is displayed. Throws an actual exception inside a frame to also execute JavaScript (stacktrace copy).</source>
+        <target>crwdns415771:0crwdne415771:0</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens">
+        <source>Color Tokens</source>
+        <target>crwdns379668:0crwdne379668:0</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target>crwdns380642:0crwdne380642:0</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState">
+        <source>Accent and State</source>
+        <target>crwdns380850:0crwdne380850:0</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target>crwdns380852:0crwdne380852:0</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview">
+        <source>Components overview</source>
+        <target>crwdns379670:0crwdne379670:0</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target>crwdns380644:0crwdne380644:0</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools">
+        <source>Developer Tools</source>
+        <target>crwdns379672:0crwdne379672:0</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target>crwdns380646:0crwdne380646:0</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown">
+        <source>Dropdown</source>
+        <target>crwdns379674:0crwdne379674:0</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target>crwdns380648:0crwdne380648:0</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages">
+        <source>Flash messages</source>
+        <target>crwdns379676:0crwdne379676:0</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target>crwdns380650:0crwdne380650:0</target>
+      </trans-unit>
+      <trans-unit id="action.form">
+        <source>Form</source>
+        <target>crwdns379678:0crwdne379678:0</target>
+      </trans-unit>
+      <trans-unit id="action.form.description">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target>crwdns380652:0crwdne380652:0</target>
+      </trans-unit>
+      <trans-unit id="action.icons">
+        <source>Icons</source>
+        <target>crwdns379680:0crwdne379680:0</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target>crwdns380654:0crwdne380654:0</target>
+      </trans-unit>
+      <trans-unit id="action.infobox">
+        <source>Infobox</source>
+        <target>crwdns379682:0crwdne379682:0</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target>crwdns380656:0crwdne380656:0</target>
+      </trans-unit>
+      <trans-unit id="action.input">
+        <source>Input</source>
+        <target>crwdns379684:0crwdne379684:0</target>
+      </trans-unit>
+      <trans-unit id="action.input.description">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target>crwdns380658:0crwdne380658:0</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups">
+        <source>List groups</source>
+        <target>crwdns380862:0crwdne380862:0</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description">
+        <source>Lists for displaying a series of content.</source>
+        <target>crwdns380864:0crwdne380864:0</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees">
+        <source>Manage example page trees</source>
+        <target>crwdns379686:0crwdne379686:0</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target>crwdns380660:0crwdne380660:0</target>
+      </trans-unit>
+      <trans-unit id="action.modal">
+        <source>Modal</source>
+        <target>crwdns379688:0crwdne379688:0</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target>crwdns380662:0crwdne380662:0</target>
+      </trans-unit>
+      <trans-unit id="action.navs">
+        <source>Navs</source>
+        <target>crwdns379690:0crwdne379690:0</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target>crwdns380664:0crwdne380664:0</target>
+      </trans-unit>
+      <trans-unit id="action.notifications">
+        <source>Notifications</source>
+        <target>crwdns379692:0crwdne379692:0</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target>crwdns380666:0crwdne380666:0</target>
+      </trans-unit>
+      <trans-unit id="action.pagination">
+        <source>Pagination</source>
+        <target>crwdns379694:0crwdne379694:0</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target>crwdns380668:0crwdne380668:0</target>
+      </trans-unit>
+      <trans-unit id="action.panels">
+        <source>Panels</source>
+        <target>crwdns379696:0crwdne379696:0</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target>crwdns380670:0crwdne380670:0</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators">
+        <source>Progress indicators</source>
+        <target>crwdns379698:0crwdne379698:0</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target>crwdns380672:0crwdne380672:0</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers">
+        <source>Progress trackers</source>
+        <target>crwdns379700:0crwdne379700:0</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target>crwdns380674:0crwdne380674:0</target>
+      </trans-unit>
+      <trans-unit id="action.radio">
+        <source>Radio</source>
+        <target>crwdns379702:0crwdne379702:0</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target>crwdns380676:0crwdne380676:0</target>
+      </trans-unit>
+      <trans-unit id="action.select">
+        <source>Select</source>
+        <target>crwdns379704:0crwdne379704:0</target>
+      </trans-unit>
+      <trans-unit id="action.select.description">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target>crwdns380678:0crwdne380678:0</target>
+      </trans-unit>
+      <trans-unit id="action.shadows">
+        <source>Shadows</source>
+        <target>crwdns379706:0crwdne379706:0</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target>crwdns380680:0crwdne380680:0</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators">
+        <source>Status indicators</source>
+        <target>crwdns411433:0crwdne411433:0</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators.description">
+        <source>Small colored dots that communicate the state of records, tasks, and interface elements, including animated live and loading variants.</source>
+        <target>crwdns411435:0crwdne411435:0</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview">
+        <source>Styles overview</source>
+        <target>crwdns379708:0crwdne379708:0</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target>crwdns380682:0crwdne380682:0</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces">
+        <source>Surfaces</source>
+        <target>crwdns379710:0crwdne379710:0</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target>crwdns380684:0crwdne380684:0</target>
+      </trans-unit>
+      <trans-unit id="action.tab">
+        <source>Tabs</source>
+        <target>crwdns379712:0crwdne379712:0</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target>crwdns380686:0crwdne380686:0</target>
+      </trans-unit>
+      <trans-unit id="action.tables">
+        <source>Tables</source>
+        <target>crwdns379714:0crwdne379714:0</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target>crwdns380688:0crwdne380688:0</target>
+      </trans-unit>
+      <trans-unit id="action.textarea">
+        <source>Textarea</source>
+        <target>crwdns379716:0crwdne379716:0</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target>crwdns380690:0crwdne380690:0</target>
+      </trans-unit>
+      <trans-unit id="action.trees">
+        <source>Trees</source>
+        <target>crwdns379718:0crwdne379718:0</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target>crwdns380692:0crwdne380692:0</target>
+      </trans-unit>
+      <trans-unit id="action.typography">
+        <source>Typography</source>
+        <target>crwdns379720:0crwdne379720:0</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target>crwdns380694:0crwdne380694:0</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError">
+        <source>An error occured while processing the page tree</source>
+        <target>crwdns379722:0crwdne379722:0</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton">
+        <source>Create page tree</source>
+        <target>crwdns379724:0crwdne379724:0</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton">
+        <source>Delete page tree and all related records</source>
+        <target>crwdns379726:0crwdne379726:0</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle">
+        <source>Data created</source>
+        <target>crwdns379728:0crwdne379728:0</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody">
+        <source>A page tree with TCA demo records was created.</source>
+        <target>crwdns379730:0crwdne379730:0</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle">
+        <source>No data created</source>
+        <target>crwdns379732:0crwdne379732:0</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target>crwdns379734:0crwdne379734:0</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle">
+        <source>Data deleted</source>
+        <target>crwdns379736:0crwdne379736:0</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody">
+        <source>The page tree and all related records were deleted.</source>
+        <target>crwdns379738:0crwdne379738:0</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel">
+        <source>A localized label</source>
+        <target>crwdns379740:0crwdne379740:0</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3">
+        <source>A localized help text</source>
+        <target>crwdns379742:0crwdne379742:0</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle">
+        <source>Form engine - Minimal table configuration</source>
+        <target>crwdns379744:0crwdne379744:0</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField">
+        <source>Title field</source>
+        <target>crwdns379746:0crwdne379746:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets">
+        <source>Create page tree with site sets</source>
+        <target>crwdns379748:0crwdne379748:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate">
+        <source>Create page tree with sys_template</source>
+        <target>crwdns379750:0crwdne379750:0</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton">
+        <source>Delete page tree and all related records</source>
+        <target>crwdns379752:0crwdne379752:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle">
+        <source>Data created</source>
+        <target>crwdns379754:0crwdne379754:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody">
+        <source>A page tree with content elements was created.</source>
+        <target>crwdns379756:0crwdne379756:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle">
+        <source>No data created</source>
+        <target>crwdns379758:0crwdne379758:0</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target>crwdns379760:0crwdne379760:0</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle">
+        <source>Data deleted</source>
+        <target>crwdns379762:0crwdne379762:0</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody">
+        <source>The page tree and all related records were deleted.</source>
+        <target>crwdns379764:0crwdne379764:0</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel">
+        <source>Item group from locallang</source>
+        <target>crwdns379766:0crwdne379766:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title">
+        <source>Styleguide Frontend</source>
+        <target>crwdns379768:0crwdne379768:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0">
+        <source>Main content</source>
+        <target>crwdns379770:0crwdne379770:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.title">
+        <source>Styleguide Content Restrictions</source>
+        <target>crwdns415773:0crwdne415773:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.0">
+        <source>Unrestricted (any content type)</source>
+        <target>crwdns415775:0crwdne415775:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.1">
+        <source>Allowed only: Header, Text, Text &amp; Media</source>
+        <target>crwdns415777:0crwdne415777:0</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.2">
+        <source>Disallowed: Image, HTML, Text &amp; Media</source>
+        <target>crwdns415779:0crwdne415779:0</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label">
+        <source>Color scheme:</source>
+        <target>crwdns379772:0crwdne379772:0</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline">
+        <source>Color scheme</source>
+        <target>crwdns379774:0crwdne379774:0</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline">
+        <source>Frontend Styleguide</source>
+        <target>crwdns379776:0crwdne379776:0</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline">
+        <source>Avatar</source>
+        <target>crwdns379778:0crwdne379778:0</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target><![CDATA[crwdns379780:0crwdne379780:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379782:0crwdne379782:0</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target>crwdns379784:0crwdne379784:0</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline">
+        <source>Status</source>
+        <target>crwdns379786:0crwdne379786:0</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target>crwdns379788:0crwdne379788:0</target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline">
+        <source>Badges</source>
+        <target>crwdns379790:0crwdne379790:0</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target>crwdns380696:0crwdne380696:0</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline">
+        <source>Color</source>
+        <target>crwdns379792:0crwdne379792:0</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379794:0crwdne379794:0</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline">
+        <source>Shape</source>
+        <target>crwdns379796:0crwdne379796:0</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline">
+        <source>Usage within headings</source>
+        <target>crwdns379798:0crwdne379798:0</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline">
+        <source>Breadcrumb</source>
+        <target>crwdns379800:0crwdne379800:0</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target>crwdns380698:0crwdne380698:0</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline">
+        <source>Buttons</source>
+        <target>crwdns379802:0crwdne379802:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target>crwdns380700:0crwdne380700:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline">
+        <source>Color</source>
+        <target>crwdns379804:0crwdne379804:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379806:0crwdne379806:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline">
+        <source>Active state</source>
+        <target>crwdns379808:0crwdne379808:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline">
+        <source>Disabled state</source>
+        <target>crwdns379810:0crwdne379810:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline">
+        <source>Types</source>
+        <target>crwdns379812:0crwdne379812:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline">
+        <source>Additional icon</source>
+        <target>crwdns379814:0crwdne379814:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline">
+        <source>Size</source>
+        <target>crwdns380702:0crwdne380702:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline">
+        <source>Default size</source>
+        <target>crwdns380704:0crwdne380704:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline">
+        <source>Small size</source>
+        <target>crwdns380706:0crwdne380706:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.headline">
+        <source>Button groups</source>
+        <target>crwdns394454:0crwdne394454:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.basic.headline">
+        <source>Basic button group</source>
+        <target>crwdns394456:0crwdne394456:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.toolbar.headline">
+        <source>Button toolbar</source>
+        <target>crwdns394458:0crwdne394458:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.sizes.headline">
+        <source>Button group sizing</source>
+        <target>crwdns394460:0crwdne394460:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.dropdown.headline">
+        <source>Button group with dropdown</source>
+        <target>crwdns394462:0crwdne394462:0</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.vertical.headline">
+        <source>Vertical button group</source>
+        <target>crwdns394464:0crwdne394464:0</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline">
+        <source>Cards</source>
+        <target>crwdns379816:0crwdne379816:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target>crwdns379818:0crwdne379818:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline">
+        <source>Alignment</source>
+        <target>crwdns379820:0crwdne379820:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target><![CDATA[crwdns379822:0crwdne379822:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline">
+        <source>Color</source>
+        <target>crwdns379824:0crwdne379824:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target><![CDATA[crwdns379826:0crwdne379826:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379828:0crwdne379828:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target>crwdns379830:0crwdne379830:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline">
+        <source>"Extension Manager" module</source>
+        <target>crwdns379832:0crwdne379832:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target>crwdns379834:0crwdne379834:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline">
+        <source>Form fields in cards</source>
+        <target>crwdns379836:0crwdne379836:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target><![CDATA[crwdns381114:0%1scrwdnd381114:0%2scrwdnd381114:0%3scrwdne381114:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline">
+        <source>Lists in cards</source>
+        <target>crwdns380888:0crwdne380888:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline">
+        <source>Multiple cards</source>
+        <target>crwdns379840:0crwdne379840:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target><![CDATA[crwdns379842:0crwdne379842:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline">
+        <source>Rows in cards</source>
+        <target>crwdns379844:0crwdne379844:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target>crwdns379846:0crwdne379846:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline">
+        <source>Size</source>
+        <target>crwdns379848:0crwdne379848:0</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target><![CDATA[crwdns379850:0crwdne379850:0]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline">
+        <source>Checkboxes</source>
+        <target>crwdns379852:0crwdne379852:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target>crwdns380708:0crwdne380708:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline">
+        <source>Card-Layout</source>
+        <target>crwdns379854:0crwdne379854:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline">
+        <source>Checkbox toggle button</source>
+        <target>crwdns379856:0crwdne379856:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379858:0crwdne379858:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline">
+        <source>Icon Toggle</source>
+        <target>crwdns379860:0crwdne379860:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline">
+        <source>Labeled Toggle</source>
+        <target>crwdns379862:0crwdne379862:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline">
+        <source>Switch</source>
+        <target>crwdns379864:0crwdne379864:0</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline">
+        <source>Toggle</source>
+        <target>crwdns379866:0crwdne379866:0</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline">
+        <source>Comboboxes</source>
+        <target>crwdns379868:0crwdne379868:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target>crwdns380710:0crwdne380710:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379870:0crwdne379870:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline">
+        <source>Placeholder</source>
+        <target>crwdns379872:0crwdne379872:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline">
+        <source>Disabled</source>
+        <target>crwdns379874:0crwdne379874:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline">
+        <source>Readonly</source>
+        <target>crwdns379876:0crwdne379876:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline">
+        <source>Additional text</source>
+        <target>crwdns379878:0crwdne379878:0</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline">
+        <source>State</source>
+        <target>crwdns379880:0crwdne379880:0</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline">
+        <source>Dropdown</source>
+        <target>crwdns379882:0crwdne379882:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target>crwdns380712:0crwdne380712:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline">
+        <source>Toggles</source>
+        <target>crwdns379884:0crwdne379884:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline">
+        <source>Basic</source>
+        <target>crwdns379886:0crwdne379886:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline">
+        <source>States</source>
+        <target>crwdns379888:0crwdne379888:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline">
+        <source>Header</source>
+        <target>crwdns379890:0crwdne379890:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline">
+        <source>Advanced Buttons</source>
+        <target>crwdns379892:0crwdne379892:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline">
+        <source>Text</source>
+        <target>crwdns379894:0crwdne379894:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline">
+        <source>Rows</source>
+        <target>crwdns379896:0crwdne379896:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline">
+        <source>Divider</source>
+        <target>crwdns379898:0crwdne379898:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline">
+        <source>Table</source>
+        <target>crwdns379900:0crwdne379900:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline">
+        <source>List items with actions</source>
+        <target>crwdns379902:0crwdne379902:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline">
+        <source>Positions</source>
+        <target>crwdns390772:0crwdne390772:0</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline">
+        <source>Nested Submenu</source>
+        <target>crwdns391514:0crwdne391514:0</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline">
+        <source>Developer Tools</source>
+        <target>crwdns379904:0crwdne379904:0</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target>crwdns380714:0crwdne380714:0</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379906:0crwdne379906:0</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <trans-unit id="component.exception.headline">
+        <source>Exception</source>
+        <target>crwdns415781:0crwdne415781:0</target>
+      </trans-unit>
+      <trans-unit id="component.exception.introtext">
+        <source>Page rendered by the configured exception handler when an uncaught exception occurs. The example exception is thrown for demonstration only.</source>
+        <target>crwdns415783:0crwdne415783:0</target>
+      </trans-unit>
+      <trans-unit id="component.exception.preview.title">
+        <source>Exception page</source>
+        <target>crwdns415785:0crwdne415785:0</target>
+      </trans-unit>
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline">
+        <source>Flash messages</source>
+        <target>crwdns379908:0crwdne379908:0</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target>crwdns380716:0crwdne380716:0</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline">
+        <source>Color</source>
+        <target>crwdns379910:0crwdne379910:0</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target><![CDATA[crwdns379912:0crwdne379912:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379914:0crwdne379914:0</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline">
+        <source>Form</source>
+        <target>crwdns379916:0crwdne379916:0</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target>crwdns380718:0crwdne380718:0</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline">
+        <source>Form with all fields and labels</source>
+        <target>crwdns379918:0crwdne379918:0</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target>crwdns379920:0crwdne379920:0</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline">
+        <source>Form fields in rows</source>
+        <target>crwdns379922:0crwdne379922:0</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline">
+        <source>Login form example</source>
+        <target>crwdns379924:0crwdne379924:0</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline">
+        <source>Infobox</source>
+        <target>crwdns379926:0crwdne379926:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target>crwdns379928:0crwdne379928:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline">
+        <source>Color</source>
+        <target>crwdns379930:0crwdne379930:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline">
+        <source>Custom icon</source>
+        <target>crwdns379932:0crwdne379932:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target><![CDATA[crwdns379934:0crwdne379934:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379936:0crwdne379936:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.headline">
+        <source>Links</source>
+        <target>crwdns416149:0crwdne416149:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.text">
+        <source>Links within the text are underlined, so they can be recognized without relying on the color.</source>
+        <target>crwdns416151:0crwdne416151:0</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline">
+        <source>Without icon</source>
+        <target>crwdns379938:0crwdne379938:0</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline">
+        <source>Input</source>
+        <target>crwdns379940:0crwdne379940:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target>crwdns380720:0crwdne380720:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379942:0crwdne379942:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline">
+        <source>Disabled</source>
+        <target>crwdns379944:0crwdne379944:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline">
+        <source>File upload</source>
+        <target>crwdns379946:0crwdne379946:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline">
+        <source>Email</source>
+        <target>crwdns379948:0crwdne379948:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline">
+        <source>Placeholder</source>
+        <target>crwdns379950:0crwdne379950:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline">
+        <source>Additional text</source>
+        <target>crwdns379952:0crwdne379952:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline">
+        <source>Password</source>
+        <target>crwdns379954:0crwdne379954:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline">
+        <source>Search</source>
+        <target>crwdns388488:0crwdne388488:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline">
+        <source>State</source>
+        <target>crwdns379956:0crwdne379956:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline">
+        <source>Size</source>
+        <target>crwdns380722:0crwdne380722:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline">
+        <source>Default size</source>
+        <target>crwdns380724:0crwdne380724:0</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline">
+        <source>Small size</source>
+        <target>crwdns380726:0crwdne380726:0</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline">
+        <source>List groups</source>
+        <target>crwdns380866:0crwdne380866:0</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext">
+        <source>Lists for displaying a series of content.</source>
+        <target>crwdns380868:0crwdne380868:0</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline">
+        <source>Borderless</source>
+        <target>crwdns380890:0crwdne380890:0</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target><![CDATA[crwdns380892:0crwdne380892:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380870:0crwdne380870:0</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline">
+        <source>Links and buttons</source>
+        <target>crwdns380872:0crwdne380872:0</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline">
+        <source>State</source>
+        <target>crwdns380874:0crwdne380874:0</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline">
+        <source>Modal</source>
+        <target>crwdns379958:0crwdne379958:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target>crwdns379960:0crwdne379960:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline">
+        <source>Custom title and content within the modal</source>
+        <target>crwdns379962:0crwdne379962:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379964:0crwdne379964:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline">
+        <source>Severity</source>
+        <target>crwdns379966:0crwdne379966:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target>crwdns386104:0crwdne386104:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline">
+        <source>Size</source>
+        <target>crwdns379968:0crwdne379968:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target>crwdns386106:0crwdne386106:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.headline">
+        <source>Size configuration</source>
+        <target>crwdns409428:0crwdne409428:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.description">
+        <source>Compose width and height independently using size tokens, override only one axis, or define breakpoint-specific overrides for responsive behaviour.</source>
+        <target>crwdns409430:0crwdne409430:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.compose">
+        <source>Compose width and height</source>
+        <target>crwdns409432:0crwdne409432:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.axis">
+        <source>Single-axis override</source>
+        <target>crwdns409434:0crwdne409434:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline">
+        <source>Position</source>
+        <target>crwdns386108:0crwdne386108:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.description">
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right. Sheet-positioned modals can also be resized, see the example below.</source>
+        <target>crwdns415787:0crwdne415787:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.headline">
+        <source>Resizable sheet</source>
+        <target>crwdns415789:0crwdne415789:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.description">
+        <source>Sheet-positioned modals show a drag handle on their free edge. The width is stored per "resizeIdentifier" in the user's configuration, so it is remembered the next time a modal with the same identifier is opened.</source>
+        <target>crwdns415791:0crwdne415791:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.openModal">
+        <source>Open resizable sheet</source>
+        <target>crwdns415793:0crwdne415793:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline">
+        <source>Playground</source>
+        <target>crwdns386112:0crwdne386112:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target>crwdns386114:0crwdne386114:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position">
+        <source>Position</source>
+        <target>crwdns386116:0crwdne386116:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size">
+        <source>Size</source>
+        <target>crwdns386118:0crwdne386118:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity">
+        <source>Severity</source>
+        <target>crwdns386120:0crwdne386120:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader">
+        <source>Hide header</source>
+        <target>crwdns386122:0crwdne386122:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop">
+        <source>Static backdrop</source>
+        <target>crwdns386124:0crwdne386124:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal">
+        <source>Open modal</source>
+        <target>crwdns386126:0crwdne386126:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes">
+        <source>Yes</source>
+        <target>crwdns386128:0crwdne386128:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no">
+        <source>No</source>
+        <target>crwdns386130:0crwdne386130:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline">
+        <source>Hide header</source>
+        <target>crwdns386132:0crwdne386132:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target>crwdns386134:0crwdne386134:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline">
+        <source>Static backdrop</source>
+        <target>crwdns386136:0crwdne386136:0</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target>crwdns386138:0crwdne386138:0</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline">
+        <source>Navs</source>
+        <target>crwdns379970:0crwdne379970:0</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target>crwdns380728:0crwdne380728:0</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline">
+        <source>Basic</source>
+        <target>crwdns379972:0crwdne379972:0</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline">
+        <source>Flat</source>
+        <target>crwdns379974:0crwdne379974:0</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline">
+        <source>Pills</source>
+        <target>crwdns379976:0crwdne379976:0</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline">
+        <source>Tabs</source>
+        <target>crwdns379978:0crwdne379978:0</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline">
+        <source>Notifications</source>
+        <target>crwdns379980:0crwdne379980:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target>crwdns380730:0crwdne380730:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline">
+        <source>Action Buttons</source>
+        <target>crwdns379982:0crwdne379982:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target>crwdns379984:0crwdne379984:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline">
+        <source>Immediate Action</source>
+        <target>crwdns379986:0crwdne379986:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target>crwdns379988:0crwdne379988:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline">
+        <source>Deferred Action</source>
+        <target>crwdns379990:0crwdne379990:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target>crwdns379992:0crwdne379992:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline">
+        <source>Default</source>
+        <target>crwdns379994:0crwdne379994:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html">
+        <source>Implementation via HTML:</source>
+        <target>crwdns379996:0crwdne379996:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script">
+        <source>Implementation via script:</source>
+        <target>crwdns379998:0crwdne379998:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline">
+        <source>Severity</source>
+        <target>crwdns380000:0crwdne380000:0</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target>crwdns380002:0crwdne380002:0</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline">
+        <source>Pagination</source>
+        <target>crwdns380004:0crwdne380004:0</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target>crwdns380732:0crwdne380732:0</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380006:0crwdne380006:0</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline">
+        <source>Panels</source>
+        <target>crwdns380008:0crwdne380008:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target>crwdns380734:0crwdne380734:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline">
+        <source>Collapsible</source>
+        <target>crwdns380010:0crwdne380010:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline">
+        <source>Nesting</source>
+        <target>crwdns380012:0crwdne380012:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline">
+        <source>Variants</source>
+        <target>crwdns380014:0crwdne380014:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline">
+        <source>Loader</source>
+        <target>crwdns380016:0crwdne380016:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline">
+        <source>Size</source>
+        <target>crwdns380018:0crwdne380018:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline">
+        <source>Progress</source>
+        <target>crwdns380020:0crwdne380020:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline">
+        <source>Progress Component</source>
+        <target>crwdns380022:0crwdne380022:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline">
+        <source>Header</source>
+        <target>crwdns380024:0crwdne380024:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline">
+        <source>Header with icon and actions</source>
+        <target>crwdns393962:0crwdne393962:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline">
+        <source>Header with thumbnail and actions</source>
+        <target>crwdns393964:0crwdne393964:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline">
+        <source>Header with section controls</source>
+        <target>crwdns393966:0crwdne393966:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline">
+        <source>Body</source>
+        <target>crwdns380026:0crwdne380026:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline">
+        <source>Footer</source>
+        <target>crwdns380028:0crwdne380028:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline">
+        <source>List</source>
+        <target>crwdns380030:0crwdne380030:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline">
+        <source>Table</source>
+        <target>crwdns380032:0crwdne380032:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.alerts.headline">
+        <source>Alerts</source>
+        <target>crwdns394114:0crwdne394114:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline">
+        <source>Form Sections</source>
+        <target>crwdns394116:0crwdne394116:0</target>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline">
+        <source>Tabs</source>
+        <target>crwdns394118:0crwdne394118:0</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline">
+        <source>Progress indicators</source>
+        <target>crwdns380034:0crwdne380034:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target><![CDATA[crwdns380036:0crwdne380036:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline">
+        <source>Interactive Demos</source>
+        <target>crwdns388460:0crwdne388460:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline">
+        <source>Indeterminate Progress Bar</source>
+        <target>crwdns388462:0crwdne388462:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target><![CDATA[crwdns388464:0crwdne388464:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button">
+        <source>Start Indeterminate Progress</source>
+        <target>crwdns388466:0crwdne388466:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target>crwdns388468:0crwdne388468:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline">
+        <source>Determinate Progress Bar</source>
+        <target>crwdns388470:0crwdne388470:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target><![CDATA[crwdns388472:0crwdne388472:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button">
+        <source>Start Determinate Progress</source>
+        <target>crwdns388474:0crwdne388474:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed">
+        <source>Start Determinate Progress (with delay)</source>
+        <target>crwdns388476:0crwdne388476:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline">
+        <source>Reusable Progress Bar</source>
+        <target>crwdns388478:0crwdne388478:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target>crwdns388480:0crwdne388480:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button">
+        <source>Run Demo</source>
+        <target>crwdns388482:0crwdne388482:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline">
+        <source>Custom label</source>
+        <target>crwdns380038:0crwdne380038:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target>crwdns380040:0crwdne380040:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380042:0crwdne380042:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target>crwdns380044:0crwdne380044:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline">
+        <source>Max value</source>
+        <target>crwdns380046:0crwdne380046:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline">
+        <source>Ridiculous max value</source>
+        <target>crwdns380048:0crwdne380048:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline">
+        <source>Severity</source>
+        <target>crwdns380050:0crwdne380050:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline">
+        <source>Value</source>
+        <target>crwdns380052:0crwdne380052:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline">
+        <source>Progress Bar with Table</source>
+        <target>crwdns388484:0crwdne388484:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target>crwdns388486:0crwdne388486:0</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline">
+        <source>Progress trackers</source>
+        <target>crwdns380054:0crwdne380054:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target><![CDATA[crwdns380056:0crwdne380056:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380058:0crwdne380058:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline">
+        <source>Active stage</source>
+        <target>crwdns380060:0crwdne380060:0</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline">
+        <source>Demo</source>
+        <target>crwdns380062:0crwdne380062:0</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline">
+        <source>Radio buttons</source>
+        <target>crwdns380064:0crwdne380064:0</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target>crwdns380736:0crwdne380736:0</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline">
+        <source>Card-Layout</source>
+        <target>crwdns380066:0crwdne380066:0</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380068:0crwdne380068:0</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline">
+        <source>Content Navigation</source>
+        <target>crwdns386064:0crwdne386064:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target><![CDATA[crwdns386066:0crwdne386066:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline">
+        <source>Basic usage</source>
+        <target>crwdns386068:0crwdne386068:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target><![CDATA[crwdns386070:0crwdne386070:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline">
+        <source>External controls</source>
+        <target>crwdns386072:0crwdne386072:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target><![CDATA[crwdns386074:0crwdne386074:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline">
+        <source>Toggle button</source>
+        <target>crwdns386076:0crwdne386076:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target><![CDATA[crwdns386078:0crwdne386078:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline">
+        <source>Hiding navigation</source>
+        <target>crwdns386080:0crwdne386080:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target><![CDATA[crwdns386082:0crwdne386082:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline">
+        <source>Width persistence</source>
+        <target>crwdns386084:0crwdne386084:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target><![CDATA[crwdns386086:0crwdne386086:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline">
+        <source>Right-to-left support</source>
+        <target>crwdns386088:0crwdne386088:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target><![CDATA[crwdns386090:0crwdne386090:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline">
+        <source>Flyout mode</source>
+        <target>crwdns386092:0crwdne386092:0</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target><![CDATA[crwdns386094:0crwdne386094:0]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline">
+        <source>Select</source>
+        <target>crwdns380070:0crwdne380070:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target>crwdns380738:0crwdne380738:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380072:0crwdne380072:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline">
+        <source>Multiple selection</source>
+        <target>crwdns380074:0crwdne380074:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline">
+        <source>Option groups</source>
+        <target>crwdns380076:0crwdne380076:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline">
+        <source>Single selection with option groups</source>
+        <target>crwdns380078:0crwdne380078:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline">
+        <source>Multiple selection with option groups</source>
+        <target>crwdns380080:0crwdne380080:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline">
+        <source>State</source>
+        <target>crwdns380082:0crwdne380082:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline">
+        <source>Size</source>
+        <target>crwdns380740:0crwdne380740:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline">
+        <source>Default size</source>
+        <target>crwdns380742:0crwdne380742:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline">
+        <source>Small size</source>
+        <target>crwdns380744:0crwdne380744:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline">
+        <source>Single selection with option groups</source>
+        <target>crwdns380084:0crwdne380084:0</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline">
+        <source>Multiple selection with option groups</source>
+        <target>crwdns380086:0crwdne380086:0</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <trans-unit id="component.statusIndicator.headline">
+        <source>Status indicators</source>
+        <target>crwdns411437:0crwdne411437:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.introtext">
+        <source>Indicators communicate the state of records, tasks, and interface elements with small colored dots, including animated variants for ongoing activity. Toggle the color scheme to preview light and dark.</source>
+        <target>crwdns411439:0crwdne411439:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.headline">
+        <source>Dots</source>
+        <target>crwdns411441:0crwdne411441:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.introtext">
+        <source>Small colored dots flag the state of an element without occupying much space, for example on navigation items or list rows. Each state uses a brighter, fill-tuned shade of its hue so the small filled shape stays vibrant across light and dark.</source>
+        <target>crwdns411443:0crwdne411443:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.headline">
+        <source>Semantic states</source>
+        <target>crwdns411445:0crwdne411445:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.introtext">
+        <source>Beside the base colours, a small set of semantic states name a recurring domain concept and map to one of those colours – and, where it fits, to a motion – in the stylesheet. Use them so the same concept looks identical wherever it appears in the backend, instead of each module picking its own colour: active is a plain green, online a pulsing green, running a loading blue, and disabled a red.</source>
+        <target>crwdns411447:0crwdne411447:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.headline">
+        <source>Animated</source>
+        <target>crwdns411449:0crwdne411449:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.introtext">
+        <source>Motion adds an activity state on top of the colour. Each animation composes with any state colour; all are shown below so they can be verified in every state.</source>
+        <target>crwdns411451:0crwdne411451:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.headline">
+        <source>Live</source>
+        <target>crwdns411453:0crwdne411453:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.introtext">
+        <source>Signals that an element is active or live. A halo gently breathes in and out around the dot. Apply it with the live attribute.</source>
+        <target>crwdns411455:0crwdne411455:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.headline">
+        <source>Loading</source>
+        <target>crwdns411457:0crwdne411457:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.introtext">
+        <source>Signals that an operation is in progress. A fading trail rotates around the dot like a spinner. Apply it with the loading attribute.</source>
+        <target>crwdns411459:0crwdne411459:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.headline">
+        <source>Reduced motion</source>
+        <target>crwdns411461:0crwdne411461:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.introtext">
+        <source>When the operating system requests reduced motion (prefers-reduced-motion: reduce), the live and loading animations are switched off and the indicators render statically. The examples below force that fallback so it can be previewed regardless of your current system setting.</source>
+        <target>crwdns411463:0crwdne411463:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.headline">
+        <source>In context</source>
+        <target>crwdns411465:0crwdne411465:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.introtext">
+        <source>Indicators are inline elements, so they compose naturally next to text inside other components. When the indicator is the only cue, give it a label; when adjacent text already states the status, leave it decorative without a label.</source>
+        <target>crwdns411467:0crwdne411467:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.badges.headline">
+        <source>Badges</source>
+        <target>crwdns411469:0crwdne411469:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.lists.headline">
+        <source>Lists</source>
+        <target>crwdns411471:0crwdne411471:0</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.tables.headline">
+        <source>Tables</source>
+        <target>crwdns411473:0crwdne411473:0</target>
+      </trans-unit>
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline">
+        <source>Tab</source>
+        <target>crwdns380088:0crwdne380088:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target>crwdns380746:0crwdne380746:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380090:0crwdne380090:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text">
+        <source>Basic tab navigation with two tabs.</source>
+        <target>crwdns393968:0crwdne393968:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline">
+        <source>Persistence</source>
+        <target>crwdns393970:0crwdne393970:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target>crwdns393972:0crwdne393972:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline">
+        <source>Validation State</source>
+        <target>crwdns393974:0crwdne393974:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target>crwdns393976:0crwdne393976:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline">
+        <source>Scrollable</source>
+        <target>crwdns393978:0crwdne393978:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target>crwdns393980:0crwdne393980:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline">
+        <source>Bootstrap Migration</source>
+        <target>crwdns393982:0crwdne393982:0</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target>crwdns393984:0crwdne393984:0</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline">
+        <source>Tables</source>
+        <target>crwdns380094:0crwdne380094:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target>crwdns380096:0crwdne380096:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline">
+        <source>Color</source>
+        <target>crwdns380098:0crwdne380098:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target><![CDATA[crwdns380100:0crwdne380100:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline">
+        <source>Default</source>
+        <target>crwdns380102:0crwdne380102:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline">
+        <source>Color (full example)</source>
+        <target>crwdns380104:0crwdne380104:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380106:0crwdne380106:0</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline">
+        <source>Wide tables</source>
+        <target>crwdns380108:0crwdne380108:0</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline">
+        <source>Textarea</source>
+        <target>crwdns380110:0crwdne380110:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target>crwdns380748:0crwdne380748:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380112:0crwdne380112:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline">
+        <source>Disabled</source>
+        <target>crwdns380114:0crwdne380114:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline">
+        <source>Placeholder</source>
+        <target>crwdns380116:0crwdne380116:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline">
+        <source>State</source>
+        <target>crwdns380118:0crwdne380118:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline">
+        <source>Size</source>
+        <target>crwdns380750:0crwdne380750:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline">
+        <source>Default size</source>
+        <target>crwdns380752:0crwdne380752:0</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline">
+        <source>Small size</source>
+        <target>crwdns380754:0crwdne380754:0</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline">
+        <source>Trees</source>
+        <target>crwdns380120:0crwdne380120:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target>crwdns380756:0crwdne380756:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline">
+        <source>Collapsible tree</source>
+        <target>crwdns380122:0crwdne380122:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target><![CDATA[crwdns380124:0crwdne380124:0]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline">
+        <source>File tree</source>
+        <target>crwdns380126:0crwdne380126:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target>crwdns380128:0crwdne380128:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline">
+        <source>Page tree</source>
+        <target>crwdns380130:0crwdne380130:0</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target>crwdns380132:0crwdne380132:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline">
+        <source>Datetime Component</source>
+        <target>crwdns392542:0crwdne392542:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target>crwdns392544:0crwdne392544:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline">
+        <source>Basic Usage (Absolute Display)</source>
+        <target>crwdns392546:0crwdne392546:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay">
+        <source>Absolute Display (default)</source>
+        <target>crwdns392548:0crwdne392548:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp">
+        <source>ISO Timestamp</source>
+        <target>crwdns392550:0crwdne392550:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline">
+        <source>Relative Time Display</source>
+        <target>crwdns392552:0crwdne392552:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target>crwdns392554:0crwdne392554:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay">
+        <source>Relative Display</source>
+        <target>crwdns392556:0crwdne392556:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline">
+        <source>Automatic Updates in Relative Mode</source>
+        <target>crwdns392558:0crwdne392558:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target>crwdns392780:0crwdne392780:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated">
+        <source>Last updated:</source>
+        <target>crwdns392562:0crwdne392562:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline">
+        <source>Unix Timestamp Support</source>
+        <target>crwdns392564:0crwdne392564:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target>crwdns392566:0crwdne392566:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format">
+        <source>Format</source>
+        <target>crwdns392568:0crwdne392568:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value">
+        <source>Value</source>
+        <target>crwdns392570:0crwdne392570:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay">
+        <source>Absolute Display</source>
+        <target>crwdns392572:0crwdne392572:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference">
+        <source>ISO Reference</source>
+        <target>crwdns392574:0crwdne392574:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper">
+        <source>Fluid ViewHelper</source>
+        <target>crwdns392576:0crwdne392576:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline">
+        <source>Mode Comparison</source>
+        <target>crwdns392578:0crwdne392578:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target>crwdns392580:0crwdne392580:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline">
+        <source>Absolute Display Formats</source>
+        <target>crwdns392582:0crwdne392582:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target>crwdns392584:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']crwdnd392584:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']crwdne392584:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display">
+        <source>Display</source>
+        <target>crwdns392586:0crwdne392586:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault">
+        <source>date (default - TYPO3 configured date)</source>
+        <target>crwdns392588:0crwdne392588:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target>crwdns392590:0crwdne392590:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline">
+        <source>Custom Format Strings</source>
+        <target>crwdns392592:0crwdne392592:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target>crwdns392594:0crwdne392594:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString">
+        <source>Custom Format String</source>
+        <target>crwdns392596:0crwdne392596:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline">
+        <source>Relative Time Without Seconds</source>
+        <target>crwdns393080:0crwdne393080:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target>crwdns393082:0crwdne393082:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds">
+        <source>Without Seconds (Default)</source>
+        <target>crwdns393084:0crwdne393084:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds">
+        <source>With Seconds</source>
+        <target>crwdns393086:0crwdne393086:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target>crwdns392598:0crwdne392598:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target>crwdns392600:0crwdne392600:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold">
+        <source>Without Threshold</source>
+        <target>crwdns392602:0crwdne392602:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold">
+        <source>With Threshold (90 days)</source>
+        <target>crwdns392604:0crwdne392604:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline">
+        <source>Attributes</source>
+        <target>crwdns392606:0crwdne392606:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute">
+        <source>Attribute</source>
+        <target>crwdns392608:0crwdne392608:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type">
+        <source>Type</source>
+        <target>crwdns392610:0crwdne392610:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description">
+        <source>Description</source>
+        <target>crwdns392612:0crwdne392612:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type">
+        <source>string (required)</source>
+        <target>crwdns392614:0crwdne392614:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target>crwdns392616:0crwdne392616:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type">
+        <source>string (optional)</source>
+        <target>crwdns392618:0crwdne392618:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target>crwdns392620:0crwdne392620:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type">
+        <source>string (optional)</source>
+        <target>crwdns392622:0crwdne392622:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target>crwdns392624:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']crwdne392624:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type">
+        <source>number (optional)</source>
+        <target>crwdns392626:0crwdne392626:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target>crwdns392628:0crwdne392628:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type">
+        <source>boolean (optional)</source>
+        <target>crwdns393088:0crwdne393088:0</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target>crwdns393090:0crwdne393090:0</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline">
+        <source>Color Tokens</source>
+        <target>crwdns380134:0crwdne380134:0</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target><![CDATA[crwdns380136:0crwdne380136:0]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline">
+        <source>Accent and State</source>
+        <target>crwdns380854:0crwdne380854:0</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target><![CDATA[crwdns380856:0crwdne380856:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline">
+        <source>Accent Colors</source>
+        <target>crwdns391348:0crwdne391348:0</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline">
+        <source>State Colors</source>
+        <target>crwdns391350:0crwdne391350:0</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline">
+        <source>Decorative Colors</source>
+        <target>crwdns391352:0crwdne391352:0</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target>crwdns391354:0crwdne391354:0</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline">
+        <source>Icons</source>
+        <target>crwdns380138:0crwdne380138:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target>crwdns380140:0crwdne380140:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline">
+        <source>Default</source>
+        <target>crwdns380142:0crwdne380142:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline">
+        <source>Overlay</source>
+        <target>crwdns380144:0crwdne380144:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline">
+        <source>Overview</source>
+        <target>crwdns380146:0crwdne380146:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline">
+        <source>Size</source>
+        <target>crwdns380148:0crwdne380148:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline">
+        <source>Usage</source>
+        <target>crwdns380150:0crwdne380150:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline">
+        <source>Bitmap</source>
+        <target>crwdns380152:0crwdne380152:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target>crwdns380154:0crwdne380154:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration">
+        <source>Registration:</source>
+        <target>crwdns380156:0crwdne380156:0</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline">
+        <source>SVG</source>
+        <target>crwdns380158:0crwdne380158:0</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline">
+        <source>Shadows</source>
+        <target>crwdns380160:0crwdne380160:0</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target><![CDATA[crwdns380162:0crwdne380162:0]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline">
+        <source>Surfaces</source>
+        <target>crwdns380164:0crwdne380164:0</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target><![CDATA[crwdns380166:0crwdne380166:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline">
+        <source>Color</source>
+        <target>crwdns380168:0crwdne380168:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline">
+        <source>Natural</source>
+        <target>crwdns380170:0crwdne380170:0</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline">
+        <source>Typography</source>
+        <target>crwdns380172:0crwdne380172:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target>crwdns380758:0crwdne380758:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline">
+        <source>Headings</source>
+        <target>crwdns380174:0crwdne380174:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target><![CDATA[crwdns380176:0crwdne380176:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.headline">
+        <source>Keyboard input</source>
+        <target>crwdns409356:0crwdne409356:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.text">
+        <source><![CDATA[Use the <code>kbd</code> element to mark up keyboard input or shortcuts. Nest <code>kbd</code> elements to compose key combinations.]]></source>
+        <target><![CDATA[crwdns409358:0crwdne409358:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.sizing.text">
+        <source><![CDATA[Keys scale with the surrounding font size — sized in <code>em</code>, so they fit naturally inside headings, body text and small text without per-context overrides.]]></source>
+        <target><![CDATA[crwdns409360:0crwdne409360:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline">
+        <source>Links</source>
+        <target>crwdns380178:0crwdne380178:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline">
+        <source>Lists</source>
+        <target>crwdns380180:0crwdne380180:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target><![CDATA[crwdns380182:0crwdne380182:0]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline">
+        <source>Ordered list</source>
+        <target>crwdns380184:0crwdne380184:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline">
+        <source>Unordered list</source>
+        <target>crwdns380186:0crwdne380186:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline">
+        <source>Paragraph</source>
+        <target>crwdns380188:0crwdne380188:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline">
+        <source>Small text</source>
+        <target>crwdns380190:0crwdne380190:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target>crwdns380192:0crwdne380192:0</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline">
+        <source>Text color</source>
+        <target>crwdns380194:0crwdne380194:0</target>
+      </trans-unit>
+      <trans-unit id="elements.color.valid">
+        <source>Valid (LLL)</source>
+        <target>crwdns409352:0crwdne409352:0</target>
+      </trans-unit>
+      <trans-unit id="example.code.copy">
+        <source>Copy</source>
+        <target>crwdns415795:0crwdne415795:0</target>
+      </trans-unit>
+      <trans-unit id="example.code.copyToClipboard">
+        <source>Copy code to clipboard</source>
+        <target>crwdns415797:0crwdne415797:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
