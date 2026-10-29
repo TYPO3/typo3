@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">وبگاه</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">ایجاد پیکربندی جدید برای این وبگاه</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">حذف پیکربندی وبگاه</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">پیکربندی‌های نسبت‌داده‌نشده به یک وبگاه</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">پیش‌وند کامل برای نشانی اینترنتی</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">شناسۀ تغییرنام یافته</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">شناسۀ وبگاه وارد شده "%1s" قبلا وجود داشته است. این نام به "%2s" تغییر یافت. ممکن است بخواهید این نام وبگاه را دوباره ویرایش کرده و نام بهتری انتخاب نمائید.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">شناسه تغییر نکرد</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">پیکربندی سایت ذخیره نشد</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">بخش "%1s" ضروری است، اما مقداری برای آن در نظر گرفته نشده.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">کد خطای تکراری حذف شد</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">دو پیکربندی برای اداره‌کنندۀ (هندلر) برای کدخطای "%1s"پیدا شد. این به معنای پیکربندی اشتباه است، پیکربندی معلق، حذف شد.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">پیکربندی تکراری زبان حذف شد</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">دو پیکربندی برای زبان "%1s"پیدا شد. این به معنای پیکربندی اشتباه است، پیکربندی معلق، حذف شد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
