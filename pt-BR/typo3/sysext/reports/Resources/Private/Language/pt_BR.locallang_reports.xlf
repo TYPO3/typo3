@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Inseguro</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Desativado</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Ativado</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Ativado permanentemente</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Ativado temporariamente</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Vazio</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Nenhum</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">A conexão falhou</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Atualização completa</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Atualização incompleta</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">Sistema TYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">Sistema</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Segurança</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuração</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Índice de referência</target>
+      </trans-unit>
+      <trans-unit id="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">Camada de Abstração de Arquivos</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">Arquivos marcados como perdidos</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">Estes arquivos estão marcados como perdidos. Restaure os arquivos e execute o indexador para retirar a sinalização de perdido.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Configuração do cache</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Permissões dos arquivos criados</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Permissões dos diretórios criados</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Chave criptográfica</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Padrão de negação de arquivo</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">Proteção de envio com .htaccess</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Ferramenta de Instalação</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">Módulos de PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Faltam um ou mais módulos.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">Falta(m) o(s) seguinte(s) módulo(s) do PHP: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">Você precisa instalar e ativar estes módulos para que o TYPO3 funcione corretamente.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">um de: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Todos os módulos necessários foram instalados.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">A Ferramenta de Instalação está temporariamente ativada. Exclua o arquivo" %s" quando você finalizar a configuração do TYPO3. Se não estiver sendo utilizada, a Ferramenta de Instalação será desativada automaticamente em %s minutos.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Atualização do Estado do Sistema</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">Executa uma checagem do estado do sistema e envia notificações se problemas forem encontrados.</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">Enviar notificação a: %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">Endereços de email de notificação (um por linha)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">Endereço de email para notificação vazio ou inválido.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">Notificação do Estado de Sistema para o site %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Site</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Ocorrências</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">XCLASS utilizado</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">Seu sistema registra XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS pode sobrepor métodos ou classes do core ou outras extensões. Isto não é necessariamente algo ruim, mas aqueles XCLASS podem romper durante atualizações de extensões ou do core. Você deve manter um olho na compatibilidade de extensões e ter certeza de que a funcionalidade pretendida ainda está disponível após atualizações.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
