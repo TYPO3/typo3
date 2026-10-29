@@ -1,0 +1,19 @@
+categories:
+  redirects: null
+settings:
+  redirects.autoUpdateSlugs:
+    type: crwdns417069:0crwdne417069:0
+    default: true
+    category: crwdns417071:0crwdne417071:0
+  redirects.autoCreateRedirects:
+    type: crwdns417073:0crwdne417073:0
+    default: true
+    category: crwdns417075:0crwdne417075:0
+  redirects.redirectTTL:
+    type: crwdns417077:0crwdne417077:0
+    default: 0
+    category: crwdns417081:0crwdne417081:0
+  redirects.httpStatusCode:
+    type: crwdns417083:0crwdne417083:0
+    default: 0
+    category: crwdns417087:0crwdne417087:0
