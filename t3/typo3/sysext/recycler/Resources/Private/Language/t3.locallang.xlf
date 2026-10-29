@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Recycler</source>
+        <target>crwdns60526:0crwdne60526:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target>crwdns60528:0crwdne60528:0</target>
+      </trans-unit>
+      <trans-unit id="label_allrecordtypes">
+        <source>All Record Types</source>
+        <target>crwdns60530:0crwdne60530:0</target>
+      </trans-unit>
+      <trans-unit id="filter.search">
+        <source>Search term</source>
+        <target>crwdns292715:0crwdne292715:0</target>
+      </trans-unit>
+      <trans-unit id="filter.depth">
+        <source>Depth</source>
+        <target>crwdns141963:0crwdne141963:0</target>
+      </trans-unit>
+      <trans-unit id="filter.type">
+        <source>Type</source>
+        <target>crwdns141965:0crwdne141965:0</target>
+      </trans-unit>
+      <trans-unit id="button.cancel">
+        <source>Cancel</source>
+        <target>crwdns60532:0crwdne60532:0</target>
+      </trans-unit>
+      <trans-unit id="button.delete">
+        <source>Delete</source>
+        <target>crwdns60534:0crwdne60534:0</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected">
+        <source>Delete {0} records</source>
+        <target>crwdns60536:0{0}crwdne60536:0</target>
+      </trans-unit>
+      <trans-unit id="button.undo">
+        <source>Restore</source>
+        <target>crwdns380592:0crwdne380592:0</target>
+      </trans-unit>
+      <trans-unit id="button.expand">
+        <source>Expand record</source>
+        <target>crwdns60540:0crwdne60540:0</target>
+      </trans-unit>
+      <trans-unit id="button.dropdown.multiselect">
+        <source>Open context menu for multiselect options</source>
+        <target>crwdns335690:0crwdne335690:0</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected">
+        <source>Restore {0} records</source>
+        <target>crwdns380594:0{0}crwdne380594:0</target>
+      </trans-unit>
+      <trans-unit id="button.reload">
+        <source>Reload</source>
+        <target>crwdns60544:0crwdne60544:0</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header">
+        <source>Confirm deletion</source>
+        <target>crwdns60546:0crwdne60546:0</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header">
+        <source>Restore records</source>
+        <target>crwdns380596:0crwdne380596:0</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive">
+        <source>Restore content and subpages recursively</source>
+        <target>crwdns380598:0crwdne380598:0</target>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text">
+        <source>Permanently delete record "{0}" {1}? You cannot undo this action.</source>
+        <target>crwdns386140:0{0}crwdnd386140:0{1}crwdne386140:0</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text">
+        <source>Permanently delete all the selected records (and any subpages)? You cannot undo this action.</source>
+        <target>crwdns386142:0crwdne386142:0</target>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text">
+        <source>Permanently delete page "{0}" {1} and all of its contents (records and pages)? You cannot undo this action.</source>
+        <target>crwdns386144:0{0}crwdnd386144:0{1}crwdne386144:0</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text">
+        <source>Restore record "{0}" {1}? The record will be restored in its initial position and may become immediately active.</source>
+        <target>crwdns386146:0{0}crwdnd386146:0{1}crwdne386146:0</target>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text">
+        <source>Restore page "{0}" {1}, its contents (and any subpages)? The pages and their content are restored to their original location and may become immediately visible online.</source>
+        <target>crwdns386148:0{0}crwdnd386148:0{1}crwdne386148:0</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages">
+        <source>All parent pages have been restored to ensure a valid rootline.</source>
+        <target>crwdns380610:0crwdne380610:0</target>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text">
+        <source>Restore all selected records and any subpages? All records are restored to their original position and may take effect immediately, including the pages and their content that may become visible online. Undoing this requires deleting each record individually.</source>
+        <target>crwdns386150:0crwdne386150:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.unauthorized">
+        <source>Insufficient permissions to delete records.</source>
+        <target>crwdns388574:0crwdne388574:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.norecordsselected">
+        <source>No records set to delete.</source>
+        <target>crwdns60566:0crwdne60566:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.singular">
+        <source>One record was deleted.</source>
+        <target>crwdns60568:0crwdne60568:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural">
+        <source>%d records were deleted.</source>
+        <target>crwdns60570:0%dcrwdne60570:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.singular">
+        <source>Could not delete one record.</source>
+        <target>crwdns60572:0crwdne60572:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.plural">
+        <source>Could not delete %d records.</source>
+        <target>crwdns60574:0%dcrwdne60574:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected">
+        <source>No records set to restore.</source>
+        <target>crwdns380614:0crwdne380614:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular">
+        <source>One record was restored.</source>
+        <target>crwdns380616:0crwdne380616:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural">
+        <source>%d records were restored.</source>
+        <target>crwdns380618:0%dcrwdne380618:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular">
+        <source>Could not restore one record.</source>
+        <target>crwdns380620:0crwdne380620:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural">
+        <source>Could not restore %d records.</source>
+        <target>crwdns380622:0%dcrwdne380622:0</target>
+      </trans-unit>
+      <trans-unit id="alert.noDeletedRecords">
+        <source>No deleted records have been found.</source>
+        <target>crwdns342946:0crwdne342946:0</target>
+      </trans-unit>
+      <trans-unit id="table.caption.recently_deleted_records">
+        <source>Recently deleted records</source>
+        <target>crwdns335692:0crwdne335692:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.uid">
+        <source>UID</source>
+        <target>crwdns60586:0crwdne60586:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.pageTitle">
+        <source>Page title</source>
+        <target>crwdns339300:0crwdne339300:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid">
+        <source>Page ID</source>
+        <target>crwdns339302:0crwdne339302:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.record">
+        <source>Record</source>
+        <target>crwdns60590:0crwdne60590:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp">
+        <source>Last edit</source>
+        <target>crwdns60596:0crwdne60596:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate">
+        <source>Created at</source>
+        <target>crwdns339304:0crwdne339304:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.createdBy">
+        <source>Created by</source>
+        <target>crwdns339306:0crwdne339306:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.deletedBy">
+        <source>Deleted by</source>
+        <target>crwdns60602:0crwdne60602:0</target>
+      </trans-unit>
+      <trans-unit id="table.header.path">
+        <source>Path</source>
+        <target>crwdns60604:0crwdne60604:0</target>
+      </trans-unit>
+      <trans-unit id="record.userDeleted">
+        <source>[Deleted user] (id=%s)</source>
+        <target>crwdns339308:0%scrwdne339308:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
