@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">Contraseña de un solo uso</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">Este proveedor permite autenticarse con un código de acceso de un solo uso basado en la hora actual.
+					Cada código solo es válido durante 30 segundos. Necesita una aplicación OTP o dispositivo que soporte esos identificadores.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Códigos de recuperación</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">Este proveedor permite autenticarse con un conjunto de contraseñas de un solo uso, en caso de que perdiera sus credenciales
+					primarias de FMA, o simplemente no tenga acceso a ellas temporalmente.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">El código de recuperación es un código de ocho dígitos aleatorios, los cuales pueden ser usados para autenticar en el caso de que pierdas tus credenciales de autenticación. Un código es solo para un uso.
+					Tan pronto como se acaben todos los códigos de recuperación, tendrás que generar una nueva configuración. Por lo tanto, verifica de forma periódica, la cantidad de códigos restantes en la vista Editar/Cambiar del proveedor.
+
+					Configurar:
+					1. Copia los códigos de recuperación y almacénalos en un lugar seguro
+					2. Añade un nombre específico para este proveedor (opcional)
+					3. Envía el formulario para activar el proveedor - mira la nota de abajo
+
+					Nota: Cada código de recuperación tiene que ser encriptado y almacenado con seguridad, este proceso puede llegar un tiempo.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">Introduce el código de seis dígitos generado</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">Este código debería mostrarse ahora en tu dispositivo o en tu aplicación.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">Información del proveedor</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">Introduce un nombre</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">Códigos de recuperación restantes</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">Utilizado por última vez</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">Nunca</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">Última actualización</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Regenerar los códigos de recuperación</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Regenerar los códigos de recuperación</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">Paso 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">Paso 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">Paso 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">Paso 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">Paso 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">Escanear el código QR mostrado</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">Escanea este código con tu aplicación OTP (por ejemplo, Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">Copia el secreto compartido</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">También puedes introducir el secreto compartido manualmente en tu aplicación o dispositivo OTP.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">Introduce un nombre (opcional)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">Especifica un nombre personalizado para este proveedor.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Códigos de recuperación</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">Copia estos códigos y guárdelos en un lugar seguro.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">Descargar códigos de recuperación</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">Recargar</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">Configuración no posible</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">Mostrar URL de autenticación</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">URL de autenticación</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Aceptar</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">Introduce el código de 6 dígitos</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">Introduce un código de recuperación de ocho dígitos</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">¡Sus códigos de recuperación se actualizaron automáticamente!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Por favor, cópialos y guárdalos en un lugar seguro: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">Codigos de recuperación regenerados con exito</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Por favor, cópialos y guárdalos en un lugar seguro: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
