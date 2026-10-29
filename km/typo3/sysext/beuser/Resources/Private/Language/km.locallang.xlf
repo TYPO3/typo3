@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ឈ្មោះដើម្បីចូល</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">អ៊ីម៉ែល</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">ប្រធាន</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">អ្នកប្រើប្រាស់</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">បាទ</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">ទេ</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">មិនដែល</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">ចាប់ផ្ដើម</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">បញ្ចប់</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">ថ្ងៃចូល​លើកចុងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">ភាសា​ដែលអាចប្រើបាន</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">File mountpoints</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">អ្នកប្រើប្រាស់​ផ្នែកខាងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">ប្រៀបធៀប​អ្នកប្រើប្រាស់​ផ្នែកខាងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">អ្នកប្រើ​ដែលកំពុងនៅលើបណ្តាញ</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">ស្វែងរក</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ប្ដូរ​អ្នកប្រើប្រាស់-អាចត្រឡប់វិញបាន</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <!-- Backend users: Show -->
+      <!-- Backend users: Compare -->
+      <!-- Backend users: Online -->
+      <!-- Backend user groups: List -->
+      <!-- Backend user groups: Show -->
+      <!-- Backend user groups: Compare -->
+      <!-- File mounts -->
+      <!-- Password reset -->
+    </body>
+  </file>
+</xliff>
