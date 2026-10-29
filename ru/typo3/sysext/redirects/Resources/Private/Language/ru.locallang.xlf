@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">Настройки перенаправления</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">Автоматически обновлять части путей всех подстраниц</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">Автоматически создавать перенаправления с новыми частями путей</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">Время существования записей перенаправления в днях</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">Код состояния HTTP для перенаправления, 301 по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">Очистка перенаправлений старше указанного количества дней</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">Очистка перенаправлений, соответствующих указанному домену(ам)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">Очистка перенаправлений по количеству переходов, ниже заданного числа</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path" approved="yes">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+        <target state="final">Очистка переадресации, соответствующие указанному пути (как выражение like базы данных)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">Очистка перенаправлений, соответствующих данному типу создания</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">Очистка перенаправлений, соответствующих указанному коду(ам) статуса</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus" approved="yes">
+        <source>Cleanup redirects matching provided integrity status</source>
+        <target state="final">Очистка перенаправлений, соответствующих статусу целостности</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType" approved="yes">
+        <source>Cleanup redirects matching provided redirect type</source>
+        <target state="final">Очистка перенаправлений, соответствующих данному типу переадресации</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.dryRun" approved="yes">
+        <source>Show which redirects would be deleted, without deleting anything</source>
+        <target state="final">Показать, какие редиректы будут удалены, не удаляя ничего</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.noMatches" approved="yes">
+        <source>No redirect matches the given constraints, nothing would be deleted.</source>
+        <target state="final">Ни один редирект не соответствует заданным ограничениям, ничего не будет удалено.</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.summary" approved="yes">
+        <source>{count, plural, one {# redirect would be deleted.} other {# redirects would be deleted.}} Nothing has been deleted, this was a dry run.</source>
+        <target state="final">{count, plural, one {# редирект будет удалён.} few {# редиректа будут удалены.} many {# редиректов будет удалено.} other {# редиректы будут удалены.}} Ничего не удалено, это был пробный запуск.</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourceHost" approved="yes">
+        <source>Source host</source>
+        <target state="final">Исходный хост</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourcePath" approved="yes">
+        <source>Source path</source>
+        <target state="final">Исходный путь</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Цель</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.statusCode" approved="yes">
+        <source>Status code</source>
+        <target state="final">Код состояния</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.hitCount" approved="yes">
+        <source>Hits</source>
+        <target state="final">Переходов</target>
+      </trans-unit>
+      <trans-unit id="created_on" approved="yes">
+        <source>on</source>
+        <target state="final">в</target>
+      </trans-unit>
+      <trans-unit id="not_tracked" approved="yes">
+        <source>[Not Tracked]</source>
+        <target state="final">[Не отслеживается]</target>
+      </trans-unit>
+      <trans-unit id="user_not_found" approved="yes">
+        <source>[Not Found]</source>
+        <target state="final">[Не найдено]</target>
+      </trans-unit>
+      <trans-unit id="no_qrcode" approved="yes">
+        <source>Not enough information for generating a QR Code.</source>
+        <target state="final">Недостаточно информации для создания QR-кода.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
