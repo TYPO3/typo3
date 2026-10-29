@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name_description" approved="yes">
+        <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
+        <target state="final">ປ້ອນຊື່ທີ່ສື່ຄວາມໝາຍ ແລະ ຊັດເຈນສຳລັບຟອມ. ຊື່ນີ້ຈະຖືກສະແດງຢູ່ໃນ TYPO3 backend ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.new_form_name" approved="yes">
+        <source>New form name</source>
+        <target state="final">ຊື່ຟອມໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">ສະຖານທີ່</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation_description" approved="yes">
+        <source>Select the location where the form will be saved.</source>
+        <target state="final">ເລືອກສະຖານທີ່ທີ່ຈະບັນທຶກແບບຟອມ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_prototype" approved="yes">
+        <source>Form prototype</source>
+        <target state="final">ຟອມຕົ້ນແບບ (Prototype)</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template" approved="yes">
+        <source>Template</source>
+        <target state="final">ເທັມເພລດ (Template)</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template_description" approved="yes">
+        <source>Select a template for building your new form.</source>
+        <target state="final">ເລືອກເທັມເພລດສຳລັບການສ້າງຟອມໃໝ່ຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_headline_general" approved="yes">
+        <source>General</source>
+        <target state="final">ທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_copied" approved="yes">
+        <source>Copied form</source>
+        <target state="final">ຟອມທີ່ຄັດລອກແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_title" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">ຢືນຢັນການລຶບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_message" approved="yes">
+        <source>Delete form "{0}"? Forms saved as files are permanently deleted and cannot be restored from the Recycler.</source>
+        <target state="final">ລຶບແບບຟອມ "{0}" ບໍ່? ແບບຟອມທີ່ບັນທຶກເປັນໄຟລ໌ຈະຖືກລຶບອອກຢ່າງຖາວອນ ແລະ ບໍ່ສາມາດກູ້ຄືນມາຈາກຖັງຂີ້ເຫຍື້ອໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" approved="yes">
+        <source>Create new form</source>
+        <target state="final">ສ້າງຟອມໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.modes.summary.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">ໂໝດ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.progressLabel" approved="yes">
+        <source>Choose</source>
+        <target state="final">ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" approved="yes">
+        <source>You do not have permission to create forms. Please contact your administrator.</source>
+        <target state="final">ທ່ານບໍ່ມີສິດໃນການສ້າງແບບຟອມ. ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">ພ້ອມແລ້ວບໍ?</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">ກວດສອບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">ພຽງແຕ່ກວດສອບ ແລະ ຢືນຢັນການຕັ້ງຄ່າທີ່ທ່ານໄດ້ປ້ອນເຂົ້າ. ຮຽບຮ້ອຍແລ້ວບໍ? ຖ້າແມ່ນ, ທ່ານກໍ່ພ້ອມທີ່ຈະເລີ່ມຕົ້ນແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">ກວດສອບ ແລະ ຢືນຢັນ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">ສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">ບໍ່ສາມາດບັນທຶກຟອມໄດ້</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.title" approved="yes">
+        <source>Storage location</source>
+        <target state="final">ສະຖານທີ່ຈັດເກັບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.description" approved="yes">
+        <source>Choose how the form should be saved:</source>
+        <target state="final">ເລືອກຮູບແບບການບັນທຶກແບບຟອມ:</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.progressLabel" approved="yes">
+        <source>Storage</source>
+        <target state="final">ການຈັດເກັບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.summary.title" approved="yes">
+        <source>Storage</source>
+        <target state="final">ການຈັດເກັບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" approved="yes">
+        <source>Duplicate form "{0}"</source>
+        <target state="final">ເຮັດສຳເນົາຟອມ "{0}"</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">ພ້ອມແລ້ວບໍ?</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">ກວດສອບ</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">ກວດສອບ ແລະ ຢືນຢັນ</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">ພຽງແຕ່ກວດສອບ ແລະ ຢືນຢັນການຕັ້ງຄ່າທີ່ທ່ານໄດ້ປ້ອນເຂົ້າ. ຮຽບຮ້ອຍແລ້ວບໍ? ຖ້າແມ່ນ, ທ່ານກໍ່ພ້ອມທີ່ຈະເລີ່ມຕົ້ນແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">ສຳເນົາ</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">ບໍ່ສາມາດບັນທຶກຟອມໄດ້</target>
+      </trans-unit>
+      <trans-unit id="formManager.no_references" approved="yes">
+        <source>There are no references yet.</source>
+        <target state="final">ຍັງບໍ່ມີການອ້າງອີງເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.control" approved="yes">
+        <source>Control</source>
+        <target state="final">ຕົວຄວບຄຸມ</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="formManager.btn.edit.title" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.title" approved="yes">
+        <source>Form: {0}</source>
+        <target state="final">ຟອມ: {0}</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.headline" approved="yes">
+        <source>References to this item</source>
+        <target state="final">ການອ້າງອີງເຖິງລາຍການນີ້</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0" approved="yes">
+        <source>Blank form</source>
+        <target state="final">ຟອມຫວ່າງເປົ່າ</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Start fresh</source>
+        <target state="final">ເລີ່ມຕົ້ນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form from scratch.</source>
+        <target state="final">ສ້າງຟອມໃໝ່ຕັ້ງແຕ່ເລີ່ມຕົ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0" approved="yes">
+        <source>Predefined form</source>
+        <target state="final">ຟອມທີ່ກຳນົດໄວ້ລ່ວງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Use a form template</source>
+        <target state="final">ໃຊ້ເທັມເພລດຟອມ</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form and use an existing form template for it.</source>
+        <target state="final">ສ້າງຟອມໃໝ່ໂດຍໃຊ້ເທັມເພລດຟອມທີ່ມີຢູ່ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.title" approved="yes">
+        <source>Form created</source>
+        <target state="final">ສ້າງແບບຟອມແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.description" approved="yes">
+        <source>The form has been successfully created. Click "Finish" to be redirected to the newly created form.</source>
+        <target state="final">ສ້າງແບບຟອມສຳເລັດແລ້ວ. ຄລິກ "ສຳເລັດ" ເພື່ອໄປຫາແບບຟອມທີ່ຫາກໍ່ສ້າງໃໝ່.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
