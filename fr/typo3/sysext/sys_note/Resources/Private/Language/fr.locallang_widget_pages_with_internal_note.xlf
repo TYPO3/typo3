@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">Notes système</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description" approved="yes">
+        <source>Shows a list of pages with system notes.</source>
+        <target state="final">Affiche une liste de pages avec des notes système.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title" approved="yes">
+        <source>All System Notes</source>
+        <target state="final">Toutes les notes système</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.description" approved="yes">
+        <source>Shows a list of pages with system notes</source>
+        <target state="final">Affiche une liste de pages avec des notes système</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title" approved="yes">
+        <source>Notes in the category "Default"</source>
+        <target state="final">Notes de la catégorie "Défaut"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Default"</source>
+        <target state="final">Affiche une liste de pages avec des notes système pour la catégorie « Défaut »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title" approved="yes">
+        <source>Notes in the category "ToDo"</source>
+        <target state="final">Notes de la catégorie « À faire »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "ToDo"</source>
+        <target state="final">Affiche une liste de pages avec des notes système pour la catégorie "À faire"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title" approved="yes">
+        <source>Notes in the category "Template"</source>
+        <target state="final">Notes de la catégorie « Gabarit »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Template"</source>
+        <target state="final">Affiche une liste de pages avec des notes système pour la catégorie « Modèle »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title" approved="yes">
+        <source>Notes in the category "Notes"</source>
+        <target state="final">Notes de catégorie « Notes »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Notes"</source>
+        <target state="final">Affiche une liste de pages avec des notes système pour la catégorie « Notes »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title" approved="yes">
+        <source>Notes in the category "Instructions"</source>
+        <target state="final">Notes de la catégorie « Instructions »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Instructions"</source>
+        <target state="final">Affiche une liste de pages avec des notes système pour la catégorie « Instructions »</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" approved="yes">
+        <source>Category</source>
+        <target state="final">Catégorie</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" approved="yes">
+        <source>Category to be displayed.</source>
+        <target state="final">Catégorie à afficher.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">Toutes</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Créée</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage" approved="yes">
+        <source>Subject and message</source>
+        <target state="final">Sujet et message</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page" approved="yes">
+        <source>Go to page</source>
+        <target state="final">Aller à la page</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
