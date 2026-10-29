@@ -1,0 +1,1746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name" approved="yes">
+        <source>Form manager</source>
+        <target state="final">Gestionnaire de formulaires</target>
+      </trans-unit>
+      <trans-unit id="default" approved="yes">
+        <source>Default</source>
+        <target state="final">Par défaut</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>[Empty]</source>
+        <target state="final">[Vide]</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" approved="yes">
+        <source>Form definition</source>
+        <target state="final">Définition de formulaire</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Général</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" approved="yes">
+        <source>Please select a form definition</source>
+        <target state="final">Veuillez sélectionner une définition de formulaire</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" approved="yes">
+        <source>Override finisher settings</source>
+        <target state="final">Remplacer les paramètres du finisseur</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty" approved="yes">
+        <source>There are no finishers or finisher options in the current form definition.</source>
+        <target state="final">Il n'y a pas d'options de finisseur ou de finisseur dans la définition actuelle du formulaire.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier" approved="yes">
+        <source>No form selected.</source>
+        <target state="final">Aucun formulaire sélectionné.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" approved="yes">
+        <source>Invalid form "%s".</source>
+        <target state="final">Formulaire « %s » invalide.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier" approved="yes">
+        <source>"%s" (no read access).</source>
+        <target state="final">« %s » (pas d'accès en lecture).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" approved="yes">
+        <source>The form "%s" does not exist.</source>
+        <target state="final">Le formulaire « %s » n'existe pas .</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" approved="yes">
+        <source>"%s" (Invalid ext:form configuration).</source>
+        <target state="final">« %s » (configuration ext:form non valide).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.text" approved="yes">
+        <source>Invalid ext:form configuration in form "%s": %s</source>
+        <target state="final">Configuration ext:form invalide dans le formulaire "%s": %s</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" approved="yes">
+        <source>Invalid configuration.</source>
+        <target state="final">Configuration invalide.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Confirmation</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">Enregistrement</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Email à l'expéditeur (qui soumet le formulaire)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Sujet de l'email</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Destinataires</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" approved="yes">
+        <source>Recipient</source>
+        <target state="final">Destinataire</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" approved="yes">
+        <source>Email Address</source>
+        <target state="final">Adresse email</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Adresse email de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Nom en toutes lettres de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Destinataires de réponse</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label" approved="yes">
+        <source>Reply-To Recipient</source>
+        <target state="final">Destinataire de réponse</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Destinataires en copie</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label" approved="yes">
+        <source>CC Recipient</source>
+        <target state="final">Destinataire en copie</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Destinataires en copie invisible</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" approved="yes">
+        <source>BCC Recipient</source>
+        <target state="final">Destinataire en copie invisible</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" approved="yes">
+        <source>Add HTML mail part</source>
+        <target state="final">Ajouter une partie HTML</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Langue de traduction</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">Message</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Email au destinataire (vous)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Sujet de l'email</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipients.label" approved="yes">
+        <source>Email addresses and human-readable names of the recipients</source>
+        <target state="final">Adresses email et noms des destinataires</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Adresse email de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Nom en toutes lettres de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Destinataires des réponses (reply-to)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Destinataires en copie</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Destinataires en copie invisible</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Ajouter une partie HTML</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Langue de traduction</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">Message</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Redirection</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" approved="yes">
+        <source>Additional link parameter</source>
+        <target state="final">Paramètre additionnel du lien</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.fragment.label" approved="yes">
+        <source>Add fragment to the redirect link</source>
+        <target state="final">Ajouter une ancre au lien de redirection</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title" approved="yes">
+        <source>Delete error</source>
+        <target state="final">Erreur de suppression</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body" approved="yes">
+        <source>The form "%s" could not be deleted.</source>
+        <target state="final">Le formulaire « %s » n'a pas pu être supprimé.</target>
+      </trans-unit>
+      <trans-unit id="formManager.headline" approved="yes">
+        <source>Form Management</source>
+        <target state="final">Gestion des formulaires</target>
+      </trans-unit>
+      <trans-unit id="formManager.create_new_form" approved="yes">
+        <source>Create new form</source>
+        <target state="final">Créer un nouveau formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Form name</source>
+        <target state="final">Nom du formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Intégrité</target>
+      </trans-unit>
+      <trans-unit id="formManager.location" approved="yes">
+        <source>Location</source>
+        <target state="final">Emplacement</target>
+      </trans-unit>
+      <trans-unit id="formManager.references" approved="yes">
+        <source>References</source>
+        <target state="final">Références</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Options</target>
+      </trans-unit>
+      <trans-unit id="formManager.edit_form" approved="yes">
+        <source>Edit this form</source>
+        <target state="final">Modifier ce formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_this_form" approved="yes">
+        <source>Duplicate this form</source>
+        <target state="final">Dupliquer ce formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.delete_form" approved="yes">
+        <source>Delete this form</source>
+        <target state="final">Supprimer ce formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.title" approved="yes">
+        <source>No forms exist</source>
+        <target state="final">Il n'existe aucun formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.message" approved="yes">
+        <source>Once created, forms will be displayed here.</source>
+        <target state="final">Une fois créés, les formulaires seront affichés ici.</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found_by_search_term.message" approved="yes">
+        <source>There are currently no forms found containing the search term "%1s".</source>
+        <target state="final">Il n'y a actuellement aucun formulaire contenant le terme de recherche "%1s".</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_search_term" approved="yes">
+        <source>Remove search term</source>
+        <target state="final">Supprimer le terme de recherche</target>
+      </trans-unit>
+      <trans-unit id="formManager.invalid" approved="yes">
+        <source>Invalid form definition</source>
+        <target state="final">Définition de formulaire invalide</target>
+      </trans-unit>
+      <trans-unit id="formManager.readOnly" approved="yes">
+        <source>Read only</source>
+        <target state="final">Lecture seule</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_identifier" approved="yes">
+        <source>Duplicate identifier</source>
+        <target state="final">Identifiant en doublon</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.form" approved="yes">
+        <source>form</source>
+        <target state="final">formulaire</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.forms" approved="yes">
+        <source>forms</source>
+        <target state="final">formulaires</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" approved="yes">
+        <source>Blank form</source>
+        <target state="final">Formulaire vide</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description" approved="yes">
+        <source>Create a new form from scratch</source>
+        <target state="final">Créer un nouveau formulaire à partir de zéro</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" approved="yes">
+        <source>Simple contact form (ext:form example)</source>
+        <target state="final">Formulaire de contact simple (exemple ext:form)</target>
+      </trans-unit>
+      <trans-unit id="formManager.showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Afficher l'historique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.header" approved="yes">
+        <source>Form editor</source>
+        <target state="final">Editeur de formulaire</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Chargement…</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Chargement…</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final">Sauvegarder</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_button" approved="yes">
+        <source>Edit form properties</source>
+        <target state="final">Modifier les propriétés du formulaire</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button" approved="yes">
+        <source>Undo</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button" approved="yes">
+        <source>Redo</source>
+        <target state="final">Rétablir</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_structure" approved="yes">
+        <source>Toggle structure</source>
+        <target state="final">Basculer la structure</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_inspector" approved="yes">
+        <source>Toggle inspector</source>
+        <target state="final">Basculer l'inspecteur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_expand_inspector" approved="yes">
+        <source>Show inspector</source>
+        <target state="final">Afficher l'inspecteur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_collapse_inspector" approved="yes">
+        <source>Hide inspector</source>
+        <target state="final">Masquer l'inspecteur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.new_page_button" approved="yes">
+        <source>Create new step</source>
+        <target state="final">Créer une nouvelle étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.previous_step_button" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Étape précédente</target>
+      </trans-unit>
+      <trans-unit id="formEditor.next_step_button" approved="yes">
+        <source>Next step</source>
+        <target state="final">Étape suivante</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty" approved="yes">
+        <source>Step name is not set</source>
+        <target state="final">Le nom de l'étape n'est pas défini</target>
+      </trans-unit>
+      <trans-unit id="formEditor.preview_mode_button" approved="yes">
+        <source>Preview mode</source>
+        <target state="final">Prévisualisation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_mode_button" approved="yes">
+        <source>Edit mode</source>
+        <target state="final">Mode d'édition</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure" approved="yes">
+        <source>Structure</source>
+        <target state="final">Structure</target>
+      </trans-unit>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">Insérer des éléments</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" approved="yes">
+        <source>Required</source>
+        <target state="final">Requis</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label" approved="yes">
+        <source>Not a number</source>
+        <target state="final">Pas un nombre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" approved="yes">
+        <source>Invalid email address</source>
+        <target state="final">Adresse email invalide</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" approved="yes">
+        <source>Invalid form element</source>
+        <target state="final">Elément de formulaire invalide</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" approved="yes">
+        <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+        <target state="final">Format de taille de fichier non valide, par exemple "10B|K|M|G"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label" approved="yes">
+        <source>Invalid date format. Use Y-m-d (e.g. 2018-03-17) or a relative expression (e.g. today, -18 years)</source>
+        <target state="final">Format de date invalide. Utilisez Y-m-d (par exemple 2018-03-17) ou une expression relative (par exemple, today, -18 years)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label" approved="yes">
+        <source>Invalid pattern</source>
+        <target state="final">Modèle invalide</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.IntegerList.label" approved="yes">
+        <source>Not all items are numbers</source>
+        <target state="final">Tous les éléments ne sont pas des nombres</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label" approved="yes">
+        <source>Basic elements</source>
+        <target state="final">Eléments basics</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Eléments spéciaux</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label" approved="yes">
+        <source>Select elements</source>
+        <target state="final">Eléments sélectionnés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label" approved="yes">
+        <source>Advanced elements</source>
+        <target state="final">Contenus avancés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label" approved="yes">
+        <source>Container elements</source>
+        <target state="final">Éléments de conteneur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label" approved="yes">
+        <source>Step types</source>
+        <target state="final">Types d'étapes</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" approved="yes">
+        <source>Form name</source>
+        <target state="final">Nom du formulaire</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage" approved="yes">
+        <source>The form has been successfully saved.</source>
+        <target state="final">Le formulaire a été enregistré avec succès.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" approved="yes">
+        <source>The form could not be saved:</source>
+        <target state="final">Le formulaire n'a pas pu être enregistré :</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogTitle" approved="yes">
+        <source>Form configuration needs attention</source>
+        <target state="final">La configuration du formulaire requiert votre attention</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogMessage" approved="yes">
+        <source>The following elements need to be configured. Select an element to open its settings:</source>
+        <target state="final">Les éléments suivants doivent être configurés. Sélectionnez un élément pour ouvrir ses paramètres:</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifiant</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.confirmButton" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" approved="yes">
+        <source>New element</source>
+        <target state="final">Nouvel élément</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle" approved="yes">
+        <source>New step</source>
+        <target state="final">Nouvelle étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle" approved="yes">
+        <source>Remove element?</source>
+        <target state="final">Supprimer l'élément?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogMessage" approved="yes">
+        <source>Remove this element?</source>
+        <target state="final">Supprimer cet élément ?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" approved="yes">
+        <source>Remove</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancelButton" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" approved="yes">
+        <source>Error</source>
+        <target state="final">Erreur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" approved="yes">
+        <source>There must be at least one step within your form.</source>
+        <target state="final">Il doit y avoir au moins une étape dans votre formulaire.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogMessage" approved="yes">
+        <source>You currently have unsaved changes. Closing the form will discard them. Continue?</source>
+        <target state="final">Vous avez actuellement des modifications non enregistrées. Elles seront perdues si vous fermez le formulaire. Continuer ?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogTitle" approved="yes">
+        <source>Quit without saving?</source>
+        <target state="final">Quitter sans enregistrer ?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.confirmButton" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">Abandonner les modifications</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.cancelButton" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Poursuivre les modifications</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Étape {0} sur {1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" approved="yes">
+        <source>Minimum</source>
+        <target state="final">Minimum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" approved="yes">
+        <source>Maximum</source>
+        <target state="final">Maximum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Texte indicatif</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">Valeur par défaut</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Pattern</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.description" approved="yes">
+        <source>Additional client-side validation as JavaScript regular expression</source>
+        <target state="final">Validation supplémentaire côté client par expression régulière JavaScript</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validateurs</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Ajouter un validateur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Alphanumérique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Text non-XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Longueur de la chaîne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" approved="yes">
+        <source>Email</source>
+        <target state="final">Courriel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Nombre entier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Nombre à virgule flottante</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Plage de nombres</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Expression régulière</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Nombre de valeurs transmises</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Alphanumérique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Text non-XML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Longueur de la chaîne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" approved="yes">
+        <source>Email</source>
+        <target state="final">Courriel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Nombre entier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Nombre à virgule flottante</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Plage de nombres</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Expression régulière</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Expression régulière</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description" approved="yes">
+        <source>Enter a valid PHP PCRE regular expression here.</source>
+        <target state="final">Saisissez ici une expression régulière PHP PCRE valide.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Nombre de valeurs transmises</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" approved="yes">
+        <source>First option (empty value)</source>
+        <target state="final">Première option (valeur vide)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.description" approved="yes">
+        <source>If set, this label will be shown as first option.</source>
+        <target state="final">Si renseigné, ce libellé sera affiché en première option.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" approved="yes">
+        <source>Choices</source>
+        <target state="final">Choix</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validateurs</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Ajouter un validateur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" approved="yes">
+        <source>Uploads save path</source>
+        <target state="final">Chemin de sauvegarde des téléversements</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validateurs</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Ajouter un validateur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Taille du fichier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of files</source>
+        <target state="final">Nombre de fichiers</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Taille du fichier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of uploaded files</source>
+        <target state="final">Nombre de fichiers téléversés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" approved="yes">
+        <source>Submit label</source>
+        <target state="final">Intitulé du bouton de soumission</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" approved="yes">
+        <source>Submit</source>
+        <target state="final">Envoyer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label" approved="yes">
+        <source>Finishers</source>
+        <target state="final">Finisseurs</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label" approved="yes">
+        <source>Add finisher</source>
+        <target state="final">Ajouter un finisseur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Courriel à l'utilisateur (celui qui soumet le formulaire)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Courriel au destinataire (vous)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Redirection vers une page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Supprimer les téléversements</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Message de confirmation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">Courriel à l'utilisateur (qui soumet le formulaire)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Sujet</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">Message</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.description" approved="yes">
+        <source>Optional custom message. Use {formValues} as a placeholder to include the submitted form data at that position. If empty, only the form data table will be shown.</source>
+        <target state="final">Message personnalisé optionnel. Utilisez {formValues} comme espace réservé pour inclure à cette position les données du formulaire soumis. Si vide, seul le tableau de données du formulaire sera affiché.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Destinataires</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description" approved="yes">
+        <source>The email addresses and names of the website visitors to which the email should be sent.</source>
+        <target state="final">Les noms et adresses e-mail des visiteurs du site à qui l’e-mail doit être envoyé.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" approved="yes">
+        <source>Email Address</source>
+        <target state="final">Adresse email</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Adresse de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.description" approved="yes">
+        <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
+        <target state="final">L’adresse e-mail de l’expéditeur (ex. l’adresse e-mail de votre société) qui apparaitra dans le client de messagerie du visiteur du site.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Nom de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.description" approved="yes">
+        <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
+        <target state="final">Le nom de l’expéditeur (ex. le nom de votre société) qui apparaitra dans le client de messagerie du visiteur du site.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Destinataires des réponses (reply-to)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Destinataires en copie</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Destinataires en copie invisible</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Ajouter une partie HTML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description" approved="yes">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target state="final">Si activé, l’e-mail contiendra les parties HTML et texte brut, sinon uniquement la partie texte brut.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Joindre les téléversements</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Langue de traduction</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.description" approved="yes">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target state="final">Le titre affiché dans l'e-mail. Le titre est affiché dans la section d'en-tête juste avant le corps de l'e-mail. Ne confondez pas ce champ avec l'objet de votre e-mail.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">Courriel au destinataire (vous)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Sujet</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.label" approved="yes">
+        <source>Message</source>
+        <target state="final">Message</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.description" approved="yes">
+        <source>Optional custom message. Use {formValues} once as a placeholder to include the submitted form data at that position (only the first occurrence is replaced). If empty, only the form data table will be shown.</source>
+        <target state="final">Message personnalisé facultatif. Utilisez {formValues} une seule fois comme espace réservé pour inclure à cette position les données du formulaire soumis (seule la première occurrence sera remplacée). Si vide, seul le tableau de données du formulaire sera affiché.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Destinataires</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description" approved="yes">
+        <source>The email addresses and names of the recipients to which the email should be sent (e.g. your company's email addresses).</source>
+        <target state="final">Les noms et adresses e-mail des destinataires auxquels envoyer l’e-mail (ex. les adresses de votre société).</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Adresse de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.description" approved="yes">
+        <source>The email address of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to select a form element which contains the website visitor's email address instead.</source>
+        <target state="final">L'adresse e-mail de l'expéditeur qui apparaît dans votre client de messagerie. Utilisez le menu déroulant "Insérer l'identifiant du formulaire" si vous avez besoin de sélectionner un élément de formulaire qui contient l'adresse e-mail de l'utilisateur du site à la place.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Nom de l'expéditeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.description" approved="yes">
+        <source>The name of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to choose one or more form elements which contain the website visitor's name</source>
+        <target state="final">Le nom de l'expéditeur qui apparaît dans votre client de messagerie. Utilisez la liste déroulante "Insérer l'identifiant du formulaire" si vous avez besoin de choisir un ou plusieurs éléments de formulaire qui contiennent le nom de l'utilisateur du site</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Destinataires des réponses (reply-to)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">Destinataires en copie</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">Destinataires en copie invisible</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Ajouter une partie HTML</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.description" approved="yes">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target state="final">Si activé, l'e-mail contiendra une partie en texte brut et une partie HTML, sinon seulement une partie en texte brut.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Joindre les téléversements</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Langue de traduction</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.description" approved="yes">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target state="final">Le titre affiché dans l'e-mail. Le titre est affiché dans la section d'en-tête juste avant le corps de l'e-mail. Ne confondez pas ce champ avec l'objet de votre e-mail.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Redirection vers une page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" approved="yes">
+        <source>Additional parameters</source>
+        <target state="final">Paramètres additionnels</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.label" approved="yes">
+        <source>URL fragment</source>
+        <target state="final">Ancre de l'URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Contenu de la page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.description" approved="yes">
+        <source>You can use a content element identifier as URL fragment or set a custom fragment identifier.</source>
+        <target state="final">Vous pouvez utiliser un identifiant de contenu comme fragment d'URL, ou définir un fragment personnalisé.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Supprimer les téléversements</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Message de confirmation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Uid de l'élément de contenu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Contenu de Page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.description" approved="yes">
+        <source>Will be ignored if "Content element" is set</source>
+        <target state="final">Sera ignoré si « Élément de contenu » est défini</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" approved="yes">
+        <source>Execute a closure</source>
+        <target state="final">Exécuter une fonction</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" approved="yes">
+        <source>Flash message</source>
+        <target state="final">Message flash</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" approved="yes">
+        <source>Save the mail to the Database</source>
+        <target state="final">Enregistrer le mail dans la base de données</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Intitulé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Intitulé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.enabled.label" approved="yes">
+        <source>Field visible</source>
+        <target state="final">Champ visible</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.label" approved="yes">
+        <source>Autocomplete</source>
+        <target state="final">Auto-complétion</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.none" approved="yes">
+        <source>None</source>
+        <target state="final">Aucune</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.off" approved="yes">
+        <source>off - disable the autocomplete functionality</source>
+        <target state="final">off - désactiver la fonctionnalité de saisie automatique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.name" approved="yes">
+        <source>name - Full name</source>
+        <target state="final">nom - Nom complet</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix" approved="yes">
+        <source>Prefix or title (e.g., "Mr.", "Ms.", "Dr.")</source>
+        <target state="final">Préfixe ou titre (par exemple, "M", "Mme", "Dr")</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.given-name" approved="yes">
+        <source>given-name - first name</source>
+        <target state="final">given-name - prénom</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.family-name" approved="yes">
+        <source>family-name - last name</source>
+        <target state="final">family-name - nom de famille</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.nickname" approved="yes">
+        <source>Nickname, screen name</source>
+        <target state="final">Pseudonyme, nom à l'écran</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.username" approved="yes">
+        <source>username</source>
+        <target state="final">nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization" approved="yes">
+        <source>organization - Company name</source>
+        <target state="final">organisation - Nom de l'entreprise</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line1" approved="yes">
+        <source>address-line1 - Street address, line 1</source>
+        <target state="final">adresse-line1 - Adresse postale, ligne 1</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line2" approved="yes">
+        <source>address-line2 - Street address, line 2</source>
+        <target state="final">adresse-line2 - Adresse postale, ligne 2</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level2" approved="yes">
+        <source>address-level2 - City</source>
+        <target state="final">adresse-level2 - Ville</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country-name" approved="yes">
+        <source>country-name</source>
+        <target state="final">country-name</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.postal-code" approved="yes">
+        <source>postal-code - ZIP</source>
+        <target state="final">postal-code - code postal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel" approved="yes">
+        <source>tel - Full telephone number</source>
+        <target state="final">tel - Numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.language" approved="yes">
+        <source>language - Preferred language</source>
+        <target state="final">language - Langue préférée</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.street-address" approved="yes">
+        <source>street-address</source>
+        <target state="final">street-address</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.url" approved="yes">
+        <source>url - Home page</source>
+        <target state="final">url - Page d'accueil</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.new-password" approved="yes">
+        <source>new-password - A new password to create / change</source>
+        <target state="final">new-password - Un nouveau mot de passe à créer / modifier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.current-password" approved="yes">
+        <source>current-password - Current password for the selected username</source>
+        <target state="final">current-password - Mot de passe actuel pour le nom d'utilisateur sélectionné</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-day" approved="yes">
+        <source>bday-day - Day component of birthday</source>
+        <target state="final">bday-day - Composant du jour de la date de naissance</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-month" approved="yes">
+        <source>bday-month - Month component of birthday</source>
+        <target state="final">bday-month - Composant du mois de la date de naissance</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-year" approved="yes">
+        <source>bday-year - Year component of birthday</source>
+        <target state="final">bday-year - Composant de l'année de la date de naissance</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.photo" approved="yes">
+        <source>photo</source>
+        <target state="final">photo</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.email" approved="yes">
+        <source>email</source>
+        <target state="final">e-mail</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday" approved="yes">
+        <source>bday - Birthday</source>
+        <target state="final">bday - Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country" approved="yes">
+        <source>country - Country code</source>
+        <target state="final">pays - Code pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" approved="yes">
+        <source>Field required</source>
+        <target state="final">Champ obligatoire</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Message d'erreur personnalisé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Message d'erreur affiché en cas d'échec de la validation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Plage de dates</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" approved="yes">
+        <source>Grid viewport configuration</source>
+        <target state="final">Configuration de l'affichage de la grille</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" approved="yes">
+        <source>Extra small</source>
+        <target state="final">Très petit</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" approved="yes">
+        <source>Small</source>
+        <target state="final">Petit</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" approved="yes">
+        <source>Medium</source>
+        <target state="final">Moyen</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" approved="yes">
+        <source>Large</source>
+        <target state="final">Grand</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" approved="yes">
+        <source>Extra large</source>
+        <target state="final">Très grand</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" approved="yes">
+        <source>Extra extra large</source>
+        <target state="final">Très très grand</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" approved="yes">
+        <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+        <target state="final">Nombre de colonnes pour la vue "{@viewPortLabel}"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description" approved="yes">
+        <source>Leave empty for auto calculation</source>
+        <target state="final">Laisser vide pour un calcul automatique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.description" approved="yes">
+        <source>A form step that can be customized with various elements</source>
+        <target state="final">Une étape de formulaire qui peut être personnalisée avec différents éléments</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Nom de l'étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Libellé du bouton précédent</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Étape précédente</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Libellé du bouton suivant</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Étape suivante</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label" approved="yes">
+        <source>Summary step</source>
+        <target state="final">Étape de résumé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.description" approved="yes">
+        <source>A form step that displays all entered values for review before submission</source>
+        <target state="final">Une étape de formulaire qui affiche toutes les valeurs saisies pour examen avant soumission</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Nom de l'étape</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Libellé du bouton précédent</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Étape précédente</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Libellé du bouton suivant</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Étape suivante</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label" approved="yes">
+        <source>Fieldset</source>
+        <target state="final">Groupe de champs</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.description" approved="yes">
+        <source>A container used to group related form elements, improving accessibility and providing content-based structure</source>
+        <target state="final">Un conteneur utilisé pour regrouper les éléments de formulaire connexes, améliorer l'accessibilité et fournir une structure basée sur le contenu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label" approved="yes">
+        <source>Fieldset name</source>
+        <target state="final">Nom du champ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.label" approved="yes">
+        <source>Grid: Column</source>
+        <target state="final">Grille : Colonne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.description" approved="yes">
+        <source>A container element for arranging fields, providing visual structure</source>
+        <target state="final">Un élément conteneur pour organiser des champs, fournissant une structure visuelle</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.editor.label.label" approved="yes">
+        <source>Name (not visible within frontend)</source>
+        <target state="final">Nom (non visible en Frontend)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label" approved="yes">
+        <source>Grid: Row</source>
+        <target state="final">Grille : Ligne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.description" approved="yes">
+        <source>A container element for arranging fields side by side, providing visual structuring</source>
+        <target state="final">Un élément conteneur pour organiser des champs côte à côte avec une structuration visuelle</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label" approved="yes">
+        <source>Row name (not visible within frontend)</source>
+        <target state="final">Nom de la ligne (non visible dans le frontend)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.description" approved="yes">
+        <source>A single-line text field</source>
+        <target state="final">Un champ de texte à ligne unique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" approved="yes">
+        <source>Email address</source>
+        <target state="final">Courriel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.description" approved="yes">
+        <source>A text field for inputting an email address</source>
+        <target state="final">Un champ texte pour la saisie d'une adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">Numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.description" approved="yes">
+        <source>A text field for inputting a phone number</source>
+        <target state="final">Un champ texte pour la saisie d'un numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.description" approved="yes">
+        <source>A text field for inputting a URL</source>
+        <target state="final">Un champ texte pour la saisie d'une URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.description" approved="yes">
+        <source>A text field for inputting numbers, with browser controls to adjust the value in predefined steps</source>
+        <target state="final">Un champ de texte pour la saisie de nombres, utilisant les contrôles du navigateur pour ajuster la valeur en fonction d'états prédéfinis</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" approved="yes">
+        <source>Date</source>
+        <target state="final">Date</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.description" approved="yes">
+        <source>A text field for inputting a date in a single line</source>
+        <target state="final">Un champ de texte pour entrer une date sur une seule ligne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" approved="yes">
+        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+        <target state="final">Une date au format aaaa-mm-jj (par exemple 2018-03-17)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.description" approved="yes">
+        <source>Specify the number of days between each occurrence of this event.</source>
+        <target state="final">Précisez le nombre de jours entre chaque occurrence de cet événement.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Fréquence</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Plage de dates</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Plage de dates</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" approved="yes">
+        <source>Minimum date</source>
+        <target state="final">Date minimale</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" approved="yes">
+        <source>Maximum date</source>
+        <target state="final">Date maximale</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" approved="yes">
+        <source>Password</source>
+        <target state="final">Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.description" approved="yes">
+        <source>A text field for entering a password</source>
+        <target state="final">Un champ de texte pour la saisie un mot de passe</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label" approved="yes">
+        <source>Advanced password</source>
+        <target state="final">Mot de passe avancé</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.description" approved="yes">
+        <source>A text field for entering and confirming a password</source>
+        <target state="final">Un champ de texte pour saisir et confirmer un mot de passe</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" approved="yes">
+        <source>Confirmation label</source>
+        <target state="final">Libellé de confirmation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Confirmation</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Zone de texte</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.description" approved="yes">
+        <source>A multi-line text field for entering extended or continuous text</source>
+        <target state="final">Un champ de texte à plusieurs lignes pour saisir du texte étendu ou continu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" approved="yes">
+        <source>Checkbox</source>
+        <target state="final">Case à cocher</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.description" approved="yes">
+        <source>An element for creating a single checkbox</source>
+        <target state="final">Un élément pour créer une case à cocher unique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.label" approved="yes">
+        <source>Country select</source>
+        <target state="final">Sélection de pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.description" approved="yes">
+        <source>An element to select a country</source>
+        <target state="final">Un élément pour sélectionner un pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label" approved="yes">
+        <source>Multi checkbox</source>
+        <target state="final">Case à cocher multiples</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.description" approved="yes">
+        <source>An element for creating multiple checkboxes</source>
+        <target state="final">Un élément pour créer plusieurs cases à cocher</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label" approved="yes">
+        <source>Multi select</source>
+        <target state="final">Liste à choix multiples</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.description" approved="yes">
+        <source>An element for creating a field that allows multiple selections</source>
+        <target state="final">Un élément pour créer un champ permettant des sélections multiples</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" approved="yes">
+        <source>Radio button</source>
+        <target state="final">Bouton radio</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.description" approved="yes">
+        <source>An element for displaying one or more radio buttons</source>
+        <target state="final">Un élément pour afficher un ou plusieurs boutons radio</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label" approved="yes">
+        <source>Single select</source>
+        <target state="final">Sélection simple</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.description" approved="yes">
+        <source>An element for creating a dropdown list for selecting a single option</source>
+        <target state="final">Un élément pour créer une liste déroulante à sélection unique</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" approved="yes">
+        <source>Date/time</source>
+        <target state="final">Date / heure</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label" approved="yes">
+        <source>Static text</source>
+        <target state="final">Texte fixe</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.description" approved="yes">
+        <source>A field for displaying text content</source>
+        <target state="final">Un champ pour afficher du contenu textuel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Caché</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.description" approved="yes">
+        <source>A field that is not displayed in the frontend</source>
+        <target state="final">Un champ qui ne sera pas affiché en Frontend</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" approved="yes">
+        <source>Value</source>
+        <target state="final">Valeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" approved="yes">
+        <source>Content element</source>
+        <target state="final">Éléments de contenu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.description" approved="yes">
+        <source>A field for displaying any content element from your website</source>
+        <target state="final">Un champ pour afficher n'importe quel élément de contenu de votre site web</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement" approved="yes">
+        <source>No content element selected</source>
+        <target state="final">Aucun élément de contenu sélectionné</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Uid de l'élément de contenu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Contenu de la page</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" approved="yes">
+        <source>File upload</source>
+        <target state="final">Envoi de fichier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.description" approved="yes">
+        <source>An element for uploading a file</source>
+        <target state="final">Un élément pour téléverser un fichier</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Types Mime autorisés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.maximumFileSize.label" approved="yes">
+        <source>
+Your servers' maximum upload file size is {0}. Be aware setting higher values can result in errors when submitting the form.
+If you need higher values contact your administrator for help.
+        </source>
+        <target state="final">
+La taille maximale des fichiers téléverseables sur vos serveurs est de {0}. Soyez conscient que des valeurs plus élevées pourraient entraîner des erreurs lors de la soumission du formulaire. 
+Si vous avez besoin des valeurs plus élevées, contactez votre administrateur pour obtenir de l'aide.
+        </target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" approved="yes">
+        <source>Documents (doc)</source>
+        <target state="final">Documents (doc)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" approved="yes">
+        <source>Documents (docx)</source>
+        <target state="final">Documents (docx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" approved="yes">
+        <source>Documents (xls)</source>
+        <target state="final">Documents (xls)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" approved="yes">
+        <source>Documents (xlsx)</source>
+        <target state="final">Documents (xlsx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" approved="yes">
+        <source>Documents (pdf)</source>
+        <target state="final">Documents (pdf)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" approved="yes">
+        <source>Documents (odt)</source>
+        <target state="final">Documents (odt)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" approved="yes">
+        <source>Documents (ods)</source>
+        <target state="final">Documents (ods)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.multiple.label" approved="yes">
+        <source>Allow multiple upload</source>
+        <target state="final">Autoriser le téléversement de plusieurs fichiers</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowRemoval.label" approved="yes">
+        <source>Allow removal of uploaded files</source>
+        <target state="final">Autoriser la suppression des fichiers téléversés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" approved="yes">
+        <source>Image upload</source>
+        <target state="final">Téléchargement de l'image</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.description" approved="yes">
+        <source>An element for uploading an image</source>
+        <target state="final">Un élément pour téléverser une image</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Types Mime de fichier autorisés</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" approved="yes">
+        <source>Images (jpg)</source>
+        <target state="final">Images (jpg)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" approved="yes">
+        <source>Images (png)</source>
+        <target state="final">Images (png)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" approved="yes">
+        <source>Images (bmp)</source>
+        <target state="final">Images (bmp)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect" approved="yes">
+        <source>Country Select</source>
+        <target state="final">Sélection de pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.prioritizedCountries.label" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">Pays prioritaires</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.onlyCountries.label" approved="yes">
+        <source>Only countries</source>
+        <target state="final">Uniquement ces pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label" approved="yes">
+        <source>Exclude countries</source>
+        <target state="final">Exclure les pays</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">Valeur par défaut</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.description" approved="yes">
+        <source>Ensure the selected country is not excluded by the configured country filters.</source>
+        <target state="final">Vérifiez que le pays sélectionné n'est pas exclu par les filtres de pays configurés.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement" approved="yes">
+        <source>Unknown element</source>
+        <target state="final">Élément inconnu</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">Créer un nouvel élément</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title" approved="yes">
+        <source>Insert formelement identifier</source>
+        <target state="final">Utiliser un champ du formulaire</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement.remove" approved="yes">
+        <source>Remove this Element</source>
+        <target state="final">Supprimer cet élément</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.add" approved="yes">
+        <source>Add a new row</source>
+        <target state="final">Ajouter une nouvelle ligne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.remove" approved="yes">
+        <source>Remove this row</source>
+        <target state="final">Supprimer cette ligne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.move" approved="yes">
+        <source>Move this row</source>
+        <target state="final">Déplacer cette ligne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Label</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.value" approved="yes">
+        <source>Value</source>
+        <target state="final">Valeur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.selected" approved="yes">
+        <source>Selected</source>
+        <target state="final">Sélectionnée</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.noResults" approved="yes">
+        <source>Unfortunately no element type matches your query, please try a different one.</source>
+        <target state="final">Malheureusement, aucun type d'élément ne correspond à votre requête, veuillez en essayer une autre.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.placeholder" approved="yes">
+        <source>Search for any element type</source>
+        <target state="final">Rechercher n'importe quel type d'élément</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.noResults" approved="yes">
+        <source>Unfortunately no step type matches your query, please try a different one.</source>
+        <target state="final">Malheureusement, aucun type d'étape ne correspond à votre requête, veuillez en essayer une autre.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.placeholder" approved="yes">
+        <source>Search for any step type</source>
+        <target state="final">Rechercher n'importe quel type d'étape</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.label" approved="yes">
+        <source>Database</source>
+        <target state="final">Base de données</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.description" approved="yes">
+        <source>Store the form as a record in the database. Recommended for most use cases, because it treats forms as user-generated content and allows integrated versioning.</source>
+        <target state="final">Stocker le formulaire comme un enregistrement dans la base de données. Recommandé pour la plupart des cas d'utilisation, car il traite les formulaires comme du contenu généré par l'utilisateur et permet le versionnage intégré.</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.label" approved="yes">
+        <source>Extension</source>
+        <target state="final">Extension</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.description" approved="yes">
+        <source>Store the form inside an extension. Such forms are then not meant for editing, but provided as-is.</source>
+        <target state="final">Stocker le formulaire dans d'une extension. Ces formulaires ne sont alors pas destinés à être modifiés, mais fournis tels quels.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
