@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">Webhooks (appels HTTP sortants)</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+        <target state="final">Gérer les appels HTTP sortants vers des systèmes externes</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Configure TYPO3 webhooks to notify external systems when defined system events occur. Supports integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
+        <target state="final">Configurer les webhooks TYPO3 pour notifier les systèmes externes lorsque des événements système surviennent. Sont prises en charge les intégrations avec des plates-formes telles que Slack, Discord, les fournisseurs de paiement, les systèmes CRM, et plus encore.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+        <target state="final">Webhooks – Gérer les appels HTTP sortants</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">Aucun webhook trouvé </target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.message" approved="yes">
+        <source>There are currently no webhooks records found in the database.</source>
+        <target state="final">Il n’y a actuellement aucun webhook enregistré dans la base de données.</target>
+      </trans-unit>
+      <trans-unit id="webhook_create" approved="yes">
+        <source>Create new webhook</source>
+        <target state="final">Créer un nouveau webhook</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">Aucun webhook trouvé </target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no webhooks could be found.</source>
+        <target state="final">Aucun webhook n’a été trouvé avec l’ensemble des filtres appliqués actuellement.</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Retirer tous les filtres</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_implementation_class" approved="yes">
+        <source>Implementation class for webhook type "%s" is missing.</source>
+        <target state="final">La classe d’implémentation pour le type de webhook « %s » est manquante.</target>
+      </trans-unit>
+      <trans-unit id="webhook_example" approved="yes">
+        <source>Example</source>
+        <target state="final">Exemple</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtrer</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Réinitialiser</target>
+      </trans-unit>
+      <trans-unit id="filter.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">Déclencheur du webhook</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Afficher tout</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">précédente</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">suivante</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">première</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">dernière</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Enregistrements</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">ِActualiser</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete webhooks</source>
+        <target state="final">Supprimer les webhooks</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
+        <target state="final">Supprimer tous les webhooks sélectionnés ? Vous pourrez les restaurer depuis de la corbeille TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
