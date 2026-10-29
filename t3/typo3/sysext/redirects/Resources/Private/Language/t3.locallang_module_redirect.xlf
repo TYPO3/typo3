@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="source_host_global_text">
+        <source>Global redirect (any domain)</source>
+        <target>crwdns60698:0crwdne60698:0</target>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Redirect Management</source>
+        <target>crwdns60700:0crwdne60700:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text">
+        <source>Add redirect</source>
+        <target>crwdns60702:0crwdne60702:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title">
+        <source>No redirects found</source>
+        <target>crwdns378658:0crwdne378658:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message">
+        <source>There are currently no redirect records found in the database.</source>
+        <target>crwdns60706:0crwdne60706:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_create">
+        <source>Create new redirect</source>
+        <target>crwdns60708:0crwdne60708:0</target>
+      </trans-unit>
+      <trans-unit id="noAccessPermissions.title">
+        <source>Access denied</source>
+        <target>crwdns388570:0crwdne388570:0</target>
+      </trans-unit>
+      <trans-unit id="noAccessPermissions.message">
+        <source>You are not allowed to list or modify redirects due to insufficient permissions.</source>
+        <target>crwdns388572:0crwdne388572:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title">
+        <source>No redirects found</source>
+        <target>crwdns378660:0crwdne378660:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.message">
+        <source>With the current set of filters applied, no redirect could be found.</source>
+        <target>crwdns60712:0crwdne60712:0</target>
+      </trans-unit>
+      <trans-unit id="redirect_no_filter">
+        <source>Remove all filter</source>
+        <target>crwdns60714:0crwdne60714:0</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll">
+        <source>Show All</source>
+        <target>crwdns60716:0crwdne60716:0</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode">
+        <source>Status Code</source>
+        <target>crwdns60720:0crwdne60720:0</target>
+      </trans-unit>
+      <trans-unit id="filter.creationType">
+        <source>Creation type</source>
+        <target>crwdns226489:0crwdne226489:0</target>
+      </trans-unit>
+      <trans-unit id="filter.creationType.showAll">
+        <source>Show All</source>
+        <target>crwdns226491:0crwdne226491:0</target>
+      </trans-unit>
+      <trans-unit id="filter.createdBy.showAll">
+        <source>Show All</source>
+        <target>crwdns415743:0crwdne415743:0</target>
+      </trans-unit>
+      <trans-unit id="filter.protected">
+        <source>Protected</source>
+        <target>crwdns297528:0crwdne297528:0</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.showAll">
+        <source>Show All</source>
+        <target>crwdns297530:0crwdne297530:0</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.unprotected">
+        <source>unprotected</source>
+        <target>crwdns297532:0crwdne297532:0</target>
+      </trans-unit>
+      <trans-unit id="filter.protected.protected">
+        <source>protected</source>
+        <target>crwdns297534:0crwdne297534:0</target>
+      </trans-unit>
+      <trans-unit id="filter.integrityStatus">
+        <source>Integrity status</source>
+        <target>crwdns304932:0crwdne304932:0</target>
+      </trans-unit>
+      <trans-unit id="filter.integrityStatus.showAll">
+        <source>Show All</source>
+        <target>crwdns304934:0crwdne304934:0</target>
+      </trans-unit>
+      <trans-unit id="filter.neverHit">
+        <source>Never hit</source>
+        <target>crwdns141973:0crwdne141973:0</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton">
+        <source>Filter</source>
+        <target>crwdns113442:0crwdne113442:0</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton">
+        <source>Reset</source>
+        <target>crwdns113444:0crwdne113444:0</target>
+      </trans-unit>
+      <trans-unit id="shadowed_redirect.title">
+        <source>Shadowed redirect</source>
+        <target>crwdns417911:0crwdne417911:0</target>
+      </trans-unit>
+      <trans-unit id="shadowed_redirect.message">
+        <source>Redirect #%1$d is shadowed by redirect #%2$d with the same source and will never be used.</source>
+        <target>crwdns417913:0%1$dcrwdnd417913:0%2$dcrwdne417913:0</target>
+      </trans-unit>
+      <trans-unit id="record_disabled">
+        <source>Disabled</source>
+        <target>crwdns339094:0crwdne339094:0</target>
+      </trans-unit>
+      <trans-unit id="source_path.placeholder">
+        <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
+        <target>crwdns60730:0crwdne60730:0</target>
+      </trans-unit>
+      <trans-unit id="short_url.source_path.placeholder">
+        <source>e.g. /AbCdEfGh</source>
+        <target>crwdns393902:0crwdne393902:0</target>
+      </trans-unit>
+      <trans-unit id="short_url.copy">
+        <source>Copy Short URL to clipboard</source>
+        <target>crwdns393904:0crwdne393904:0</target>
+      </trans-unit>
+      <trans-unit id="pageID">
+        <source>Page ID</source>
+        <target>crwdns60734:0crwdne60734:0</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code">
+        <source>Status Code</source>
+        <target>crwdns60736:0crwdne60736:0</target>
+      </trans-unit>
+      <trans-unit id="hit_reset">
+        <source>Reset hit counter</source>
+        <target>crwdns339096:0crwdne339096:0</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.title">
+        <source>Reset the hit counter of this record?</source>
+        <target>crwdns339098:0crwdne339098:0</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.content">
+        <source>Are you sure you want to reset the hit counter of this record?</source>
+        <target>crwdns339100:0crwdne339100:0</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never">
+        <source>Never</source>
+        <target>crwdns60752:0crwdne60752:0</target>
+      </trans-unit>
+      <trans-unit id="visit_destination">
+        <source>Go to</source>
+        <target>crwdns60754:0crwdne60754:0</target>
+      </trans-unit>
+      <trans-unit id="view_redirect">
+        <source>View redirect</source>
+        <target>crwdns84711:0crwdne84711:0</target>
+      </trans-unit>
+      <trans-unit id="overview.tableHead.protected">
+        <source>Protected</source>
+        <target>crwdns339102:0crwdne339102:0</target>
+      </trans-unit>
+      <trans-unit id="overview.tableField.protected.no">
+        <source>No</source>
+        <target>crwdns339104:0crwdne339104:0</target>
+      </trans-unit>
+      <trans-unit id="overview.tableField.protected.yes">
+        <source>Yes</source>
+        <target>crwdns339106:0crwdne339106:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title">
+        <source>Delete redirects</source>
+        <target>crwdns297834:0crwdne297834:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message">
+        <source>Delete all marked redirects? You can restore deleted redirects from the TYPO3 recycler.</source>
+        <target>crwdns415745:0crwdne415745:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
