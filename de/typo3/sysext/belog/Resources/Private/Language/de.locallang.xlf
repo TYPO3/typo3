@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">Administrationsprotokoll</target>
+      </trans-unit>
+      <trans-unit id="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[Alle Benutzer]</target>
+      </trans-unit>
+      <trans-unit id="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[Alle]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">via</target>
+      </trans-unit>
+      <trans-unit id="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Entwurf</target>
+      </trans-unit>
+      <trans-unit id="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Selbst</target>
+      </trans-unit>
+      <trans-unit id="userGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppe:</target>
+      </trans-unit>
+      <trans-unit id="set" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filter</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>[all]</source>
+        <target state="final">[Alle]</target>
+      </trans-unit>
+      <trans-unit id="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">Datenbank</target>
+      </trans-unit>
+      <trans-unit id="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">Datei</target>
+      </trans-unit>
+      <trans-unit id="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">Cache</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">Anmeldung</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Fehler</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppe:</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Benutzer:</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Benutzer:</target>
+      </trans-unit>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Zeit:</target>
+      </trans-unit>
+      <trans-unit id="max" approved="yes">
+        <source>Max</source>
+        <target state="final">Max:</target>
+      </trans-unit>
+      <trans-unit id="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Verlauf anzeigen</target>
+      </trans-unit>
+      <trans-unit id="action" approved="yes">
+        <source>Action</source>
+        <target state="final">Aktion:</target>
+      </trans-unit>
+      <trans-unit id="channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">Kanal</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">Tiefe</target>
+      </trans-unit>
+      <trans-unit id="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeitsumgebung:</target>
+      </trans-unit>
+      <trans-unit id="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Übersicht</target>
+      </trans-unit>
+      <trans-unit id="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">Einfügen</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">Verschieben</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">Prüfen</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">Referer-Host '%s' und Server-Host '%s' stimmten nicht überein!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Versuch einen Datensatz auf Seite '%s' (%s) einzufügen, wo diese Tabelle, %s, nicht erlaubt ist.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Versuch einen Datensatz auf Seite '%s' (%s) aus Tabelle '%s' ohne die nötigen Berechtigungen einzufügen. Ggf existiert die Seite auch nicht.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">Versuch Tabelle '%s' ohne Berechtigung zu verändern.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">Versuch den Datensatz '%s' (%s) ohne Berechtigung zu verändern. Ggf. existiert die Seite nicht.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">Datensatz '%s' (%s) wurde aktualisiert.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL-Fehler: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">Versuch den Datensatz '%s' (%s) hinter einen nicht-existierenden Datensatz (uid=%s) zu verschieben.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">Datensatz '%s' (%s) auf Seite '%s' (%s) verschoben</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">Datensatz '%s' (%s) von Seite '%s' (%s) verschoben</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">Datensatz '%s' (%s) innerhalb der Seite '%s' (%s) verschoben</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">Versuch, die Seite '%s' (%s) in ihre eigene Wurzel zu verschieben (in Seite '%s' (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Versuch einen Datensatz auf Seite '%s' (%s) einzufügen, wo diese Tabelle, %s, nicht erlaubt ist.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Versuch einen Datensatz auf Seite '%s' (%s) aus Tabelle '%s' ohne die nötigen Berechtigungen einzufügen. Ggf existiert die Seite auch nicht.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">Versuch, den Datensatz '%s' (%s) hinter einen anderen Datensatz zu verschieben, obwohl die Tabelle keine Spalte zur Sortierung vorsieht.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">Versuch, den Datensatz '%s' (%s) ohne Berechtigung zu verschieben.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">Der 'doktype' der Seite '%s' kann nicht auf den gewünschten Wert geändert werden.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">Der 'doktype' der Seite '%s' konnte nicht auf den gewünschten Wert geändert werden, da die Seite Datensätze nicht-erlaubter Tabellen enthält. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">Zu viele Elemente in der Liste der Werte. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">Datei '%s' konnte nicht gelöscht werden (nicht vorhanden). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">Kopieren der Datei '%s' fehlgeschlagen: Keine Zieldatei (%s) möglich! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">Dateiendung '%s' nicht erlaubt. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">Größe (%s) der Datei '%s' überschreitet Grenzwert (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">Die Zieldatei (%s) oder Quelldatei (%s) existiert nicht. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">Kopieren nach Datei '%s' fehlgeschlagen! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">Kopieren der Datei '%s' fehlgeschlagen: Der Zielpfad (%s) ist eventuell schreibgeschützt. Bitte deaktivieren Sie den Schreibschutz! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_4" approved="yes">
+        <source>The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.</source>
+        <target state="final">Der Wert des Feldes "%s" wurde von "%s" zu "%s" geändert, da er eindeutig sein muss.</target>
+      </trans-unit>
+      <trans-unit id="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">DATEI</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">Hochladen</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopieren</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">Verschieben</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">Umbenennen</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">Neu</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Dekomprimieren</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">Neue Datei</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">Datei gespeichert unter '%s', Größe: %s Byte, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">CACHE</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">Cache leeren</target>
+      </trans-unit>
+      <trans-unit id="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">ERWEITERUNG</target>
+      </trans-unit>
+      <trans-unit id="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">FEHLER</target>
+      </trans-unit>
+      <trans-unit id="action_5_0" approved="yes">
+        <source>Error handler</source>
+        <target state="final">Fehlerbehandlung</target>
+      </trans-unit>
+      <trans-unit id="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">EINSTELLUNGEN</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">Ändern</target>
+      </trans-unit>
+      <trans-unit id="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ANMELDUNG</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ANMELDUNG</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">ABMELDUNG</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">VERSUCH</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">Administrator-ChangeLog</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">Alle Benutzer</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Selbst</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">Diese Woche</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">Letzte Woche</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Letzte 7 Tage</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Dieser Monat</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Letzter Monat</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Letzte 31 Tage</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">Keine Begrenzung</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">Zeit:</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">Benutzer:</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Aktion:</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">Kanal</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_level" approved="yes">
+        <source>Level</source>
+        <target state="final">Ebene</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">Details</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">Benutzer:</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuPageId" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Tiefe:</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">Zeit:</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d error(s). Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[%1$d Fehler gefunden. Bitte überprüfen Sie das <a href="%2$s">System-Protokoll</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Aktionen</target>
+      </trans-unit>
+      <trans-unit id="actions.delete" approved="yes">
+        <source>Delete similar errors</source>
+        <target state="final">Ähnliche Fehler löschen</target>
+      </trans-unit>
+      <trans-unit id="actions.deleteWarnings" approved="yes">
+        <source>Delete similar warnings</source>
+        <target state="final">Gleichartige Warnungen löschen</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message" approved="yes">
+        <source>Total entries deleted: %1$d</source>
+        <target state="final">Gesamtzahl gelöschter Einträge: %1$d</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.noRowFound" approved="yes">
+        <source>Log entry could not be found.</source>
+        <target state="final">Der Eintrag wurde nicht gefunden.</target>
+      </trans-unit>
+      <trans-unit id="info.noRecords.message" approved="yes">
+        <source>No records found.</source>
+        <target state="final">Keine Datensätze gefunden.</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.title" approved="yes">
+        <source>No page selected</source>
+        <target state="final">Keine Seite ausgewählt</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.message" approved="yes">
+        <source>Select a page to display logs for.</source>
+        <target state="final">Wählen Sie eine Seite für die Logs angezeigt werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title" approved="yes">
+        <source>No access!</source>
+        <target state="final">Kein Zugriff!</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message" approved="yes">
+        <source>You don't have access to the selected page.</source>
+        <target state="final">Sie haben keinen Zugriff auf die ausgewählte Seite.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
