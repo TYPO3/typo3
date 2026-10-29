@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields">
+        <source>Small fields</source>
+        <target>crwdns55128:0crwdne55128:0</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn">
+        <source>Add column to the right</source>
+        <target>crwdns55130:0crwdne55130:0</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn">
+        <source>Remove column</source>
+        <target>crwdns55132:0crwdne55132:0</target>
+      </trans-unit>
+      <trans-unit id="table_addRow">
+        <source>Add row below</source>
+        <target>crwdns55134:0crwdne55134:0</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow">
+        <source>Remove row</source>
+        <target>crwdns55136:0crwdne55136:0</target>
+      </trans-unit>
+      <trans-unit id="table_left">
+        <source>Move left</source>
+        <target>crwdns55138:0crwdne55138:0</target>
+      </trans-unit>
+      <trans-unit id="table_right">
+        <source>Move right</source>
+        <target>crwdns55140:0crwdne55140:0</target>
+      </trans-unit>
+      <trans-unit id="table_up">
+        <source>Move up</source>
+        <target>crwdns55142:0crwdne55142:0</target>
+      </trans-unit>
+      <trans-unit id="table_down">
+        <source>Move down</source>
+        <target>crwdns55144:0crwdne55144:0</target>
+      </trans-unit>
+      <trans-unit id="table_top">
+        <source>Move to top</source>
+        <target>crwdns55146:0crwdne55146:0</target>
+      </trans-unit>
+      <trans-unit id="table_bottom">
+        <source>Move to bottom</source>
+        <target>crwdns55148:0crwdne55148:0</target>
+      </trans-unit>
+      <trans-unit id="table_start">
+        <source>Move to first column</source>
+        <target>crwdns55150:0crwdne55150:0</target>
+      </trans-unit>
+      <trans-unit id="table_end">
+        <source>Move to last column</source>
+        <target>crwdns55152:0crwdne55152:0</target>
+      </trans-unit>
+      <trans-unit id="table_setCount">
+        <source>Set row and column count</source>
+        <target>crwdns141625:0crwdne141625:0</target>
+      </trans-unit>
+      <trans-unit id="table_colCount">
+        <source>Column count</source>
+        <target>crwdns141627:0crwdne141627:0</target>
+      </trans-unit>
+      <trans-unit id="table_rowCount">
+        <source>Row count</source>
+        <target>crwdns141629:0crwdne141629:0</target>
+      </trans-unit>
+      <trans-unit id="table_setCountHeadline">
+        <source>Change table size</source>
+        <target>crwdns141631:0crwdne141631:0</target>
+      </trans-unit>
+      <trans-unit id="table_buttonUpdate">
+        <source>Update</source>
+        <target>crwdns342832:0crwdne342832:0</target>
+      </trans-unit>
+      <trans-unit id="table_showCode">
+        <source>Show table code</source>
+        <target>crwdns141635:0crwdne141635:0</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeHeadline">
+        <source>Table code</source>
+        <target>crwdns342834:0crwdne342834:0</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeLabel">
+        <source>Raw value</source>
+        <target>crwdns342836:0crwdne342836:0</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle">
+        <source>Set cell name and column number</source>
+        <target>crwdns55242:0crwdne55242:0</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn">
+        <source>Add column</source>
+        <target>crwdns55250:0crwdne55250:0</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn">
+        <source>Remove column</source>
+        <target>crwdns55252:0crwdne55252:0</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow">
+        <source>Add row</source>
+        <target>crwdns55254:0crwdne55254:0</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow">
+        <source>Remove row</source>
+        <target>crwdns55256:0crwdne55256:0</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell">
+        <source>Edit cell</source>
+        <target>crwdns55258:0crwdne55258:0</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_right">
+        <source>Merge Right</source>
+        <target>crwdns370308:0crwdne370308:0</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_down">
+        <source>Merge Down</source>
+        <target>crwdns370310:0crwdne370310:0</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_horizontal">
+        <source>Split Horizontally</source>
+        <target>crwdns370312:0crwdne370312:0</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_vertical">
+        <source>Split Vertically</source>
+        <target>crwdns370314:0crwdne370314:0</target>
+      </trans-unit>
+      <trans-unit id="grid_name">
+        <source>Name</source>
+        <target>crwdns55264:0crwdne55264:0</target>
+      </trans-unit>
+      <trans-unit id="grid_column">
+        <source>Column number</source>
+        <target>crwdns55266:0crwdne55266:0</target>
+      </trans-unit>
+      <trans-unit id="grid_identifier">
+        <source>Identifier</source>
+        <target>crwdns342838:0crwdne342838:0</target>
+      </trans-unit>
+      <trans-unit id="grid_slideMode">
+        <source>Slide mode</source>
+        <target>crwdns342840:0crwdne342840:0</target>
+      </trans-unit>
+      <trans-unit id="grid_allowedContentTypes">
+        <source>Allowed content types</source>
+        <target>crwdns417899:0crwdne417899:0</target>
+      </trans-unit>
+      <trans-unit id="grid_disallowedContentTypes">
+        <source>Disallowed content types</source>
+        <target>crwdns417901:0crwdne417901:0</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet">
+        <source>not set</source>
+        <target>crwdns55268:0crwdne55268:0</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp">
+        <source>Enter a name for the cell.</source>
+        <target>crwdns55270:0crwdne55270:0</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target>crwdns55272:0crwdne55272:0</target>
+      </trans-unit>
+      <trans-unit id="grid_identifierHelp">
+        <source>The identifier is a human-readable unique label, used to access the items in this column.</source>
+        <target>crwdns342842:0crwdne342842:0</target>
+      </trans-unit>
+      <trans-unit id="grid_slideModeHelp">
+        <source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
+        <target>crwdns342844:0crwdne342844:0</target>
+      </trans-unit>
+      <trans-unit id="grid_allowedContentTypesHelp">
+        <source>Comma-separated list of content element types (CType) allowed in this column. Leave empty to allow all types.</source>
+        <target>crwdns417903:0crwdne417903:0</target>
+      </trans-unit>
+      <trans-unit id="grid_disallowedContentTypesHelp">
+        <source>Comma-separated list of content element types (CType) not allowed in this column.</source>
+        <target>crwdns417905:0crwdne417905:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor">
+        <source>Open Editor</source>
+        <target>crwdns55274:0crwdne55274:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message">
+        <source>Image manipulation is only available for supported types</source>
+        <target>crwdns55276:0crwdne55276:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions">
+        <source>No image dimensions could be determined.</source>
+        <target>crwdns55278:0crwdne55278:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target>crwdns55280:0crwdne55280:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation">
+        <source>Image manipulation</source>
+        <target>crwdns55282:0crwdne55282:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset">
+        <source>Reset</source>
+        <target>crwdns55288:0crwdne55288:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept">
+        <source>Accept</source>
+        <target>crwdns55290:0crwdne55290:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel">
+        <source>Cancel</source>
+        <target>crwdns55292:0crwdne55292:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview">
+        <source>Preview</source>
+        <target>crwdns55294:0crwdne55294:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio">
+        <source>Aspect ratio</source>
+        <target>crwdns55296:0crwdne55296:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio">
+        <source>Set Aspect Ratio</source>
+        <target>crwdns55298:0crwdne55298:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" translate="no">
+        <source>16:9</source>
+        <target>crwdns55300:0crwdne55300:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" translate="no">
+        <source>3:2</source>
+        <target>crwdns55302:0crwdne55302:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" translate="no">
+        <source>4:3</source>
+        <target>crwdns55304:0crwdne55304:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" translate="no">
+        <source>1:1</source>
+        <target>crwdns55306:0crwdne55306:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.191_1" translate="no">
+        <source>1.91:1</source>
+        <target>crwdns55308:0crwdne55308:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free">
+        <source>Free</source>
+        <target>crwdns55310:0crwdne55310:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default">
+        <source>Default</source>
+        <target>crwdns55312:0crwdne55312:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social">
+        <source>Social media</source>
+        <target>crwdns55314:0crwdne55314:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.sync-crop-variants">
+        <source>Apply changes to all crop variants</source>
+        <target>crwdns392458:0crwdne392458:0</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection">
+        <source>Selected Size</source>
+        <target>crwdns55316:0crwdne55316:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header">
+        <source>Translation behavior</source>
+        <target>crwdns55322:0crwdne55322:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue">
+        <source>Custom value</source>
+        <target>crwdns55324:0crwdne55324:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue">
+        <source>Value of default language</source>
+        <target>crwdns55326:0crwdne55326:0</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue">
+        <source>Value of %1s language</source>
+        <target>crwdns55328:0%1scrwdne55328:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
