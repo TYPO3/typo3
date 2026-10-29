@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">फाइल माउंट्स</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_edit_title" approved="yes">
+        <source>Edit file mount</source>
+        <target state="final">फाइल माउंट संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" approved="yes">
+        <source>Create new file mount</source>
+        <target state="final">नया फाइल माउंट बनाएं</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" approved="yes">
+        <source>List file mounts</source>
+        <target state="final">फाइल माउंट्स की सूची</target>
+      </trans-unit>
+      <trans-unit id="page_tree_entry_points" approved="yes">
+        <source>Page Tree Entry Points</source>
+        <target state="final">पेज ट्री एंट्री पॉइंट्स</target>
+      </trans-unit>
+      <trans-unit id="page_tree_entry_points.description" approved="yes">
+        <source>The group also needs permissions to view the page, see module "Permissions"</source>
+        <target state="final">पेज देखने के लिए इस ग्रुप को अनुमति की भी आवश्यकता है, "Permissions" मॉड्यूल देखें</target>
+      </trans-unit>
+      <trans-unit id="userMods" approved="yes">
+        <source>Allowed modules</source>
+        <target state="final">अनुमत मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="availableWidgets" approved="yes">
+        <source>Allowed dashboard widgets</source>
+        <target state="final">अनुमत डैशबोर्ड विजेट्स</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" approved="yes">
+        <source>Allowed multi-factor authentication providers</source>
+        <target state="final">अनुमत मल्टी-फैक्टर ऑथेंटिकेशन प्रोवाइडर्स</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">भाषाओं तक सीमित करें</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" approved="yes">
+        <source>If no language is selected, all languages will be available by default.</source>
+        <target state="final">यदि कोई भाषा चयनित नहीं है, तो सभी भाषाएँ डिफ़ॉल्ट रूप से उपलब्ध होंगी।</target>
+      </trans-unit>
+      <trans-unit id="category_perms" approved="yes">
+        <source>Category Mounts</source>
+        <target state="final">कैटेगरी माउंट्स</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms" approved="yes">
+        <source>Workspace permissions</source>
+        <target state="final">वर्कस्पेस अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms.description" approved="yes">
+        <source>Live workspace permissions are also required to allow management of files/resources</source>
+        <target state="final">फाइलों/रिसोर्स के प्रबंधन की अनुमति देने के लिए लाइव वर्कस्पेस अनुमतियाँ भी आवश्यक हैं</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">एडिट लाइव(ऑनलाइन)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">टीएसकॉन्फ़िग</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_includes" approved="yes">
+        <source>Include static TSconfig</source>
+        <target state="final">स्टैटिक टीएसकॉन्फ़िग शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">यूज़रनेम</target>
+      </trans-unit>
+      <trans-unit id="be_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="be_users.mfa" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">मल्टी-फैक्टर ऑथेंटिकेशन</target>
+      </trans-unit>
+      <trans-unit id="be_users.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">अवतार</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup" approved="yes">
+        <source>Group</source>
+        <target state="final">ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">एडिट यूजर ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">नया ग्रुप बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">लिस्ट ग्रुप्स</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin" approved="yes">
+        <source>Admin (!)</source>
+        <target state="final">एडमिन (!)</target>
+      </trans-unit>
+      <trans-unit id="be_users.types.user" approved="yes">
+        <source>User</source>
+        <target state="final">यूज़र</target>
+      </trans-unit>
+      <trans-unit id="be_users.types.admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">एडमिन</target>
+      </trans-unit>
+      <trans-unit id="be_users.options" approved="yes">
+        <source>Mount from groups</source>
+        <target state="final">ग्रुप से माउंट</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_page_tree_entry_points" approved="yes">
+        <source>Page Tree Entry Points</source>
+        <target state="final">पेज ट्री एंट्री पॉइंट्स</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_page_tree_entry_points.description" approved="yes">
+        <source>The user also needs permissions to view the page, see module "Permissions"</source>
+        <target state="final">पेज देखने के लिए यूज़र को भी अनुमति की आवश्यकता है, "Permissions" मॉड्यूल देखें</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">फाइल माउंट्स</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">फाइल ऑपरेशन अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">फाइल</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">फाइल्स: पढ़ें</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">फाइल्स: लिखें</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">फाइल्स:ऐड</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">फाइल्स: नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_replace" approved="yes">
+        <source>Files: Replace</source>
+        <target state="final">फाइल्स:रिप्लेस</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">फाइल्स:खिसकाए</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">फाइल्स: नकल</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">फाइल:अनज़िप</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">फाइल्स: मिटाये</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">फाइल्स:अपलोड,नक़ल,खिसकाए,मिटाये,नाम बदलें,नया,एडिट</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">डिरेक्टरी:खिसकाए,मिटाये,नाम बदलने,नया</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">डिरेक्टरी:नकल</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">डिरेक्टरी:रिकर्सिवली मिटाएं(rm-Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.lang" approved="yes">
+        <source>User Interface Language</source>
+        <target state="final">यूज़र इंटरफेस भाषा</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफ़ॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.installed" approved="yes">
+        <source>Installed Languages</source>
+        <target state="final">इंस्टॉल्ड भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="be_users.languageItemGroups.unavailable" approved="yes">
+        <source>Unavailable Languages</source>
+        <target state="final">अनुपलब्ध भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="be_users.user_settings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">यूज़र सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="be_groups.title" approved="yes">
+        <source>Title</source>
+        <target state="final">टाइटल</target>
+      </trans-unit>
+      <trans-unit id="be_groups.pagetypes_select" approved="yes">
+        <source>Allowed page types</source>
+        <target state="final">अनुमत पेज प्रकार</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">टेबल अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify.description" approved="yes">
+        <source>Tables chosen for writing automatically receive read access permissions.</source>
+        <target state="final">लिखने के लिए चुनी गई टेबल्स को स्वतः पढ़ने की अनुमति मिल जाती है।</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify.permissions.none" approved="yes">
+        <source>No Access</source>
+        <target state="final">कोई एक्सेस नहीं</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify.permissions.select" approved="yes">
+        <source>Read</source>
+        <target state="final">पढ़ने की अनुमति</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify.permissions.modify" approved="yes">
+        <source>Read &amp; Write</source>
+        <target state="final">पढ़ने &amp; लिखने की अनुमति</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select" approved="yes">
+        <source>Tables (listing)</source>
+        <target state="final">टेबल (सूची)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields" approved="yes">
+        <source>Allowed fields</source>
+        <target state="final">अनुमत फ़ील्ड्स</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields.description" approved="yes">
+        <source>Allow fields that are excluded in forms by default for non-admin users. This option refers to the 'exclude' configuration set in TCA (Table Configuration Array).</source>
+        <target state="final">उन फ़ील्ड्स को अनुमति दें जो गैर-एडमिन यूज़र्स के लिए फ़ॉर्म में डिफ़ॉल्ट रूप से छिपे होते हैं। यह विकल्प TCA (टेबल कॉन्फ़िगरेशन एरे) में सेट 'exclude' कॉन्फ़िगरेशन को संदर्भित करता है।</target>
+      </trans-unit>
+      <trans-unit id="be_groups.explicit_allowdeny" approved="yes">
+        <source>Explicitly allow field values</source>
+        <target state="final">फ़ील्ड मानों को स्पष्ट रूप से अनुमति दें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options" approved="yes">
+        <source>Custom module options</source>
+        <target state="final">कस्टम मॉड्यूल विकल्प</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">ग्रुप से सेटिंग्स विरासत में लें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">फाइल ऑपरेशन अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder" approved="yes">
+        <source>Directory</source>
+        <target state="final">डायरेक्टरी</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_read" approved="yes">
+        <source>Directory: Read</source>
+        <target state="final">डिरेक्ट्री: पढ़े</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_write" approved="yes">
+        <source>Directory: Write</source>
+        <target state="final">डिरेक्ट्री: लिखे</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_add" approved="yes">
+        <source>Directory: Add</source>
+        <target state="final">डिरेक्ट्री: ऐड</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" approved="yes">
+        <source>Directory: Rename</source>
+        <target state="final">डिरेक्ट्री: नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_move" approved="yes">
+        <source>Directory: Move</source>
+        <target state="final">डिरेक्ट्री:खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">डिरेक्टरी:नकल</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" approved="yes">
+        <source>Directory: Delete</source>
+        <target state="final">डिरेक्ट्री:मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_recursivedelete" approved="yes">
+        <source>Directory: Delete recursively</source>
+        <target state="final">डिरेक्ट्री:रिकर्सिवली मिटाएं</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">फाइल</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">फाइल्स: पढ़ें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">फाइल्स: लिखें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_edit" approved="yes">
+        <source>Files: Edit</source>
+        <target state="final">फाइल्स:एडिट</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">फाइल्स:ऐड</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">फाइल्स: नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">फाइल्स:खिसकाए</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">फाइल्स: नकल</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">फाइल:अनज़िप</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">फाइल्स: मिटाये</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">फाइल्स:अपलोड,नक़ल,खिसकाए,मिटाये,नाम बदलें,नया,एडिट</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">डिरेक्टरी:खिसकाए,मिटाये,नाम बदलने,नया</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">डिरेक्टरी:नकल</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">डिरेक्टरी:रिकर्सिवली मिटाएं(rm-Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">यूज़र्स</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">माउन्ट पॉइंट्स</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">पब्लिशिंग</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">अन्य</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.identifier" approved="yes">
+        <source>Entry point</source>
+        <target state="final">एंट्री पॉइंट</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title" approved="yes">
+        <source>Label</source>
+        <target state="final">लेबल</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.read_only" approved="yes">
+        <source>Read-only</source>
+        <target state="final">केवल-पढ़ने योग्य</target>
+      </trans-unit>
+      <trans-unit id="sys_history" approved="yes">
+        <source>System History</source>
+        <target state="final">सिस्टम हिस्ट्री</target>
+      </trans-unit>
+      <trans-unit id="sys_log" approved="yes">
+        <source>System Log</source>
+        <target state="final">सिस्टम लॉग</target>
+      </trans-unit>
+      <trans-unit id="sys_news" approved="yes">
+        <source>System News</source>
+        <target state="final">सिस्टम न्यूज़</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">ओनर्स</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">मेंबर्स</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" approved="yes">
+        <source>Publish</source>
+        <target state="final">प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">वेरसीओनिंग किये बिना टेबल के रिकार्ड्स को 'लाइव' एडिटिंग करने की अनुमति दे</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">मेंबर्स को "रिव्यु" स्टेज में रिकॉर्ड को एडिट करने की अनुमति दें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">डिसेबल ऑटो संस्करण जब एडिटिंग हो रह हो</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">प्रकाशन अनुमति</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Stage change notification by email</source>
+        <target state="final">पड़ाव परिवर्तन की ईमेल सूचना</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" approved="yes">
+        <source>Page visible</source>
+        <target state="final">पृष्ठ दिखाई दे</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" approved="yes">
+        <source>Page visible</source>
+        <target state="final">पृष्ठ दिखाई दे</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Page not enabled in menus</source>
+        <target state="final">मेनू में पेज सक्षम नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">मेनू में पेज सक्षम</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">पृष्ठ मेनू में सक्षम है</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Page title</source>
+        <target state="final">पृष्ठ टाइटल</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">पृष्ठ ट्री में उप-पृष्ठ छिपाएं</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot" approved="yes">
+        <source>Is root of website</source>
+        <target state="final">वेबसाइट का रूट है</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" approved="yes">
+        <source>URL Segment</source>
+        <target state="final">यूआरएल सेगमेंट</target>
+      </trans-unit>
+      <trans-unit id="pages.description" approved="yes">
+        <source>Description for search engines</source>
+        <target state="final">सर्च इंजन के लिए विवरण</target>
+      </trans-unit>
+      <trans-unit id="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">बैकेंड यूजर</target>
+      </trans-unit>
+      <trans-unit id="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">बैकेंड यूजर ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" approved="yes">
+        <source>File mount</source>
+        <target state="final">फाइल माउंट</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">फाइल स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="sys_file" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="sys_file.storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="sys_file.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">आइडेंटिफायर</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" approved="yes">
+        <source>Filename</source>
+        <target state="final">फ़ाइलनाम</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type" approved="yes">
+        <source>File Type</source>
+        <target state="final">फाइल टाइप</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">अननोन</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.text" approved="yes">
+        <source>Text</source>
+        <target state="final">टेक्स्ट्</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" approved="yes">
+        <source>Image</source>
+        <target state="final">छवि</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">ऑडियो</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.video" approved="yes">
+        <source>Video</source>
+        <target state="final">वीडियो</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.software" approved="yes">
+        <source>Software</source>
+        <target state="final">सॉफ्टवेयर</target>
+      </trans-unit>
+      <trans-unit id="sys_file.mime_type" approved="yes">
+        <source>Mime Type</source>
+        <target state="final">माइम टाइप</target>
+      </trans-unit>
+      <trans-unit id="sys_file.sha1" approved="yes">
+        <source>SHA1</source>
+        <target state="final">SHA1</target>
+      </trans-unit>
+      <trans-unit id="sys_file.size" approved="yes">
+        <source>Size</source>
+        <target state="final">साइज</target>
+      </trans-unit>
+      <trans-unit id="sys_file.usage_count" approved="yes">
+        <source>Usage Count</source>
+        <target state="final">यूसेज काउंट</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" approved="yes">
+        <source>Description</source>
+        <target state="final">डिस्क्रिप्शन</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">अल्टरनेटिव टेक्स्ट</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative.description" approved="yes">
+        <source>Images must have text alternatives that describe the information or function represented by them. This should only be empty for purely decorative images.</source>
+        <target state="final">छवियों के लिए ऐसा वैकल्पिक टेक्स्ट होना चाहिए जो उनके द्वारा दर्शाई गई जानकारी या कार्य का वर्णन करे। यह केवल सजावटी छवियों के लिए ही खाली होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="sys_file.missing" approved="yes">
+        <source>Marked as missing</source>
+        <target state="final">मार्केड मिसिंग</target>
+      </trans-unit>
+      <trans-unit id="sys_file.metadata" approved="yes">
+        <source>Metadata records</source>
+        <target state="final">मेटाडेटा रेकॉर्डस</target>
+      </trans-unit>
+      <trans-unit id="file.width" approved="yes">
+        <source>Width</source>
+        <target state="final">चौड़ाई</target>
+      </trans-unit>
+      <trans-unit id="file.height" approved="yes">
+        <source>Height</source>
+        <target state="final">ऊंचाई</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">फ़ाइल मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference" approved="yes">
+        <source>File Reference</source>
+        <target state="final">फ़ाइल रेफरर्न्स</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_local" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_foreign" approved="yes">
+        <source>Used by content elements</source>
+        <target state="final">कंटेंट एलिमेंट्स के द्वारा उपयोग किया गया</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.tablenames" approved="yes">
+        <source>Table name</source>
+        <target state="final">टेबल नाम</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.fieldname" approved="yes">
+        <source>Foreign Field</source>
+        <target state="final">फॉरेन फील्ड</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.sorting_foreign" approved="yes">
+        <source>Sorting foreign</source>
+        <target state="final">सॉर्टिंग फॉरेन</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">फ़ाइल मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">इमेज मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" approved="yes">
+        <source>Audio Metadata</source>
+        <target state="final">ऑडियो मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" approved="yes">
+        <source>Video Metadata</source>
+        <target state="final">विडियो मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" approved="yes">
+        <source>Description (Caption)</source>
+        <target state="final">डिस्क्रिप्शन (कैप्शन)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" approved="yes">
+        <source>Download Name</source>
+        <target state="final">डाउनलोड नाम</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">अल्टरनेटिव टेक्स्ट</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" approved="yes">
+        <source>Link</source>
+        <target state="final">लिंक</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">इमेज मेनिपुलेशन</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" approved="yes">
+        <source>Autoplay</source>
+        <target state="final">ऑटोप्ले</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" approved="yes">
+        <source>File collection</source>
+        <target state="final">फाइल कलेक्शन</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.files" approved="yes">
+        <source>Files</source>
+        <target state="final">फाइल</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.0" approved="yes">
+        <source>Selection of single files</source>
+        <target state="final">एकल फाइल का चयन</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.1" approved="yes">
+        <source>Files from a selected folder</source>
+        <target state="final">चयनित फ़ोल्डर से फाइलें</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.2" approved="yes">
+        <source>Files from a selected category</source>
+        <target state="final">चयनित कैटेगरी से फाइलें</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">फाइल स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">फ़ोल्डर</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">रिकर्सिव</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">केटेगरी</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">वर्कस्पेस</target>
+      </trans-unit>
+      <trans-unit id="editlock" approved="yes">
+        <source>Restrict editing by non-Admins</source>
+        <target state="final">गैर-एडमिन द्वारा संपादन सीमित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">केटेगरी</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" approved="yes">
+        <source>Parent</source>
+        <target state="final">पेरेंन्ट</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" approved="yes">
+        <source>Items</source>
+        <target state="final">आइटम्स</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">केटेगरीज</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">केटेगरीज</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
