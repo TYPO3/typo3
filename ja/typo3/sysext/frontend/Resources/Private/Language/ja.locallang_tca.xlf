@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">ページのタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">公開日時</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">有効期限</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">サブページまで拡張</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">代替ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">メニューで非表示</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">メタデータ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">表示設定</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">キーワード</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">投稿者名</target>
+      </trans-unit>
+      <trans-unit id="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">メディア</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">ローカリゼーション</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">ページのデフォルトの言語を非表示</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">現在の言語の翻訳が存在しない場合はページを隠す</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">ページTSconfig</target>
+      </trans-unit>
+      <trans-unit id="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">ページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="sys_template" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">TypoScriptレコード</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" approved="yes">
+        <source>Title</source>
+        <target state="final">タイトル</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">ルートレベル</target>
+      </trans-unit>
+      <trans-unit id="sys_template.rootDescription" approved="yes">
+        <source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
+				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+        <target state="final">有効にすると、そのページが "Rootline Root "としてマークされる。これは多くの場合、一番上のTypoScriptレコードに対して一度だけ設定される。
+				これはフロントエンドで、例えば「パンくず」メニューを作るときに、さらに親ページがあったとしても、このページで止めるために使うことができる。
+				このフラグは特に、これらのTypoScriptの "getText "プロパティに影響します： "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clearDescription" approved="yes">
+        <source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
+			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
+        <target state="final">ルートライン上にあるTypoScriptレコードからTypoScriptの設定を削除する。これは、「ルートページとして使用する」フラグが設定され、
+			 	サイトモジュールで「サイト」設定が添付されている同じページに位置する最も多いTypoScriptレコードに対して一度だけ設定されることがほとんどである。</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" approved="yes">
+        <source>Include TypoScript sets</source>
+        <target state="final">TypoScriptセットを含む</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_fileDescription" approved="yes">
+        <source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
+				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+        <target state="final">拡張機能には、基本的なフロントエンドのレンダリングを設定するためのデフォルトのTypoScriptがよく提供されます。これらはここで読み込むことができる。
+				TypoScriptの構造をきれいに整理するために、これは、「ルートページとして使用する」フラグが設定され、サイトモジュールで「サイト」設定が添付され、
+				上記の「クリア」「ルートレベル」フラグが設定されている同じページにあるメインのTypoScriptレコードに対してのみ設定されることが多い。</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" approved="yes">
+        <source>Include TypoScript records</source>
+        <target state="final">TypoScriptレコードを含む</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOnDescription" approved="yes">
+        <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
+			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
+				and to load the full set in a single main TypoScript record.
+            </source>
+        <target state="final">ページツリーの他の場所にある追加のTypoScriptレコードをインクルードする。これは、ページツリーの複数の場所で同じTypoScriptレコードをロードするために使用することができます。
+			 	これは現在ではあまり使われておらず、TypoScriptの設定をファイルに抽出し、単一のメインTypoScriptレコードで
+			 	フルセットを読み込む方が、サイトの理解や維持が容易になることが多い。
+            </target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn" approved="yes">
+        <source>Load TypoScript sets after included TypoScript records</source>
+        <target state="final">組み込まれたTypoScriptレコードの後にTypoScriptセットを読み込む</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOnDescription" approved="yes">
+        <source>When using both fields "Include TypoScript sets" and "Include TypoScript records" in a TypoScript record, this flag allows swapping their load order.</source>
+        <target state="final">TypoScript レコードに 「Include TypoScript sets」 と 「Include TypoScript records」 の両方のフィールドを使用する場合、このフラグはロード順序を入れ替えることができます。</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode" approved="yes">
+        <source>Loading order of TypoScript sets</source>
+        <target state="final">TypoScriptセットの読み込み中</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_modeDescription" approved="yes">
+        <source>This seldom used feature affects if and when TypoScript sets from extensions (ext_typoscript_setup.typoscript and ext_typoscript_constants.typoscript)
+				are loaded. There are very few cases where setting this to a different value than the default value "0" is useful.</source>
+        <target state="final">このめったに使われない機能は、拡張機能（ext_typoscript_setup.typoscriptとext_typoscript_constants.typoscript）
+				からTypoScriptセットがロードされるか、いつロードされるかに影響します。これをデフォルト値「0」と異なる値に設定することが有用であるケースは非常に少ない。</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1" approved="yes">
+        <source>Always include before this typoscript record</source>
+        <target state="final">このtyposcriptのレコードの前に常に含める</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2" approved="yes">
+        <source>Never include before this typoscript record</source>
+        <target state="final">このtyposcriptのレコードの前に常に含める</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3" approved="yes">
+        <source>Include before all static typoscript if root flag is set</source>
+        <target state="final">ルートフラグが設定されている場合、すべての静的typoscriptの前に含める</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add" approved="yes">
+        <source>Add new TypoScript record</source>
+        <target state="final">新しいTypoScriptレコードを追加</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
