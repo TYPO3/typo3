@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="LGL.hidden">
+        <source>Hide</source>
+        <target>crwdns54020:0crwdne54020:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.timestamp">
+        <source>Last Modified</source>
+        <target>crwdns54022:0crwdne54022:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationDate">
+        <source>Created At</source>
+        <target>crwdns54024:0crwdne54024:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationUserId">
+        <source>Created By</source>
+        <target>crwdns54026:0crwdne54026:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.description">
+        <source>Description</source>
+        <target>crwdns54040:0crwdne54040:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.prependAtCopy">
+        <source>(copy %s)</source>
+        <target>crwdns54042:0%scrwdne54042:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.layout">
+        <source>Frontend Layout</source>
+        <target>crwdns141617:0crwdne141617:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value">
+        <source>Default</source>
+        <target>crwdns54046:0crwdne54046:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal">
+        <source>Normal</source>
+        <target>crwdns54048:0crwdne54048:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.images">
+        <source>Images</source>
+        <target>crwdns54050:0crwdne54050:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.image">
+        <source>Image</source>
+        <target>crwdns54052:0crwdne54052:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.width">
+        <source>Width</source>
+        <target>crwdns54054:0crwdne54054:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.height">
+        <source>Height</source>
+        <target>crwdns54056:0crwdne54056:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.caption">
+        <source>Caption</source>
+        <target>crwdns54058:0crwdne54058:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.text">
+        <source>Text</source>
+        <target>crwdns54062:0crwdne54062:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.name">
+        <source>Name</source>
+        <target>crwdns54064:0crwdne54064:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.first_name">
+        <source>First name</source>
+        <target>crwdns54066:0crwdne54066:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.middle_name">
+        <source>Middle name</source>
+        <target>crwdns54068:0crwdne54068:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.last_name">
+        <source>Last name</source>
+        <target>crwdns54070:0crwdne54070:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.title">
+        <source>Title</source>
+        <target>crwdns54072:0crwdne54072:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.title_person">
+        <source>Title</source>
+        <target>crwdns54074:0crwdne54074:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.address">
+        <source>Address</source>
+        <target>crwdns54076:0crwdne54076:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.phone">
+        <source>Phone</source>
+        <target>crwdns54078:0crwdne54078:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.fax">
+        <source>Fax</source>
+        <target>crwdns54080:0crwdne54080:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.author">
+        <source>Author</source>
+        <target>crwdns54082:0crwdne54082:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.email">
+        <source>Email</source>
+        <target>crwdns54084:0crwdne54084:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.company">
+        <source>Company</source>
+        <target>crwdns54086:0crwdne54086:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.city">
+        <source>City</source>
+        <target>crwdns54088:0crwdne54088:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.zip">
+        <source>Zipcode</source>
+        <target>crwdns54090:0crwdne54090:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.country">
+        <source>Country</source>
+        <target>crwdns54092:0crwdne54092:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.www">
+        <source>www</source>
+        <target>crwdns54094:0crwdne54094:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.lastlogin">
+        <source>Last login</source>
+        <target>crwdns54096:0crwdne54096:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.note">
+        <source>Note</source>
+        <target>crwdns54098:0crwdne54098:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.parameters">
+        <source>Parameters</source>
+        <target>crwdns54100:0crwdne54100:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.code">
+        <source>CODE</source>
+        <target>crwdns54102:0crwdne54102:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.links">
+        <source>Links</source>
+        <target>crwdns54104:0crwdne54104:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.language">
+        <source>Language</source>
+        <target>crwdns54106:0crwdne54106:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.category">
+        <source>Category</source>
+        <target>crwdns54108:0crwdne54108:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.shortcut_page">
+        <source>Shortcut to page</source>
+        <target>crwdns54110:0crwdne54110:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.keywords">
+        <source>Keywords (,)</source>
+        <target>crwdns54112:0crwdne54112:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disable">
+        <source>Disable</source>
+        <target>crwdns54114:0crwdne54114:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.baseStorage">
+        <source>Storage</source>
+        <target>crwdns54116:0crwdne54116:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.folder">
+        <source>Folder</source>
+        <target>crwdns54118:0crwdne54118:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.startingpoint">
+        <source>Startingpoint</source>
+        <target>crwdns54120:0crwdne54120:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disableRTE">
+        <source>Disable Rich Text Editor</source>
+        <target>crwdns54122:0crwdne54122:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.recursive">
+        <source>Recursive</source>
+        <target>crwdns54126:0crwdne54126:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.siteLanguages">
+        <source>Site languages</source>
+        <target>crwdns134640:0crwdne134640:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.specialLanguages">
+        <source>Special languages</source>
+        <target>crwdns134642:0crwdne134642:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.defaultLanguage">
+        <source>Default</source>
+        <target>crwdns394112:0crwdne394112:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages">
+        <source>[All]</source>
+        <target>crwdns54130:0crwdne54130:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.error">
+        <source>Error!</source>
+        <target>crwdns54132:0crwdne54132:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.visible">
+        <source>Visible</source>
+        <target>crwdns54134:0crwdne54134:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.enabled">
+        <source>Enabled</source>
+        <target>crwdns54136:0crwdne54136:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disabled">
+        <source>Disabled</source>
+        <target>crwdns54138:0crwdne54138:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
