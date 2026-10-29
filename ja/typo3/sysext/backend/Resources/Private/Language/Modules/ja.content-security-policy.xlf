@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">コンテンツセキュリティポリシー</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows to manage Content Security Policy settings.</source>
+        <target state="final">コンテンツセキュリティポリシー設定の管理を許可します。</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">コンテンツセキュリティポリシー</target>
+      </trans-unit>
+      <trans-unit id="module.headline" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">コンテンツセキュリティポリシー</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.message" approved="yes">
+        <source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
+        <target state="final">レポートは現在、これらのカスタムエンドポイントで構成されており、このモジュールには表示されません：</target>
+      </trans-unit>
+      <trans-unit id="module.label.noEntriesAvailable" approved="yes">
+        <source>No entries available.</source>
+        <target state="final">利用可能なエントリはありません。</target>
+      </trans-unit>
+      <trans-unit id="module.label.reports" approved="yes">
+        <source>Reports</source>
+        <target state="final">レポート</target>
+      </trans-unit>
+      <trans-unit id="module.label.created" approved="yes">
+        <source>Created</source>
+        <target state="final">作成済み</target>
+      </trans-unit>
+      <trans-unit id="module.label.scope" approved="yes">
+        <source>Scope</source>
+        <target state="final">範囲</target>
+      </trans-unit>
+      <trans-unit id="module.label.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">すべて削除</target>
+      </trans-unit>
+      <trans-unit id="module.label.violation" approved="yes">
+        <source>Violation</source>
+        <target state="final">違反</target>
+      </trans-unit>
+      <trans-unit id="module.label.uri" approved="yes">
+        <source>URI</source>
+        <target state="final">URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">全て</target>
+      </trans-unit>
+      <trans-unit id="module.label.details" approved="yes">
+        <source>Details</source>
+        <target state="final">詳細</target>
+      </trans-unit>
+      <trans-unit id="module.label.disposition" approved="yes">
+        <source>Disposition</source>
+        <target state="final">処理</target>
+      </trans-unit>
+      <trans-unit id="module.label.directive" approved="yes">
+        <source>Directive</source>
+        <target state="final">方向</target>
+      </trans-unit>
+      <trans-unit id="module.label.blocked_uri" approved="yes">
+        <source>Blocked URI</source>
+        <target state="final">ブロックされた URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.document_uri" approved="yes">
+        <source>Document URI</source>
+        <target state="final">ドキュメントの URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.sample" approved="yes">
+        <source>Sample</source>
+        <target state="final">サンプル</target>
+      </trans-unit>
+      <trans-unit id="module.label.user_agent" approved="yes">
+        <source>User Agent</source>
+        <target state="final">ユーザーエージェント</target>
+      </trans-unit>
+      <trans-unit id="module.label.uuid" approved="yes">
+        <source>UUID</source>
+        <target state="final">UUID</target>
+      </trans-unit>
+      <trans-unit id="module.label.source_file" approved="yes">
+        <source>Source File</source>
+        <target state="final">ソースファイル</target>
+      </trans-unit>
+      <trans-unit id="module.label.summary" approved="yes">
+        <source>Summary</source>
+        <target state="final">要約</target>
+      </trans-unit>
+      <trans-unit id="module.label.suggestions" approved="yes">
+        <source>Suggestions</source>
+        <target state="final">候補</target>
+      </trans-unit>
+      <trans-unit id="module.label.guide.no_record_selected" approved="yes">
+        <source>Select a row to see more information.</source>
+        <target state="final">詳細情報を表示する行を選択します。</target>
+      </trans-unit>
+      <trans-unit id="module.button.apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">適用</target>
+      </trans-unit>
+      <trans-unit id="module.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">閉じる</target>
+      </trans-unit>
+      <trans-unit id="module.button.mute" approved="yes">
+        <source>Mute</source>
+        <target state="final">消音</target>
+      </trans-unit>
+      <trans-unit id="module.button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
