@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Prikaži memoriju (clipboard)</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Zalijepi sadržaj memorije</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Zalijepi u: sadržaj memorije se ubacuje u ovaj direktorij</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Veličina</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">datoteke</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Privremene datoteke</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Reciklator</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Pristup odbijen</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Pokušavate pristupiti mapi u spremniku kojeg se ne može pregledati.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Nedostaju dopuštenja mape</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Nemate pravo pristupa mapi "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Mapa nije pronađena.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Nije moguće pristupiti mapi "%s". Pokušavam koristiti roditeljsku mapu(mape).</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Prevedi meta-podatke</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Stvori meta-podatke ove datoteke za %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Uredi meta-podatke ove datoteke za %s</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Meta nije mapa!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
