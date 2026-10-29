@@ -1,0 +1,29 @@
+categories:
+  seo: null
+  seo.templates:
+    parent: crwdns417123:0crwdne417123:0
+settings:
+  seo.sitemap.view.templateRootPath:
+    default: 'crwdns417125:0crwdne417125:0'
+    type: crwdns417127:0crwdne417127:0
+    category: crwdns417129:0crwdne417129:0
+  seo.sitemap.view.partialRootPath:
+    default: 'crwdns417131:0crwdne417131:0'
+    type: crwdns417133:0crwdne417133:0
+    category: crwdns417135:0crwdne417135:0
+  seo.sitemap.view.layoutRootPath:
+    default: 'crwdns417137:0crwdne417137:0'
+    type: crwdns417139:0crwdne417139:0
+    category: crwdns417141:0crwdne417141:0
+  seo.sitemap.pages.excludedDoktypes:
+    default: 'crwdns417143:0crwdne417143:0'
+    type: crwdns417145:0crwdne417145:0
+    category: crwdns417147:0crwdne417147:0
+  seo.sitemap.pages.excludePagesRecursive:
+    default: 'crwdns417149:0crwdne417149:0'
+    type: crwdns417151:0crwdne417151:0
+    category: crwdns417153:0crwdne417153:0
+  seo.sitemap.pages.additionalWhere:
+    default: "crwdns417155:0crwdne417155:0"
+    type: crwdns417157:0crwdne417157:0
+    category: crwdns417159:0crwdne417159:0
