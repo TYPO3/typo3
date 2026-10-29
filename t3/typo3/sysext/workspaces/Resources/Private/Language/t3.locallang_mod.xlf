@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="stage_editing">
+        <source>Editing</source>
+        <target>crwdns301110:0crwdne301110:0</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish">
+        <source>Ready to publish</source>
+        <target>crwdns62578:0crwdne62578:0</target>
+      </trans-unit>
+      <trans-unit id="stage_publish">
+        <source>Publish</source>
+        <target>crwdns301112:0crwdne301112:0</target>
+      </trans-unit>
+      <trans-unit id="stage_all">
+        <source>All stages</source>
+        <target>crwdns301114:0crwdne301114:0</target>
+      </trans-unit>
+      <trans-unit id="previewText">
+        <source>Preview of workspace %s (%s)</source>
+        <target>crwdns62580:0%scrwdnd62580:0%scrwdne62580:0</target>
+      </trans-unit>
+      <trans-unit id="stopPreview">
+        <source>Stop preview</source>
+        <target>crwdns62582:0crwdne62582:0</target>
+      </trans-unit>
+      <trans-unit id="highlightChanges">
+        <source>Highlight changes (%s)</source>
+        <target>crwdns415999:0%scrwdne415999:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target>crwdns62584:0%1$scrwdnd62584:0%2$scrwdne62584:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError">
+        <source>%1$sERROR:%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target>crwdns379508:0%1$scrwdnd379508:0%2$scrwdnd379508:0%3$scrwdnd379508:0$TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"]crwdne379508:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
