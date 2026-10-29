@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Ordina sottopagine</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Attuale ordine delle pagine</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Ordina queste pagine per</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Stai per modificare l'ordine delle pagine precedenti. Sei sicuro di voler continuare?</target>
+      </trans-unit>
+      <trans-unit id="sort" approved="yes">
+        <source>Sort</source>
+        <target state="final">Ordina</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.title" approved="yes">
+        <source>Sort pages by page title</source>
+        <target state="final">Ordina pagine per titolo pagina</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.description" approved="yes">
+        <source>The pages will be sorted by their page title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate in base al titolo della pagina. Continuare? È possibile ripristinare l'ordine precedente utilizzando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.title" approved="yes">
+        <source>Sort pages by subtitle</source>
+        <target state="final">Ordina le pagine per sottotitolo</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.description" approved="yes">
+        <source>The pages will be sorted by their subtitle. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate per sottotitolo. Continuare? Puoi ripristinare l'ordine precedente usando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.title" approved="yes">
+        <source>Sort pages by navigation title</source>
+        <target state="final">Ordina le pagine per titolo di navigazione</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.description" approved="yes">
+        <source>The pages will be sorted by their navigation title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate in base al titolo di navigazione. Continuare? Puoi ripristinare l'ordine precedente usando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change_time.title" approved="yes">
+        <source>Sort pages by change-time</source>
+        <target state="final">Ordina le pagine per data-modifica</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change-time.description" approved="yes">
+        <source>The pages will be sorted by their change-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate in base a data-modifica. Continuare? Puoi ripristinare l'ordine precedente usando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.title" approved="yes">
+        <source>Sort pages by create-time</source>
+        <target state="final">Ordina le pagine per data-creazione</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.description" approved="yes">
+        <source>The pages will be sorted by their create-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate in base a data-creazione. Continuare? Puoi ripristinare l'ordine precedente usando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.title" approved="yes">
+        <source>Reverse the page order</source>
+        <target state="final">Inverti l'ordine delle pagine</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.description" approved="yes">
+        <source>The pages will be sorted by reversing the current page order. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target state="final">Le pagine saranno ordinate invertendo l'ordine corrente delle pagine. Continuare? È possibile ripristinare l'ordine precedente usando la funzione 'Cronologia/Annulla'.</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titolo della pagina</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Sottotitolo</target>
+      </trans-unit>
+      <trans-unit id="fieldNavTitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Titolo di navigazione</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Data creazione</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Data modifica</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titolo della pagina</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Sottotitolo</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Titolo di navigazione</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Data modifica</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Data creazione</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Inverti l'ordine corrente</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Sottopagine non visibili</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">Alcune sottopagine non sono visibili a causa delle restrizioni di accesso. Queste pagine nascoste sono escluse dall'ordinamento.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Nessuna sottopagina</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Seleziona una pagina con sottopagine.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Non implementato</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">Questa funzione non è disponibile nel workspace bozza corrente; si prega di tornare al workspace LIVE.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Nessun permesso di modifica in questa sottopagina. Questa pagina non può essere riordinata tra le altre.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
