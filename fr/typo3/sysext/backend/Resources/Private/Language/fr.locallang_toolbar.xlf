@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Effacer le cache</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help" approved="yes">
+        <source>Help</source>
+        <target state="final">Aide</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarCollapse" approved="yes">
+        <source>Collapse sidebar</source>
+        <target state="final">Réduire la barre latérale</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarExpand" approved="yes">
+        <source>Expand sidebar</source>
+        <target state="final">Étendre la barre latérale</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Rechercher</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.searchbarOpenClose" approved="yes">
+        <source>Open/Close searchbar</source>
+        <target state="final">Ouvrir/Fermer la barre de recherche</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo" approved="yes">
+        <source>System Information</source>
+        <target state="final">Informations système</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.text" approved="yes">
+        <source>This is a short system overview. For advanced information please head to: </source>
+        <target state="final">Ceci est un bref aperçu du système. Pour des informations plus détaillées veuillez aller à : </target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.link" approved="yes">
+        <source>Environment Module</source>
+        <target state="final">Module Environnement</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve" approved="yes">
+        <source>Your system is fully operational.
+Have a nice day.</source>
+      <target state="final">Votre système est entièrement opérationnel. Bonne journée.</target></trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Contexte d’application</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod" approved="yes">
+        <source>Installation Method</source>
+        <target state="final">Méthode d'installation</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.classic" approved="yes">
+        <source>Classic mode</source>
+        <target state="final">Mode classique</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.composer" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Mode Composer</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database" approved="yes">
+        <source>Database</source>
+        <target state="final">Base de données</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database.offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">Hors-ligne</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.debugger" approved="yes">
+        <source>Debugger</source>
+        <target state="final">Débogueur</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision" approved="yes">
+        <source>GIT Revision</source>
+        <target state="final">Révision GIT</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem" approved="yes">
+        <source>Operating System</source>
+        <target state="final">Système d’exploitation</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">Version PHP</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version" approved="yes">
+        <source>TYPO3 Version</source>
+        <target state="final">Version TYPO3</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Serveur web</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.toolbarOpenClose" approved="yes">
+        <source>Open/Close toolbar</source>
+        <target state="final">Ouvrir/Fermer la barre d’outils</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Basculer vers l’utilisateur</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix" approved="yes">
+        <source>SU</source>
+        <target state="final">SU</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Récemment basculé vers</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Basculer vers l’utilisateur %s</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.exitSwitchUser" approved="yes">
+        <source>Exit switch user mode</source>
+        <target state="final">Sortir du mode de bascule d’utilisateur</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Se déconnecter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
