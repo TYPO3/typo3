@@ -1,0 +1,27 @@
+categories:
+  email: null
+settings:
+  email.format:
+    default: 'crwdns416371:0crwdne416371:0'
+    type: crwdns416373:0crwdne416373:0
+    category: crwdns416375:0crwdne416375:0
+    enum:
+      - 'crwdns416377:0crwdne416377:0'
+      - 'crwdns416379:0crwdne416379:0'
+      - 'crwdns416381:0crwdne416381:0'
+      - 'crwdns416383:0crwdne416383:0'
+  email.templateRootPaths:
+    default:
+    - 'crwdns416385:0crwdne416385:0'
+    type: crwdns416387:0crwdne416387:0
+    category: crwdns416389:0crwdne416389:0
+  email.layoutRootPaths:
+    default:
+    - 'crwdns416391:0crwdne416391:0'
+    type: crwdns416393:0crwdne416393:0
+    category: crwdns416395:0crwdne416395:0
+  email.partialRootPaths:
+    default:
+    - 'crwdns416397:0crwdne416397:0'
+    type: crwdns416399:0crwdne416399:0
+    category: crwdns416401:0crwdne416401:0
