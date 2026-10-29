@@ -99,6 +99,7 @@ class Locales
         'sq' => 'Albanian',
         'sr' => 'Serbian',
         'sv' => 'Swedish',
+        'sw' => 'Swahili',
         'th' => 'Thai',
         'tr' => 'Turkish',
         'uk' => 'Ukrainian',
