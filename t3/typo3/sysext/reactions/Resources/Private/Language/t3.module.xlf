@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="reactions" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Reactions</source>
+        <target>crwdns379326:0crwdne379326:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Manage incoming HTTP webhooks to external system</source>
+        <target>crwdns379330:0crwdne379330:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Configure secure endpoints that allow external services to trigger actions in TYPO3. Respond to webhooks from GitHub, payment providers, form services, and other platforms to automate workflows.</source>
+        <target>crwdns392976:0crwdne392976:0</target>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Reactions — Manage Incoming HTTP Webhooks</source>
+        <target>crwdns379334:0crwdne379334:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.title">
+        <source>No reactions found!</source>
+        <target>crwdns379336:0crwdne379336:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.message">
+        <source>There are currently no reaction records found in the database.</source>
+        <target>crwdns379338:0crwdne379338:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_create">
+        <source>Create new reaction</source>
+        <target>crwdns379340:0crwdne379340:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.title">
+        <source>Create your first reaction</source>
+        <target>crwdns415629:0crwdne415629:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.message">
+        <source>Choose what TYPO3 should do when an external system calls it. Each reaction gets its own endpoint and secret.</source>
+        <target>crwdns415631:0crwdne415631:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create">
+        <source>Create reaction</source>
+        <target>crwdns415633:0crwdne415633:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create.title">
+        <source>Create a reaction of type "%s"</source>
+        <target>crwdns415635:0%scrwdne415635:0</target>
+      </trans-unit>
+      <trans-unit id="column.target">
+        <source>Target</source>
+        <target>crwdns415637:0crwdne415637:0</target>
+      </trans-unit>
+      <trans-unit id="target.page_missing">
+        <source>Page %s does not exist</source>
+        <target>crwdns415639:0%scrwdne415639:0</target>
+      </trans-unit>
+      <trans-unit id="user.missing">
+        <source>No user</source>
+        <target>crwdns415641:0crwdne415641:0</target>
+      </trans-unit>
+      <trans-unit id="user.not_found">
+        <source>User %s does not exist</source>
+        <target>crwdns415643:0%scrwdne415643:0</target>
+      </trans-unit>
+      <trans-unit id="user.disabled">
+        <source>disabled</source>
+        <target>crwdns415645:0crwdne415645:0</target>
+      </trans-unit>
+      <trans-unit id="last_call.never">
+        <source>never</source>
+        <target>crwdns415647:0crwdne415647:0</target>
+      </trans-unit>
+      <trans-unit id="last_call.status">
+        <source>HTTP %s</source>
+        <target>crwdns415649:0%scrwdne415649:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.title">
+        <source>No reactions found</source>
+        <target>crwdns394022:0crwdne394022:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.message">
+        <source>With the current set of filters applied, no reactions could be found.</source>
+        <target>crwdns379344:0crwdne379344:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_filter">
+        <source>Remove all filter</source>
+        <target>crwdns379346:0crwdne379346:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_implementation_class">
+        <source>Implementation class for reaction type "%s" is missing.</source>
+        <target>crwdns379348:0%scrwdne379348:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_example">
+        <source>Example</source>
+        <target>crwdns379350:0crwdne379350:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out">
+        <source>Try Out</source>
+        <target>crwdns415651:0crwdne415651:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out_title">
+        <source>Try Out: %s</source>
+        <target>crwdns415653:0%scrwdne415653:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_hint">
+        <source>Send this request from an external system. Replace the placeholder with the secret of the reaction and customize the field values.</source>
+        <target>crwdns415655:0crwdne415655:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_copy">
+        <source>Copy example</source>
+        <target>crwdns415657:0crwdne415657:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run">
+        <source>Dry run</source>
+        <target>crwdns415659:0crwdne415659:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_hint">
+        <source>Resolves a payload against the field map as the user this reaction impersonates. No record is written and the secret is not checked. The target table may still reject a value when the record is actually written.</source>
+        <target>crwdns415661:0crwdne415661:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_error">
+        <source>The dry run could not be resolved.</source>
+        <target>crwdns415663:0crwdne415663:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_payload">
+        <source>Payload</source>
+        <target>crwdns415665:0crwdne415665:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_submit">
+        <source>Execute dry run</source>
+        <target>crwdns415667:0crwdne415667:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_invalid_json">
+        <source>The payload is not a JSON object. The endpoint treats such a request as an empty payload.</source>
+        <target>crwdns415669:0crwdne415669:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_no_record">
+        <source>No record would be created</source>
+        <target>crwdns415671:0crwdne415671:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_record">
+        <source>A record would be created in table "%1$s" on page %2$s, as user "%3$s".</source>
+        <target>crwdns415673:0%1$scrwdnd415673:0%2$scrwdnd415673:0%3$scrwdne415673:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.disabled">
+        <source>The reaction is disabled, so the endpoint rejects every request.</source>
+        <target>crwdns415675:0crwdne415675:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.scheduled">
+        <source>The reaction is not active yet, so the endpoint rejects every request until its start date.</source>
+        <target>crwdns415677:0crwdne415677:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.expired">
+        <source>The reaction has expired, so the endpoint rejects every request.</source>
+        <target>crwdns415679:0crwdne415679:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.noUser">
+        <source>The reaction impersonates no backend user, or one that is disabled or deleted, so there is nobody to write the record as.</source>
+        <target>crwdns415681:0crwdne415681:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.tableNotPermitted">
+        <source>The impersonated user may not modify records of the target table.</source>
+        <target>crwdns415683:0crwdne415683:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageMissing">
+        <source>The storage page does not exist.</source>
+        <target>crwdns415685:0crwdne415685:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageNotPermitted">
+        <source>The impersonated user may not create records on the storage page.</source>
+        <target>crwdns415687:0crwdne415687:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_fields">
+        <source>Fields resolved from the payload</source>
+        <target>crwdns415689:0crwdne415689:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_skipped">
+        <source>Fields that would be skipped</source>
+        <target>crwdns415691:0crwdne415691:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notMappable">
+        <source>The target table offers no such field.</source>
+        <target>crwdns415693:0crwdne415693:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notPermitted">
+        <source>The impersonated user may not write this field.</source>
+        <target>crwdns415695:0crwdne415695:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.placeholderUnresolved">
+        <source>The payload carries no value under the path of the placeholder.</source>
+        <target>crwdns415697:0crwdne415697:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.resolvedToNothing">
+        <source>The payload carries nothing under the path of the placeholder.</source>
+        <target>crwdns415699:0crwdne415699:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotHoldable">
+        <source>The checkbox cannot hold this value.</source>
+        <target>crwdns415701:0crwdne415701:0</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotOffered">
+        <source>The field does not offer this value.</source>
+        <target>crwdns415703:0crwdne415703:0</target>
+      </trans-unit>
+      <trans-unit id="reaction_endpoint">
+        <source>Endpoint</source>
+        <target>crwdns415705:0crwdne415705:0</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton">
+        <source>Filter</source>
+        <target>crwdns379352:0crwdne379352:0</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton">
+        <source>Reset</source>
+        <target>crwdns379354:0crwdne379354:0</target>
+      </trans-unit>
+      <trans-unit id="filter.name">
+        <source>Name</source>
+        <target>crwdns379356:0crwdne379356:0</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type">
+        <source>Reaction Type</source>
+        <target>crwdns379358:0crwdne379358:0</target>
+      </trans-unit>
+      <trans-unit id="filter.onlyEnabled">
+        <source>Enabled</source>
+        <target>crwdns415707:0crwdne415707:0</target>
+      </trans-unit>
+      <trans-unit id="filter.showAll">
+        <source>Show all</source>
+        <target>crwdns415709:0crwdne415709:0</target>
+      </trans-unit>
+      <trans-unit id="filter.called.ever">
+        <source>Called at least once</source>
+        <target>crwdns415711:0crwdne415711:0</target>
+      </trans-unit>
+      <trans-unit id="filter.called.never">
+        <source>Never called</source>
+        <target>crwdns415713:0crwdne415713:0</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type.showAll">
+        <source>Show all</source>
+        <target>crwdns379360:0crwdne379360:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous">
+        <source>previous</source>
+        <target>crwdns379362:0crwdne379362:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.next">
+        <source>next</source>
+        <target>crwdns379364:0crwdne379364:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.first">
+        <source>first</source>
+        <target>crwdns379366:0crwdne379366:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.last">
+        <source>last</source>
+        <target>crwdns379368:0crwdne379368:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.records">
+        <source>Records</source>
+        <target>crwdns379370:0crwdne379370:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.page">
+        <source>Page</source>
+        <target>crwdns379372:0crwdne379372:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns379374:0crwdne379374:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title">
+        <source>Delete reactions</source>
+        <target>crwdns379376:0crwdne379376:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message">
+        <source>Delete all marked reactions? You can restore deleted reactions from the TYPO3 recycler.</source>
+        <target>crwdns415715:0crwdne415715:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
