@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="width">
+        <source>Width</source>
+        <target>crwdns62206:0crwdne62206:0</target>
+      </trans-unit>
+      <trans-unit id="tablet">
+        <source>Tablet</source>
+        <target>crwdns62208:0crwdne62208:0</target>
+      </trans-unit>
+      <trans-unit id="tabletLandscape">
+        <source>Tablet landscape</source>
+        <target>crwdns367182:0crwdne367182:0</target>
+      </trans-unit>
+      <trans-unit id="tabletPortrait">
+        <source>Tablet portrait</source>
+        <target>crwdns367184:0crwdne367184:0</target>
+      </trans-unit>
+      <trans-unit id="mobile">
+        <source>Mobile</source>
+        <target>crwdns62210:0crwdne62210:0</target>
+      </trans-unit>
+      <trans-unit id="desktop">
+        <source>Desktop</source>
+        <target>crwdns62214:0crwdne62214:0</target>
+      </trans-unit>
+      <trans-unit id="customWidth">
+        <source>Custom Size</source>
+        <target>crwdns62216:0crwdne62216:0</target>
+      </trans-unit>
+      <trans-unit id="autoSize">
+        <source>Auto Size</source>
+        <target>crwdns62218:0crwdne62218:0</target>
+      </trans-unit>
+      <trans-unit id="refreshPage">
+        <source>Refresh page</source>
+        <target>crwdns62220:0crwdne62220:0</target>
+      </trans-unit>
+      <trans-unit id="language">
+        <source>Language</source>
+        <target>crwdns62222:0crwdne62222:0</target>
+      </trans-unit>
+      <trans-unit id="automatic">
+        <source>Automatic</source>
+        <target>crwdns62224:0crwdne62224:0</target>
+      </trans-unit>
+      <trans-unit id="maximized">
+        <source>Maximized</source>
+        <target>crwdns62226:0crwdne62226:0</target>
+      </trans-unit>
+      <trans-unit id="custom">
+        <source>Custom</source>
+        <target>crwdns62228:0crwdne62228:0</target>
+      </trans-unit>
+      <trans-unit id="unidentified">
+        <source>Unidentified</source>
+        <target>crwdns62230:0crwdne62230:0</target>
+      </trans-unit>
+      <trans-unit id="noValidPageSelected">
+        <source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
+        <target>crwdns230915:0crwdne230915:0</target>
+      </trans-unit>
+      <trans-unit id="noSiteConfiguration">
+        <source>The requested page is missing a valid site configuration.</source>
+        <target>crwdns88960:0crwdne88960:0</target>
+      </trans-unit>
+      <trans-unit id="iframe.title">
+        <source>View selected page in different screen resolutions</source>
+        <target>crwdns115214:0crwdne115214:0</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label">
+        <source>Page language</source>
+        <target>crwdns312874:0crwdne312874:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
