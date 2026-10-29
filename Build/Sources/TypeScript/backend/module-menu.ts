@@ -129,13 +129,16 @@ class ModuleMenu {
     return params;
   }
 
-  private static toggleModuleGroup(element: HTMLElement, expand?: boolean): void {
+  /**
+   * @returns whether the module group is expanded after the call
+   */
+  private static toggleModuleGroup(element: HTMLElement, expand?: boolean): boolean {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
     const moduleGroup = menuItem.element.closest('.modulemenu-group');
     const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
     if (moduleGroupContainer.classList.contains('collapsing')) {
       // Bootstrap ignores show()/hide() during a running transition, keep the state untouched as well.
-      return;
+      return menuItem.expanded;
     }
     const collapseInstance = Collapse.getOrCreateInstance(moduleGroupContainer, {
       toggle: false // Do not auto-toggle on init.
@@ -146,7 +149,7 @@ class ModuleMenu {
       expand = !menuItem.expanded;
     } else if (expand === menuItem.expanded) {
       // Intended state is already reached.
-      return;
+      return expand;
     }
 
     if (!expand) {
@@ -161,6 +164,8 @@ class ModuleMenu {
     moduleGroup.classList.toggle('modulemenu-group-expanded', expand);
 
     element.setAttribute('aria-expanded', (expand).toString());
+
+    return expand;
   }
 
   private static highlightModule(identifier: string): void {
@@ -303,8 +308,7 @@ class ModuleMenu {
         }
         break;
       case KeyTypesEnum.RIGHT:
-        if (menuItem.collapsible) {
-          ModuleMenu.toggleModuleGroup(menuItem.element, true);
+        if (menuItem.collapsible && ModuleMenu.toggleModuleGroup(menuItem.element, true)) {
           item = ModuleMenu.getFirstChildItem(menuItem.element);
         }
         break;
@@ -333,9 +337,10 @@ class ModuleMenu {
         }
 
         if (menuItem.collapsible) {
-          // Always select the first element of sub-menu on ENTER/SPACE. Open sub-menu if necessary.
-          ModuleMenu.toggleModuleGroup(menuItem.element, true);
-          item = ModuleMenu.getFirstChildItem(menuItem.element);
+          // Open sub-menu if necessary and select its first element, unless the sub-menu is just collapsing.
+          if (ModuleMenu.toggleModuleGroup(menuItem.element, true)) {
+            item = ModuleMenu.getFirstChildItem(menuItem.element);
+          }
         } else {
           menuItem.element.click();
         }
