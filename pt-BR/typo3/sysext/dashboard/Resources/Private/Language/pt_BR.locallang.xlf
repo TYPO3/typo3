@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">Configurações de widgets</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fechar</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Salvar</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">Configurações sem alteração</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">Mostrar uma lista de páginas onde as últimas alterações foram feitas</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
