@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/integrations.xlf" date="2025-10-20T12:00:00Z" product-name="core" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Integrations</source>
+        <target state="final">ການເຊື່ອມຕໍ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>External system integrations</source>
+        <target state="final">ການເຊື່ອມຕໍ່ກັບລະບົບພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Setup integrations between TYPO3 and external services such as webhooks, translation providers, AI platforms, and other third-party tools.</source>
+        <target state="final">ຕັ້ງຄ່າການເຊື່ອມຕໍ່ລະຫວ່າງ TYPO3 ແລະ ບໍລິການພາຍນອກ ເຊັ່ນ: webhooks, ຜູ້ໃຫ້ບໍລິການແປພາສາ, ແພລັດຟອມ AI ແລະ ເຄື່ອງມືຈາກພາກສ່ວນທີສາມອື່ນໆ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
