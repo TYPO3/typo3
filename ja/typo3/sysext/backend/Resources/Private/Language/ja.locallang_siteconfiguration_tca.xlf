@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Sets for this Site</source>
+        <target state="final">このサイトのセット</target>
+      </trans-unit>
+      <trans-unit id="site.languages.choosePreset" approved="yes">
+        <source>Choose a preset...</source>
+        <target state="final">プリセットを選択...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site.languages.chooseExistingFromOtherSite" approved="yes">
+        <source>Use Language from existing site...</source>
+        <target state="final">既存のサイトの言語を使用...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Alternative attribute for "hreflang" tags</source>
+        <target state="final">「hrefrang」タグの代替属性</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset" approved="yes">
+        <source>Static Asset</source>
+        <target state="final">静的アセット</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset.example" approved="yes">
+        <source>Example asset</source>
+        <target state="final">アセットの例</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
