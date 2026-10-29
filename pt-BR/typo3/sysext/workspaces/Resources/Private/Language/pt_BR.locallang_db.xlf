@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">Etapa da Área de trabalho</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">Configurações de notificação</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">Comum</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">Permite configurações de notificação durante mudança de etapa</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Send notifications upon state changes</source>
+        <target state="final">Enviar notificações sobre mudanças de estado</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description" approved="yes">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target state="final">Esta configuração no nível do espaço de trabalho determina se as notificações serão acionadas quando os registros transitarem para outros estágios ou forem publicados. Estágios individuais podem ter suas próprias preferências de notificação.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
