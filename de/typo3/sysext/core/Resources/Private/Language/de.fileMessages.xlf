@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Folder "%s" cannot be copied because the destination already contains a folder or file named "%s".</source>
+        <target state="final">Der Ordner "%s" kann nicht kopiert werden, da sich im Zielverzeichnis bereits ein Ordner oder eine Datei mit dem Namen "%s" befindet.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" because source and destination are identical.</source>
+        <target state="final">Der Ordner "%s" kann nicht nach "%s" verschoben werden, da Quell- und Zielort identisch sind.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>The operation could not be completed because one or more required resources are not accessible (source "%s" or destination "%s").</source>
+        <target state="final">Der Vorgang konnte nicht abgeschlossen werden, da auf eine oder mehrere erforderliche Ressourcen nicht zugegriffen werden kann (Quelle "%s" oder Ziel "%s").</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Folder "%s" could not be deleted. It must be empty, as recursive deletion is not enabled.</source>
+        <target state="final">Der Ordner "%s" konnte nicht gelöscht werden. Er muss leer sein, da das rekursive Löschen nicht aktiviert ist.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>File "%s" cannot not be deleted due to insufficent write permissions.</source>
+        <target state="final">Die Datei "%s" kann aufgrund unzureichender Schreibrechte nicht gelöscht werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>The name "%s" is already in use.</source>
+        <target state="final">Der Name "%s" wird bereits verwendet.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" is not accessible</source>
+        <target state="final">Zielpfad "%s" ist nicht erreichbar</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" is not a folder.</source>
+        <target state="final">Ziel "%s" ist kein Ordner.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Folder "%s" copied to "%s".</source>
+        <target state="final">Ordner "%s" kopiert nach "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Folder "%s" created in "%s".</source>
+        <target state="final">Ordner "%s" erstellt in "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Folder "%s" moved to "%s".</source>
+        <target state="final">Ordner "%s" verschoben nach "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Folder "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Der Ordner "%s" kann aufgrund unzureichender Schreibrechte nicht in "%s" erstellt werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Folder renamed from "%s" to "%s".</source>
+        <target state="final">Verzeichnis wurde von "%s" nach "%s" umbenannt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Folder renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Der Ordner wurde von "1%s" in "%s" umbenannt, wobei nicht unterstützte Zeichen ersetzt wurden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Folder "%s" already has this name. No changes were made.</source>
+        <target state="final">Der Ordner "%s" hat bereits diesen Namen. Es wurden keine Änderungen vorgenommen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Folder "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Der Ordner "%s" kann aufgrund unzureichender Schreibrechte nicht nach "%s" kopiert werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" due to insufficent write permissions.</source>
+        <target state="final">Der Ordner "%s" kann aufgrund unzureichender Schreibrechte nicht nach "%s" verschoben werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Folder "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Der Ordner "%s" kann in "%s" nicht umbenannt werden, da die Schreibrechte nicht ausreichen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>The file extension of "%s" is not permitted in "%s".</source>
+        <target state="final">Die Dateiendung von "%s" ist in "%s" nicht zulässig.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>The file name %s or the extension %s is not allowed.</source>
+        <target state="final">Der Dateiname %s oder die Endung %s ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>The file extension of "%s" is not permitted.</source>
+        <target state="final">Die Dateiendung "%s" ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>A file with the same name "%s" already exists in "%s".</source>
+        <target state="final">Eine Datei mit dem Namen "%s" ist in "%s" bereits vorhanden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Datei "%s" wurde nach "%s" kopiert.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" approved="yes">
+        <source>File "%s" created.</source>
+        <target state="final">Datei "%s" erstellt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" approved="yes">
+        <source>File renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Die Datei wurde von "%s" in "%s" umbenannt, wobei nicht unterstützte Zeichen ersetzt wurden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>A file with the same name already exists in "%s"</source>
+        <target state="final">Eine Datei mit dem gleichen Namen existiert bereits in "%s"</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a supported text file format. Supported formats: %s.</source>
+        <target state="final">Die Dateiendung "%s" ist kein unterstütztes Textdateiformat. Unterstützte Formate: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Datei "%s" wurde nach "%s" verschoben.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>The file name %s is not allowed.</source>
+        <target state="final">Der Dateiname %s ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists.</source>
+        <target state="final">Datei oder Verzeichnis "%s" existiert bereits.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Datei wurde von "%s" nach "%s" umbenannt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" already has this name. No changes were made.</source>
+        <target state="final">Die Datei %s hat bereits diesen Namen. Es wurden keine Änderungen vorgenommen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedTo" approved="yes">
+        <source>File saved to "%s".</source>
+        <target state="final">Datei gespeichert unter "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Die Datei "%s" kann aufgrund unzureichender Schreibrechte nicht nach "%s" kopiert werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Die Datei "%s" kann in "%s" nicht erstellt werden, da die Schreibrechte nicht ausreichen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Die Datei "%s" kann in "%s" nicht umbenannt werden, da die Schreibrechte nicht ausreichen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" cannot be saved due to insufficent write permissions.</source>
+        <target state="final">Die Datei "%s" kann aufgrund unzureichender Schreibrechte nicht gespeichert werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">Es wurde keine Datei hochgeladen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacement.</source>
+        <target state="final">Es wurde keine Datei zum Ersetzen hochgeladen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name was provided for the new folder.</source>
+        <target state="final">Für den neuen Ordner wurde kein Name angegeben.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename could be generated in "%s".</source>
+        <target state="final">In "%s" konnte kein eindeutiger Dateiname generiert werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" approved="yes">
+        <source>File "%s" was replaced with "%s".</source>
+        <target state="final">Datei "%s" wurde durch "%s " ersetzt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists.</source>
+        <target state="final">Das Ziel "%s" ist bereits vorhanden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file.</source>
+        <target state="final">Das Ziel "%s" war keine Datei.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination file or folder "%s" was not accessible.</source>
+        <target state="final">Auf die Zieldatei oder den Zielordner "%s" konnte nicht zugegriffen werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist or is no longer available.</source>
+        <target state="final">Die Datei "%s" existierte nicht oder ist nicht mehr verfügbar.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying files between storages is not yet available.</source>
+        <target state="final">Das Kopieren von Dateien zwischen Speicherorten ist derzeit noch nicht möglich.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying folders between storages is not yet available.</source>
+        <target state="final">Das Kopieren von Ordnern zwischen Speicherorten ist derzeit noch nicht möglich.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving files between storages is not yet available.</source>
+        <target state="final">Das Verschieben von Dateien zwischen Speicherorten ist derzeit noch nicht möglich.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving folders between storages is not yet available.</source>
+        <target state="final">Das Verschieben von Ordnern zwischen Speicherorten ist derzeit noch nicht möglich.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>No file was found for the upload.</source>
+        <target state="final">Für den Upload wurde keine Datei gefunden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the maximum allowed file size.</source>
+        <target state="final">Die hochgeladene Datei "%s" überschreitet die maximal zulässige Dateigröße.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved in "%s" due to insufficent write permissions.</source>
+        <target state="final">Die hochgeladene Datei konnte aufgrund unzureichender Schreibrechte nicht in "%s" verschoben werden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" approved="yes">
+        <source>File "%s" uploaded to "%s".</source>
+        <target state="final">Datei "%s" hochgeladen nach "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>Access to this folder is not permitted.</source>
+        <target state="final">Zugriff auf diesen Ordner ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>Access to this file is not permitted.</source>
+        <target state="final">Zugriff auf diese Datei ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>Copying directories is not permitted.</source>
+        <target state="final">Kopieren von Verzeichnissen ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>Copying files is not permitted.</source>
+        <target state="final">Kopieren von Dateien ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" approved="yes">
+        <source>The folder name "%s" is not valid.</source>
+        <target state="final">Der Ordnername "%s" ist ungültig.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>Creating folders is not permitted.</source>
+        <target state="final">Erstellen von Ordnern ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>Creating files is not permitted.</source>
+        <target state="final">Erstellen von Dateien ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>Editing files is not permitted.</source>
+        <target state="final">Bearbeiten von Dateien ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>Moving folders is not permitted.</source>
+        <target state="final">Verschieben von Ordnern ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>Moving files is not permitted.</source>
+        <target state="final">Verschieben von Dateien ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>Overwriting "%s" is not permitted.</source>
+        <target state="final">Überschreiben von "%s" ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>Renaming folders is not permitted.</source>
+        <target state="final">Umbenennen von Ordnern ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>Renaming files is not permitted.</source>
+        <target state="final">Umbenennen von Dateien ist nicht zulässig.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>Uploading files is not permitted.</source>
+        <target state="final">Hochladen von Dateien ist nicht erlaubt.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>Full access to the destination folder "%s" is not available.</source>
+        <target state="final">Vollständiger Zugriff auf den Zielordner "%s" ist nicht verfügbar.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation" approved="yes">
+        <source>The MIME type "%s" is not allowed for files with the extension "%s". Expected: %s.</source>
+        <target state="final">Der MIME-Type "%s" ist für Dateien mit der Endung "%s" nicht erlaubt. Erwartet: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotAllowed" approved="yes">
+        <source>File extension "%s" is not allowed here.</source>
+        <target state="final">Die Dateiendung "%s" ist hier nicht zulässig.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
