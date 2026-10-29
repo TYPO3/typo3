@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace">
+        <source>Workspace</source>
+        <target>crwdns62480:0crwdne62480:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages">
+        <source>Custom stages</source>
+        <target>crwdns62482:0crwdne62482:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons">
+        <source>Responsible persons</source>
+        <target>crwdns62484:0crwdne62484:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment">
+        <source>Default mail comment</source>
+        <target>crwdns62486:0crwdne62486:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid">
+        <source>UID of parent record</source>
+        <target>crwdns62488:0crwdne62488:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage">
+        <source>Workspace Stage</source>
+        <target>crwdns62492:0crwdne62492:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings">
+        <source>Notification settings</source>
+        <target>crwdns62494:0crwdne62494:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.general">
+        <source>General</source>
+        <target>crwdns62496:0crwdne62496:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages">
+        <source>Internal Stages</source>
+        <target>crwdns62498:0crwdne62498:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages">
+        <source>Custom Stages</source>
+        <target>crwdns62500:0crwdne62500:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access">
+        <source>Publishing / Access</source>
+        <target>crwdns62502:0crwdne62502:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults">
+        <source>Default notification recipients</source>
+        <target>crwdns62504:0crwdne62504:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings">
+        <source>Allow notification settings during stage change</source>
+        <target>crwdns62506:0crwdne62506:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit">
+        <source>Stage "editing"</source>
+        <target>crwdns62508:0crwdne62508:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish">
+        <source>Stage "ready to publish"</source>
+        <target>crwdns62510:0crwdne62510:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute">
+        <source>Stage "publishing execute"</source>
+        <target>crwdns62512:0crwdne62512:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog">
+        <source>Notification dialog settings</source>
+        <target>crwdns62514:0crwdne62514:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog">
+        <source>Show Dialog</source>
+        <target>crwdns62516:0crwdne62516:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection">
+        <source>Allow to change pre-selection of recipients</source>
+        <target>crwdns62518:0crwdne62518:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection">
+        <source>Pre-select recipients</source>
+        <target>crwdns62520:0crwdne62520:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners">
+        <source>Owners</source>
+        <target>crwdns62522:0crwdne62522:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members">
+        <source>Members</source>
+        <target>crwdns62524:0crwdne62524:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors">
+        <source>Unused, no functionality attached</source>
+        <target>crwdns372864:0crwdne372864:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons">
+        <source>Responsible Persons</source>
+        <target>crwdns62528:0crwdne62528:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers">
+        <source>Owners</source>
+        <target>crwdns62530:0crwdne62530:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members">
+        <source>Members</source>
+        <target>crwdns62532:0crwdne62532:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target>crwdns62534:0crwdne62534:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target>crwdns62536:0crwdne62536:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target>crwdns62540:0crwdne62540:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access">
+        <source>Publish access</source>
+        <target>crwdns62550:0crwdne62550:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1">
+        <source>Publish only content in publish stage</source>
+        <target>crwdns62552:0crwdne62552:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2">
+        <source>Restrict publishing to workspace owners</source>
+        <target>crwdns62554:0crwdne62554:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3">
+        <source>Hide "Entire workspace" action drop down</source>
+        <target>crwdns211484:0crwdne211484:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification">
+        <source>Send notifications upon state changes</source>
+        <target>crwdns372856:0crwdne372856:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target>crwdns372858:0crwdne372858:0</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target>crwdns85880:0crwdne85880:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.users">
+        <source>Users</source>
+        <target>crwdns62564:0crwdne62564:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints">
+        <source>Mountpoints</source>
+        <target>crwdns62566:0crwdne62566:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
