@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">Título da página</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Data de Publicação</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Data de expiração</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Regras de Acesso de Grupo de Usuário</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Ocultar página:</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Página</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Desabilitar</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages" approved="yes">
+        <source>Include Subpages</source>
+        <target state="final">Incluir Subpáginas:</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">Estender para Subpáginas</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Título de Navegação:</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">Título de Navegação Alternativo</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">Esconder no Menu:</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel" approved="yes">
+        <source>In Menus</source>
+        <target state="final">Nos Menus</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+        <source>Hide</source>
+        <target state="final">Ocultar</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Subtítulo:</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Subtítulo:</target>
+      </trans-unit>
+      <trans-unit id="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Destino:</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel" approved="yes">
+        <source>Link Target</source>
+        <target state="final">Destino do Link:</target>
+      </trans-unit>
+      <trans-unit id="pages.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL:</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Última Atualização:</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Última Atualização</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil" approved="yes">
+        <source>'New' Until</source>
+        <target state="final">'Novo' Até:</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel" approved="yes">
+        <source>Mark as 'New' Until</source>
+        <target state="final">Marcar como 'Novo' Até</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout" approved="yes">
+        <source>Cache Expires</source>
+        <target state="final">Expiração da Cache:</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel" approved="yes">
+        <source>Cache Lifetime</source>
+        <target state="final">Tempo de Vida da Cache</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1" approved="yes">
+        <source>1 min</source>
+        <target state="final">1 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2" approved="yes">
+        <source>5 min</source>
+        <target state="final">5 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3" approved="yes">
+        <source>15 min</source>
+        <target state="final">15 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4" approved="yes">
+        <source>30 min</source>
+        <target state="final">30 min</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5" approved="yes">
+        <source>1 hour</source>
+        <target state="final">1 hora</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6" approved="yes">
+        <source>4 hours</source>
+        <target state="final">4 horas</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7" approved="yes">
+        <source>1 day</source>
+        <target state="final">1 dia</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8" approved="yes">
+        <source>2 days</source>
+        <target state="final">2 dias</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9" approved="yes">
+        <source>7 days</source>
+        <target state="final">7 dias</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10" approved="yes">
+        <source>1 month</source>
+        <target state="final">1 mês</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_tags" approved="yes">
+        <source>Cache Tags</source>
+        <target state="final">Tags da Cache:</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel" approved="yes">
+        <source>Editable for Admins Only</source>
+        <target state="final">Editável Apenas por Admins</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">Metadados</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Recursos</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Recursos</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Acesso</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Opções</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount" approved="yes">
+        <source>Mount</source>
+        <target state="final">Montagem</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">Atalho</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL:</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Estendido</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Aparência</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">Incluir na Pesquisa</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Desabilitar</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Modo do Atalho:</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Modo do Atalho:</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0" approved="yes">
+        <source>Selected page</source>
+        <target state="final">Página selecionada</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1" approved="yes">
+        <source>First subpage of selected/current page</source>
+        <target state="final">Primeira subpágina da página selecionada/atual</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3" approved="yes">
+        <source>Parent page of selected/current page</source>
+        <target state="final">Página pai da página selecionada/atual</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel" approved="yes">
+        <source>Shortcut Target</source>
+        <target state="final">Destino do Atalho</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid" approved="yes">
+        <source>Show content from this page instead</source>
+        <target state="final">Exibir conteúdo desta página em vez disso:</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Exibir Conteúdo da Página</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid" approved="yes">
+        <source>Mount Point of</source>
+        <target state="final">Ponto de Montagem (avançado):</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel" approved="yes">
+        <source>Mounted page</source>
+        <target state="final">Página montada</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol" approved="yes">
+        <source>Mount Point redirects to mounted page</source>
+        <target state="final">Ponto de Montagem redireciona para página montada</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel" approved="yes">
+        <source>Mount Point Display Option</source>
+        <target state="final">Exibir Conteúdo de</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0" approved="yes">
+        <source>Show this page</source>
+        <target state="final">Esta Página</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1" approved="yes">
+        <source>Show the mounted page</source>
+        <target state="final">Página Montada</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Resumo</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Resumo</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Palavras-chave</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">Nome do Autor</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel" approved="yes">
+        <source>Author Email</source>
+        <target state="final">E-mail do Autor</target>
+      </trans-unit>
+      <trans-unit id="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">Arquivos</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">Parar Árvore de Páginas</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot" approved="yes">
+        <source>Is Root of Website</source>
+        <target state="final">É Raiz do Website:</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel" approved="yes">
+        <source>Use as Root Page</source>
+        <target state="final">Usar como Página Raiz</target>
+      </trans-unit>
+      <trans-unit id="pages.module" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Contém Plugin:</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Contém Plugin:</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1" approved="yes">
+        <source>Shop</source>
+        <target state="final">Loja</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3" approved="yes">
+        <source>News</source>
+        <target state="final">Notícias</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4" approved="yes">
+        <source>Website Users</source>
+        <target state="final">Usuários do Website</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5" approved="yes">
+        <source>Direct Mail</source>
+        <target state="final">Mala Direta</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6" approved="yes">
+        <source>Approvals</source>
+        <target state="final">Aprovações</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg" approved="yes">
+        <source>Localization Settings</source>
+        <target state="final">Configurações de Localização</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">Localização</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">Ocultar o idioma padrão da página</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">Ocultar página se não existir tradução para o idioma atual</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a" approved="yes">
+        <source>Show page even if no translation exists</source>
+        <target state="final">Exibir página mesmo que não exista tradução</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Página</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel" approved="yes">
+        <source>Backend Layout (this page only)</source>
+        <target state="final">Layout do Backend (apenas esta página)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel" approved="yes">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="final">Layout do Backend (subpáginas desta página)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none" approved="yes">
+        <source>None</source>
+        <target state="final">Nenhum</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Padrão</target>
+      </trans-unit>
+      <trans-unit id="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Conteúdo da Página</target>
+      </trans-unit>
+      <trans-unit id="fe_users" approved="yes">
+        <source>Website User</source>
+        <target state="final">Usuário do Site</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Usuário</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Senha</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup" approved="yes">
+        <source>Groups</source>
+        <target state="final">Grupos</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Acesso</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Estendido</target>
+      </trans-unit>
+      <trans-unit id="fe_groups" approved="yes">
+        <source>Website Usergroup</source>
+        <target state="final">Grupo de Usuário do Site</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title" approved="yes">
+        <source>Group Title</source>
+        <target state="final">Título do Grupo</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup" approved="yes">
+        <source>Subgroups</source>
+        <target state="final">Subgrupos</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Estendido</target>
+      </trans-unit>
+      <trans-unit id="sys_template" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">Registro typoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Título</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">Nível raiz</target>
+      </trans-unit>
+      <trans-unit id="sys_template.rootDescription" approved="yes">
+        <source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
+				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+        <target state="final">Quando habilitada, a página é marcada como "Rootline Root". Na maioria das vezes, isso é definido apenas uma vez para o registro TypoScript superior.
+Isso pode ser usado no frontend para parar nesta página ao criar, por exemplo, menus "breadcrumb", mesmo se houver outras páginas pai. A bandeira especialmente
+afeta estas propriedades "getText" do TypoScript: "level", "levelmedia", "leveltitle", "levelfield" e "leveluid".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Limpar</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clearDescription" approved="yes">
+        <source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
+			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
+        <target state="final">Remover as configurações do TypoScript dos registros do TypoScript na linha de raiz. Isso é geralmente definido apenas uma vez para o registro TypoScript superior que é mais frequentemente
+localizado na mesma página com o sinalizador "Usar como página raiz" definido e a configuração "Site" anexada ao módulo do site.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Constantes</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Recursos</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" approved="yes">
+        <source>Include TypoScript sets</source>
+        <target state="final">Incluir conjuntos TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_fileDescription" approved="yes">
+        <source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
+				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+        <target state="final">As extensões geralmente fornecem TypoScript padrão para configurar a renderização básica do frontend. Estes podem ser carregados aqui.
+Para manter as estruturas do TypoScript limpas e organizadas, isso é geralmente definido apenas para o registro principal do TypoScript localizado na mesma página com o sinalizador "Usar como página raiz" definido,
+tem uma configuração "Site" anexada ao módulo do site com os sinalizadores "Clear" e "Rootlevel" acima definidos.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" approved="yes">
+        <source>Include TypoScript records</source>
+        <target state="final">Incluir registros TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOnDescription" approved="yes">
+        <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
+			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
+				and to load the full set in a single main TypoScript record.
+            </source>
+        <target state="final">Incluir registros TypoScript adicionais localizados em outro lugar na árvore de páginas. Pode ser usado para carregar os mesmos registros TypoScript em vários locais em uma árvore de páginas.
+Atualmente, não é usado com muita frequência e geralmente é mais fácil entender e manter o site ao extrair a configuração do TypoScript para arquivos
+e carregar o conjunto completo em um único registro TypoScript principal.
+            </target>
+      </trans-unit>
+      <trans-unit id="sys_template.config" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configuração</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0" approved="yes">
+        <source>Default (include before if root flag is set)</source>
+        <target state="final">Padrão (incluir antes se a flag raiz estiver ativa)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Recursos</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Acesso</target>
+      </trans-unit>
+      <trans-unit id="backend_layout" approved="yes">
+        <source>Backend Layout</source>
+        <target state="final">Layout do Backend</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Título</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config" approved="yes">
+        <source>Config</source>
+        <target state="final">Configuração</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard" approved="yes">
+        <source>Wizard</source>
+        <target state="final">Assistente</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">Ícone</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Acesso</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Estendido</target>
+      </trans-unit>
+      <trans-unit id="no_mount_pid" approved="yes">
+        <source>No Mount Point is set</source>
+        <target state="final">Nenhum ponto de montagem foi definido</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
