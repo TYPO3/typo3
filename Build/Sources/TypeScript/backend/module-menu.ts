@@ -133,6 +133,10 @@ class ModuleMenu {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
     const moduleGroup = menuItem.element.closest('.modulemenu-group');
     const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
+    if (moduleGroupContainer.classList.contains('collapsing')) {
+      // Bootstrap ignores show()/hide() during a running transition, keep the state untouched as well.
+      return;
+    }
     const collapseInstance = Collapse.getOrCreateInstance(moduleGroupContainer, {
       toggle: false // Do not auto-toggle on init.
     });
