@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="form" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Build custom forms</source>
+        <target state="final">कस्टम फ़ॉर्म बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
+        <target state="final">यह मॉड्यूल एक फ्लेक्सिबल और उपयोगकर्ता-अनुकूल फ़ॉर्म एडिटर प्रदान करता है। यह आपको अपने फ्रंटएंड के लिए विभिन्न प्रकार के फ़ॉर्म बनाने और तैयार करने की सुविधा देता है। आप "फ़ॉर्म" नामक कंटेंट एलिमेंट का उपयोग करके अपने फ़ॉर्म को किसी भी पृष्ठ पर आसानी से जोड़ सकते हैं। इस एलिमेंट के भीतर, फिनिशर्स को ओवरराइड किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Forms</source>
+        <target state="final">फॉर्म</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
