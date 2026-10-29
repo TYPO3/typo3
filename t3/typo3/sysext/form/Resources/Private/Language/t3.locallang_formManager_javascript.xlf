@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name">
+        <source>Name</source>
+        <target>crwdns141745:0crwdne141745:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name_description">
+        <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
+        <target>crwdns141747:0crwdne141747:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.new_form_name">
+        <source>New form name</source>
+        <target>crwdns56984:0crwdne56984:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation">
+        <source>Location</source>
+        <target>crwdns393764:0crwdne393764:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation_description">
+        <source>Select the location where the form will be saved.</source>
+        <target>crwdns393766:0crwdne393766:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_prototype">
+        <source>Form prototype</source>
+        <target>crwdns56988:0crwdne56988:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template">
+        <source>Template</source>
+        <target>crwdns141753:0crwdne141753:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template_description">
+        <source>Select a template for building your new form.</source>
+        <target>crwdns386164:0crwdne386164:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_headline_general">
+        <source>General</source>
+        <target>crwdns141757:0crwdne141757:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_copied">
+        <source>Copied form</source>
+        <target>crwdns81062:0crwdne81062:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel">
+        <source>Cancel</source>
+        <target>crwdns56992:0crwdne56992:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form">
+        <source>Delete</source>
+        <target>crwdns338102:0crwdne338102:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_title">
+        <source>Confirm deletion</source>
+        <target>crwdns338104:0crwdne338104:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_message">
+        <source>Delete form "{0}"? Forms saved as files are permanently deleted and cannot be restored from the Recycler.</source>
+        <target>crwdns409460:0{0}crwdne409460:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title">
+        <source>Create new form</source>
+        <target>crwdns57000:0crwdne57000:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.modes.summary.title">
+        <source>Mode</source>
+        <target>crwdns392968:0crwdne392968:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.progressLabel">
+        <source>Choose</source>
+        <target>crwdns141759:0crwdne141759:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages">
+        <source>You do not have permission to create forms. Please contact your administrator.</source>
+        <target>crwdns393768:0crwdne393768:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title">
+        <source>Settings</source>
+        <target>crwdns81064:0crwdne81064:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title">
+        <source>Ready?</source>
+        <target>crwdns141761:0crwdne141761:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.progressLabel">
+        <source>Check</source>
+        <target>crwdns141763:0crwdne141763:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target>crwdns141765:0crwdne141765:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check">
+        <source>Check and confirm</source>
+        <target>crwdns141767:0crwdne141767:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle">
+        <source>Create</source>
+        <target>crwdns57012:0crwdne57012:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage">
+        <source>The form could not be saved</source>
+        <target>crwdns57014:0crwdne57014:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.title">
+        <source>Storage location</source>
+        <target>crwdns393770:0crwdne393770:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.description">
+        <source>Choose how the form should be saved:</source>
+        <target>crwdns393772:0crwdne393772:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.progressLabel">
+        <source>Storage</source>
+        <target>crwdns393774:0crwdne393774:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.summary.title">
+        <source>Storage</source>
+        <target>crwdns393776:0crwdne393776:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title">
+        <source>Duplicate form "{0}"</source>
+        <target>crwdns57016:0{0}crwdne57016:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.title">
+        <source>Ready?</source>
+        <target>crwdns141769:0crwdne141769:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel">
+        <source>Check</source>
+        <target>crwdns141771:0crwdne141771:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.check">
+        <source>Check and confirm</source>
+        <target>crwdns141773:0crwdne141773:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.message">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target>crwdns141775:0crwdne141775:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle">
+        <source>Duplicate</source>
+        <target>crwdns141777:0crwdne141777:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage">
+        <source>The form could not be saved</source>
+        <target>crwdns141779:0crwdne141779:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.no_references">
+        <source>There are no references yet.</source>
+        <target>crwdns338108:0crwdne338108:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.control">
+        <source>Control</source>
+        <target>crwdns338110:0crwdne338110:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.uid">
+        <source>Uid</source>
+        <target>crwdns338112:0crwdne338112:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.title">
+        <source>Title</source>
+        <target>crwdns338114:0crwdne338114:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.btn.edit.title">
+        <source>Edit</source>
+        <target>crwdns338116:0crwdne338116:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.title">
+        <source>Form: {0}</source>
+        <target>crwdns338118:0{0}crwdne338118:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.headline">
+        <source>References to this item</source>
+        <target>crwdns338120:0crwdne338120:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0">
+        <source>Blank form</source>
+        <target>crwdns81068:0crwdne81068:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.subtitle" x-unused-since="15.0">
+        <source>Start fresh</source>
+        <target>crwdns141781:0crwdne141781:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.description" x-unused-since="15.0">
+        <source>Create a new form from scratch.</source>
+        <target>crwdns141783:0crwdne141783:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0">
+        <source>Predefined form</source>
+        <target>crwdns81070:0crwdne81070:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.subtitle" x-unused-since="15.0">
+        <source>Use a form template</source>
+        <target>crwdns141785:0crwdne141785:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.description" x-unused-since="15.0">
+        <source>Create a new form and use an existing form template for it.</source>
+        <target>crwdns141787:0crwdne141787:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.title">
+        <source>Form created</source>
+        <target>crwdns392970:0crwdne392970:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.description">
+        <source>The form has been successfully created. Click "Finish" to be redirected to the newly created form.</source>
+        <target>crwdns393778:0crwdne393778:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
