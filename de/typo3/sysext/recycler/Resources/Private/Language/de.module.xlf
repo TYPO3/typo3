@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papierkorb</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Restore or permanently remove deleted records</source>
+        <target state="final">Gelöschte Datensätze wiederherstellen oder dauerhaft entfernen</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
+        <target state="final">Ermöglicht es dir, gelöschte Datensätze wiederherzustellen oder dauerhaft aus der Datenbank zu entfernen. Unterstützt einzelne, mehrere und rekursive Aktionen, wie z. B. die Wiederherstellung einer Seite mit allen Inhaltselementen. Filter nach Seiten oder Tabellen, um gelöschte Datensätze zu überprüfen, bevor du Maßnahmen ergreifest.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
