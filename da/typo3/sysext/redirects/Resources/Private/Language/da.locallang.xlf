@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">Omdirigering, indstillinger</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">Opdatér URL-segment for alle undersider automatisk</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">Opret automatiske viderestillinger for sider med et nyt URL-segment</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">Tid At Leve for viderestillings-elementer, i dage</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">HTTP Statuskode for viderestilling, 301 er standard</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">Oprydning i omdirigeringer ældre end fastsat antal dage</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">Oprydning i omdirigeringer af angivne domæne(r)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">Oprydning i omdirigeringer der matcher besøgstæller lavere end det angivne tal</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path" approved="yes">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+        <target state="final">Oprydning i omdirigerer der matcher angiven sti (som database udtryk)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">Oprydning i omdirigeringer af angivne oprettelsestyper</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">Oprydning i omdirigeringer der matcher de(n) medfølgende statuskode(r)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus" approved="yes">
+        <source>Cleanup redirects matching provided integrity status</source>
+        <target state="final">Oprydning i omdirigeringer af angivne integritets-statusser</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType" approved="yes">
+        <source>Cleanup redirects matching provided redirect type</source>
+        <target state="final">Oprydning af omdirigeringer det matcher omdirigeringstype</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.dryRun" approved="yes">
+        <source>Show which redirects would be deleted, without deleting anything</source>
+        <target state="final">Vis hvilke omdirigeringer der ville blive slettet, uden at slette noget</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.noMatches" approved="yes">
+        <source>No redirect matches the given constraints, nothing would be deleted.</source>
+        <target state="final">Ingen omdirigering matcher de angivne begrænsninger, intet ville blive slettet.</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.summary" approved="yes">
+        <source>{count, plural, one {# redirect would be deleted.} other {# redirects would be deleted.}} Nothing has been deleted, this was a dry run.</source>
+        <target state="final">{count, plural, one {# omdirigering ville blive slettet.} other {# omdirigeringer ville blive slettet.}} Intet er blevet slettet, dette var en tør kørsel.</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourceHost" approved="yes">
+        <source>Source host</source>
+        <target state="final">Kildevært</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.sourcePath" approved="yes">
+        <source>Source path</source>
+        <target state="final">Kildesti</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Mål</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.statusCode" approved="yes">
+        <source>Status code</source>
+        <target state="final">Statuskode</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.dryRun.column.hitCount" approved="yes">
+        <source>Hits</source>
+        <target state="final">Hits</target>
+      </trans-unit>
+      <trans-unit id="created_on" approved="yes">
+        <source>on</source>
+        <target state="final">på</target>
+      </trans-unit>
+      <trans-unit id="not_tracked" approved="yes">
+        <source>[Not Tracked]</source>
+        <target state="final">[Ikke sporet]</target>
+      </trans-unit>
+      <trans-unit id="user_not_found" approved="yes">
+        <source>[Not Found]</source>
+        <target state="final">[Ikke fundet]</target>
+      </trans-unit>
+      <trans-unit id="no_qrcode" approved="yes">
+        <source>Not enough information for generating a QR Code.</source>
+        <target state="final">Ikke nok information til at generere en QR-kode.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
