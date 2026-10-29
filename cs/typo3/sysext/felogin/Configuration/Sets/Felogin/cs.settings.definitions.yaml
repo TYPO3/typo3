@@ -1,0 +1,13 @@
+categories:
+  felogin: null
+settings:
+  felogin.showForgotPassword:
+    default: false
+  felogin.showPermaLogin:
+    default: false
+  felogin.showLogoutFormAfterLogin:
+    default: false
+  felogin.redirectFirstMethod:
+    default: false
+  felogin.redirectDisable:
+    default: false
