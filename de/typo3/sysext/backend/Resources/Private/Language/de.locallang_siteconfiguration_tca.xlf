@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Site-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" approved="yes">
+        <source>Site Identifier</source>
+        <target state="final">Site Identifier</target>
+      </trans-unit>
+      <trans-unit id="site.rootPageId" approved="yes">
+        <source>Root Page ID</source>
+        <target state="final">ID der Wurzelseite</target>
+      </trans-unit>
+      <trans-unit id="site.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Einstiegspunkt</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">Titel der Website</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" approved="yes">
+        <source>Variants for the Entry Point</source>
+        <target state="final">Varianten für den Einstiegspunkt</target>
+      </trans-unit>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Sets for this Site</source>
+        <target state="final">Sets für diese Webseite</target>
+      </trans-unit>
+      <trans-unit id="site.languages" approved="yes">
+        <source>Available Languages for this Site</source>
+        <target state="final">Verfügbare Sprachen für diese Site</target>
+      </trans-unit>
+      <trans-unit id="site.languages.choosePreset" approved="yes">
+        <source>Choose a preset...</source>
+        <target state="final">Voreinstellungen wählen...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site.languages.chooseExistingFromOtherSite" approved="yes">
+        <source>Use Language from existing site...</source>
+        <target state="final">Sprache von existierender Site verwenden...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site.languages.description" approved="yes">
+        <source>Select an already existing language from another site or create a new one.</source>
+        <target state="final">Wähle eine bereits existierende Sprache einer anderen Site oder erstelle eine neue.</target>
+      </trans-unit>
+      <trans-unit id="site.languages.new" approved="yes">
+        <source>New language</source>
+        <target state="final">Neue Sprache</target>
+      </trans-unit>
+      <trans-unit id="site.languages.createNew" approved="yes">
+        <source>Create new language</source>
+        <target state="final">Neue Sprache anlegen</target>
+      </trans-unit>
+      <trans-unit id="site.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Fehlerbehandlung</target>
+      </trans-unit>
+      <trans-unit id="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">Routen</target>
+      </trans-unit>
+      <trans-unit id="site.routes.irreHeader.redirectsTo" approved="yes">
+        <source>redirects to</source>
+        <target state="final">leitet um zu</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Sprachen</target>
+      </trans-unit>
+      <trans-unit id="site.tab.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Fehlerbehandlung</target>
+      </trans-unit>
+      <trans-unit id="site.tab.routes" approved="yes">
+        <source>Static Routes</source>
+        <target state="final">Statische Routen</target>
+      </trans-unit>
+      <trans-unit id="site_language.palette.frontend" approved="yes">
+        <source>Frontend related</source>
+        <target state="final">Frontend</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" approved="yes">
+        <source>Language Configuration for a Site</source>
+        <target state="final">Sprachkonfiguration für eine Seite</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">Sprach-ID</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">Titel der Website</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Navigationstitel</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Einstiegspunkt</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Spracheinstellung</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Alternative attribute for "hreflang" tags</source>
+        <target state="final">Alternatives "hreflang" Attribut</target>
+      </trans-unit>
+      <trans-unit id="site_language.enabled" approved="yes">
+        <source>Visible in Frontend</source>
+        <target state="final">Sichtbar im Frontend</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag" approved="yes">
+        <source>Flag icon</source>
+        <target state="final">Flaggensymbol</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.colors" approved="yes">
+        <source>Colors</source>
+        <target state="final">Farben</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.countries" approved="yes">
+        <source>Countries</source>
+        <target state="final">Länder</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.misc" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Verschiedenes</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType" approved="yes">
+        <source>Fallback Type</source>
+        <target state="final">Ausweichlösung-Typ</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.strict" approved="yes">
+        <source>Strict: Show only translated content, based on overlays. Also show records that only exist in this language.</source>
+        <target state="final">Strict: Nur übersetzte Inhalte anzeigen, basierend auf Overlays. Auch Datensätze anzeigen, die nur in dieser Sprache vorhanden sind.</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.fallback" approved="yes">
+        <source>Fallback: Show default language if no translation exists. Also show records that only exist in this language.</source>
+        <target state="final">Fallback: Die Standardsprache anzeigen, wenn keine Übersetzung vorhanden ist. Außerdem Datensätze anzeigen, die nur in dieser Sprache vorliegen.</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.free" approved="yes">
+        <source>Free mode: Ignore translation and overlay concept, only show data from selected language</source>
+        <target state="final">Freier Modus: Übersetzung und Overlay-Konzept ignorieren. Nur Inhalte der ausgewählten Sprache anzeigen</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbacks" approved="yes">
+        <source>Fallback to other Language(s) - order is important!</source>
+        <target state="final">Auf andere Sprache(n) ausweichen - Reihenfolge ist wichtig!</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.ctrl.title" approved="yes">
+        <source>Base</source>
+        <target state="final">Basis</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" approved="yes">
+        <source>Base</source>
+        <target state="final">Basis</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base.placeholder" approved="yes">
+        <source>www.domain.local</source>
+        <target state="final">www.domain.local</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">Bedingung</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.placeholder" approved="yes">
+        <source>applicationContext == "Production"</source>
+        <target state="final">applicationContext == "Production"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Anwendungs-Kontext</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.environmentVariable" approved="yes">
+        <source>Environment Variable</source>
+        <target state="final">Umgebungsvariable</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Fehlerbehandlung</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.tab.rootpaths" approved="yes">
+        <source>Root Paths (optional)</source>
+        <target state="final">Wurzelpfade (optional)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" approved="yes">
+        <source>HTTP Error Status Code</source>
+        <target state="final">HTTP-Fehler-Status-Code</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Seite nicht gefunden)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.403" approved="yes">
+        <source>403 (Forbidden)</source>
+        <target state="final">403 (Verboten)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (Interner Server-Fehler)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.503" approved="yes">
+        <source>503 (Service Unavailable)</source>
+        <target state="final">503 (Dienst nicht verfügbar)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.0" approved="yes">
+        <source>any error not defined otherwise</source>
+        <target state="final">jeglicher noch nicht anderweitig definierte Fehler</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler" approved="yes">
+        <source>How to handle Errors</source>
+        <target state="final">Wie Fehler behandelt werden sollen</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.fluid" approved="yes">
+        <source>Fluid Template</source>
+        <target state="final">Fluid-Vorlage</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Zeige Inhalt von Seite</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.php" approved="yes">
+        <source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+        <target state="final">PHP-Klasse (muss das PageErrorHandlerInterface implementieren)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.loginRedirect" approved="yes">
+        <source>Redirect to login page</source>
+        <target state="final">Zur Anmeldeseite weiterleiten</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Fluid Template File</source>
+        <target state="final">Fluid-Vorlagendatei</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate.placeholder" approved="yes">
+        <source>EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</source>
+        <target state="final">EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplatesRootPath" approved="yes">
+        <source>Fluid Templates Root Path</source>
+        <target state="final">Fluid-Vorlagen-Wurzelpfad</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidLayoutsRootPath" approved="yes">
+        <source>Fluid Layouts Root Path</source>
+        <target state="final">Fluid-Designs-Wurzelpfad</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidPartialsRootPath" approved="yes">
+        <source>Fluid Partials Root Path</source>
+        <target state="final">Fluid-Partials-Wurzelpfad</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Zeige Inhalt von Seite</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>ErrorHandler Class Target (FQCN)</source>
+        <target state="final">ErrorHandler Klassenziel (FQCN)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectTarget" approved="yes">
+        <source>Target page where login process is handled</source>
+        <target state="final">Zielseite, auf der der Anmeldeprozess bearbeitet wird</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter" approved="yes">
+        <source>URL parameter for redirect</source>
+        <target state="final">URL-Parameter für Weiterleitung</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter.return_url" approved="yes">
+        <source>return_url (used by e.g. ext:felogin)</source>
+        <target state="final">return_url (verwendet z.B. von ext:felogin)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter.redirect_url" approved="yes">
+        <source>redirect_url (used by e.g. ext:oidc or ext:felogin)</source>
+        <target state="final">redirect_url (verwendet z. B. von ext:oidc oder ext:felogin)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" approved="yes">
+        <source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+        <target state="final">Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">Routen</target>
+      </trans-unit>
+      <trans-unit id="site_route.type" approved="yes">
+        <source>Route Type</source>
+        <target state="final">Routen-Typ</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText" approved="yes">
+        <source>Static Text</source>
+        <target state="final">Statischer Text</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText.example1" approved="yes">
+        <source>robots.txt Example Content</source>
+        <target state="final">robots.txt Beispielinhalt</target>
+      </trans-unit>
+      <trans-unit id="site_route.source" approved="yes">
+        <source>Page, File or URL</source>
+        <target state="final">Seite, Datei oder URL</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset" approved="yes">
+        <source>Static Asset</source>
+        <target state="final">Statisches Asset</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset.example" approved="yes">
+        <source>Example asset</source>
+        <target state="final">Beispiel Asset</target>
+      </trans-unit>
+      <trans-unit id="site_route.route" approved="yes">
+        <source>Static Route Name</source>
+        <target state="final">Name der statischen Route</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.placeholder" approved="yes">
+        <source>my-custom_route</source>
+        <target state="final">my-custom_route</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.example1" approved="yes">
+        <source>robots.txt</source>
+        <target state="final">robots.txt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
