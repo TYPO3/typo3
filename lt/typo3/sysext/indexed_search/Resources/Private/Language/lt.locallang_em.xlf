@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: Specify the directory containing the "pdftotext" and "pdfinfo" applications used to extract content from PDF files. Leave empty if not available.</source>
+        <target state="final">Kelias iki PDF analizatorių: nurodykite katalogą, kuriame yra „pdftotext" ir „pdfinfo" programos, naudojamos turiniui išgauti iš PDF failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF Parsing Mode: Define how PDF files are split during indexing. "0" indexes the entire file at once. A positive value sets the number of pages per batch (e.g. "5" → pages 1–5, 6–10, …). A negative value sets the number of groups (e.g. "-3" → file split into 3 groups). Allowed range: -100 to 100.</source>
+        <target state="final">PDF analizavimo režimas: nurodykite, kaip PDF failai skaidomi indeksavimo metu. „0" indeksuoja visą failą iš karto. Teigiama reikšmė nustato puslapių skaičių vienoje grupėje (pvz. „5" → puslapiai 1–5, 6–10, …). Neigiama reikšmė nustato grupių skaičių (pvz. „-3" → failas skaidomas į 3 grupes). Leidžiamas diapazonas: nuo -100 iki 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: Specify the directory containing the "unzip" application used to extract content from OpenOffice.org/Oasis OpenDocument files. Leave empty if not available.</source>
+        <target state="final">Kelias iki unzip: nurodykite katalogą, kuriame yra „unzip" programa, naudojama turiniui išgauti iš OpenOffice.org/Oasis OpenDocument failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: Specify the directory containing the "catdoc" application used to extract content from MS WORD files. Leave empty if not available.</source>
+        <target state="final">Kelias iki WORD analizatoriaus: nurodykite katalogą, kuriame yra „catdoc" programa, naudojama turiniui išgauti iš MS Word failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: Specify the directory containing the "xlhtml" application used to extract content from MS EXCEL files. Leave empty if not available.</source>
+        <target state="final">Kelias iki EXCEL analizatoriaus: nurodykite katalogą, kuriame yra „xlhtml" programa, naudojama turiniui išgauti iš MS Excel failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: Specify the directory containing the "ppthtml" application used to extract content from MS POWERPOINT files. Leave empty if not available.</source>
+        <target state="final">Kelias iki POWERPOINT analizatoriaus: nurodykite katalogą, kuriame yra „ppthtml" programa, naudojama turiniui išgauti iš MS PowerPoint failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: Specify the directory containing the "unrtf" application used to extract content from RTF files. Leave empty if not available.</source>
+        <target state="final">Kelias iki RTF analizatoriaus: nurodykite katalogą, kuriame yra „unrtf" programa, naudojama turiniui išgauti iš RTF failų. Palikite tuščią, jei nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: Limit the amount of full-text data stored (in bytes). Lower values reduce database usage but also restrict sentence-level searching and the length of search result excerpts.</source>
+        <target state="final">Viso teksto duomenų ilgis: apribokite saugomų viso teksto duomenų kiekį (baitais). Mažesnės reikšmės sumažina duomenų bazės naudojimą, tačiau taip pat apriboja paieškos sakinių lygiu ir paieškos rezultatų ištraukų ilgį.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: Prevent pages from being indexed during frontend access. Indexing is then performed only by the backend page crawler.</source>
+        <target state="final">Išjungti indeksavimą sąsajoje: neleisti puslapiams būti indeksuojamiems prieigos iš sąsajos metu. Indeksavimas bus atliekamas tik administravimo puslapio naršyklės.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for Indexed Page: Set the minimum time (in hours) that must pass before an indexed page is eligible for re-indexing, regardless of page changes.</source>
+        <target state="final">Minimalus TTL (valandomis) indeksuotam puslapiui: nustatykite minimalų laiką (valandomis), kuris turi praeiti, kol indeksuotas puslapis gali būti pakartotinai indeksuotas, nepriklausomai nuo puslapio pakeitimų.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max External Files to Index: Limit how many external files found on a page are indexed. This helps prevent excessive server load but may leave some documents unindexed.</source>
+        <target state="final">Maksimalus indeksuojamų išorinių failų skaičius: apribokite, kiek išorinių failų, rastų puslapyje, yra indeksuojama. Tai padeda išvengti per didelės serverio apkrovos, tačiau kai kurie dokumentai gali likti neindeksuoti.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
+        <target state="final">Bitų kaukė žymėms (išplėstinė): nurodykite HTML metaduomenų svorio koeficientą indeksavimo metu (reikšmių diapazonas: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Nustatykite 0, kad šie laukai neturėtų papildomo svorio. Numatytoji reikšmė 192 teikia pirmenybę pavadinimui ir raktažodžiams paieškos rezultatuose.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <target state="final">Ignoruoti plėtinius: nurodykite kableliais atskirtą failų plėtinių sąrašą, kurį išorinis analizatorius turėtų ignoruoti, net jei jie palaikomi.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
+        <target state="final">Indeksuoti išorines HTML nuorodas: įjunkite išorinių nuorodų indeksavimą, kai paskirties turinio tipas yra „text/html".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Enable MySQL specific fulltext search: After toggling this flag the database schema should be updated using System → Maintenance →  Analyze Database Structure.</source>
+        <target state="final">Įjungti MySQL specifinę viso teksto paiešką: perjungus šią žymę, duomenų bazės schema turėtų būti atnaujinta naudojant Sistema → Priežiūra → Analizuoti duomenų bazės struktūrą.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.deleteFromIndexAfterEditing" approved="yes">
+        <source>Remove content from index if page or its content is edited</source>
+        <target state="final">Pašalinti turinį iš indekso, jei redaguojamas puslapis arba jo turinys.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
