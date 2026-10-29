@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">Bearbeitung</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" approved="yes">
+        <source>Ready to publish</source>
+        <target state="final">Bereit zum Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="stage_all" approved="yes">
+        <source>All stages</source>
+        <target state="final">Alle Stufen</target>
+      </trans-unit>
+      <trans-unit id="previewText" approved="yes">
+        <source>Preview of workspace %s (%s)</source>
+        <target state="final">Vorschau von Arbeitsumgebung %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" approved="yes">
+        <source>Stop preview</source>
+        <target state="final">Vorschau stoppen</target>
+      </trans-unit>
+      <trans-unit id="highlightChanges" approved="yes">
+        <source>Highlight changes (%s)</source>
+        <target state="final">Änderungen hervorheben (%s)</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" approved="yes">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target state="final">Sie haben den Arbeitsumgebungsvorschaumodus verlassen. Folgen Sie diesem Link um %1$s zur Website zurückzugehen%2$s</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" approved="yes">
+        <source>%1$sERROR:%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target state="final">%1$sFEHLER:%2$sDie mit $TYPO3_CONF_VARS["FE“]["workspacePreviewLogoutTemplate“] konfigurierte Vorlagendatei "%3$s“ wurde nicht gefunden. Bitte wende dich wegen dieses Problems an den Webmaster.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
