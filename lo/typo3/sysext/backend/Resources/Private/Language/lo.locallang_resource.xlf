@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">ສຳເລັດ</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed" approved="yes">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target state="final">ຊັບພະຍາກອນ "%s" ໄດ້ຖືກປ່ຽນຊື່ເປັນ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.resourceReplaced" approved="yes">
+        <source>The resource %s has been replaced.</source>
+        <target state="final">ຊັບພະຍາກອນ %s ໄດ້ຖືກປ່ຽນແທນແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder" approved="yes">
+        <source>The resource must be a file or a folder.</source>
+        <target state="final">ຊັບພະຍາກອນຕ້ອງເປັນໄຟລ໌ ຫຼື ໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRead" approved="yes">
+        <source>Reading this resource is not permitted.</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ອ່ານຊັບພະຍາກອນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRename" approved="yes">
+        <source>Renaming this resource is not permitted.</source>
+        <target state="final">ການປ່ຽນຊື່ຊັບພະຍາກອນນີ້ແມ່ນບໍ່ໄດ້ຮັບອະນຸຍາດ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" approved="yes">
+        <source>The resource name cannot be empty.</source>
+        <target state="final">ຊື່ຊັບພະຍາກອນບໍ່ສາມາດຫວ່າງເປົ່າໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameNotDifferent" approved="yes">
+        <source>The resource %s already has this name. No changes were made.</source>
+        <target state="final">ຊັບພະຍາກອນ %s ມີຊື່ນີ້ຢູ່ແລ້ວ. ບໍ່ມີການປ່ຽນແປງໃດໆເກີດຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotAvailableToUpload" approved="yes">
+        <source>No resource was selected to be uploaded.</source>
+        <target state="final">ບໍ່ມີຊັບພະຍາກອນຖືກເລືອກເພື່ອອັບໂຫຼດ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotRenamed" approved="yes">
+        <source>The resource %s could not be renamed.</source>
+        <target state="final">ບໍ່ສາມາດປ່ຽນຊື່ຊັບພະຍາກອນ %s ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFound" approved="yes">
+        <source>The resource was not found.</source>
+        <target state="final">ບໍ່ພົບຊັບພະຍາກອນ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
