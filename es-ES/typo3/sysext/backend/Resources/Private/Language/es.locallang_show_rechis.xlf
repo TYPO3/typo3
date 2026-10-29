@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Historial/Deshacer</target>
+      </trans-unit>
+      <trans-unit id="headline.titleOf" approved="yes">
+        <source>of</source>
+        <target state="final">de</target>
+      </trans-unit>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Hora</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Usuario</target>
+      </trans-unit>
+      <trans-unit id="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Espacio de trabajo</target>
+      </trans-unit>
+      <trans-unit id="column.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Acción</target>
+      </trans-unit>
+      <trans-unit id="column.recordTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">Título</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">Diferencias</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Registro de cambios</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Volver</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Pulsa aquí para volver</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">Restaurar todos los cambios mostrados</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">Restaurar el valor de este registro</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Restaurar el valor anterior de este campo</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">mediante</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" approved="yes">
+        <source>Rollback all changes to this state (preview)</source>
+        <target state="final">Retroceder todos los cambios hasta este estado (vista previa)</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">marcar este cambio</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">desmarcar este cambio</target>
+      </trans-unit>
+      <trans-unit id="elementHistory" approved="yes">
+        <source>You are currently seeing the history for an element</source>
+        <target state="final">Actualmente, estás viendo el historial de un elemento</target>
+      </trans-unit>
+      <trans-unit id="elementHistory_link" approved="yes">
+        <source>Show the full page history</source>
+        <target state="final">Mostrar el historial de la página completa</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">Limitar historia a este registro</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in green colored text and the red colored text are the old values which were removed.</source>
+        <target state="final">En la columna "Diferencia" el texto color verde representa los nuevos cambios y el texto color rojo representa los valores anteriores que fueron eliminados.</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">Volver a vista completa</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.1" approved="yes">
+        <source>created</source>
+        <target state="final">creado</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.2" approved="yes">
+        <source>modified</source>
+        <target state="final">modificado</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.3" approved="yes">
+        <source>moved</source>
+        <target state="final">movido</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.4" approved="yes">
+        <source>deleted</source>
+        <target state="final">eliminado</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.5" approved="yes">
+        <source>undeleted</source>
+        <target state="final">restaurar</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.6" approved="yes">
+        <source>stage changed</source>
+        <target state="final">etapa cambiada</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.insert" approved="yes">
+        <source>The record has been deleted and will be restored again with the rollback.</source>
+        <target state="final">El registro ha sido eliminado y será restaurado de nuevo con el retroceso.</target>
+      </trans-unit>
+      <trans-unit id="rollback.plannedAction.delete" approved="yes">
+        <source>The record will be deleted with the rollback.</source>
+        <target state="final">El registro se eliminará con el retroceso.</target>
+      </trans-unit>
+      <trans-unit id="undelete" approved="yes">
+        <source>undelete</source>
+        <target state="final">recuperar</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" approved="yes">
+        <source>Preview for rollback</source>
+        <target state="final">Vista previa del retroceso</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences.description" approved="yes">
+        <source>It is possible to rollback either individual fields or entire elements. Alternatively, all displayed changes can be rolled back.</source>
+        <target state="final">Es posible deshacer campos individuales o elementos completos. De forma alternativa, todos los cambios mostrados se pueden revertir.</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Ajustes</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">Mostrar entradas</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">TODO</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">marcadas</target>
+      </trans-unit>
+      <trans-unit id="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">Mostrar diferencias</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Mostrar sub elementos</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Si</target>
+      </trans-unit>
+      <trans-unit id="noDifferences" approved="yes">
+        <source>There are no differences to the current page</source>
+        <target state="final">No hay diferencias en la página actual</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" approved="yes">
+        <source>Editing is blocked for non-admins</source>
+        <target state="final">La edición está bloqueada para los no-administradores</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
