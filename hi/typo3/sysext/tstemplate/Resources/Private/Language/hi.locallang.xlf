@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="noRecordFound.infobox.title" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">वर्तमान पृष्ठ पर कोई TypoScript रिकॉर्ड नहीं</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.infobox.message" approved="yes">
+        <source>You need to create a TypoScript record in order to edit your configuration.</source>
+        <target state="final">आपको अपनी कॉन्फ़िगरेशन को संपादित करने के लिए एक TypoScript रिकॉर्ड बनाने की आवश्यकता है।</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.description" approved="yes">
+        <source>The closest TypoScript record is located on page '%s' (uid %s).</source>
+        <target state="final">सबसे करीबी TypoScript रिकॉर्ड पृष्ठ '%s' (uid %s) पर स्थित है।</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.link.title" approved="yes">
+        <source>Select this TypoScript record</source>
+        <target state="final">इस TypoScript रिकॉर्ड का चयन करें</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.headline" approved="yes">
+        <source>Root TypoScript record</source>
+        <target state="final">मूल TypoScript रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.description" approved="yes">
+        <source>Choose this option if you want this page to be the root of a new site.</source>
+        <target state="final">अगर आप चाहते हैं कि यह पृष्ठ एक नई साइट की मूल हो, तो यह विकल्प चुनें।</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.link.title" approved="yes">
+        <source>Create a root TypoScript record</source>
+        <target state="final">एक मूल TypoScript रिकॉर्ड बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.title.placeholder" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">नई साइट</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.headline" approved="yes">
+        <source>Additional TypoScript record</source>
+        <target state="final">अतिरिक्त TypoScript रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.description" approved="yes">
+        <source>An additional TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">एक अतिरिक्त TypoScript रिकॉर्ड आपको TypoScript मान दर्ज करने की अनुमति देता है जो केवल इस पृष्ठ और उप पृष्ठों पर प्रभाव डालेंगे।</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.link.title" approved="yes">
+        <source>Create an additional TypoScript record</source>
+        <target state="final">एक अतिरिक्त TypoScript रिकॉर्ड बनाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
