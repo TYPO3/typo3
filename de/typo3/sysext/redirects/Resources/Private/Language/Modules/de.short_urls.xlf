@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/short_urls.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Short URLs</source>
+        <target state="final">Kurz-URLs</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Short URLs Administration</source>
+        <target state="final">Kurz-URLs Administration</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Create and manage Short URLs that redirect to longer links for easier sharing and tracking.</source>
+        <target state="final">Erstelle und verwalte Kurz-URLs, die auf längere Links umleiten, um das Teilen und Tracking zu vereinfachen.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Short URL Management</source>
+        <target state="final">Kurz-URL Management</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add Short URL</source>
+        <target state="final">Kurz-URL hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message" approved="yes">
+        <source>No Short URL could be found with the current set of filters applied.</source>
+        <target state="final">Mit aktuell eingestellten Filtern konnte keine Kurz-URL gefunden werden.</target>
+      </trans-unit>
+      <trans-unit id="not_found.title" approved="yes">
+        <source>No Short URLs found</source>
+        <target state="final">Keine Kurz-URLs gefunden</target>
+      </trans-unit>
+      <trans-unit id="not_found.message" approved="yes">
+        <source>There are currently no Short URLs found in the database.</source>
+        <target state="final">Derzeit sind keine Kurz-URLs in der Datenbank gefunden worden.</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create new Short URL</source>
+        <target state="final">Neue Kurz-URL erstellen</target>
+      </trans-unit>
+      <trans-unit id="delete.title" approved="yes">
+        <source>Delete Short URLs</source>
+        <target state="final">Kurz-URLs löschen</target>
+      </trans-unit>
+      <trans-unit id="delete.message" approved="yes">
+        <source>Delete all marked Short URLs permanently? You cannot undo this action.</source>
+        <target state="final">Alle markierten Kurz-URLs endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.</target>
+      </trans-unit>
+      <trans-unit id="show" approved="yes">
+        <source>Show Short URL</source>
+        <target state="final">Kurz-URL anzeigen</target>
+      </trans-unit>
+      <trans-unit id="generate_short_url" approved="yes">
+        <source>Generate Short URL</source>
+        <target state="final">Kurz-URL generieren</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicate_short_url" approved="yes">
+        <source>This Short URL already exists. Please choose a different source host or source path.</source>
+        <target state="final">Diese Kurz-URL existiert bereits. Bitte wähle einen anderen Quell-Host oder Quell-Pfad.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
