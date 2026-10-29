@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">إدارة السجلات</target>
+      </trans-unit>
+      <trans-unit id="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[كل المستخدمين]</target>
+      </trans-unit>
+      <trans-unit id="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[أيّ]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">عن طريق</target>
+      </trans-unit>
+      <trans-unit id="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">مباشر</target>
+      </trans-unit>
+      <trans-unit id="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">مسوّدة</target>
+      </trans-unit>
+      <trans-unit id="self" approved="yes">
+        <source>Self</source>
+        <target state="final">الذّات</target>
+      </trans-unit>
+      <trans-unit id="userGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">المجموعة</target>
+      </trans-unit>
+      <trans-unit id="set" approved="yes">
+        <source>Filter</source>
+        <target state="final">تصفية</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">إعادة تعيين</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>[all]</source>
+        <target state="final">[all]</target>
+      </trans-unit>
+      <trans-unit id="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">الكل</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">قاعدة البيانات</target>
+      </trans-unit>
+      <trans-unit id="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">الملف</target>
+      </trans-unit>
+      <trans-unit id="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">ذاكرة التخزين المُؤقت</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">تسجيل الدخول</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">أخطاء</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">المجموعة</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">المستخدم</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">المُستخدمون</target>
+      </trans-unit>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">الوقت</target>
+      </trans-unit>
+      <trans-unit id="max" approved="yes">
+        <source>Max</source>
+        <target state="final">الحد الأقصى</target>
+      </trans-unit>
+      <trans-unit id="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">إظهار السجل</target>
+      </trans-unit>
+      <trans-unit id="action" approved="yes">
+        <source>Action</source>
+        <target state="final">إجراء</target>
+      </trans-unit>
+      <trans-unit id="channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">قناة</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">المستويات</target>
+      </trans-unit>
+      <trans-unit id="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">مساحة العمل</target>
+      </trans-unit>
+      <trans-unit id="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">نظرة عامّة</target>
+      </trans-unit>
+      <trans-unit id="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">إدراج</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">تحديث</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">نقل</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">تحقق</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">Referer host '%s' و server host '%s' لم يتطابقا!
+</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">محاولة إدراج سجل في الصفحة '%s' (%s) حيث هذا الجدول %s، غير مسموح به</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">محاولة إدراج سجل في الصفحة ''%s' (%s) من الجدول '%s' بدون أذونات. أو الصفحة غير موجودة.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">محاولة تعديل الجدول ''%s' بدون إذن</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">محاولة تعديل السجل ''%s' (%s) من دون إذن. أو الصفحة غير موجودة.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">تم تحديث السجل '%s' (%s) .</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL error: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">محاولة نقل السجل ''%s' (%s) إلى بعد السجل الغير موجود (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">تم نقل السجل ''%s' (%s) إلى الصفحة '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">تم نقل السجل ''%s' (%s) من الصفحة '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">تم نقل السجل ''%s' (%s) إلى الصفحة '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">محاولة نقل الصفحة ''%s' (%s) إلى داخل مستوى الجذر الخاص به (في الصفحة '%s' (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">محاولة إدراج سجل في الصفحة '%s' (%s) ولكن هذا الجدول %s غير مسموح به</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">محاولة لإدراج سِجل في الصفحة ''%s' (%s) من الجدول '%s' بدون أُذونات. أو الصفحة غير موجودة.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">محاولة نقل السجل ''%s' (%s) إلى سجل آخر، على الرغم من أن الجدول ليس لديه صف فرز.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">محاولة نقل السجل ''%s' (%s) دون الحصول على أُذونات للقيام بذلك</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">لا يُمكنك تغيّير 'doktype' من الصفحة '%s إلى القيمة المطلُوبة.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">'doktype' من الصفحة '%s' لا يمكن تغييره لأن الصفحة تحتوي على سجلات من الجداول غير المسموح بها؛ %s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">عدد قليل جداً من العناصر في قائمة القِيم. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">تعذر حذف الملف ''%s' (غير موجود). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">فشل نسخ الملف ''%s'!: لا يوجد ملف مقصود (%s) ممكن!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">ملف الإضافة ''%s' غير مسموح به. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">حجم الملف (%s) من الملف '%s' يتجاوز الحد (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">الوجهة (%s) أو الملف المصدر (%s) غير موجود. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">فشلت عملية النسخ إلى الملف ''%s'! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">فشل نسخ الملف '%s' !: مسار الوُجهة (%s) قد تكون محمية من الكتابة. يرجى جعله مُفعّلاً!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_4" approved="yes">
+        <source>The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.</source>
+        <target state="final">تم تغيير قيمة الحقل "%s" من "%s" إلى "%s" لأن القيمة يجب أن تكون فريدة من نوعها.</target>
+      </trans-unit>
+      <trans-unit id="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">ملف</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">تحميل</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">نسخ</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">نقل</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">إعادة التسمية</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">جديد</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">فك الضغط</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">ملف جديد</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">تعديل</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">تم حفظ الملف في '%s'، بايت: %s، MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">ذاكرة التخزين المؤقت</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">مسح ذاكرة التخزين المؤقت</target>
+      </trans-unit>
+      <trans-unit id="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">إضافة</target>
+      </trans-unit>
+      <trans-unit id="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <trans-unit id="action_5_0" approved="yes">
+        <source>Error handler</source>
+        <target state="final">معالج الأخطاء</target>
+      </trans-unit>
+      <trans-unit id="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">تغيير</target>
+      </trans-unit>
+      <trans-unit id="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">تسجيل الدخول</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">تسجيل الدخول</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">تسجيل الخروج</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">محاولة</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">إدارة سجل التغيير</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">كل المُستخدمين</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">الذات</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">هذا الأسبوع</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">الأسبوع الماضي</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">آخر 7 أيام</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">هذا الشهر</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">الشهر الماضي</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">آخر 31 يوم</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">غير محدود</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">الوقت</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">المستخدم</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">إجراء</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">قناة</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_level" approved="yes">
+        <source>Level</source>
+        <target state="final">المستوى</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">جدول</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">التفاصيل</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">المُستخدمون</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuPageId" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة </target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth" approved="yes">
+        <source>Depth</source>
+        <target state="final">العمق</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">الوقت</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d error(s). Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[لقد وجدنا %1$d خطأ/أخطاء. الرجاء التحقق من <a href="%2$s">سجل النظام الخاص بك</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">الإجراءات</target>
+      </trans-unit>
+      <trans-unit id="actions.delete" approved="yes">
+        <source>Delete similar errors</source>
+        <target state="final">حذف الأخطاء المُماثلة</target>
+      </trans-unit>
+      <trans-unit id="actions.deleteWarnings" approved="yes">
+        <source>Delete similar warnings</source>
+        <target state="final">حذف التحذيرات المماثلة</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message" approved="yes">
+        <source>Total entries deleted: %1$d</source>
+        <target state="final">مجموع المُدخلات المحذوفة: %1$d</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.noRowFound" approved="yes">
+        <source>Log entry could not be found.</source>
+        <target state="final">تعذر العثور على إدخال السجل.</target>
+      </trans-unit>
+      <trans-unit id="info.noRecords.message" approved="yes">
+        <source>No records found.</source>
+        <target state="final">لم يتم العثور على سجلات.</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.title" approved="yes">
+        <source>No page selected</source>
+        <target state="final">لم يتم تحديد أي صفحة</target>
+      </trans-unit>
+      <trans-unit id="info.selectPage.message" approved="yes">
+        <source>Select a page to display logs for.</source>
+        <target state="final">حدد صفحة لعرض السجلات الخاصة بها.</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title" approved="yes">
+        <source>No access!</source>
+        <target state="final">لا يمكن الوصول!</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message" approved="yes">
+        <source>You don't have access to the selected page.</source>
+        <target state="final">ليس لديك حق الوصول إلى الصفحة المُحددة.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
