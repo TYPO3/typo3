@@ -1,0 +1,1976 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="labels.datepicker.label" approved="yes">
+        <source>Open date picker</source>
+        <target state="final">डेट पिकर खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">नए विंडो में खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">पीछे जाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">इस पेज के लिए एक शॉर्टकट बनाएं?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this record</source>
+        <target state="final">इस रिकॉर्ड के लिए बुकमार्क बनाएं</target>
+      </trans-unit>
+      <trans-unit id="labels.alreadyBookmarked" approved="yes">
+        <source>This record is already bookmarked</source>
+        <target state="final">यह रिकॉर्ड पहले से बुकमार्क किया गया है</target>
+      </trans-unit>
+      <trans-unit id="labels.copyCurrentUrl" approved="yes">
+        <source>Copy URL of this record</source>
+        <target state="final">इस रिकॉर्ड का URL कॉपी करें</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">उपयोगकर्ता '% s' इस रिकॉर्ड% s पहले एडिट करने के लिए शुरू किया।</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">उपयोगकर्ता '% s' यह पेज % s पहले पर कंटेंट को संपादित करने के लिए शुरू किया।</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">'% s' इस रिकॉर्ड% s पहले एडिट करने के लिए शुरू किया।</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">% S '% s' यह पेज % s पहले पर कंटेंट को एडिट करने के लिए शुरू किया।</target>
+      </trans-unit>
+      <trans-unit id="labels.color" approved="yes">
+        <source>Color</source>
+        <target state="final">रंग</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">BE-यूजर</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">FE-यूजर</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">अनंजान</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">रिकार्ड्स देखे</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">पथ</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">रीसेट फ़िल्टर</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">टेबल</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">एक लेवल ऊपर</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">एक्सपैंड टेबल</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">कोलेप्स टेबल</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">खोज शब्द दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">यह पेज | 1 नीचे लेवल्स | नीचे 2 लेवल्स | नीचे 3 लेवल्स | 4 लेवल्स डाउन</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">यह पेज</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 लेवल नीचे</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 लेवल नीचे</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 लेवल नीचे</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 लेवल नीचे</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">अनंत लेवल</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">क्षमा करें, आप को इस बदलाव करने के लिए उचित अनुमति नहीं हे ।</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing.title" approved="yes">
+        <source>Alert</source>
+        <target state="final">चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">एक एक्सक्लेमेशन चिह्न के साथ चिह्नित फ़ील्ड्स में अभी तक सही ढंग से भरा नहीं हैं। उन्हें ठीक से पूरा करें।</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" approved="yes">
+        <source>Important: There are unsaved changes in the form. Continuing without saving will discard your changes. Continue?</source>
+        <target state="final">महत्वपूर्ण: फ़ॉर्म में कुछ बदलाव सहेजे नहीं गए हैं। बिना सहेजे आगे बढ़ने पर आपके बदलाव रद्द हो जाएँगे। आगे बढ़ें?</target>
+      </trans-unit>
+      <trans-unit id="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">रिमेनिंग कैरेक्टर: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.minCharactersLeft" approved="yes">
+        <source>Characters missing: {0}</source>
+        <target state="final">अक्षर गायब: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">{0} चाइल्ड रिकॉर्ड की अधिकतम अनुमति दी जाती है।</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">सूचना: यह फील्ड केवल एक रिच टेक्स्ट एडिटर के साथ एडिटेड किया जा सकता है। कोई एडिटर वर्तमान में उपलब्ध या इनेबल है।</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">रिकॉर्ड की जानकारी</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">डिसएबल रिच टेक्स्ट एडिटर (आरटीई)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">नियंत्रण</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">पथ</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">लोकलाइजेशन</target>
+      </trans-unit>
+      <trans-unit id="labels._REF_" approved="yes">
+        <source>References</source>
+        <target state="final">संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="labels.uid" approved="yes">
+        <source>Unique ID</source>
+        <target state="final">विशिष्ट आईडी</target>
+      </trans-unit>
+      <trans-unit id="labels.pid" approved="yes">
+        <source>Parent page ID</source>
+        <target state="final">मूल पेज आईडी</target>
+      </trans-unit>
+      <trans-unit id="labels.tstamp" approved="yes">
+        <source>Last modified</source>
+        <target state="final">अंतिम संशोधन</target>
+      </trans-unit>
+      <trans-unit id="labels.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">निर्माण तिथि</target>
+      </trans-unit>
+      <trans-unit id="labels.cruser_id" approved="yes">
+        <source>Created by</source>
+        <target state="final">द्वारा निर्मित</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">क्रमबद्धता</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_state" approved="yes">
+        <source>Workspace status</source>
+        <target state="final">वर्कस्पेस स्थिति</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_wsid" approved="yes">
+        <source>Workspace ID</source>
+        <target state="final">वर्कस्पेस आईडी</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_oid" approved="yes">
+        <source>Live record ID</source>
+        <target state="final">लाइव रिकॉर्ड आईडी</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_stage" approved="yes">
+        <source>Workspace stage</source>
+        <target state="final">कार्यक्षेत्र चरण</target>
+      </trans-unit>
+      <trans-unit id="labels.l10n_diffsource" approved="yes">
+        <source>Translation differences</source>
+        <target state="final">अनुवाद में अंतर</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">सेट फ़ील्ड्स</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ढूंढें</target>
+      </trans-unit>
+      <trans-unit id="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">ऑथर</target>
+      </trans-unit>
+      <trans-unit id="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">टिप्पणी</target>
+      </trans-unit>
+      <trans-unit id="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">श्रेणी</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">री-लोड</target>
+      </trans-unit>
+      <trans-unit id="labels.language" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="labels.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.view" approved="yes">
+        <source>View</source>
+        <target state="final">दृश्य</target>
+      </trans-unit>
+      <trans-unit id="labels.view.layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">लेआउट</target>
+      </trans-unit>
+      <trans-unit id="labels.view.language_comparison" approved="yes">
+        <source>Language Comparison</source>
+        <target state="final">भाषा तुलना</target>
+      </trans-unit>
+      <trans-unit id="labels.view.list" approved="yes">
+        <source>List</source>
+        <target state="final">सूची</target>
+      </trans-unit>
+      <trans-unit id="labels.view.tiles" approved="yes">
+        <source>Tiles</source>
+        <target state="final">टाइल्स</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showThumbnails" approved="yes">
+        <source>Show thumbnails</source>
+        <target state="final">थंबनेल दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showClipboard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">क्लिपबोर्ड दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showSearch" approved="yes">
+        <source>Show search</source>
+        <target state="final">खोज दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.view.selectColumns" approved="yes">
+        <source>Select columns</source>
+        <target state="final">कॉलम चुनें</target>
+      </trans-unit>
+      <trans-unit id="labels.share" approved="yes">
+        <source>Share</source>
+        <target state="final">शेयर</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">डाउनलोड CSV फाइल</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">कोई शीर्षक नहीं</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द</target>
+      </trans-unit>
+      <trans-unit id="labels.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">निष्क्रिय करें</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">छिपा हुआ</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">स्टार्ट</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">आखरी</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">मिनट | घंटे | दिन | वर्ष</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">मेनू</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">वेब पेज देखें</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">रिकॉर्ड की लिस्ट देखे</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.deletedElement" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">हटाया गया एलिमेंट</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newLocation" approved="yes">
+        <source>New location (Move-to Pointer) WSID#%s</source>
+        <target state="final">नया स्थान (मूव-टू पॉइंटर) WSID #%s</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newElement" approved="yes">
+        <source>New element</source>
+        <target state="final">नया एलिमेंट</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">दिन</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">यह पेज</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 लेवल</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 लेवल</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 लेवल</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 लेवल</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">अनन्त</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">अनुमति दें</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">मना करें</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">स्वचालित</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">इनेबल्ड</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="labels.openTreeOptionsMenu" approved="yes">
+        <source>Open tree options menu</source>
+        <target state="final">ट्री विकल्प मेनू खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.openPageTreeOptionsMenu" approved="yes">
+        <source>Open page tree options menu</source>
+        <target state="final">पेज ट्री विकल्प मेनू खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">सर्वर से ट्री पुनः लोड</target>
+      </trans-unit>
+      <trans-unit id="labels.collapse" approved="yes">
+        <source>Collapse all tree items</source>
+        <target state="final">सभी ट्री आइटम्स संक्षिप्त करें</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryPageTreeEntryPoints" approved="yes">
+        <source>Cancel temporary Page Tree Entry Points</source>
+        <target state="final">अस्थायी पेज ट्री एंट्री पॉइंट्स रद्द करें</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">सर्वर से लिस्ट पुनः लोड करे</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">बंद करें</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">टेबल विज़ार्ड</target>
+      </trans-unit>
+      <trans-unit id="labels.new" approved="yes">
+        <source>New</source>
+        <target state="final">नया</target>
+      </trans-unit>
+      <trans-unit id="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">सूची</target>
+      </trans-unit>
+      <trans-unit id="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">लिंक</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">एडिट</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">नया बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">नया बनाएँ %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">%s पेज पर "%s" नया बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewTranslation" approved="yes">
+        <source>Create a %s translation</source>
+        <target state="final">%s का अनुवाद बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">रूट लेवल पर नया % s बनाएं</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">एडिट %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">"%s" पेज पर "%s" %s एडिट करे</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">"%s" पेज पर %s एडिट करे</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">रूट लेवल पर एडिट %s "%s" करे</target>
+      </trans-unit>
+      <trans-unit id="labels.editMultiple" approved="yes">
+        <source>Edit multiple</source>
+        <target state="final">एकाधिक संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="labels.records" approved="yes">
+        <source>{count, plural, one {# record} other {# records}}</source>
+        <target state="final">{count, plural, one {# record} other {# records}}</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" approved="yes">
+        <source>Root level</source>
+        <target state="final">रूट स्तर</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">नया जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">टॉगल ऑल</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">चयन टॉगल करें</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">सिलेक्टेड आइटम्स</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">उपलब्ध आइटम्स</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">चुने गये आइटम्स को हटा दो ?</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">चयनित आइटम शीर्ष पर ले जाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">चयनित आइटम ऊपर की ओर ले जाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">चयनित वस्तु को नीचे ले जाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">चयनित आइटम को सबसे नीचे ले जाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">यह आइटम को खिसकाए</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_elements" approved="yes">
+        <source>Browse for elements</source>
+        <target state="final">एलिमेंट्स ब्राउज़ करें</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_folder" approved="yes">
+        <source>Browse for folders</source>
+        <target state="final">फ़ोल्डर्स ब्राउज़ करें</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">रिकॉर्ड के लिए ब्राउज</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">क्लिपबोर्ड से% s फ़ाइल (s) डालें</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">क्लिपबोर्ड से रिकॉर्ड(s) डालें</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">सामान्य विकल्प</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">सामान्य विकल्प (जारी)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[सभी टेबल]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" approved="yes">
+        <source>Invalid value ("%s")</source>
+        <target state="final">अमान्य वैल्यू (%s)</target>
+      </trans-unit>
+      <trans-unit id="labels.typeNotAllowedInColumn" approved="yes">
+        <source>This element of type "%s" is not allowed in this column.</source>
+        <target state="final">इस कॉलम में "%s" टाइप का यह एलिमेंट अलाउड नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingLabel" approved="yes">
+        <source>Missing label ("%s")</source>
+        <target state="final">लेबल अनुपलब्ध (%s)</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">क्लिपबोर्ड पर थंबनेल दिखाए</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">मूव करने की बजाय उसे कॉपी करे</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">सामान्य (एक रिकॉर्ड मोड)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">"सामान्य" क्लिपबोर्ड कॉपी / समय में एक रिकार्ड को स्थानांतरित करने की अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">क्लिपबोर्ड #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">क्लिपबोर्ड #% s (मल्टी चयन मोड)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">यह क्लिपबोर्ड चयन करने के लिए और एडिट / कॉपी / एक बार में कई रिकॉर्ड ले जाने के लिए अनुमति देता है। प्रत्येक रिकॉर्ड द्वारा एक चेकबॉक्स को दिखाने के लिए इसे चुनें।</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">डिलीट एलिमेंट्स</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">क्लिपबोर्ड साझा करें</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" approved="yes">
+        <source>Remove element</source>
+        <target state="final">एलिमेंट हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list.</source>
+        <target state="final">महत्वपूर्ण: इस सूची में एलिमेंट्स को टॉगल करते समय CTRL की को दबाकर रखें।</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">रिवर्ट सिलेक्शन</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">सभी चेक बॉक्स का चयन करें</target>
+      </trans-unit>
+      <trans-unit id="labels.openSelectionOptions" approved="yes">
+        <source>Open selection options</source>
+        <target state="final">चयन विकल्प खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">चेक ऑल</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">अनचेक ऑल</target>
+      </trans-unit>
+      <trans-unit id="labels.selectAllLanguages" approved="yes">
+        <source>Select all available languages</source>
+        <target state="final">सभी उपलब्ध भाषाएँ चुनें</target>
+      </trans-unit>
+      <trans-unit id="labels.deselectAllLanguages" approved="yes">
+        <source>Deselect all languages except default</source>
+        <target state="final">डिफ़ॉल्ट को छोड़कर सभी भाषाओं का चयन हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.defaultLanguageAlwaysShown" approved="yes">
+        <source>Default language is always shown</source>
+        <target state="final">डिफ़ॉल्ट भाषा हमेशा प्रदर्शित होती है</target>
+      </trans-unit>
+      <trans-unit id="labels.createTranslationFor" approved="yes">
+        <source>Create %s translation of this page</source>
+        <target state="final">इस पेज का %s ट्रांसलेशन बनाएं</target>
+      </trans-unit>
+      <trans-unit id="labels.selection" approved="yes">
+        <source>Selection:</source>
+        <target state="final">चयन</target>
+      </trans-unit>
+      <trans-unit id="labels.noActionAvailable" approved="yes">
+        <source>No action available</source>
+        <target state="final">कोई क्रिया उपलब्ध नहीं है</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">सेट एलिमेंट स्पेसिफिक वैल्यू (डिफ़ॉल्ट: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">सेट एलिमेंट स्पेसिफिक वैल्यू (No डिफ़ॉल्ट)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">वैल्यू सेट करें</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">मूल अनुवाद में परिवर्तन</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">एक्सपैंड सभी</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword" approved="yes">
+        <source>Generate password</source>
+        <target state="final">पासवर्ड जनरेट करें</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">नया बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">मात्रा</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">टॉगल सर्च टूलबार</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">सर्च टर्म</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">लिमिट</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ढूंढें</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">सर्च लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">सर्च टर्म</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">लिमिट</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">सर्च लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="labels.active" approved="yes">
+        <source>Active</source>
+        <target state="final">सक्रिय</target>
+      </trans-unit>
+      <trans-unit id="labels.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">लॉक्ड</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.enabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA इनेबल्ड</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.disabled" approved="yes">
+        <source>MFA disabled</source>
+        <target state="final">MFA इनेबल्ड</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">टेबल को रीडओनली के रूप में डिफाइन किया गया है और इसे एडिट नहीं किया जा सकता।</target>
+      </trans-unit>
+      <trans-unit id="labels.inconsistentLanguageWarning" approved="yes">
+        <source>No translation parent assigned</source>
+        <target state="final">कोई ट्रांसलेशन पैरेंट असाइन नहीं किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="labels.notEditableInWorkspace" approved="yes">
+        <source>Not editable in this workspace without "Live" edit permissions.</source>
+        <target state="final">"Live" एडिट अनुमतियों के बिना इस वर्कस्पेस में एडिट नहीं किया जा सकता।</target>
+      </trans-unit>
+      <trans-unit id="labels.editingLiveRecordsWarning" approved="yes">
+        <source>Caution: These records are not versioned, you will edit the live records.</source>
+        <target state="final">सावधानी: ये रिकॉर्ड्स वर्ज़न्ड नहीं हैं, आप लाइव रिकॉर्ड्स को एडिट करेंगे।</target>
+      </trans-unit>
+      <trans-unit id="labels.th.name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="labels.module_actions" approved="yes">
+        <source>Module actions</source>
+        <target state="final">मॉड्यूल क्रियाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.new_page_translation" approved="yes">
+        <source>Create new translation</source>
+        <target state="final">नया अनुवाद बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="insert_after" approved="yes">
+        <source>Insert after</source>
+        <target state="final">बाद में जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="insert_inside" approved="yes">
+        <source>Insert inside</source>
+        <target state="final">अंदर जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="insert_page" approved="yes">
+        <source>Insert page</source>
+        <target state="final">पेज जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="insert_subpage" approved="yes">
+        <source>Insert subpage</source>
+        <target state="final">उप-पृष्ठ जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">सर्चिंग...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" approved="yes">
+        <source>Online</source>
+        <target state="final">ऑनलाइन</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">वर्शन मैनेजमेंट</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">वर्ज़न चुनें</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">स्वैप/पब्लिश</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">कंटेंट सहित इस पेज के वर्शन पब्लिश करें</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3 एलिमेंट ब्राउज़र</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" approved="yes">
+        <source>There are %s reference(s) to this record</source>
+        <target state="final">इस रिकॉर्ड के %s संदर्भ हैं।</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFile" approved="yes">
+        <source>There are %s reference(s) to this file</source>
+        <target state="final">इस फ़ाइल के %s संदर्भ हैं।</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" approved="yes">
+        <source>This record has %s translation(s) which will be deleted, too.</source>
+        <target state="final">इस रिकॉर्ड के %s अनुवाद हैं, जो अभी हटा दिए जाएँगे।</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">आइटम देखें</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.fieldValues" approved="yes">
+        <source>Field values</source>
+        <target state="final">फ़ील्ड वैल्यू</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">सामान्य</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.references" approved="yes">
+        <source>References</source>
+        <target state="final">संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">इस आइटम के संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">इस आइटम से संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">डाइमेंशन्स</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">साइज</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">पिक्सेल्स</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">फ़ाइलें</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>TYPO3_CONF_VARS[BE][disable_exec_function] is enabled, so the content of the archive file cannot be displayed.</source>
+        <target state="final">TYPO3_CONF_VARS[BE][disable_exec_function] इनेबल है, इसलिए आर्काइव फाइल का कंटेंट डिस्प्ले नहीं किया जा सकता।</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">टेबल</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">यूआईडी</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">फ़ील्ड</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">फ्लेक्सपॉइंटर</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">सॉफ्टरेफ की</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">क्रमबद्धता</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">Ref Table</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Ref Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">Ref String</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" approved="yes">
+        <source>FTP Area</source>
+        <target state="final">FTP Area</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.missing_record" approved="yes">
+        <source>Record is missing</source>
+        <target state="final">रिकॉर्ड गायब है।</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">नया रिकार्ड</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">आफ्टर</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">इनसाइड</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">फ़ाइल अपलोड करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">फ़ाइल अपलोड करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">फ़ाइलों को अपलोड करने के लिए खींचें और छोड़ें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">यहाँ अपनी फ़ाइलों को छोडे, या &lt;u&gt; क्लिक, ब्राउज़ और फ़ाइलें चुनें &lt;/ u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzone.close" approved="yes">
+        <source>Close file upload area</source>
+        <target state="final">फ़ाइल अपलोड क्षेत्र बंद करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">सेलेक्ट &amp; अपलोड फाइल्स</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File "{0}" exceeds maximum file size of {1}</source>
+        <target state="final">फाइल "{0}" अधिकतम फाइल साइज {1} से अधिक है</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename "{0}" is not allowed</source>
+        <target state="final">फाइलनेम "{0}" की अनुमति नहीं है</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed. A file with "{0}" extension is expected.</source>
+        <target state="final">अपलोड असफल रहा। "{0}" एक्सटेंशन वाली फ़ाइल अपेक्षित है।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionDisallowed" approved="yes">
+        <source>Upload failed. The file extension "{0}" is not allowed.</source>
+        <target state="final">अपलोड असफल रहा। फ़ाइल एक्सटेंशन "{0}" की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" approved="yes">
+        <source>Upload failed for "{0}"</source>
+        <target state="final">"{0}" के लिए अपलोड विफल रहा</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadSucceeded" approved="yes">
+        <source>File has been uploaded.</source>
+        <target state="final">फाइल अपलोड हो गई है।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">फ़ाइल अपलोड हो रही हे ...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">फ़ाइल अपलोड {0} फाइलों से {1} ।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" approved="yes">
+        <source>Upload complete. Media module reloading...</source>
+        <target state="final">अपलोड पूरा हुआ। मीडिया मॉड्यूल रीलोड हो रहा है...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">मौजूदा फाइल्स ओवरराईट हो सकती हैं?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">ओरिजिनल फाइल</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">अपलोड की गई फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">एक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">कुछ फ़ाइलें पहले से ही मौजूद हे</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">कुछ फ़ाइलें आप अपलोड करना चाहता था पहले से ही व्यवस्था पर मौजूद हैं। कृपया क्या आप प्रत्येक फ़ाइल के साथ क्या करना चाहते हैं।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">फ़ाइल को जाने दे</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">ओवरराईट</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">कोई मौज़ूदा फ़ाइल उपयोग करें:</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">वैकल्पिक रूप से, कोई सामूहिक कार्रवाई चुनें।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">कृपया चयन करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">सभी फाइलों को छोड़ें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">सभी फ़ाइलों का नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">सभी फाइल को ओवरराईट करे</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">कोई मौज़ूदा फ़ाइल उपयोग करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">चुने गए एक्शन्स के साथ जारी रखें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist" approved="yes">
+        <source>Reload filelist</source>
+        <target state="final">फ़ाइल सूची पुनः लोड करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.message" approved="yes">
+        <source>To enable the controls, the filelist has to be reloaded.</source>
+        <target state="final">To enable the controls, the filelist has to be reloaded.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">बंद करें</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">पुनः लोड करें</target>
+      </trans-unit>
+      <trans-unit id="file_download.prepare" approved="yes">
+        <source>File download is being prepared</source>
+        <target state="final">फ़ाइल डाउनलोड तैयार की जा रही है।</target>
+      </trans-unit>
+      <trans-unit id="file_download.invalidSelection" approved="yes">
+        <source>The selected elements can not be downloaded</source>
+        <target state="final">चुने गए एलिमेंट्स डाउनलोड नहीं किए जा सकते।</target>
+      </trans-unit>
+      <trans-unit id="file_download.success" approved="yes">
+        <source>File download successfully prepared</source>
+        <target state="final">फ़ाइल डाउनलोड सफलतापूर्वक तैयार हो गई है।</target>
+      </trans-unit>
+      <trans-unit id="file_download.error" approved="yes">
+        <source>Could not prepare files for download</source>
+        <target state="final">डाउनलोड के लिए फ़ाइलें तैयार नहीं की जा सकीं।</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles" approved="yes">
+        <source>Could not find any allowed file</source>
+        <target state="final">कोई भी अनुमत फ़ाइल नहीं मिली।</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles.message" approved="yes">
+        <source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
+        <target state="final">कृपया अपने चयन की जाँच करें, क्योंकि आपके एडमिनिस्ट्रेटर द्वारा फ़ाइल एक्सटेंशन की कुछ सीमाएँ निर्धारित की गई हो सकती हैं।</target>
+      </trans-unit>
+      <trans-unit id="file_rename.title" approved="yes">
+        <source>Rename</source>
+        <target state="final">नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="file_rename.label" approved="yes">
+        <source>New filename</source>
+        <target state="final">नया फ़ाइल नाम</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करें</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">ऐड न्यू मीडिया एस्सेट</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.label" approved="yes">
+        <source>URL of remote source</source>
+        <target state="final">रिमोट स्रोत का URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">अनुमत मीडिया प्रदाता</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">यूआरएल द्वारा मीडिया डाले</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">मीडिया डाले</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">मीडिया डाले</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.placeholder" approved="yes">
+        <source>Paste media URL here...</source>
+        <target state="final">यहाँ मीडिया URL पेस्ट करें…</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">अडिंग मीडिया फेल्ड</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">अज्ञात / अनुमति नहीं URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.already_exists" approved="yes">
+        <source>Online media "%s" does already exist in this folder.</source>
+        <target state="final">ऑनलाइन मीडिया "%s" इस फ़ोल्डर में पहले से मौजूद है।</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.success" approved="yes">
+        <source>Successfully updated online media</source>
+        <target state="final">ऑनलाइन मीडिया सफलतापूर्वक अपडेट किया गया</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.error" approved="yes">
+        <source>Error on updating online media</source>
+        <target state="final">ऑनलाइन मीडिया अपडेट करने में त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">अपलोड पथ एरर</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first</source>
+        <target state="final">कोई अपलोड फ़ोल्डर नहीं मिला। आपको पहले अपने किसी माउंट के रूट में एक TEMP-फ़ोल्डर ("_temp_") बनाना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">पेज रीड्राविंग मौजूदा डेटा को निकाल देगा। क्या आप जारी रखना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">क्या आप सचमुच %s मिटाना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">क्या आप इस रिकॉर्ड को हटाना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">क्या आप वाकई क्लिपबोर्ड पर सभी रेफेरेंसद एलिमेंट्स (% s) को मिटाना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" approved="yes">
+        <source>Your login has probably expired. Do you want to refresh it now?</source>
+        <target state="final">आपका लॉगिन संभवतः समाप्त हो गया है। क्या आप इसे अभी रिफ्रेश करना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">लॉगिन बनाए रखें</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">नहीं, लॉगआउट।</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">लॉगिन कर रहा है...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">लॉगिन फेल</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">पासवर्ड गलत हे.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">TYPO3 में लॉगिन के लिए रिफ्रेश करें(उपयोगकर्ता:% s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">यूज़रनेम</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">लॉगइन</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">बाहर</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed</source>
+        <target state="final">खाली पासवर्ड की अनुमति नहीं है</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">कृपया प्रतीक्षा करें...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">Typo3 बैकेंड वर्तमान में मेंटेनेंस के लिए बंद कर दिया है। इस ब्राउज़र खिड़की खुली छोड़ दो और बैकेंड स्वचालित रूप से फिर से एक बार मेंटेनेंस पूरा होने पर उपलब्ध हो जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">आपका TYPO3 लॉगिन समाप्त होने को है। कृपया पुष्टि करें कि आप लॉग-इन रहना चाहते हे ।</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">मुझे लॉग आउट करें</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">आपका typo3 लॉगिन समाप्त होने को है। कृपया पुष्टि करें कि आप लॉग आउट होना चाहता है ।</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">TYPO3 लॉग इन समाप्ति का नोटिस</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">आपका typo3 लॉगिन समाप्त हो गया है।आपको फिर से लॉगिन करने की जरुरत हे यदि आप जारी रखना चाहते हैं तो । नहीं तो आप मौजूदा ब्राउज़र विंडो बंद कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">आपके एडिट करने से पहले लिस्ट में से एक या एक से अधिक आइटम का चयन करें ।</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">रिफ्रेश रिक्वायर्ड</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">यह परिवर्तन फ़ील्ड्स जो फॉर्म में उपलब्ध हैं उसे प्रभावित करेगा। आप प्रदर्शन को रिफ्रेश करने के लिए बचाना चाहेंगे?</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.cancel" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">संपादन जारी रखें</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.confirm" approved="yes">
+        <source>Save and refresh</source>
+        <target state="final">सहेजें और रिफ्रेश करें</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">%s खिसकाएँ %s पर.</target>
+      </trans-unit>
+      <trans-unit id="mess.move_before" approved="yes">
+        <source>Move "%s" to before "%s"?</source>
+        <target state="final">%s" को "%s" से पहले स्थानांतरित करें?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">मूव "%s" के बाद "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">%s खिसकाएँ %s पर?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">कॉपी "%s" के बाद "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">"% S" क्लिपबोर्ड में से सभी एलिमेंट्स (% s) कॉपी?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">"%S" के बाद की स्थिति को क्लिपबोर्ड से सभी एलिमेंट (%s) कॉपी?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">"% S" क्लिपबोर्ड में से सभी एलिमेंट्स (% s) ले जाएँ?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">"% S" के बाद की स्थिति को क्लिपबोर्ड से सभी एलिमेंट (% s) ले जाएँ?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[मेनू]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">बचाएँ</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">देखें</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">बचाये और पेज देखे</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">बचाये और बंद करे</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">बचाये और सभी बंद करे</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">बचाये और एक नया बनाये</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">नया</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">प्रतिलिपि बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">रिकॉर्ड की प्रतिलिपि बना दी गई है।</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicationFailed" approved="yes">
+        <source>The record could not be duplicated.</source>
+        <target state="final">रिकॉर्ड की प्रतिलिपि नहीं बनाई जा सकी।</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">बंद करें</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">एडमिन फंक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">एडिट</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">एक्सपोर्ट</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">फाइल डिलीट नहीं हुई</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">फोल्डर डिलेटेड नहीं हुआ</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">फ़ोल्डर हटाया नहीं जा सकता, क्योंकि इसके अंदर की फाइल्स अभी भी यूज में हे।</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">फ़ाइल ब्रोकन रेफरेन्सेस</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">फ़ाइल एक टूटी हुई संदर्भों% है), लेकिन यह परवाह किए बिना हटा दिया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotFound" approved="yes">
+        <source>File not found</source>
+        <target state="final">फ़ाइल नहीं मिली</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotFound" approved="yes">
+        <source>The file %s is not found, possible already removed.</source>
+        <target state="final">फ़ाइल % s नहीं मिला है, संभव पहले से ही हटा दिया।</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">फाइल मिटा दी गई है</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">फ़ाइल "% s" सफलतापूर्वक मिटा दि गई।</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">फ़ोल्डर को हटाया</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">फ़ोल्डर "%स"सफलतापूर्वक मिटा दिया गया था।</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">बाहर</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">साफ</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">क्लिपबोर्ड</target>
+      </trans-unit>
+      <trans-unit id="buttons.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">सभी हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">लिंक विवरण टॉगल करें</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">मैन्युअल URL सेगमेंट टॉगल करें</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">पेज शीर्षक से URL सेगमेंट पुनर्गणना करें</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa" approved="yes">
+        <source>Deactivate multi-factor authentication</source>
+        <target state="final">मल्टी-फैक्टर ऑथेंटिकेशन निष्क्रिय करें</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">%s को निष्क्रिय करें</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa.confirmation.text" approved="yes">
+        <source>Deactivate all active providers? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">सभी सक्रिय प्रदाताओं को निष्क्रिय करें? यह क्रिया वापस नहीं ली जा सकती। सावधान: इससे सभी उपयोगकर्ताओं पर प्रभाव पड़ेगा और सिस्टम की सुरक्षा कम हो जाएगी।</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider.confirmation.text" approved="yes">
+        <source>Deactivate %s? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">%s को निष्क्रिय करें? यह क्रिया वापस नहीं ली जा सकती। सावधान: इससे सभी उपयोगकर्ताओं पर प्रभाव पड़ेगा और सिस्टम की सुरक्षा कम हो जाएगी।</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">ह पृष्ठ %s के माध्यम से उपलब्ध होगा</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.record" approved="yes">
+        <source>The URL part of this record will be %s</source>
+        <target state="final">स रिकॉर्ड का URL भाग %s होगा</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.error" approved="yes">
+        <source>The requested URL is already in use, but %s will be used instead</source>
+        <target state="final">अनुरोधित URL पहले से उपयोग में है, इसलिए इसके स्थान पर %s का उपयोग किया जाएगा</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">नक़ल करें</target>
+      </trans-unit>
+      <trans-unit id="cm.copyrelease" approved="yes">
+        <source>Copy release</source>
+        <target state="final">रिलीज़ कॉपी करें</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">कट</target>
+      </trans-unit>
+      <trans-unit id="cm.cutrelease" approved="yes">
+        <source>Cut release</source>
+        <target state="final">रिलीज़ काटें</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">एडिट</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">एडिट कंटेंट</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">इस फाइल के मेटाडाटा एडिट करें</target>
+      </trans-unit>
+      <trans-unit id="cm.editColumns" approved="yes">
+        <source>Edit columns</source>
+        <target state="final">कॉलम बदलें</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">नया</target>
+      </trans-unit>
+      <trans-unit id="cm.newSubpage" approved="yes">
+        <source>New subpage</source>
+        <target state="final">नया उप-पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="cm.newFilemount" approved="yes">
+        <source>New file mount</source>
+        <target state="final">नया फ़ाइल माउंट</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">में पेस्ट करें</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">बाद पेस्ट</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">चुनें</target>
+      </trans-unit>
+      <trans-unit id="cm.selectFile" approved="yes">
+        <source>Select %s</source>
+        <target state="final">फ़ाइल चुनें</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">अचयनित करें</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">लिए चयन करें</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">को अचयनित करें</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">छुपाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">सामने लाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">टर्न ऑनलाइन</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">टर्न ऑफलाइन</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">फ़ाइल अपलोड करें</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">रिप्लेस</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">खोलें</target>
+      </trans-unit>
+      <trans-unit id="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">बचाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">अनज़िप</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">इन्फो</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">नया बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">नया बनाएँ %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">माउंट ट्रीरुट</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">में कॉपी पेज</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">कॉपी पेज आफ्टर</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">में स्थानांतरित</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">बाद पृष्ठ पर ले जाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">फ़ोल्डर की नक़ल यहाँ लें</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">फ़ोल्डर यहाँ खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">नया रिलेशन बनाएं</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">ब्रांच एक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">पेज एक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">कोलेप्स ब्रांच</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">एक्सपैंड ब्रांच</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">अधिक विकल्प ...</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">अनुमत फ़ाइल एक्सटेंशन</target>
+      </trans-unit>
+      <trans-unit id="cm.disallowedFileExtensions" approved="yes">
+        <source>Disallowed file extensions</source>
+        <target state="final">निषिद्ध फ़ाइल एक्सटेंशन</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">अनुमत संपादन योग्य टेक्स्ट फ़ाइल एक्सटेंशन</target>
+      </trans-unit>
+      <trans-unit id="cm.allowEmbedSources" approved="yes">
+        <source>Allowed media sources</source>
+        <target state="final">अनुमत मीडिया स्रोत</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedRelations" approved="yes">
+        <source>Allowed relations</source>
+        <target state="final">अनुमत संबंध</target>
+      </trans-unit>
+      <trans-unit id="cm.history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">हिस्ट्री / पूर्ववत करें</target>
+      </trans-unit>
+      <trans-unit id="cm.transferToClipboard" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">क्लिपबोर्ड में स्थानांतरित करें</target>
+      </trans-unit>
+      <trans-unit id="cm.removeFromClipboard" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">क्लिपबोर्ड से हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="sortable.dragmove" approved="yes">
+        <source>Drag to move</source>
+        <target state="final">खिसकाने के लिए खीसे</target>
+      </trans-unit>
+      <trans-unit id="tree.search_in_translated_pages" approved="yes">
+        <source>Search in translated pages</source>
+        <target state="final">अनुवादित पृष्ठों में खोजें</target>
+      </trans-unit>
+      <trans-unit id="tree.search_by_frontend_uri" approved="yes">
+        <source>Search by website address (URL)</source>
+        <target state="final">वेबसाइट पते (URL) से खोजें</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">खोज शब्द दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="tree.searchPageTree" approved="yes">
+        <source>Search page tree</source>
+        <target state="final">पेज ट्री में खोजें</target>
+      </trans-unit>
+      <trans-unit id="tree.searchFolderTree" approved="yes">
+        <source>Search folder tree</source>
+        <target state="final">फ़ोल्डर ट्री में खोजें</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">fileDen पैटर्न का मूल्य उसके डिफ़ॉल्ट सेट नहीं है:%s TYPO3 अपाचे पर चल रहा है, एक स्वनिर्धारित मूल्य दुर्भावनापूर्ण PHP स्क्रिप्ट निष्पादित करने के लिए बैकेंड या दृश्यपटल उपयोगकर्ताओं को सक्षम हो सकता है।</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent" approved="yes">
+        <source>Security risk: The new value of fileDenyPattern misses parts of its default: %s. If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious PHP scripts.</source>
+        <target state="final">सुरक्षा जोखिम: fileDenyPattern का नया वैल्यू इसके डिफ़ॉल्ट वैल्यू (%s) के कुछ हिस्सों को छोड़ देता है। यदि TYPO3 Apache पर चल रहा है, तो एक कस्टमाइज़्ड मान बैकएंड या फ्रंटएंड उपयोगकर्ताओं को दुर्भावनापूर्ण PHP स्क्रिप्ट चलाने में सक्षम बना सकता है।</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">fileDenyPattern के वर्तमान मूल्य का नाम ".htaccess" के साथ अपलोड करने के लिए / फाइल बनाने की अनुमति देता है। Typo3 अपाचे पर चल रहा है, इस बनाने और PHP स्क्रिप्ट निष्पादित करने के लिए बैकेंड या दृश्यपटल सक्षम बनाता है। उसके डिफ़ॉल्ट करने के लिए fileDenyPattern के मूल्य में रीसेट करें।</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">इनस्टॉल टूल परमानेंटली इनेबल्ड है। जब ट्य़्फो३ का सेटिंग पूरा हो जाये तो "%s" फाइल को डिलीट क्र दे।</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now</source>
+        <target state="final">अभी फ़ाइल हटाने के लिए क्लिक करें</target>
+      </trans-unit>
+      <trans-unit id="warning.install_trustedhosts" approved="yes">
+        <source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+        <target state="final">विश्वस्त मेजबान टीम के पैटर्न की जांच अक्षम है। कृपया स्थापित उपकरण [SYS][trustedHostsPattern] अनुभाग में अनुमति मेजबान टीम को परिभाषित।</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Upgrade Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">यह इंस्टॉलेशन, जिस TYPO3 वर्शन पर चल रहा है, उसके लिए कॉन्फ़िगर नहीं किया गया है। अगर आपने ऐसा जान-बूझकर किया है, तो इस मैसेज को सुरक्षित रूप से नज़रअंदाज़ किया जा सकता है। अगर आप पक्का नहीं हैं, तो यह देखने के लिए कि TYPO3 में क्या बदलाव होंगे, %sInstall Tool%s के Upgrade Wizard सेक्शन पर जाएँ।</target>
+      </trans-unit>
+      <trans-unit id="warning.header" approved="yes">
+        <source>Important Notice</source>
+        <target state="final">महत्वपूर्ण सूचना</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference_index" approved="yes">
+        <source>The Reference Index is empty (table sys_refindex), which may occur after upgrades or maintenance operations. The last update found on TYPO3 Registry was on %3$s. Please rebuild it via %1$sSystem → Maintenance → Check and Update Reference Index%2$s.</source>
+        <target state="final">Reference Index खाली है (टेबल sys_refindex), जो अपग्रेड या रखरखाव कार्यों के बाद हो सकता है। TYPO3 Registry पर मिला अंतिम अपडेट %3$s को था। कृपया इसे %1$sSystem → Maintenance → Check and Update Reference Index%2$s के माध्यम से फिर से बनाएं।</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable" approved="yes">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
+        <target state="final">Memcache कॉन्फ़िगर है, लेकिन दिए गए कॉन्फ़िगरेशन के साथ memcached से कनेक्शन विफल हो गया।</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing" approved="yes">
+        <source>File is missing</source>
+        <target state="final">फ़ाइल उपलब्ध नहीं है</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text" approved="yes">
+        <source>This file is marked as missing</source>
+        <target state="final">स फ़ाइल को अनुपलब्ध के रूप में चिह्नित किया गया है</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">स्टोरेज सार्वजनिक नहीं है</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">स्टोरेज "सार्वजनिक रूप से उपलब्ध" होने के लिए मार्केड किया गया है, लेकिन चालक द्वारा इस तरह के रूप में पहचान नहीं है। सेटिंग वापस सौंप दिया गया है।</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">इस रिकॉर्ड ग्लोबली मॉडिफाइड किया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.message" approved="yes">
+        <source>The TSconfig setting for "mod.web_list.tableDisplayOrder" contains a circular dependency and cannot be resolved.</source>
+        <target state="final">"mod.web_list.tableDisplayOrder" के लिए TSconfig सेटिंग में चक्रीय निर्भरता है और इसे हल नहीं किया जा सकता।</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.title" approved="yes">
+        <source>Circular table ordering detected</source>
+        <target state="final">टेबल ऑर्डरिंग में चक्रीय क्रम पाया गया</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">इस फार्म की सुरक्षा टोकन मान्य नाकाम रही है। कृपया फॉर्म को रीलोड करे और फिर से सबमिट करे ।</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">एक्सटेंशन "% s" स्थापित नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">कृपया, इस पेज से लिंक ना करे।</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">एक एसक्यूएल त्रुटि उत्पन्न हुई। इस TCA और डेटाबेस के बीच एक स्कीमा बेमेल संकेत हो सकता है। स्थापित उपकरण में तुलना डेटाबेस चलाने की कोशिश करें।</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">डेटाबेस एरर</target>
+      </trans-unit>
+      <trans-unit id="error.items_proc_func_error" approved="yes">
+        <source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+        <target state="final">कोई घटित हुआ त्रुटि के लिए field "%1$s" वस्तुओं की प्रक्रिया करने के लिए (%2$s) की कोशिश कर रहा ।</target>
+      </trans-unit>
+      <trans-unit id="error.invalidEmail" approved="yes">
+        <source>"%s" is not a valid e-mail address.</source>
+        <target state="final">"%s" एक मान्य ईमेल पता नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="error.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>Non system maintainers cannot change details of system maintainers. The values have not been updated.</source>
+        <target state="final">गैर-सिस्टम मेंटेनर सिस्टम मेंटेनरों के विवरण नहीं बदल सकता। वैल्यू अपडेट नहीं किए गए हैं।</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.information.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer. Changing details of system maintainers is not allowed.</source>
+        <target state="final">यह उपयोगकर्ता सिस्टम मेंटेनर है। सिस्टम मेंटेनरों के विवरण बदलने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer</source>
+        <target state="final">यह उपयोगकर्ता सिस्टम मेंटेनर है</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" approved="yes">
+        <source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+        <target state="final">यह उपयोगकर्ता अनुमत सिस्टम मेंटेनरों की सूची में है और एडमिन एक्सेस सक्षम करने पर सिस्टम-स्तरीय पहुँच प्राप्त करेगा।</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritFromParentPage" approved="yes">
+        <source>This page will most likely use backend layout "%s", inherited from a parent page.</source>
+        <target state="final">यह पेज संभवतः पैरेंट पेज से प्राप्त बैकएंड लेआउट "%s" का उपयोग करेगा।</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritedFromParentPage" approved="yes">
+        <source>This page is currently using backend layout "%s", inherited from a parent page.</source>
+        <target state="final">यह पृष्ठ वर्तमान में पैरेंट पेज से प्राप्त बैकएंड लेआउट "%s" का उपयोग कर रहा है।</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.header" approved="yes">
+        <source>Possible misconfiguration detected</source>
+        <target state="final">पॉसिबल मिसकंफिगुरेशन डिटेक्टेड</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.message" approved="yes">
+        <source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+        <target state="final">कम से कम एक प्लगइन का संपादन सक्षम लेकिन संपादन पेज की सामग्री प्रकार "Insert Plugin"अभी भी अनुमति नहीं है । समूह के सदस्यों plugins संपादित करने के लिए जब तक आप सामग्री प्रकार के लिए संपादन सक्रिय सक्षम नहीं होगा।</target>
+      </trans-unit>
+      <trans-unit id="error.missingLanguageIsocode" approved="yes">
+        <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+        <target state="final">(UID %d) भाषा "%s" के लिए ISO कोड गुम, भाषा रिकॉर्ड संपादित करें और इसे सेट करें।</target>
+      </trans-unit>
+      <trans-unit id="labels.deleteTitle" approved="yes">
+        <source>Revert to default Constant</source>
+        <target state="final">डिफ़ॉल्ट कॉन्स्टेन्ट पर वापस</target>
+      </trans-unit>
+      <trans-unit id="labels.editTitle" approved="yes">
+        <source>Edit this Constant</source>
+        <target state="final">यह कॉन्स्टेन्ट को एडिट करें</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">पेज अनुवाद</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.title" approved="yes">
+        <source>Error in Path</source>
+        <target state="final">पाथ में त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.message" approved="yes">
+        <source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+        <target state="final">आपने इस फ़ाइल स्टोरेज के लिए अमान्य पाथ दर्ज किया है। ध्यान दें कि absolute path का उपयोग करते समय "../" और "/" की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="iframe.listFrame" approved="yes">
+        <source>List frame (content area) to create and modify pages, content and records</source>
+        <target state="final">पेज, कंटेंट और रिकॉर्ड बनाने व संशोधित करने के लिए सूची फ्रेम (कंटेंट क्षेत्र)</target>
+      </trans-unit>
+      <trans-unit id="message.confirmation" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">क्या आप सुनिश्चित हैं?</target>
+      </trans-unit>
+      <trans-unit id="labels.datepicker.today" approved="yes">
+        <source>Today</source>
+        <target state="final">आज</target>
+      </trans-unit>
+      <trans-unit id="labels.inputfield.clearButton.title" approved="yes">
+        <source>Clear input</source>
+        <target state="final">इनपुट साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open" approved="yes">
+        <source>Open context menu</source>
+        <target state="final">कॉन्टेक्स्ट मेनू खोलें</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open.recordLabel" approved="yes">
+        <source>Open context menu for record: %s</source>
+        <target state="final">रिकॉर्ड के लिए कॉन्टेक्स्ट मेनू खोलें: %s</target>
+      </trans-unit>
+      <trans-unit id="error.site.invalidSetDependencies" approved="yes">
+        <source>This site depends on invalid site sets</source>
+        <target state="final">यह साइट अमान्य साइट सेट्स पर निर्भर है</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.notFound" approved="yes">
+        <source>Site set '%1$s' not found (referenced by '%2$s')</source>
+        <target state="final">साइट सेट '%1$s' नहीं मिला ('%2$s' द्वारा संदर्भित)</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.missingDependency" approved="yes">
+        <source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
+        <target state="final">साइट सेट '%1$s' अक्षम है: निर्भरता '%2$s' गायब है।</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettingsDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings definitions: %2$s</source>
+        <target state="final">अमान्य सेटिंग परिभाषाओं के कारण साइट सेट '%1$s' अक्षम कर दिया गया है: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidCategoryDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid category definitions: %2$s</source>
+        <target state="final">अमान्य श्रेणी परिभाषाओं के कारण साइट सेट '%1$s' अक्षम कर दिया गया है: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettings" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings: %2$s</source>
+        <target state="final">अमान्य सेटिंग्स के कारण साइट सेट '%1$s' अक्षम कर दिया गया है: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidRouteEnhancers" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid route enhancers: %2$s</source>
+        <target state="final">साइट सेट '%1$s' अमान्य रूट एनहांसर के कारण अक्षम कर दिया गया है: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSet" approved="yes">
+        <source>Invalid site set '%1$s': %2$s</source>
+        <target state="final">अमान्य साइट सेट '%1$s': %2$s</target>
+      </trans-unit>
+      <trans-unit id="countries.default" approved="yes">
+        <source>Default countries</source>
+        <target state="final">डिफ़ॉल्ट देश</target>
+      </trans-unit>
+      <trans-unit id="countries.prioritized" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">प्राथमिकता वाले देश</target>
+      </trans-unit>
+      <trans-unit id="notifications.button.clearAll" approved="yes">
+        <source>Clear all</source>
+        <target state="final">सभी साफ करें</target>
+      </trans-unit>
+      <trans-unit id="labels.noSelectableItemsAvailable" approved="yes">
+        <source>No selectable items available. Check TCA, related records and TSconfig.</source>
+        <target state="final">कोई चयन योग्य आइटम उपलब्ध नहीं है। TCA, संबंधित रिकॉर्ड और TSconfig की जाँच करें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
