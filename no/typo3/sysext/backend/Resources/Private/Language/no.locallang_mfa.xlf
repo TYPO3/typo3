@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Aktiv</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Låst</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Rediger %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deactiver</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">Oppsett</target>
+      </trans-unit>
+      <trans-unit id="edit.title" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Rediger %s</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">Verifiser</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">Gå tilbake</target>
+      </trans-unit>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Suksess</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">En feil oppstod</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
