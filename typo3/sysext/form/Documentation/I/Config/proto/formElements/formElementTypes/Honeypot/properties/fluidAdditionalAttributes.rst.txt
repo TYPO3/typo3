@@ -1,0 +1,39 @@
+..  include:: /Includes.rst.txt
+properties.fluidAdditionalAttributes
+------------------------------------
+
+:aspect:`Option path`
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Honeypot.properties.fluidAdditionalAttributes
+
+:aspect:`Data type`
+    array
+
+:aspect:`Needed by`
+    Frontend/ Backend (form editor)
+
+:aspect:`Overwritable within form definition`
+    Yes
+
+:aspect:`form editor can write this property into the form definition (for prototype 'standard')`
+    No
+
+:aspect:`Mandatory`
+    No
+
+:aspect:`Default value (for prototype 'standard')`
+    ..  code-block:: yaml
+        :linenos:
+        :emphasize-lines: 3-4
+
+        Honeypot:
+          properties:
+            fluidAdditionalAttributes:
+              autocomplete: 'off'
+
+:aspect:`Description`
+    The attributes are rendered on the honeypot form element when it is
+    rendered as a text form element. They are not rendered if
+    ``renderAsHiddenField`` is enabled, because an input of type "hidden"
+    must not carry them. The default ``autocomplete: 'off'`` keeps browser
+    form fillers from populating the honeypot, which would make the
+    submission of a real person fail.
