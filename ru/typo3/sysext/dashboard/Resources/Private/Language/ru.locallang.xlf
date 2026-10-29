@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Панель пользователя</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Добавить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard" approved="yes">
+        <source>Add widget to "%s"</source>
+        <target state="final">Добавить виджет к "%s"</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel" approved="yes">
+        <source>Search for dashboard widgets</source>
+        <target state="final">Поиск виджетов панели инструментов</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound" approved="yes">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target state="final">К сожалению, ни один виджет панели инструментов не соответствует вашему запросу, пожалуйста, попробуйте другой.</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed" approved="yes">
+        <source>No widgets are available with your current permissions.</source>
+        <target state="final">С вашими текущими разрешениями никакие виджеты не доступны.</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Добавить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh" approved="yes">
+        <source>Refresh Widget</source>
+        <target state="final">Обновить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.label" approved="yes">
+        <source>Widget pagination</source>
+        <target state="final">Виджет постраничного разбиения</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.previous" approved="yes">
+        <source>Previous page</source>
+        <target state="final">Предыдущая страница</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next" approved="yes">
+        <source>Next page</source>
+        <target state="final">Следующая страница</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.label" approved="yes">
+        <source>Items per page</source>
+        <target state="final">Элементов на странице</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.description" approved="yes">
+        <source>Number of items shown at once before the widget paginates.</source>
+        <target state="final">Количество элементов, отображаемых за один раз, до перехода на следующую страницу.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.status" approved="yes">
+        <source>Page %1$d of %2$d</source>
+        <target state="final">Страница %1$d из %2$d</target>
+      </trans-unit>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">Настройки виджета</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Сохранить</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">Настройки не изменены</target>
+      </trans-unit>
+      <trans-unit id="widget.move" approved="yes">
+        <source>Move Widget</source>
+        <target state="final">Переместить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.remove" approved="yes">
+        <source>Remove Widget</source>
+        <target state="final">Удалить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">Удалить виджет</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">Подтверждаете удаление виджета?</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">Произошла ошибка при получении информации для этого виджета. Попробуйте еще раз, и если проблема повторится, обратитесь к администратору.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline" approved="yes">
+        <source>Dashboard "%s"</source>
+        <target state="final">Информационная панель "%s"</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">Моя панель инструментов</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">Создать новую панель инструментов с общедоступными TYPO3 виджетами</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">Пустая панель инструментов</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">Ваша панель инструментов будет создана без виджетов.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">Добавить панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.title" approved="yes">
+        <source>Preset</source>
+        <target state="final">Предустановка</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.headline" approved="yes">
+        <source>Select a preset</source>
+        <target state="final">Выбрать предустановку</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.loadError" approved="yes">
+        <source>The dashboard presets could not be loaded.</source>
+        <target state="final">Не удалось загрузить предустановки панели управления.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.title.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.title" approved="yes">
+        <source>Dashboard created</source>
+        <target state="final">Панель создана</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.message" approved="yes">
+        <source>The dashboard has been created and is now being opened.</source>
+        <target state="final">Панель управления создана и открывается.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">Добавить панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">Настроить панель управления</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">Сохранить панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">Удалить панель</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">Подтверждаете удаление панели инструментов?</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Да, удалить</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">Заголовок панели инструментов</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">Начало работы с TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">Добавить ярлык к TYPO3 Getting Started Tutorial.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">Новичок в TYPO3? В нашем Учебнике по работе вы обучитесь основам TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">Учебник по началу работы</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Справочник по шаблонам TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">Добавить ярлык на Справочник по шаблонам TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">Это справочник, используется для поиска шаблонов TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Справочник по шаблонам TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">Справочник TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">Добавить ярлык на TYPO3 Справочник TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">Этот документ описывает TSconfig и его параметры.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">Справочник TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">Новости TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">Добавить список новостей из проекта TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">Больше новостей TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">О TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">Некоторые общие сведения о TYPO3 и используемой версии</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS, это Система Управления Содержимым сайтов корпоративного класса с открытым исходным кодом, используемая во всём мире для создания и управления всеми видами сайтов, от небольших страничек некоммерческих организаций до многоязычных многодоменных решений для больших корпораций.<br /><br />Для дополнительной информации посетите сайт <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS <b> в свободном доступе</b> под <a href="https://typo3.org/typo3-cms/overview/licenses/" target="_blank" rel="noreferrer"> лицензией TYPO3 (GNU/GPL)</a>.<br /><br />Используется версия %s - Авторские права %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Логотип TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">Количество ошибок в системном журнале</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">Выводится количество ошибок в системном журнале за последний месяц, сгруппированных по дате</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">Показать все ошибки в журнале</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText" approved="yes">
+        <source>Show all user logins</source>
+        <target state="final">Show all user logins</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">Количество ошибок</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">Тип внутренних пользователей</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">Показывает количество обычных и пользователей администраторов</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">Обычные пользователи</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">Администраторы</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">Неудачные входы в систему</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">За последние 24 часа</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">Информация о количестве неудачных входов за последние 24 часа.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">Советы по безопасности TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">Добавить список рекомендаций по безопасности из проекта TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">Больше рекомендаций по безопасности TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title" approved="yes">
+        <source>Latest changed pages</source>
+        <target state="final">Последние измененные страницы</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" approved="yes">
+        <source>My latest changed pages</source>
+        <target state="final">Мои последние измененные страницы</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">Показать список страниц, на которых были сделаны последние изменения</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty" approved="yes">
+        <source>No history found</source>
+        <target state="final">История пуста</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" approved="yes">
+        <source>Only show my changes</source>
+        <target state="final">Показывать только мои изменения</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change" approved="yes">
+        <source>Change</source>
+        <target state="final">Изменить</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Пользователь</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" approved="yes">
+        <source>Not Found</source>
+        <target state="final">Не найдено</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Cтраница</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace" approved="yes">
+        <source>Changes in current selected workspace</source>
+        <target state="final">Изменения в текущей выбранной рабочей области</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" approved="yes">
+        <source>Position in pagetree</source>
+        <target state="final">Позиция в дереве страниц</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control" approved="yes">
+        <source>Control</source>
+        <target state="final">Управление</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" approved="yes">
+        <source>Show history</source>
+        <target state="final">Показать историю</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Просмотреть веб-страницу</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">Правка содержимого страницы</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Править свойства страницы</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content" approved="yes">
+        <source>Content</source>
+        <target state="final">Материалы</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Cтраница</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title" approved="yes">
+        <source>Latest backend logins</source>
+        <target state="final">Latest backend logins</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description" approved="yes">
+        <source>Shows the latest backend user logins.</source>
+        <target state="final">Показывает последние входы в систему внутренний пользователей.</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty" approved="yes">
+        <source>No backend login history found</source>
+        <target state="final">История входа во внутренний интерфейс не найдена</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time" approved="yes">
+        <source>Time</source>
+        <target state="final">Время</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Пользователь</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound" approved="yes">
+        <source>Not found</source>
+        <target state="final">Не найдено</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit" approved="yes">
+        <source>Edit user</source>
+        <target state="final">Редактировать пользователя</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit" approved="yes">
+        <source>Number of logins to display</source>
+        <target state="final">Количество логинов для отображения</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit.description" approved="yes">
+        <source>Number of backend user logins to show at once. Further logins are available via the pagination.</source>
+        <target state="final">Количество одновременных входов пользователей во внутренний интерфейс. Дополнительные входы доступны через разбивку на страницы.</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Общее</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">Сообщество TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Новости</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Документация</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">Сведения о системе</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Содержимое</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">Нет виджетов</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">На этой панели пока нет виджетов. Вы можете добавить виджеты, нажав на кнопку ниже.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">Добавить виджет</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
