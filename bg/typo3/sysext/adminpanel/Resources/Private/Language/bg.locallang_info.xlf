@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Info</source>
+        <target state="final">Инфо</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoLoadAndMemory" approved="yes">
+        <source>(Load Time: %1$u ms, Memory: %2$s)</source>
+        <target state="final">(Време за зареждане: %1$u ms, Памет: %2$s)</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" approved="yes">
+        <source>Images on this page</source>
+        <target state="final">Снимки на страницата</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" approved="yes">
+        <source>Total image file sizes</source>
+        <target state="final">Общ размер на файловете с изображения</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" approved="yes">
+        <source>Document size</source>
+        <target state="final">Размер на документа</target>
+      </trans-unit>
+      <trans-unit id="pageUid" approved="yes">
+        <source>Page Uid</source>
+        <target state="final">Uid на страница</target>
+      </trans-unit>
+      <trans-unit id="pageType" approved="yes">
+        <source>Page type</source>
+        <target state="final">Тип на страница</target>
+      </trans-unit>
+      <trans-unit id="groupList" approved="yes">
+        <source>Frontenduser group combination</source>
+        <target state="final">Комбинация на фронтенд потребителска група</target>
+      </trans-unit>
+      <trans-unit id="noCache" approved="yes">
+        <source>Page cached</source>
+        <target state="final">Кеширана страница</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Да</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" approved="yes">
+        <source>No</source>
+        <target state="final">Не</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" approved="yes">
+        <source>Count of USER_INT objects</source>
+        <target state="final">Брой на обектите USER_INT</target>
+      </trans-unit>
+      <trans-unit id="feuserName" approved="yes">
+        <source>Name of logged in FE-User</source>
+        <target state="final">Име на логнат FE потребител</target>
+      </trans-unit>
+      <trans-unit id="feuserId" approved="yes">
+        <source>Id of logged in FE-User</source>
+        <target state="final">Id на логнат FE потребител</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" approved="yes">
+        <source>Total parsetime</source>
+        <target state="final">Общо време за парсване</target>
+      </trans-unit>
+      <trans-unit id="noUserInt" approved="yes">
+        <source>There are no USER_INT objects on this page.</source>
+        <target state="final">Няма USER_INT обекти на тази страница.</target>
+      </trans-unit>
+      <trans-unit id="key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="value" approved="yes">
+        <source>Value</source>
+        <target state="final">Стойност</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" approved="yes">
+        <source>General</source>
+        <target state="final">Общо</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" approved="yes">
+        <source>PHP</source>
+        <target state="final">PHP</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" approved="yes">
+        <source>REQUEST</source>
+        <target state="final">ЗАЯВКА</target>
+      </trans-unit>
+      <trans-unit id="sub.userint.label" approved="yes">
+        <source>USER_INT</source>
+        <target state="final">USER_INT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
