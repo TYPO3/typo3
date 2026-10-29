@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">Feed RSS</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">Visualizza le ultime voci da un feed RSS personalizzabile.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etichetta</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">Definisce l'etichetta del widget.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">Feed RSS</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">Definisce l'URL o il file che fornisce il feed RSS. Questo viene letto dal widget per recuperare le voci da mostrare.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Numero massimo risultati</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">Definisce quanti elementi RSS devono essere mostrati.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">Ciclo di vita</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">Definisce quanto tempo attendere, in secondi, fino al successivo recupero del feed RSS.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title" approved="yes">
+        <source>Missing feed configuration</source>
+        <target state="final">Configurazione feed mancante</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message" approved="yes">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target state="final">Configurare la URL del feed da cui recuperare gli elementi.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title" approved="yes">
+        <source>Feed error</source>
+        <target state="final">Errore feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message" approved="yes">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target state="final">Il feed da "%1$s" non può essere analizzato.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title" approved="yes">
+        <source>No items to display</source>
+        <target state="final">Nessun elemento da visualizzare</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message" approved="yes">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target state="final">Il feed da "%1$s" non contiene nessun elemento.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
