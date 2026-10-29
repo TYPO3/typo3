@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Rikiuoti po puslapius</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Dabartinė puslapių tvarka</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Rikiuoti šiuos puslapius pagal</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Ketinate pakeisti aukščiau pateiktų puslapių tvarką. Ar tikrai norite tęsti?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Puslapio pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Paantraštė</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Sukūrimo laikas</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Pakeitimo laikas</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Puslapio pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Paantraštė</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Navigacijos pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Pakeitimo laikas</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Sukūrimo laikas</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Apversti dabartinę tvarką</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Nematomi popuslapiai</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">Kai kurie po puslapiai nėra matomi dėl prieigos apribojimų. Šie paslėpti puslapiai neįtraukiami į rikiavimą.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Nėra po puslapių</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Pasirinkite puslapį, kuris turi popuslapius.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Neįgyvendinta</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">Ši funkcija neprieinama dabartinėje juodraščio darbo srityje; prašome persijungti į LIVE darbo sritį.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Nėra redagavimo teisių šiam po puslapiui. Šio puslapio negalima perrikiuoti tarp kitų.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
