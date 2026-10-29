@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/page.xlf" date="2025-03-03T00:00:00Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <!-- Step: doktype selection -->
+      <trans-unit id="step.doktype.headline" approved="yes">
+        <source>Select page type</source>
+        <target state="final">Sélectionnez le type de page</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.title" approved="yes">
+        <source>Invalid page type</source>
+        <target state="final">Type de page invalide</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.message" approved="yes">
+        <source>The selected page type is not allowed here. Please choose a different type.</source>
+        <target state="final">Le type de page sélectionné n'est pas autorisé ici. Veuillez choisir un autre type.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.filter.noResults" approved="yes">
+        <source>No matching page type found.</source>
+        <target state="final">Aucun type de page correspondant n'a été trouvé.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.load_error" approved="yes">
+        <source>Failed to fetch available page types. This is likely due to missing permissions.</source>
+        <target state="final">Impossible de récupérer les types de pages disponibles. Cela est probablement dû à des autorisations manquantes.</target>
+      </trans-unit>
+      <trans-unit id="step.setup" approved="yes">
+        <source>Page Setup</source>
+        <target state="final">Configuration de la page</target>
+      </trans-unit>
+      <trans-unit id="step.link" approved="yes">
+        <source>Link Configuration</source>
+        <target state="final">Configuration du lien</target>
+      </trans-unit>
+      <trans-unit id="step.shortcut" approved="yes">
+        <source>Shortcut Configuration</source>
+        <target state="final">Configuration du raccourci</target>
+      </trans-unit>
+      <trans-unit id="step.mounting" approved="yes">
+        <source>Mounting Configuration</source>
+        <target state="final">Configuration du montage</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.title" approved="yes">
+        <source>Page created</source>
+        <target state="final">Page créée</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.description" approved="yes">
+        <source>The page has been successfully created. Click "Finish" to be redirected to the newly created page.</source>
+        <target state="final">La page a été créée avec succès. Cliquez sur "Terminer" pour être redirigé vers la page nouvellement créée.</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.button.create_another_page" approved="yes">
+        <source>Create another page</source>
+        <target state="final">Créer une autre page</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
