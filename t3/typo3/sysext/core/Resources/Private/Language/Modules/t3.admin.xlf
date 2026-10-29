@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="title">
+      <segment state="initial">
+        <source>Administration</source>
+        <target>crwdns380366:0crwdne380366:0</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="initial">
+        <source>Manage users, permissions, integrations, and other administrative functions.</source>
+        <target>crwdns380362:0crwdne380362:0</target>
+      </segment>
+    </unit>
+    <!-- intentionally left blank, not utilized (for now) -->
+    <unit id="description">
+      <segment state="initial">
+        <source/>
+        <target>crwdns380364:0crwdne380364:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
