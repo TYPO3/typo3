@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Workspace</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" approved="yes">
+        <source>Custom stages</source>
+        <target state="final">Fasi Post-Modifica</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" approved="yes">
+        <source>Responsible persons</source>
+        <target state="final">Responsabili</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" approved="yes">
+        <source>Default mail comment</source>
+        <target state="final">Commento Predefinito</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" approved="yes">
+        <source>UID of parent record</source>
+        <target state="final">UID del record padre</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">Fase di Workspace</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">Notifiche</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">Generale</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" approved="yes">
+        <source>Internal Stages</source>
+        <target state="final">Fasi Interne</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" approved="yes">
+        <source>Custom Stages</source>
+        <target state="final">Fasi Personalizzate</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" approved="yes">
+        <source>Publishing / Access</source>
+        <target state="final">Pubblicazione / Accesso</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" approved="yes">
+        <source>Default notification recipients</source>
+        <target state="final">Destinatari Notifica Predefiniti</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">Consente impostazioni di notifica durante il cambiamento di fase</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" approved="yes">
+        <source>Stage "editing"</source>
+        <target state="final">Fase "Modifica"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" approved="yes">
+        <source>Stage "ready to publish"</source>
+        <target state="final">Fase "Pronto per la pubblicazione"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" approved="yes">
+        <source>Stage "publishing execute"</source>
+        <target state="final">Fase "Pubblicato - Live"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" approved="yes">
+        <source>Notification dialog settings</source>
+        <target state="final">Impostazioni Notifiche</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" approved="yes">
+        <source>Show Dialog</source>
+        <target state="final">Consenti gestione destinatari</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" approved="yes">
+        <source>Allow to change pre-selection of recipients</source>
+        <target state="final">Permetti modifica destinatari preselezionati / predefiniti</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" approved="yes">
+        <source>Pre-select recipients</source>
+        <target state="final">Destinatari Notifica Preselezionati</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Proprietari</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Membri</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors" approved="yes">
+        <source>Unused, no functionality attached</source>
+        <target state="final">Non utilizzato, nessuna funzionalità collegata</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" approved="yes">
+        <source>Responsible Persons</source>
+        <target state="final">Responsabili</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Proprietari</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Membri</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" approved="yes">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target state="final">Auto-Pubblica le Modifiche il (richiede una attività dello Scheduler)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target state="final">Depubblicazione delle modifiche il (richiede attività dello Scheduler)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Consenti la modifica "live" dei record da tabelle senza gestione versione</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Accesso alla Pubblicazione</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" approved="yes">
+        <source>Publish only content in publish stage</source>
+        <target state="final">Pubblica solo contenuti nella fase "Pronto per la pubblicazione"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" approved="yes">
+        <source>Restrict publishing to workspace owners</source>
+        <target state="final">Limita la pubblicazione ai proprietari del workspace</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3" approved="yes">
+        <source>Hide "Entire workspace" action drop down</source>
+        <target state="final">Nascondi l'azione "Tutto il workspace"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Send notifications upon state changes</source>
+        <target state="final">Invia notifiche qualora ci siano modifiche di stato</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description" approved="yes">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target state="final">Questa impostazione di workspace determina se le notifiche vengono attivate quando i record passano ad altre fasi o vengono pubblicate. Le singole fasi possono avere le proprie preferenze di notifica.</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime" approved="yes">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target state="final">Durata, in ore, della validità di un collegamento di anteprima</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Utenti</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Montaggi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
