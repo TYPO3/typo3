@@ -47,6 +47,7 @@
         <f:if condition="{site.sets -> f:count()} && {site.invalidSets}">
             <f:render partial="SiteManagement/InvalidSets" arguments="{site: site, renderMode: 'infobox'}" />
         </f:if>
+        <f:render partial="SiteManagement/MissingDefaultLanguage" arguments="{site: site, renderMode: 'infobox'}" />
 
         <h2>
             <f:translate key="detail.site_configuration.headline" domain="backend.siteconfiguration" />

@@ -252,6 +252,18 @@
       <trans-unit id="validation.duplicateLanguageId.message">
         <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
       </trans-unit>
+      <trans-unit id="validation.missingDefaultLanguage.title">
+        <source>Site configuration not saved</source>
+      </trans-unit>
+      <trans-unit id="validation.missingDefaultLanguage.message">
+        <source>A language with ID 0 is required as default language of the site, but none has been configured.</source>
+      </trans-unit>
+      <trans-unit id="overview.missingDefaultLanguage.title">
+        <source>Default language missing</source>
+      </trans-unit>
+      <trans-unit id="overview.missingDefaultLanguage.message">
+        <source>This site has no language with ID 0, which TYPO3 requires as default language. Add a language with ID 0 to the site configuration.</source>
+      </trans-unit>
       <trans-unit id="labels.detail">
         <source>View Site Configuration "%s"</source>
       </trans-unit>

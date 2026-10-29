@@ -577,13 +577,15 @@ readonly class SiteConfigurationController
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         } catch (SiteValidationErrorException $e) {
-            // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message
+            // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message.
+            // The site is neither created nor renamed, so the form of the site as it is stored is shown again.
+            $editParameters = $isNewConfiguration ? ['pageUid' => $pageId] : ['site' => $currentIdentifier];
         }
 
-        $saveRoute = $this->uriBuilder->buildUriFromRoute('site_configuration.edit', [
-            'site' => $siteIdentifier,
-            'returnUrl' => $returnUrl,
-        ]);
+        $saveRoute = $this->uriBuilder->buildUriFromRoute(
+            'site_configuration.edit',
+            ($editParameters ?? ['site' => $siteIdentifier]) + ['returnUrl' => $returnUrl]
+        );
         if ($isSaveClose) {
             return new RedirectResponse($returnUrl);
         }
@@ -789,6 +791,16 @@ readonly class SiteConfigurationController
         // @todo: this shouldn't be done here, but rather properly handled in saveAction() where 'siteLanguage' is handled
         if ($isNewConfiguration && count($validChildren) === 1) {
             $validChildren[0]['languageId'] = LanguageMarker::DEFAULT_LANGUAGE;
+        }
+        if (!in_array(0, array_column($validChildren, 'languageId'), true)) {
+            $flashMessage = new FlashMessage(
+                $languageService->sL('backend.siteconfiguration:validation.missingDefaultLanguage.message'),
+                $languageService->sL('backend.siteconfiguration:validation.missingDefaultLanguage.title'),
+                ContextualFeedbackSeverity::ERROR,
+                true
+            );
+            $this->flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
+            throw new SiteValidationErrorException('Language 0 is required as default language, but is not configured.', 1793311928);
         }
         $newSysSiteData['languages'] = $validChildren;
 

@@ -231,4 +231,31 @@ final class SiteValidateCommandValidSitesTest extends FunctionalTestCase
         self::assertStringContainsString('The parsedUri "https:///" appears to be malformed', $output);
         self::assertStringContainsString('One site configuration error was found.', $output);
     }
+
+    #[Test]
+    public function validatingSiteReportsMissingLanguageZero(): void
+    {
+        $this->get(SiteWriter::class)->write('no-language-zero', [
+            'rootPageId' => 9,
+            'base' => 'https://no-language-zero.example.com/',
+            'languages' => [
+                [
+                    'languageId' => 1,
+                    'title' => 'German',
+                    'locale' => 'de_DE.UTF-8',
+                    'base' => '/',
+                ],
+            ],
+        ]);
+
+        $tester = new CommandTester($this->get(SiteValidateCommand::class));
+        $tester->execute(['identifier' => 'no-language-zero']);
+        $output = $tester->getDisplay();
+
+        self::assertSame(Command::FAILURE, $tester->getStatusCode(), $output);
+        self::assertStringContainsString('Site "no-language-zero"', $output);
+        self::assertMatchesRegularExpression('/Configuration option\s+languages\s/', $output);
+        self::assertStringContainsString('has no language with ID 0', $output);
+        self::assertStringContainsString('One site configuration error was found.', $output);
+    }
 }

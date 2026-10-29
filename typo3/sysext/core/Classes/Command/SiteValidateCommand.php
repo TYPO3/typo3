@@ -77,7 +77,7 @@ final class SiteValidateCommand extends Command
             $errorsBySite[$invalidSite['identifier']][] = $invalidSite;
         }
         foreach ($sites as $site) {
-            foreach ($this->validateBases($site) as $error) {
+            foreach ([...$this->validateBases($site), ...$this->validateDefaultLanguage($site)] as $error) {
                 $errorsBySite[$site->getIdentifier()][] = $error;
             }
         }
@@ -100,7 +100,7 @@ final class SiteValidateCommand extends Command
                     ['Root page ID' => $error['rootPageId'] ?? '-'],
                     ['Configuration option' => $error['field'] ?? '-'],
                     ['Error' => OutputFormatter::escape($error['message'])],
-                    ['Exception' => OutputFormatter::escape($error['type']) . ' (#' . $error['code'] . ')'],
+                    ...(isset($error['type']) ? [['Exception' => OutputFormatter::escape($error['type']) . ' (#' . $error['code'] . ')']] : []),
                 );
                 $errorCount++;
             }
@@ -109,6 +109,25 @@ final class SiteValidateCommand extends Command
             ? 'One site configuration error was found.'
             : sprintf('%d site configuration errors were found.', $errorCount));
         return Command::FAILURE;
+    }
+
+    /**
+     * A site without language 0 still works, as Site::getDefaultLanguage() falls back to
+     * the first configured language, but it cannot be saved in the backend anymore.
+     *
+     * @return list<array{identifier: string, rootPageId: int, message: string, field: string}>
+     */
+    private function validateDefaultLanguage(Site $site): array
+    {
+        if (isset($site->getAllLanguages()[0])) {
+            return [];
+        }
+        return [[
+            'identifier' => $site->getIdentifier(),
+            'rootPageId' => $site->getRootPageId(),
+            'message' => sprintf('Site "%s" has no language with ID 0, which is required as default language.', $site->getIdentifier()),
+            'field' => 'languages',
+        ]];
     }
 
     /**

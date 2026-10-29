@@ -403,6 +403,9 @@
                             <f:if condition="{page.siteConfiguration.invalidSets}">
                                 <f:render partial="SiteManagement/InvalidSets" arguments="{site: page.siteConfiguration}"/>
                             </f:if>
+                            <f:if condition="{page.siteConfiguration}">
+                                <f:render partial="SiteManagement/MissingDefaultLanguage" arguments="{site: page.siteConfiguration}"/>
+                            </f:if>
                         </td>
                         <td class="align-top">
                             <f:if condition="{page.siteConfiguration}">
@@ -587,6 +590,9 @@
                             </div>
                             <f:if condition="{page.siteConfiguration.invalidSets}">
                                 <f:render partial="SiteManagement/InvalidSets" arguments="{site: page.siteConfiguration}"/>
+                            </f:if>
+                            <f:if condition="{page.siteConfiguration}">
+                                <f:render partial="SiteManagement/MissingDefaultLanguage" arguments="{site: page.siteConfiguration}"/>
                             </f:if>
                         </li>
                         <li class="list-group-item">
