@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">І</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">АБО</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">НЕ</target>
+      </trans-unit>
+      <trans-unit id="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Форма пошуку</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Шукати</target>
+      </trans-unit>
+      <trans-unit id="form.extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">Розширений резюме</target>
+      </trans-unit>
+      <trans-unit id="form.atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">за раз</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">Сортувати за</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">З розділу</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Категорія</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">Шукати у</target>
+      </trans-unit>
+      <trans-unit id="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">Збіг</target>
+      </trans-unit>
+      <trans-unit id="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">Стиль</target>
+      </trans-unit>
+      <trans-unit id="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">Пошук</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Додати до поточних слів для пошуку</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Звичайний пошук</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Розширений пошук</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Ціле слово</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Частина слова</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Перша частина слова</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Кінець слова</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Речення</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Всі слова (І)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Будь-які слова (АБО)</target>
+      </trans-unit>
+      <trans-unit id="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Весь сайт</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Тільки ця сторінка</target>
+      </trans-unit>
+      <trans-unit id="sections.-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Вгору + один рівень</target>
+      </trans-unit>
+      <trans-unit id="sections.-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">Рівень 2 і далі</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">Рівень 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Всі сторінки на рівні 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">- Рівень 2</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- Всі сторінки на 2-му рівні</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Внутрішні сторінки</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Усі медіа</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Всі зовнішні</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Всі, змішані</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Всі, за категоріями</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Сторінки</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Мішані категорії</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Сторінки сайту</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Вага/Частота</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Частота</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Близько до вершини</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Кількість слів</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Дата зміни</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Заголовок документа</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Дата створення</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending" approved="yes">
+        <source>Highest first</source>
+        <target state="final">Спершу найвищі</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">Спершу нижчі</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Ієрархія розділів</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Список, що прокручується</target>
+      </trans-unit>
+      <trans-unit id="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">сторінка</target>
+      </trans-unit>
+      <trans-unit id="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">сторінки</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Інші</target>
+      </trans-unit>
+      <trans-unit id="result.otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">Інші відповідні сторінки в тому самому документі</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target state="final">ІНФОРМАЦІЯ: Була також проіндексована ще одна сторінка. Ймовірно, проіндексовано іншою групою користувачів або не проіндексовано.</target>
+      </trans-unit>
+      <trans-unit id="result.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Шлях</target>
+      </trans-unit>
+      <trans-unit id="result.modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">Змінено</target>
+      </trans-unit>
+      <trans-unit id="result.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Створено</target>
+      </trans-unit>
+      <trans-unit id="result.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Розмір</target>
+      </trans-unit>
+      <trans-unit id="result.noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Примітка. Це пошукове звернення може не точно відповідати вмісту на цій сторінці. Неможливо показати сторінку резюме.</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Вимагати членства в групах з номерами %s</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches" approved="yes">
+        <source>matches</source>
+        <target state="final">співпадає з</target>
+      </trans-unit>
+      <trans-unit id="result.noResult" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Результатів не знайдено.</target>
+      </trans-unit>
+      <trans-unit id="result.inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">у розділі</target>
+      </trans-unit>
+      <trans-unit id="result.inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">у розділі %s</target>
+      </trans-unit>
+      <trans-unit id="result.inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">у %s розділах</target>
+      </trans-unit>
+      <trans-unit id="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Шукати</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or" approved="yes">
+        <source>or</source>
+        <target state="final">або</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and" approved="yes">
+        <source>and</source>
+        <target state="final">та</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot" approved="yes">
+        <source>but not</source>
+        <target state="final">але не</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="displayResults" approved="yes">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target state="final"><![CDATA[Показано результати <strong>%1$s до %2$s</strong> із <strong>%3$s</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general" approved="yes">
+        <source>General statistics</source>
+        <target state="final">Загальна статистика</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic" approved="yes">
+        <source>Search statistics</source>
+        <target state="final">Пошук статистики</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic" approved="yes">
+        <source>Detailed statistics</source>
+        <target state="final">Детальна статистика</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header" approved="yes">
+        <source>Row count by database table</source>
+        <target state="final">Підрахунок рядків за таблицею бази даних</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Ім'я</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Кількість</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes" approved="yes">
+        <source>Hash Header Types</source>
+        <target state="final">Типи хеш-заголовків</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count" approved="yes">
+        <source>Count / Unique count</source>
+        <target state="final">Кількість / Унікальна кількість</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word" approved="yes">
+        <source>Word</source>
+        <target state="final">Слово</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title" approved="yes">
+        <source>List of most searched words</source>
+        <target state="final">Список слів, які найчастіше шукають</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description" approved="yes">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target state="final">Статистика для всіх сторінок. Виберіть сторінку з проіндексованою формою пошуку, щоб переглянути декілька статистичних даних.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all" approved="yes">
+        <source>All</source>
+        <target state="final">Все</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days" approved="yes">
+        <source>Last 30 days</source>
+        <target state="final">Останні 30 днів</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">За минулі 24 години</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">Ім'я файлу</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize" approved="yes">
+        <source>Filesize</source>
+        <target state="final">Розмір файлу</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount" approved="yes">
+        <source>Word count</source>
+        <target state="final">Кількість слів</target>
+      </trans-unit>
+      <trans-unit id="field.words" approved="yes">
+        <source>Words</source>
+        <target state="final">Слова</target>
+      </trans-unit>
+      <trans-unit id="field.mtime" approved="yes">
+        <source>Modification time</source>
+        <target state="final">Час зміни</target>
+      </trans-unit>
+      <trans-unit id="field.indexed" approved="yes">
+        <source>Indexed</source>
+        <target state="final">Індексовано</target>
+      </trans-unit>
+      <trans-unit id="field.updated" approved="yes">
+        <source>Updated</source>
+        <target state="final">Оновлено</target>
+      </trans-unit>
+      <trans-unit id="field.parseTime" approved="yes">
+        <source>Parsetime [ms]</source>
+        <target state="final">Час парсинггу [ms]</target>
+      </trans-unit>
+      <trans-unit id="field.groups" approved="yes">
+        <source>#sec/gr/full</source>
+        <target state="final">#sec/gr/full</target>
+      </trans-unit>
+      <trans-unit id="field.sub" approved="yes">
+        <source>Sub</source>
+        <target state="final">Суб</target>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments" approved="yes">
+        <source>Static Page Arguments</source>
+        <target state="final">Аргументи статичної сторінки</target>
+      </trans-unit>
+      <trans-unit id="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Кількість</target>
+      </trans-unit>
+      <trans-unit id="field.first" approved="yes">
+        <source>First</source>
+        <target state="final">Перший</target>
+      </trans-unit>
+      <trans-unit id="field.pHash" approved="yes">
+        <source>PageHash</source>
+        <target state="final">Хеш сторінки</target>
+      </trans-unit>
+      <trans-unit id="field.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Шлях</target>
+      </trans-unit>
+      <trans-unit id="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">Id сторінки</target>
+      </trans-unit>
+      <trans-unit id="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Мова</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Частота</target>
+      </trans-unit>
+      <trans-unit id="field.flag" approved="yes">
+        <source>Flag</source>
+        <target state="final">Прапор</target>
+      </trans-unit>
+      <trans-unit id="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Вміст</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords" approved="yes">
+        <source>Stopwords</source>
+        <target state="final">Стоп-слова</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save" approved="yes">
+        <source>Save stopwords</source>
+        <target state="final">Зберегти стоп-слова</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords" approved="yes">
+        <source>Section records for this phash</source>
+        <target state="final">Записи розділу для цієї фази</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Огляд</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content" approved="yes">
+        <source>Words and content</source>
+        <target state="final">Слова і зміст</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader" approved="yes">
+        <source>Phash row content</source>
+        <target state="final">Вміст рядка Phash</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry" approved="yes">
+        <source>Remove entry</source>
+        <target state="final">Видалити запис</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries" approved="yes">
+        <source>Remove all listed entries</source>
+        <target state="final">Вилучити всі записи у списку</target>
+      </trans-unit>
+      <trans-unit id="administration.back" approved="yes">
+        <source>Back</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Режим</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Глибина</target>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript" approved="yes">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+        <target state="final">Помилка: перевірте, чи включено TypoScript для плагіна індексованого пошуку.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
