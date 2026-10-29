@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/Modules/config.xlf" date="2026-11-10T13:37:37Z" product-name="config" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>View system configuration</source>
+        <target state="final">सिस्टम कॉन्फ़िगरेशन देखें</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.</source>
+        <target state="final">आपको $TCA array (टेबल कॉन्फ़िगरेशन) और $TYPO3_CONF_VARS के वैल्यू देखने की अनुमति देता है। आप कोई वैल्यू सेट नहीं कर सकते, केवल उन्हें देख सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
