@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="localization_wizard.modal.title" approved="yes">
+        <source>Localization</source>
+        <target state="final">التوطين</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.modal.title.record_prefix" approved="yes">
+        <source>Localize:</source>
+        <target state="final">توطين:</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">توطين</target>
+      </trans-unit>
+      <trans-unit id="wizard.error.message" approved="yes">
+        <source>Failed to load wizard configuration. Please try again.</source>
+        <target state="final">فشل تحميل تكوين المعالج. الرجاء المحاولة مرة أخرى.</target>
+      </trans-unit>
+      <trans-unit id="wizard.error.title" approved="yes">
+        <source>Configuration error</source>
+        <target state="final">خطأ في التكوين</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.message" approved="yes">
+        <source>No localization steps are available for this record type.</source>
+        <target state="final">لا توجد خطوات للتعريب مُتاحة لهذا النوع من السِجل.</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.title" approved="yes">
+        <source>Warning</source>
+        <target state="final">تحذير</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.no_data.message" approved="yes">
+        <source>No finisher data available. Cannot complete the localization process.</source>
+        <target state="final">لا تتوفَّرُ بياناتُ المُنهِّي. تعذَّرَ إكمالُ عمليةِ الترجمةِ.</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.title" approved="yes">
+        <source>Localization completed</source>
+        <target state="final">اكتمل التوطين</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.description" approved="yes">
+        <source>The content has been successfully localized. Click "Finish" to be redirected to the new language version.</source>
+        <target state="final">تمَّتْ ترجمةُ المحتوى بنجاحٍ. انقرْ على "إنهاءٌ" لإعادةِ التوجيهِ إلى نسخةِ اللغةِ الجديدةِ.</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.title" approved="yes">
+        <source>Localization completed</source>
+        <target state="final">اكتمل التوطين</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.description" approved="yes">
+        <source>The content has been successfully localized. Click "Finish" to reload the page and view the updated content.</source>
+        <target state="final">تمَّتْ ترجمةُ المحتوى بنجاحٍ. انقرْ على "إنهاءٌ" لإعادةِ تحميلِ الصفحةِ وعرضِ المحتوى المحدَّثِ.</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.title" approved="yes">
+        <source>No operation required</source>
+        <target state="final">لا يلزمُ أيُّ إجراءٍ</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.description" approved="yes">
+        <source>No records were selected that need processing. Click "Finish" to reload the page.</source>
+        <target state="final">لم يُحدَّدْ أيُّ سجلٍّ يحتاجُ إلى معالجةٍ. انقرْ على "إنهاءٌ" لإعادةِ تحميلِ الصفحةِ.</target>
+      </trans-unit>
+      <!-- Step: Content selection -->
+      <trans-unit id="step.content_selection.title" approved="yes">
+        <source>Content selection</source>
+        <target state="final">اختيار المحتوى</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.headline" approved="yes">
+        <source>Select records to localize</source>
+        <target state="final">حدِّدِ السجلاتِ المرادَ ترجمتُها</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.description" approved="yes">
+        <source>Choose which content elements you would like to translate:</source>
+        <target state="final">اخترْ عناصرَ المحتوى التي تودُّ ترجمتَها:</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.title" approved="yes">
+        <source>Content Element(s)</source>
+        <target state="final">عناصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.amount" approved="yes">
+        <source>%s Element(s)</source>
+        <target state="final">عناصر %s</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.error.message" approved="yes">
+        <source>Failed to load records for selection</source>
+        <target state="final">فشل تحميل السجلات للاختيار</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.select_all" approved="yes">
+        <source>Select all</source>
+        <target state="final">تحديد الكل</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.deselect_all" approved="yes">
+        <source>Deselect all</source>
+        <target state="final">إلغاء تحديد الكل</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.no_content.message" approved="yes">
+        <source>This page does not contain any content elements.</source>
+        <target state="final">لا تحتوي هذه الصفحة على أي عناصر محتوى.</target>
+      </trans-unit>
+      <!-- Step: Handler selection -->
+      <trans-unit id="step.handler_selection.title" approved="yes">
+        <source>Handler</source>
+        <target state="final">مُشغِّلٌ</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.headline" approved="yes">
+        <source>Select localization handler</source>
+        <target state="final">حدِّدْ معالِجَ الترجمةِ</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.description" approved="yes">
+        <source>Choose how you would like to localize this record:</source>
+        <target state="final">اخترْ كيفيةَ توطين هذا السجلِّ:</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.summary_label" approved="yes">
+        <source>Handler</source>
+        <target state="final">مُشغِّلٌ</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.error" approved="yes">
+        <source>Failed to load localization handlers.</source>
+        <target state="final">فشل تحميل معالج التوطين.</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.no_handlers" approved="yes">
+        <source>No localization handlers available.</source>
+        <target state="final">لا تتوفَّرُ معالِجاتُ ترجمةٍ.</target>
+      </trans-unit>
+      <!-- Step: Mode -->
+      <trans-unit id="step.modes.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">الوضع</target>
+      </trans-unit>
+      <trans-unit id="step.modes.headline" approved="yes">
+        <source>Select localization mode</source>
+        <target state="final">حدِّدْ وضع التوطين</target>
+      </trans-unit>
+      <trans-unit id="step.modes.description" approved="yes">
+        <source>Choose how content should be localized:</source>
+        <target state="final">اختر كيف ينبغي تعريب المحتوى:</target>
+      </trans-unit>
+      <trans-unit id="step.modes.summary.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">الوضع</target>
+      </trans-unit>
+      <trans-unit id="step.modes.error.message" approved="yes">
+        <source>Failed to load localization modes.</source>
+        <target state="final">فشلَ تحميلُ أوضاعِ التَّوطينِ.</target>
+      </trans-unit>
+      <trans-unit id="step.modes.none_available" approved="yes">
+        <source>No localization modes available.</source>
+        <target state="final">لا تتوفَّرُ أوضاعُ تَوطينٍ.</target>
+      </trans-unit>
+      <!-- Step: Source language -->
+      <trans-unit id="step.source_language.title" approved="yes">
+        <source>Source language</source>
+        <target state="final">لغة المصدر</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.headline" approved="yes">
+        <source>Select source language</source>
+        <target state="final">حدد لغة المصدر</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.description" approved="yes">
+        <source>Choose the language from which you would like to translate content:</source>
+        <target state="final">اخترِ اللغةَ التي تودُّ ترجمةَ المحتوى منها:</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.summary.title" approved="yes">
+        <source>Source language</source>
+        <target state="final">لغة المصدر</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.error.message" approved="yes">
+        <source>Failed to load source languages.</source>
+        <target state="final">فشل في تحميل لغات المصدر.</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.none_available" approved="yes">
+        <source>No source languages available.</source>
+        <target state="final">لا توجد لغات مصدر متاحة.</target>
+      </trans-unit>
+      <!-- Step: Target language -->
+      <trans-unit id="step.target_language.title" approved="yes">
+        <source>Target language</source>
+        <target state="final">اللغة الهدف</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.headline" approved="yes">
+        <source>Select target language</source>
+        <target state="final">حدد اللغة المستهدفة</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.description" approved="yes">
+        <source>Select the language into which you would like to translate the content:</source>
+        <target state="final">اختر اللغة التي ترغب في ترجمة المحتوى إليها:</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.summary.title" approved="yes">
+        <source>Target language</source>
+        <target state="final">اللغة الهدف</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.error.message" approved="yes">
+        <source>Failed to load target languages.</source>
+        <target state="final">فشل في تحميل اللغات المُستهدفة.</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.none_available" approved="yes">
+        <source>No target languages available.</source>
+        <target state="final">لا توجد لغات مستهدفة متاحة.</target>
+      </trans-unit>
+      <!-- Handlers -->
+      <trans-unit id="handler.manual.label" approved="yes">
+        <source>Manual Translation</source>
+        <target state="final">الترجمة اليدوية</target>
+      </trans-unit>
+      <trans-unit id="handler.manual.description" approved="yes">
+        <source>Prepares the language version. Edit and translate the content yourself afterwards.</source>
+        <target state="final">يقوم بإعداد النسخة اللغوية. ثم يقوم بتحرير المحتوى وترجمته بنفسه بعد ذلك.</target>
+      </trans-unit>
+      <!-- Error Messages -->
+      <trans-unit id="error.recordNotFound" approved="yes">
+        <source>Record with uid "%s" of type "%s" does not exist or is not accessible.</source>
+        <target state="final">السجلُّ ذو المعرِّفِ "%s" من النوعِ "%s" غيرُ موجودٍ أو غيرُ مُتاحٍ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
