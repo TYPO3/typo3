@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">Ruter</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Språk</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Språk</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">Språk-ID</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Lokal</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">Betingelse</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Applikasjonssammenheng</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Siden ble ikke funnet)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (Intern tjenerfeil)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Vis innhold fra side</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Vis innhold fra side</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">Ruter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
