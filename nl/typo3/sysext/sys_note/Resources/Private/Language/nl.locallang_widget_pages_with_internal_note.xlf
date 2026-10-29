@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">Systeemnotities</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description" approved="yes">
+        <source>Shows a list of pages with system notes.</source>
+        <target state="final">Een lijst van pagina's met systeemnotities tonen.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title" approved="yes">
+        <source>All System Notes</source>
+        <target state="final">Alle systeemnotities</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.description" approved="yes">
+        <source>Shows a list of pages with system notes</source>
+        <target state="final">Een lijst van pagina's met systeemnotities tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title" approved="yes">
+        <source>Notes in the category "Default"</source>
+        <target state="final">Notities in de categorie "Standaard"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Default"</source>
+        <target state="final">Een lijst van alle pagina's met systeemnotities in de categorie "Standaard" tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title" approved="yes">
+        <source>Notes in the category "ToDo"</source>
+        <target state="final">Notities in de categorie "Nog te doen"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "ToDo"</source>
+        <target state="final">Een lijst van pagina's met systeemnotities in de categorie "Nog te doen" tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title" approved="yes">
+        <source>Notes in the category "Template"</source>
+        <target state="final">Notities in de categorie "Sjabloon"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Template"</source>
+        <target state="final">Een lijst van pagina's met systeemnotities in de categorie "Sjabloon" tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title" approved="yes">
+        <source>Notes in the category "Notes"</source>
+        <target state="final">Notities in de categorie "Notities"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Notes"</source>
+        <target state="final">Een lijst van alle pagina's met systeemnotities in de categorie "Notities" tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title" approved="yes">
+        <source>Notes in the category "Instructions"</source>
+        <target state="final">Notities in de categorie "Instructies"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Instructions"</source>
+        <target state="final">Een lijst van pagina's met systeemnotities in de categorie "Instructies" tonen</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" approved="yes">
+        <source>Category</source>
+        <target state="final">Categorie</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" approved="yes">
+        <source>Category to be displayed.</source>
+        <target state="final">Categorie om weer te geven.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Aangemaakt</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage" approved="yes">
+        <source>Subject and message</source>
+        <target state="final">Onderwerp en bericht</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page" approved="yes">
+        <source>Go to page</source>
+        <target state="final">Ga naar pagina</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
