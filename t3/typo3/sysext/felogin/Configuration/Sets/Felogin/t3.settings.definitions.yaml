@@ -1,0 +1,106 @@
+categories:
+  felogin: null
+settings:
+  felogin.pid:
+    default: 'crwdns416517:0crwdne416517:0'
+    type: crwdns416519:0crwdne416519:0
+    category: crwdns416521:0crwdne416521:0
+  felogin.recursive:
+    default: 'crwdns416523:0crwdne416523:0'
+    type: crwdns416525:0crwdne416525:0
+    enum:
+      - 'crwdns416527:0crwdne416527:0'
+      - 'crwdns416529:0crwdne416529:0'
+      - 'crwdns416531:0crwdne416531:0'
+      - 'crwdns416533:0crwdne416533:0'
+      - 'crwdns416535:0crwdne416535:0'
+      - 'crwdns416537:0crwdne416537:0'
+    category: crwdns416539:0crwdne416539:0
+  felogin.showForgotPassword:
+    default: false
+    type: crwdns416541:0crwdne416541:0
+    category: crwdns416543:0crwdne416543:0
+  felogin.showPermaLogin:
+    default: false
+    type: crwdns416545:0crwdne416545:0
+    category: crwdns416547:0crwdne416547:0
+  felogin.showLogoutFormAfterLogin:
+    default: false
+    type: crwdns416549:0crwdne416549:0
+    category: crwdns416551:0crwdne416551:0
+  felogin.emailFrom:
+    default: 'crwdns416553:0crwdne416553:0'
+    type: crwdns416555:0crwdne416555:0
+    category: crwdns416557:0crwdne416557:0
+  felogin.emailFromName:
+    default: 'crwdns416559:0crwdne416559:0'
+    type: crwdns416561:0crwdne416561:0
+    category: crwdns416563:0crwdne416563:0
+  felogin.replyToEmail:
+    default: 'crwdns416565:0crwdne416565:0'
+    type: crwdns416567:0crwdne416567:0
+    category: crwdns416569:0crwdne416569:0
+  felogin.dateFormat:
+    default: 'crwdns416571:0crwdne416571:0'
+    type: crwdns416573:0crwdne416573:0
+    category: crwdns416575:0crwdne416575:0
+  felogin.email.layoutRootPath:
+    default: 'crwdns416577:0crwdne416577:0'
+    type: crwdns416579:0crwdne416579:0
+    category: crwdns416581:0crwdne416581:0
+  felogin.email.templateRootPath:
+    default: 'crwdns416583:0crwdne416583:0'
+    type: crwdns416585:0crwdne416585:0
+    category: crwdns416587:0crwdne416587:0
+  felogin.email.partialRootPath:
+    default: 'crwdns416589:0crwdne416589:0'
+    type: crwdns416591:0crwdne416591:0
+    category: crwdns416593:0crwdne416593:0
+  felogin.email.templateName:
+    default: crwdns416595:0crwdne416595:0
+    type: crwdns416597:0crwdne416597:0
+    category: crwdns416599:0crwdne416599:0
+  felogin.redirectMode:
+    default: 'crwdns416601:0crwdne416601:0'
+    type: crwdns416603:0crwdne416603:0
+    category: crwdns416605:0crwdne416605:0
+  felogin.redirectFirstMethod:
+    default: false
+    type: crwdns416607:0crwdne416607:0
+    category: crwdns416609:0crwdne416609:0
+  felogin.redirectPageLogin:
+    default: 0
+    type: crwdns416613:0crwdne416613:0
+    category: crwdns416615:0crwdne416615:0
+  felogin.redirectPageLoginError:
+    default: 0
+    type: crwdns416619:0crwdne416619:0
+    category: crwdns416621:0crwdne416621:0
+  felogin.redirectPageLogout:
+    default: 0
+    type: crwdns416625:0crwdne416625:0
+    category: crwdns416627:0crwdne416627:0
+  felogin.redirectDisable:
+    default: false
+    type: crwdns416629:0crwdne416629:0
+    category: crwdns416631:0crwdne416631:0
+  felogin.forgotLinkHashValidTime:
+    default: 0
+    type: crwdns416635:0crwdne416635:0
+    category: crwdns416637:0crwdne416637:0
+  felogin.domains:
+    default: 'crwdns416639:0crwdne416639:0'
+    type: crwdns416641:0crwdne416641:0
+    category: crwdns416643:0crwdne416643:0
+  felogin.view.templateRootPath:
+    default: 'crwdns416645:0crwdne416645:0'
+    type: crwdns416647:0crwdne416647:0
+    category: crwdns416649:0crwdne416649:0
+  felogin.view.partialRootPath:
+    default: 'crwdns416651:0crwdne416651:0'
+    type: crwdns416653:0crwdne416653:0
+    category: crwdns416655:0crwdne416655:0
+  felogin.view.layoutRootPath:
+    default: 'crwdns416657:0crwdne416657:0'
+    type: crwdns416659:0crwdne416659:0
+    category: crwdns416661:0crwdne416661:0
