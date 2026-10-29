@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="reactions" approved="yes">
+        <source>Reactions</source>
+        <target state="final">Reaktioner</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction" approved="yes">
+        <source>System Reactions</source>
+        <target state="final">Systemreaktioner</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name.description" approved="yes">
+        <source>Meaningful name of the reaction</source>
+        <target state="final">Meningsfuldt navn på reaktionen</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikator</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier.description" approved="yes">
+        <source>This is your unique reaction identifier within the TYPO3 URL</source>
+        <target state="final">Dette er din unikke reaktions-identifikator i TYPO3 URL</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">Secret</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.description" approved="yes">
+        <source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
+        <target state="final">Secret er krævet for at kalde reaktion udefra. Secret token kan genoprettes når som helst, men vil kun være synlig én gang (indtil posten gemmes).</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.passwordGenerator" approved="yes">
+        <source>Generate secret token</source>
+        <target state="final">Generér secret token</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type" approved="yes">
+        <source>Reaction Type</source>
+        <target state="final">Reaktions-type</target>
+      </trans-unit>
+      <trans-unit id="sys_reactions.reaction_type.description" approved="yes">
+        <source>Select the reaction type to be configured.</source>
+        <target state="final">Vælg den reaktionstype der skal konfigureres.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.select" approved="yes">
+        <source>Select a reaction</source>
+        <target state="final">Vælg en reaktion</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.create_record" approved="yes">
+        <source>Create database record</source>
+        <target state="final">Opret database-element</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user" approved="yes">
+        <source>Impersonate User</source>
+        <target state="final">Efterlign bruger</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user.description" approved="yes">
+        <source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
+        <target state="final">Vælg brugeren med passende adgangsrettigheder som vil få tilladelse til at tilføje et element af denne type. Hvis du er i tvivl, så brug CLI brugeren.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_called" approved="yes">
+        <source>Last called</source>
+        <target state="final">Sidst ændret</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_status" approved="yes">
+        <source>Status of the last call</source>
+        <target state="final">Status for det sidste ændring</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_failure" approved="yes">
+        <source>Reason the last call failed</source>
+        <target state="final">Begrundelse for sidste ændring mislykkedes</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.description" approved="yes">
+        <source>Select one tables to display the corresponding fields.</source>
+        <target state="final">Vælg en tabel for at vise de tilsvarende felter.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.select" approved="yes">
+        <source>Select a table</source>
+        <target state="final">Vælg en tabel</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">Lager PID</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">Vælg den side, hvor et nyt element er oprettet på.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields" approved="yes">
+        <source>Fields</source>
+        <target state="final">Felter</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields.description" approved="yes">
+        <source>Which fields are offered depends on the selected table. Each field is either fixed to a value, filled from the request with a placeholder such as ${foo.bar} addressing a key of the payload the caller sends, or not set at all. A field that is not set, and one whose placeholder the request does not carry, keeps the default of the table.</source>
+        <target state="final">Hvilke felter der tilbydes, afhænger af den valgte tabel. Hvert felt er enten sat til en fast værdi, udfyldt fra anmodningen med en pladsholder, såsom ${foo.bar} adresserer en nøgle til data, som den kaldende sender eller slet ikke. Et felt, der ikke er indstillet, og et felt, hvis pladsholder anmodningen ikke bærer, beholder standardtabellen.</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the reaction.</source>
+        <target state="final">Generel konfiguration af reaktionen.</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">Yderligere konfiguration</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected reaction type</source>
+        <target state="final">Specifik konfiguration for den valgte reaktionstype</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.noFields" approved="yes">
+        <source>The selected table '%s' does not define any valid fields to be configured.</source>
+        <target state="final">Den valgte tabel '%s' definerer ikke nogen gyldige felter, der skal konfigureres.</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource" approved="yes">
+        <source>Value source</source>
+        <target state="final">Værdikilde</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.unset" approved="yes">
+        <source>Do not set</source>
+        <target state="final">Angiv ikke</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.fixed" approved="yes">
+        <source>Fixed value</source>
+        <target state="final">Fast værdi</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload" approved="yes">
+        <source>Payload value</source>
+        <target state="final">Dataværdi</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload.inverted" approved="yes">
+        <source>This field is displayed inverted, so the value 1 means the opposite of the label above.</source>
+        <target state="final">Dette felt vises omvendt, så værdien 1 betyder det modsatte af etiketten ovenfor.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
