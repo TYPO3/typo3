@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="indexed_search" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Indexing</source>
+        <target state="final">الفهرسة</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Search indexing control panel</source>
+        <target state="final">لوحةُ التحكمِ في فهرسةِ البحثِ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Manage settings for the frontend search indexing engine and monitor statistics of indexed pages. Indexing must be enabled in TypoScript Setup.</source>
+        <target state="final">إدارةُ إعداداتِ محرّكِ فهرسةِ البحثِ في الواجهةِ الأماميةِ ومراقبةُ إحصاءاتِ الصفحاتِ المفهرسةِ. يجبُ تفعيلُ الفهرسةِ في TypoScript Setup.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
