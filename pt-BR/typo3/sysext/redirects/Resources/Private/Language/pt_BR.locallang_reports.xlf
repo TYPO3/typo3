@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="status.checkIntegrityResultState.title" approved="yes">
+        <source>List of conflicting redirects may not be up to date</source>
+        <target state="final">É possível que a lista de redirecionamentos conflitantes não esteja atualizada</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
