@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="btn.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Editar configuração do site</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Editar configurações do site</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.title" approved="yes">
+        <source>TypoScript settings have been implicitly generated from site sets includes</source>
+        <target state="final">As configurações de TypoScript foram implicitamente geradas a partir de conjuntos de includes do site</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.title" approved="yes">
+        <source>Site Settings available</source>
+        <target state="final">Configurações do site estão disponíveis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
