@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Edit TypoScript record</source>
+        <target state="final">Redaguoti TypoScript įrašą</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Edit TypoScript record "%s"</source>
+        <target state="final">Redaguoti TypoScript įrašą „%s“</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+        <target state="final">Keiskite pasirinkto dabartinio puslapio TypoScript įrašo turinį. Galite redaguoti tiek konfigūracijas, tokias kaip TypoScript konstantos ir setup, tiek pagrindinę informaciją, pavyzdžiui, paties TypoScript įrašo pavadinimą ir aprašą.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Pasirinktas įrašas</target>
+      </trans-unit>
+      <trans-unit id="table.column.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstantos</target>
+      </trans-unit>
+      <trans-unit id="table.column.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašas</target>
+      </trans-unit>
+      <trans-unit id="table.column.lines" approved="yes">
+        <source>%s lines</source>
+        <target state="final">%s eilutės</target>
+      </trans-unit>
+      <trans-unit id="table.column.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Setup</target>
+      </trans-unit>
+      <trans-unit id="table.column.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Redaguoti svetainės konfigūraciją</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Redaguoti svetainės nustatymus</target>
+      </trans-unit>
+      <trans-unit id="btn.editTypoScriptRecord" approved="yes">
+        <source>Edit the whole TypoScript record</source>
+        <target state="final">Redaguoti visą TypoScript įrašą</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.title" approved="yes">
+        <source>TypoScript settings have been implicitly generated from site sets includes</source>
+        <target state="final">TypoScript nustatymai buvo automatiškai sugeneruoti iš svetainės rinkinių įtraukimų</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.message" approved="yes">
+        <source>The site configuration '%s' has one or more dependencies on site sets. The sets can be configured in the 'Sites » Setup' backend module. The TypoScript definitions can be edited on the file system.</source>
+        <target state="final">Svetainės konfigūracija „%s“ turi vieną ar daugiau priklausomybių nuo svetainės rinkinių. Rinkinius galima konfigūruoti backend modulyje „Sites » Setup“. TypoScript apibrėžimus galima redaguoti failų sistemoje.</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.title" approved="yes">
+        <source>Site Settings available</source>
+        <target state="final">Galimi svetainės nustatymai</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.message" approved="yes">
+        <source>Edit site settings via the 'Sites » Setup' backend module.</source>
+        <target state="final">Redaguokite svetainės nustatymus per backend modulį „Sites » Setup“.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
