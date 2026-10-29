@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Ponastavi</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>[all]</source>
+        <target state="final">[Vsi]</target>
+      </trans-unit>
+      <trans-unit id="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">Datoteka</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Nastavitve</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Uporabnik</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Uporabniki</target>
+      </trans-unit>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Čas</target>
+      </trans-unit>
+      <trans-unit id="max" approved="yes">
+        <source>Max</source>
+        <target state="final">Največ</target>
+      </trans-unit>
+      <trans-unit id="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Prikaži zgodovino</target>
+      </trans-unit>
+      <trans-unit id="action" approved="yes">
+        <source>Action</source>
+        <target state="final">Dejanje</target>
+      </trans-unit>
+      <trans-unit id="channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">Kanal</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">Ravni</target>
+      </trans-unit>
+      <trans-unit id="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Pregled</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">Naloži</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">Preimenuj</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">Vsi uporabniki</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Zadnjih 7 dni</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Ta mesec</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Zadnji mesec</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">Čas</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">Uporabnik</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Dejanje</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_channel" approved="yes">
+        <source>Channel</source>
+        <target state="final">Kanal</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabela</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">Podrobnosti</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">Uporabniki</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuPageId" approved="yes">
+        <source>Page</source>
+        <target state="final">Stran</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Globina</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">Čas</target>
+      </trans-unit>
+      <trans-unit id="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Dejanja</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
