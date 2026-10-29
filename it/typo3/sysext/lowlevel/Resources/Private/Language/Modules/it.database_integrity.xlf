@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf" date="2026-11-10T13:37:37Z" product-name="database_integrity" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Database</source>
+        <target state="final">Database</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Database query tools</source>
+        <target state="final">Strumenti di query database</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Search and query the TYPO3 database using advanced tools.</source>
+        <target state="final">Cerca e interroga il database di TYPO3 utilizzando strumenti avanzati.</target>
+      </trans-unit>
+      <trans-unit id="query_loaded" approved="yes">
+        <source>Query "%s" loaded</source>
+        <target state="final">Query "%s" caricata</target>
+      </trans-unit>
+      <trans-unit id="query_saved" approved="yes">
+        <source>Query saved</source>
+        <target state="final">Query salvata</target>
+      </trans-unit>
+      <trans-unit id="query_removed" approved="yes">
+        <source>"%s" query entry removed</source>
+        <target state="final">La query "%s" è stata rimossa</target>
+      </trans-unit>
+      <trans-unit id="undelete_only" approved="yes">
+        <source>Undelete</source>
+        <target state="final">Ripristina</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
