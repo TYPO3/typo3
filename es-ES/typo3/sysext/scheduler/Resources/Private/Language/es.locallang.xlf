@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">Comprobar configuración</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">Una tarea en ejecución no puede ser eliminada.</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+    </body>
+  </file>
+</xliff>
