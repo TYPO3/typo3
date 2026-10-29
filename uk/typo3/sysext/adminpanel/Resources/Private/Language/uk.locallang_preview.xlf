@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf" date="2018-03-13T08:08:00Z" product-name="adminpanel" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Preview</source>
+        <target state="final">Попередній перегляд</target>
+      </trans-unit>
+      <trans-unit id="showHiddenPages" approved="yes">
+        <source>Show hidden pages</source>
+        <target state="final">Показати приховані сторінки</target>
+      </trans-unit>
+      <trans-unit id="showHiddenRecords" approved="yes">
+        <source>Show hidden records</source>
+        <target state="final">Показати приховані записи</target>
+      </trans-unit>
+      <trans-unit id="showScheduledRecords" approved="yes">
+        <source>Ignore start and end time</source>
+        <target state="final">Ігнорувати час початку і закінчення</target>
+      </trans-unit>
+      <trans-unit id="showFluidDebug" approved="yes">
+        <source>Show fluid debug output</source>
+        <target state="final">Показати результат fluid debug</target>
+      </trans-unit>
+      <trans-unit id="simulateDate" approved="yes">
+        <source>Simulate time</source>
+        <target state="final">Зімітувати час</target>
+      </trans-unit>
+      <trans-unit id="simulateUserGroup" approved="yes">
+        <source>Simulate user group</source>
+        <target state="final">Зімітувати групу користувачів</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
