@@ -1,0 +1,15 @@
+routeEnhancers:
+  PageTypeSuffix:
+    type: crwdns417109:0crwdne417109:0
+    map:
+      sitemap.xml: 0
+  Sitemap:
+    type: crwdns417113:0crwdne417113:0
+    routePath: 'crwdns417115:0{sitemap}crwdne417115:0'
+    aspects:
+      sitemap:
+        type: crwdns417117:0crwdne417117:0
+        map:
+          pages: crwdns417119:0crwdne417119:0
+    _arguments:
+      sitemap: 'crwdns417121:0crwdne417121:0'
