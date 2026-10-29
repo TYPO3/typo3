@@ -1,0 +1,2056 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="labels.datepicker.label" approved="yes">
+        <source>Open date picker</source>
+        <target state="final">Åbn datovælger</target>
+      </trans-unit>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Åben i nyt vindue</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Gå tilbage</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Opret genvej til denne side?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this record</source>
+        <target state="final">Opret et bogmærke til dette element</target>
+      </trans-unit>
+      <trans-unit id="labels.alreadyBookmarked" approved="yes">
+        <source>This record is already bookmarked</source>
+        <target state="final">Denne element er allerede bogmærket</target>
+      </trans-unit>
+      <trans-unit id="labels.copyCurrentUrl" approved="yes">
+        <source>Copy URL of this record</source>
+        <target state="final">Kopiér URL for denne side</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Brugeren '%s' påbegyndte redigering af dette element for %s siden.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Brugeren '%s' påbegyndte redigering af indhold på denne side for %s siden.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">%s '%s' påbegyndte redigering af dette element for %s siden.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">%s '%s' påbegyndte redigering af indhold på denne side for %s siden.</target>
+      </trans-unit>
+      <trans-unit id="labels.color" approved="yes">
+        <source>Color</source>
+        <target state="final">Farve</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Bruger</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">BE-bruger</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">FE-bruger</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-Ukendt-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Vis elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Nulstil filter</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Et niveau op</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">Udvid tabel</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">Skjul tabel</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Indtast søgeord</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Denne side|1 niveau ned|2 niveauer ned|3 niveuaer ned|4 niveauer ned</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Denne side</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 niveau ned</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 niveauer ned</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 niveauer ned</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 niveauer ned</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">Uendeligt niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Beklager, men du havde ikke rettigheder til at udføre denne ændring.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing.title" approved="yes">
+        <source>Alert</source>
+        <target state="final">Advarsel</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">Der er felter, som endnu ikke er korrekt udfyldt. Udfyld dem korrekt.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" approved="yes">
+        <source>Important: There are unsaved changes in the form. Continuing without saving will discard your changes. Continue?</source>
+        <target state="final">Vigtigt: Der er ændringer der ikke er gemt i formularen. Fortsætter du uden at gemme, vil det kassere dine ændringer. Fortsæt?</target>
+      </trans-unit>
+      <trans-unit id="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">Tilbageblevne karakterer: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.minCharactersLeft" approved="yes">
+        <source>Characters missing: {0}</source>
+        <target state="final">Tegn mangler: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">Et maksimum af {0} elementer er tilladt</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsReached.title" approved="yes">
+        <source>Maximum selection reached</source>
+        <target state="final">Maksimum valg nået</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsReached.single" approved="yes">
+        <source>Only one item can be selected in this field.</source>
+        <target state="final">Kun ét element kan vælges i dette felt.</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsReached.multiple" approved="yes">
+        <source>Only {0} items can be selected in this field.</source>
+        <target state="final">Kun {0} elementer kan vælges i dette felt.</target>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMinAndMax" approved="yes">
+        <source>{actualItems}/{maxItems} (minimum {minItems})</source>
+        <target state="final">{actualItems}/{maxItems} (minimum {minItems})</target>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMax" approved="yes">
+        <source>{actualItems}/{maxItems}</source>
+        <target state="final">{actualItems}/{maxItems}</target>
+      </trans-unit>
+      <trans-unit id="labels.selectedItems.short.withMin" approved="yes">
+        <source>{actualItems} (minimum {minItems})</source>
+        <target state="final">{actualItems} (minimum {minItems})</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Bemærk: Du kan ikke redigere dette felt da det kun kan redigeres med Formateret Redigering og Formateret Redigering er ikke tilgængelig eller er slået fra.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">Element information</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Slå Formateret Redigering fra (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Kontrol</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Oversættelse</target>
+      </trans-unit>
+      <trans-unit id="labels._REF_" approved="yes">
+        <source>References</source>
+        <target state="final">Referencer</target>
+      </trans-unit>
+      <trans-unit id="labels.uid" approved="yes">
+        <source>Unique ID</source>
+        <target state="final">Unikt ID</target>
+      </trans-unit>
+      <trans-unit id="labels.pid" approved="yes">
+        <source>Parent page ID</source>
+        <target state="final">Overordnet side-ID</target>
+      </trans-unit>
+      <trans-unit id="labels.tstamp" approved="yes">
+        <source>Last modified</source>
+        <target state="final">Sidst ændret</target>
+      </trans-unit>
+      <trans-unit id="labels.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Oprettelsesdato</target>
+      </trans-unit>
+      <trans-unit id="labels.cruser_id" approved="yes">
+        <source>Created by</source>
+        <target state="final">Oprettet af</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Sortering</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.asc" approved="yes">
+        <source>Sort ascending</source>
+        <target state="final">Sorter stigende</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.desc" approved="yes">
+        <source>Sort descending</source>
+        <target state="final">Sorter faldende</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_state" approved="yes">
+        <source>Workspace status</source>
+        <target state="final">Status for arbejdsrummet</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_wsid" approved="yes">
+        <source>Workspace ID</source>
+        <target state="final">Arbejdsrum ID</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_oid" approved="yes">
+        <source>Live record ID</source>
+        <target state="final">Live element ID</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_stage" approved="yes">
+        <source>Workspace stage</source>
+        <target state="final">Arbejdsrumsfase</target>
+      </trans-unit>
+      <trans-unit id="labels.l10n_diffsource" approved="yes">
+        <source>Translation differences</source>
+        <target state="final">Forskel i oversættelser</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Sæt felter</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Søg</target>
+      </trans-unit>
+      <trans-unit id="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Forfatter</target>
+      </trans-unit>
+      <trans-unit id="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Note</target>
+      </trans-unit>
+      <trans-unit id="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategori</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+      <trans-unit id="labels.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprog</target>
+      </trans-unit>
+      <trans-unit id="labels.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Sprog</target>
+      </trans-unit>
+      <trans-unit id="labels.view" approved="yes">
+        <source>View</source>
+        <target state="final">Vis</target>
+      </trans-unit>
+      <trans-unit id="labels.view.layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">Layout</target>
+      </trans-unit>
+      <trans-unit id="labels.view.language_comparison" approved="yes">
+        <source>Language Comparison</source>
+        <target state="final">Sprogsammenligning</target>
+      </trans-unit>
+      <trans-unit id="labels.view.list" approved="yes">
+        <source>List</source>
+        <target state="final">Liste</target>
+      </trans-unit>
+      <trans-unit id="labels.view.tiles" approved="yes">
+        <source>Tiles</source>
+        <target state="final">Fliser</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showThumbnails" approved="yes">
+        <source>Show thumbnails</source>
+        <target state="final">Vis miniaturer</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showClipboard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Vis klippebord</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showSearch" approved="yes">
+        <source>Show search</source>
+        <target state="final">Vis søgning</target>
+      </trans-unit>
+      <trans-unit id="labels.view.selectColumns" approved="yes">
+        <source>Select columns</source>
+        <target state="final">Vælg kolonner</target>
+      </trans-unit>
+      <trans-unit id="labels.share" approved="yes">
+        <source>Share</source>
+        <target state="final">Del</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Download CSV fil</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Ingen titel</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuller</target>
+      </trans-unit>
+      <trans-unit id="labels.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deaktivér</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skjult</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Slut</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">min|timer|dage|år|min|time|dag|år</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menu</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Vis webside</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Vis elementliste</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.deletedElement" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">Slettet element</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newLocation" approved="yes">
+        <source>New location (Move-to Pointer) WSID#%s</source>
+        <target state="final">Ny placering (Move-to Pointer) WSID#%s</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newElement" approved="yes">
+        <source>New element</source>
+        <target state="final">Nyt element</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">dage</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Denne side</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 niveauer</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 niveauer</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 niveauer</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Uendeligt</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Tillad</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Afvis</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Slået til</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Vis</target>
+      </trans-unit>
+      <trans-unit id="labels.openTreeOptionsMenu" approved="yes">
+        <source>Open tree options menu</source>
+        <target state="final">Åbn menu for træindstillinger</target>
+      </trans-unit>
+      <trans-unit id="labels.openPageTreeOptionsMenu" approved="yes">
+        <source>Open page tree options menu</source>
+        <target state="final">Åbn menu for sidetræindstillinger</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Genindlæs træet fra serveren</target>
+      </trans-unit>
+      <trans-unit id="labels.collapse" approved="yes">
+        <source>Collapse all tree items</source>
+        <target state="final">Fold alle elementer i træet sammen</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryPageTreeEntryPoints" approved="yes">
+        <source>Cancel temporary Page Tree Entry Points</source>
+        <target state="final">Annullér midlertidige indgangspunkter for sidetræ</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Genindlæs liste fra serveren</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Luk</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">Tabel guide</target>
+      </trans-unit>
+      <trans-unit id="labels.new" approved="yes">
+        <source>New</source>
+        <target state="final">Ny</target>
+      </trans-unit>
+      <trans-unit id="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">Liste</target>
+      </trans-unit>
+      <trans-unit id="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Rediger</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Opret ny</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Opret ny %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Opret ny(t) %s på side %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewTranslation" approved="yes">
+        <source>Create a %s translation</source>
+        <target state="final">Opret en %s oversættelse</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">Opret ny(t) %s på rod niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">Rediger %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">Rediger %s "%s" på %s</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">Rediger %s på %s</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">Rediger %s "%s" på rod niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.editMultiple" approved="yes">
+        <source>Edit multiple</source>
+        <target state="final">Redigér flere</target>
+      </trans-unit>
+      <trans-unit id="labels.records" approved="yes">
+        <source>{count, plural, one {# record} other {# records}}</source>
+        <target state="final">{count, plural, one {# element} other {# elementer}}</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" approved="yes">
+        <source>Root level</source>
+        <target state="final">Rod niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">Tilføj ny</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Skift alle</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Skift valg</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Valgte elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Tilgængelige elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.filter_items" approved="yes">
+        <source>Filter items</source>
+        <target state="final">Filtrér emner</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Fjern valgte emner fra listen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Ryk valgte emner til toppen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Ryk valgte emner upad</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Ryk valgte emner nedad</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Ryk valgte emner til bunden</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Flyt dette element</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_elements" approved="yes">
+        <source>Browse for elements</source>
+        <target state="final">Gennemse for elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_folder" approved="yes">
+        <source>Browse for folders</source>
+        <target state="final">Gennemse for mapper</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Find database elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Indsæt %s fil(er) fra klippebordet</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Indsæt %s element(er) fra klippebordet</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">Generelle valg</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">Generelle valg (fortsat)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Alle tabeller]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" approved="yes">
+        <source>Invalid value ("%s")</source>
+        <target state="final">Ugyldig værdi ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.typeNotAllowedInColumn" approved="yes">
+        <source>This element of type "%s" is not allowed in this column.</source>
+        <target state="final">Dette element af typen "%s" er ikke tilladt i denne kolonne.</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingLabel" approved="yes">
+        <source>Missing label ("%s")</source>
+        <target state="final">Manglende etiket ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Vis miniaturer på klippebordet</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Kopier emner i stedet for blot at flytte dem</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Normal (enkelt element tilstand)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">"Normal" klippebord tillader at kopiere/flytte en record ad gangen.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Klippebord #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Klippebord #%s (flervalgs mode)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">Dette klippebord tillader at vælge og redigere/kopiere/flytte∙flere elementer på en gang.∙Vælg dette for at få vist en checkbox∙ved hvert element.</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">Slet elementer</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">Ryd udklipsholder</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" approved="yes">
+        <source>Remove element</source>
+        <target state="final">Fjern element</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list.</source>
+        <target state="final">Vigtigt: Hold CTRL tasten nede mens du vælger elementer fra denne liste.</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Bring valgte elementer tilbage</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Vælg alle checkboxe</target>
+      </trans-unit>
+      <trans-unit id="labels.openSelectionOptions" approved="yes">
+        <source>Open selection options</source>
+        <target state="final">Åbn valgmuligheder</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">Markér alle</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Afmarkér alle</target>
+      </trans-unit>
+      <trans-unit id="labels.selectAllLanguages" approved="yes">
+        <source>Select all available languages</source>
+        <target state="final">Vælg alle tilgængelige sprog</target>
+      </trans-unit>
+      <trans-unit id="labels.deselectAllLanguages" approved="yes">
+        <source>Deselect all languages except default</source>
+        <target state="final">Fravælg alle sprog undtagen standard</target>
+      </trans-unit>
+      <trans-unit id="labels.defaultLanguageAlwaysShown" approved="yes">
+        <source>Default language is always shown</source>
+        <target state="final">Standardsprog vises altid</target>
+      </trans-unit>
+      <trans-unit id="labels.createTranslationFor" approved="yes">
+        <source>Create %s translation of this page</source>
+        <target state="final">Opret %s oversættelse af denne side</target>
+      </trans-unit>
+      <trans-unit id="labels.selection" approved="yes">
+        <source>Selection:</source>
+        <target state="final">Valg:</target>
+      </trans-unit>
+      <trans-unit id="labels.noActionAvailable" approved="yes">
+        <source>No action available</source>
+        <target state="final">Ingen handling tilgængelig</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">Angiv specifik elementværdi (Standard: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">Angiv specifik elementværdi (Ingen standard)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">Angiv værdi</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Ændret i originalsproget</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Fold alle ud</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword" approved="yes">
+        <source>Generate password</source>
+        <target state="final">Generér adgangskode</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword.failed" approved="yes">
+        <source>Password generation failed. This could be due to a misconfiguration issue; please check the Administration log for details or contact your system administrator.</source>
+        <target state="final">Adgangskodegenerering mislykkedes. Dette kan skyldes et problem med fejlkonfiguration. Tjek venligst administrationsloggen for detaljer eller kontakt din systemadministrator.</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Opret ny</target>
+      </trans-unit>
+      <trans-unit id="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">Antal</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">Skift søge-værktøjslinje</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Søgeudtryk</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Begrænsning</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Søg</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Søgeniveau</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Søgeudtryk</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Begrænsning</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Søgeniveau</target>
+      </trans-unit>
+      <trans-unit id="labels.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Aktiv</target>
+      </trans-unit>
+      <trans-unit id="labels.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Låst</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.enabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA aktiveret</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.disabled" approved="yes">
+        <source>MFA disabled</source>
+        <target state="final">MFA deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">Tabellen er defineret som skrivebeskyttet og kan ikke redigeres.</target>
+      </trans-unit>
+      <trans-unit id="labels.inconsistentLanguageWarning" approved="yes">
+        <source>No translation parent assigned</source>
+        <target state="final">Ingen overordnet oversættelse tildelt</target>
+      </trans-unit>
+      <trans-unit id="labels.notEditableInWorkspace" approved="yes">
+        <source>Not editable in this workspace without "Live" edit permissions.</source>
+        <target state="final">Kan ikke redigeres i dette arbejdrum uden "Live" redigeringstilladelser.</target>
+      </trans-unit>
+      <trans-unit id="labels.editingLiveRecordsWarning" approved="yes">
+        <source>Caution: These records are not versioned, you will edit the live records.</source>
+        <target state="final">Forsigtig! Disse elementer er ikke versioneret, du vil redigere liveelementer.</target>
+      </trans-unit>
+      <trans-unit id="labels.th.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="labels.module_actions" approved="yes">
+        <source>Module actions</source>
+        <target state="final">Modulhandlinger</target>
+      </trans-unit>
+      <trans-unit id="labels.new_page_translation" approved="yes">
+        <source>Create new translation</source>
+        <target state="final">Opret ny oversættelse</target>
+      </trans-unit>
+      <trans-unit id="insert_after" approved="yes">
+        <source>Insert after</source>
+        <target state="final">Indsæt efter</target>
+      </trans-unit>
+      <trans-unit id="insert_inside" approved="yes">
+        <source>Insert inside</source>
+        <target state="final">Indsæt indenfor</target>
+      </trans-unit>
+      <trans-unit id="insert_page" approved="yes">
+        <source>Insert page</source>
+        <target state="final">Indsæt side</target>
+      </trans-unit>
+      <trans-unit id="insert_subpage" approved="yes">
+        <source>Insert subpage</source>
+        <target state="final">Indsæt underside</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Søger...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" approved="yes">
+        <source>Online</source>
+        <target state="final">Online</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Versionsstyring</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">Vælg version</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Skift/Udgiv</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Udgiv denne version af siden inklusiv indhold</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3 Element Finder</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" approved="yes">
+        <source>There are %s reference(s) to this record</source>
+        <target state="final">Der er %s reference(r) til dette element</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFile" approved="yes">
+        <source>There are %s reference(s) to this file</source>
+        <target state="final">Der er %s reference(r) til denne fil</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" approved="yes">
+        <source>This record has %s translation(s) which will be deleted, too.</source>
+        <target state="final">Dette element har %s oversættelse(r), som også vil blive slettet.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Vis emner</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.fieldValues" approved="yes">
+        <source>Field values</source>
+        <target state="final">Feltværdier</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">Generelt</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.references" approved="yes">
+        <source>References</source>
+        <target state="final">Referencer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">Referencer til dette element</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">Reference fra dette element</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Fil</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Dimensioner</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Størrelse</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pixler</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">filer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>TYPO3_CONF_VARS[BE][disable_exec_function] is enabled, so the content of the archive file cannot be displayed.</source>
+        <target state="final">TYPO3_CONF_VARS[BE][disable_exec_function] er aktiveret, så indholdet af arkivfilen kan ikke vises.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Felt</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">Flexpointer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">Softref nøgle</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Sortering</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">Reference tabel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Reference Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">Reference streng</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" approved="yes">
+        <source>FTP Area</source>
+        <target state="final">FTP-område</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.missing_record" approved="yes">
+        <source>Record is missing</source>
+        <target state="final">Element mangler</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Nyt element</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">efter</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">inden i</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Send filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Send filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Drag &amp; drop til upload filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Drop dine filer her eller &lt;u&gt;klik, browse &amp; vælg filer&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzone.close" approved="yes">
+        <source>Close file upload area</source>
+        <target state="final">Luk fil-upload område</target>
+      </trans-unit>
+      <trans-unit id="file_upload.pasteTarget.title" approved="yes">
+        <source>Add pasted files</source>
+        <target state="final">Tilføj indsatte filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.pasteTarget.message" approved="yes">
+        <source>{count, plural, one {Select the field to add the pasted file to.} other {Select the field to add the # pasted files to.}}</source>
+        <target state="final">{count, plural, one {Vælg feltet for at tilføje den indsatte fil til.} other {Vælg feltet for at tilføje # indsatte filer til.}}</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Vælg &amp; upload filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File "{0}" exceeds maximum file size of {1}</source>
+        <target state="final">Fil "{0}" overskred maksimum filstørrelse på {1}</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename "{0}" is not allowed</source>
+        <target state="final">Filnavn "{0}" er ikke tilladt</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed. A file with "{0}" extension is expected.</source>
+        <target state="final">Upload fejlede! En fil med "{0}" udvidelse var ventet.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionDisallowed" approved="yes">
+        <source>Upload failed. The file extension "{0}" is not allowed.</source>
+        <target state="final">Upload mislykkedes. Filendelsen "{0}" er ikke tilladt.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.notUploaded.title" approved="yes">
+        <source>Upload failed</source>
+        <target state="final">Upload fejlede</target>
+      </trans-unit>
+      <trans-unit id="file_upload.notUploaded.extensionExpected" approved="yes">
+        <source>"{0}" was not uploaded. Allowed file extensions: {1}</source>
+        <target state="final">"{0}" blev ikke uploadet. Tilladte filendelser: {1}</target>
+      </trans-unit>
+      <trans-unit id="file_upload.notUploaded.extensionDisallowed" approved="yes">
+        <source>"{0}" was not uploaded. The file extension "{1}" is not allowed.</source>
+        <target state="final">"{0}" blev ikke uploadet. Filendelsen "{1}" er ikke tilladt.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" approved="yes">
+        <source>Upload failed for "{0}"</source>
+        <target state="final">Upload mislykkedes for "{0}"</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadSucceeded" approved="yes">
+        <source>File has been uploaded.</source>
+        <target state="final">Filen er blevet uploadet.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">Fil upload er i gang...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">Uploader fil {0} ud af {1} filer.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" approved="yes">
+        <source>Upload complete. Media module reloading...</source>
+        <target state="final">Upload gennemført. Filliste genindlæses...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">Skal eksisterende filer overskrives?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">Oprindelig fil</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">Uploadede filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Handling</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">Nogle filer eksisterer allerede</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">Nogle filer som du ønskede at uploade, findes allerede på systemet. Vælg hvad du vil gøre med hver enkelt fil.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">Spring filen over</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Omdøb</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Overskriv</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">Brug eksisterende fil</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">Vælg en massehandling som alternativ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">Vælg</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">Spring alle filer over</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">Omdøb alle filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">Overskriv alle filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">Brug eksisterende filer</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuller</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">Fortsæt med valgte opgaver</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist" approved="yes">
+        <source>Reload filelist</source>
+        <target state="final">Genindlæs filliste</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.message" approved="yes">
+        <source>To enable the controls, the filelist has to be reloaded.</source>
+        <target state="final">For at aktivere kontrolelementerne, skal fillisten genindlæses.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Afvis</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+      <trans-unit id="file_download.prepare" approved="yes">
+        <source>File download is being prepared</source>
+        <target state="final">Fil download er ved at blive forberedt</target>
+      </trans-unit>
+      <trans-unit id="file_download.invalidSelection" approved="yes">
+        <source>The selected elements can not be downloaded</source>
+        <target state="final">De valgte elementer kan ikke downloades</target>
+      </trans-unit>
+      <trans-unit id="file_download.success" approved="yes">
+        <source>File download successfully prepared</source>
+        <target state="final">Filhentning er klargjort</target>
+      </trans-unit>
+      <trans-unit id="file_download.error" approved="yes">
+        <source>Could not prepare files for download</source>
+        <target state="final">Kunne ikke forberede filer til download</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles" approved="yes">
+        <source>Could not find any allowed file</source>
+        <target state="final">Kunne ikke finde nogen tilladt fil</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles.message" approved="yes">
+        <source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
+        <target state="final">Tjek venligst dit valg, da der kan være begrænsninger for filtyper, defineret af din administrator.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.title" approved="yes">
+        <source>Rename</source>
+        <target state="final">Omdøb</target>
+      </trans-unit>
+      <trans-unit id="file_rename.label" approved="yes">
+        <source>New filename</source>
+        <target state="final">Nyt filnavn</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Omdøb</target>
+      </trans-unit>
+      <trans-unit id="folder_rename.label" approved="yes">
+        <source>New folder name</source>
+        <target state="final">Nyt mappenavn</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">Tilføj nyt medieelement</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.label" approved="yes">
+        <source>URL of remote source</source>
+        <target state="final">URL til ekstern kilde</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">Tilladte medieudgivere</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">Tilføj medie via URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">Tilføj medie</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">Tilføjede medie</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.placeholder" approved="yes">
+        <source>Paste media URL here...</source>
+        <target state="final">Indsæt medie-URL her...</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">Tilføjelse af medie fejlede</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">Ukendt/ikke tilladt URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.already_exists" approved="yes">
+        <source>Online media "%s" does already exist in this folder.</source>
+        <target state="final">Online medie"%s" findes allerede i denne mappe.</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.success" approved="yes">
+        <source>Successfully updated online media</source>
+        <target state="final">Onlinemedier er opdateret</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.error" approved="yes">
+        <source>Error on updating online media</source>
+        <target state="final">Fejl ved opdatering af onlinemedier</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Upload filsti fejl</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first</source>
+        <target state="final">Der blev ikke fundet noget sti til upload af billeder. Du skal oprette en mappe, TEMP ("_temp_") i roden af et af dine fil-mounts først</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Genindlæsning af siden vil annullere de aktuelle valg. Vil du fortsætte?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">Er du sikker på, at du vil slette '%s'?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Slet dette element?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">Er du sikker på, at du vil slette ALLE elementer (%s) på klippebordet?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" approved="yes">
+        <source>Your login has probably expired. Do you want to refresh it now?</source>
+        <target state="final">Dit login er sandsynligvis udløbet. Vil du opdatere det nu?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Forbliv logget ind</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">Nej, log ud.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">Logger ind...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">Login fejlede</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">Password er ikke korrekt.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">Forny login til TYPO3 (Bruger: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">Brugernavn</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">Password</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">Login</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Afslut</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed</source>
+        <target state="final">Tomt password er ikke tilladt</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">Vent venligst ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">TYPO3 administrationen er i øjeblikket låst af hensyn til vedligeholdelse. Lad dette browser-vindue stå åbent og administrationen vil automatisk blive tilgængelig igen, når vedligeholdelse er gennemført.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">Dit TYPO3 login er ved at udløbe. Venligst bekræft at du ønsker at forblive logget ind.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">Log mig ud</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">Din TYPO3 log ind udløber om lidt. Bekræft at du ønsker at blive logget af.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">TYPO3 login er ved at udløbe</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">Dit TYPO3 login er udløbet. Du skal logge ind igen hvis du vil fortsætte. Ellers kan du lukke vinduet ned.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Vælg venligst et eller flere elementer i listen før du kan redigere.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">Genindlæsning krævet</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">Denne ændring vil påvirke hvilke felter der er tilgængelige i formularen. Vil du gemme nu, for at opdatere visningen?</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.cancel" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Fortsæt redigering</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.confirm" approved="yes">
+        <source>Save and refresh</source>
+        <target state="final">Gem og opdatér</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Flyt "%s" ind i "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_before" approved="yes">
+        <source>Move "%s" to before "%s"?</source>
+        <target state="final">Flyt "%s" til før "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Flyt "%s" til positionen efter "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Kopier "%s" ind i "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Kopier "%s" til positionen efter "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Kopier alle elementer (%s) fra klippebordet ind i "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Kopier alle elementer (%s) fra klippebordet til positionen efter "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Flyt alle elementer (%s) fra klippebordet ind i "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Flyt alle elementer (%s) fra klippebordet til positionen efter "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[menu]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Gem</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">Se</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Gem og vis siden</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Gem og luk</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">Gem og luk alle</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">Gem og opret et nyt</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Ny</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Dublér</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">Elementet er blevet dubleret.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicationFailed" approved="yes">
+        <source>The record could not be duplicated.</source>
+        <target state="final">Elementet kunne ikke duplikeres.</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Luk</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Admin Funktioner</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Rediger</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exportér</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slet</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">Filen er ikke slettet</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotDeletedHasReferences" approved="yes">
+        <source>The file "%s" cannot be deleted since it is still used at the following places</source>
+        <target state="final">Filen "%s" kan ikke slettes, da den stadig bruges på følgende steder</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Mappen blev ikke slettet</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">Mappen kan ikke slettes eftersom den stadig indeholder filer.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">Filen har ødelagte referencer</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">Filen har %s ødelagte reference(r) men vil blive slettet alligevel.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotFound" approved="yes">
+        <source>File not found</source>
+        <target state="final">Filen blev ikke fundet</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotFound" approved="yes">
+        <source>The file %s is not found, possible already removed.</source>
+        <target state="final">Filen %s blev ikke fundet, måske er den allerede fjernet.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">Fil slettet</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">Filen "%s" blev slettet med succes.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">Mappen slettet</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">Mappen "%s" blev slettet med succes.</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Afslut</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Moduler</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Tøm</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Klippebord</target>
+      </trans-unit>
+      <trans-unit id="buttons.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">Fjern alle</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">Vend link-forklaring</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">Skift manuelt URL segment</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">Genberegn URL segment fra sidetitel</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa" approved="yes">
+        <source>Deactivate multi-factor authentication</source>
+        <target state="final">Deaktivér multi-faktor godkendelse</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Deaktivér %s</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa.confirmation.text" approved="yes">
+        <source>Deactivate all active providers? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">Deaktivér alle aktive udbydere? Denne handling kan ikke fortrydes. Advarsel: Dette vil påvirke alle brugere og mindske systemets sikkerhed.</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider.confirmation.text" approved="yes">
+        <source>Deactivate %s? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">Deaktivér %s? Denne handling kan ikke fortrydes. Advarsel: Dette vil påvirke alle brugere og mindske systemets sikkerhed.</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">Denne side kan nås via %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.record" approved="yes">
+        <source>The URL part of this record will be %s</source>
+        <target state="final">URL-delen af dette element vil være %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.error" approved="yes">
+        <source>The requested URL is already in use, but %s will be used instead</source>
+        <target state="final">Den valgte URL er allerede i brug, men %s vil blive brugt i stedet</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopier</target>
+      </trans-unit>
+      <trans-unit id="cm.copyrelease" approved="yes">
+        <source>Copy release</source>
+        <target state="final">Kopier udgivelse</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Klip</target>
+      </trans-unit>
+      <trans-unit id="cm.cutrelease" approved="yes">
+        <source>Cut release</source>
+        <target state="final">Klip udgivelse</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Vis</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Rediger</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Redigér indhold</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">Ret Metadata for denne fil</target>
+      </trans-unit>
+      <trans-unit id="cm.editColumns" approved="yes">
+        <source>Edit columns</source>
+        <target state="final">Redigér kolonner</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Ny</target>
+      </trans-unit>
+      <trans-unit id="cm.newSubpage" approved="yes">
+        <source>New subpage</source>
+        <target state="final">Ny underside</target>
+      </trans-unit>
+      <trans-unit id="cm.newFilemount" approved="yes">
+        <source>New file mount</source>
+        <target state="final">Ny filadgang</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Indsæt i</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Indsæt efter</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Vælg</target>
+      </trans-unit>
+      <trans-unit id="cm.selectFile" approved="yes">
+        <source>Select %s</source>
+        <target state="final">Vælg %s</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Fravælg</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Vælg hertil</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Fravælg hertil</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slet</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Skjul</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Synliggør</target>
+      </trans-unit>
+      <trans-unit id="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">Gå online</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">Gå offline</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Upload filer</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Omdøb</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">Erstat</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Åbn</target>
+      </trans-unit>
+      <trans-unit id="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Gem</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Unzip</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Opret ny</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Opret ny %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Toppunkt i træet</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Kopier side ind i</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Kopier side efter</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Flyt side ind i</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Flyt side efter</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Kopier mappe ind i</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Flyt mappe ind i</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Opret ny relation</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">Gren-handlinger</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">Side-handlinger</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">Fold gren sammen</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">Udvid gren</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Flere valg...</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">Tilladte filendelser</target>
+      </trans-unit>
+      <trans-unit id="cm.disallowedFileExtensions" approved="yes">
+        <source>Disallowed file extensions</source>
+        <target state="final">Ikke tilladte filtypenavne</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">Tilladte redigérbare tekstfil-typer</target>
+      </trans-unit>
+      <trans-unit id="cm.allowEmbedSources" approved="yes">
+        <source>Allowed media sources</source>
+        <target state="final">Tilladte mediekilder</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedRelations" approved="yes">
+        <source>Allowed relations</source>
+        <target state="final">Tilladte relationer</target>
+      </trans-unit>
+      <trans-unit id="cm.history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Ændringsforløb/Fortryd</target>
+      </trans-unit>
+      <trans-unit id="cm.transferToClipboard" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">Overfør til udklipsholder</target>
+      </trans-unit>
+      <trans-unit id="cm.removeFromClipboard" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Fjern fra udklipsholder</target>
+      </trans-unit>
+      <trans-unit id="sortable.dragmove" approved="yes">
+        <source>Drag to move</source>
+        <target state="final">Træk for at flytte</target>
+      </trans-unit>
+      <trans-unit id="tree.search_in_translated_pages" approved="yes">
+        <source>Search in translated pages</source>
+        <target state="final">Søg i oversatte sider</target>
+      </trans-unit>
+      <trans-unit id="tree.search_by_frontend_uri" approved="yes">
+        <source>Search by website address (URL)</source>
+        <target state="final">Søg efter websted-adresse (URL)</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Indsæt søgeterm</target>
+      </trans-unit>
+      <trans-unit id="tree.searchPageTree" approved="yes">
+        <source>Search page tree</source>
+        <target state="final">Søg i sidetræ</target>
+      </trans-unit>
+      <trans-unit id="tree.searchFolderTree" approved="yes">
+        <source>Search folder tree</source>
+        <target state="final">Søg i mappetræ</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Værdien af fileDenyPattern er ikke sat til dens standard: %s If TYPO3 kører på Apache, så kan en tilpasset værdi muligvis gøre frontend-brugere eller backend-brugere i stand til at afvikle ondsindede php-skripter.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent" approved="yes">
+        <source>Security risk: The new value of fileDenyPattern misses parts of its default: %s. If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious PHP scripts.</source>
+        <target state="final">Sikkerhedsrisiko! Den nye værdi af fileDenyPattern mangler dele af standard: %s. Hvis TYPO3 kører på Apache, kan en brugertilpasset værdi åbne for, at frontend brugere kan afvikle ondsindede php-scripts i backend.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">Den aktuelle værdi af fileDenyPattern tillader overførsel/oprettelse af filer med navnet ".htaccess". Hvis TYPO3 kører på Apache, så vil dette gøre backend- og frontend-brugere i stand til at oprette og afvikle php-skripter. Venligst nulstil værdien for fileDenyPattern til den standardværdi.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">Installationsværktøjet er permanent aktiveret. Slet "%s" når du er færdig med at konfigurere.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now</source>
+        <target state="final">Klik for at slette filen nu</target>
+      </trans-unit>
+      <trans-unit id="warning.install_trustedhosts" approved="yes">
+        <source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+        <target state="final">Mønsteret hos værterne, der er tillid til, er deaktiveret. Definér de tilladte værter i [SYS][trustedHostsPattern] sektion i installationsværktøjet.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Upgrade Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">Denne installation er ikke konfigureret til den aktuelle TYPO3 version. Hvis du gjorde det med vilje, kan denne besked sikkert ignoreres. Hvis du er usikker, kan du besøge opgraderingsguiden i %sinstallationsværktøjet%s for at se, hvordan TYPO3 vil ændre sig.</target>
+      </trans-unit>
+      <trans-unit id="warning.header" approved="yes">
+        <source>Important Notice</source>
+        <target state="final">Vigtig bemærkning</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference_index" approved="yes">
+        <source>The Reference Index is empty (table sys_refindex), which may occur after upgrades or maintenance operations. The last update found on TYPO3 Registry was on %3$s. Please rebuild it via %1$sSystem → Maintenance → Check and Update Reference Index%2$s.</source>
+        <target state="final">Referenceindekset er tomt (tabel sys_refindex), som kan forekomme efter opgraderinger eller vedligeholdelsesopgaver. Den seneste opdatering som er fundet på TYPO3 Registry var på %3$s. Genopbyg den via %1$sSystem → Vedligeholdelse → Tjek og Opdater referenceindeks%2$s.</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable" approved="yes">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
+        <target state="final">Memcache er konfigureret, men forbindelsen til memcache fejlede med disse konfiguration(er)</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing" approved="yes">
+        <source>File is missing</source>
+        <target state="final">Filen mangler</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text" approved="yes">
+        <source>This file is marked as missing</source>
+        <target state="final">Filen er markeret som manglende</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">Lageret er ikke offentligt</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">Lageret er markeret til at være "offentligt tilgængeligt", men er ikke registreret som sådan af driveren. Indstillingen er nulstillet.</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">Denne record vil blive ændret globalt</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.message" approved="yes">
+        <source>The TSconfig setting for "mod.web_list.tableDisplayOrder" contains a circular dependency and cannot be resolved.</source>
+        <target state="final">TSconfig indstillingen for "mod.web_list.tableDisplayOrder" indeholder en cirkulær afhængighed og kan ikke løses.</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.title" approved="yes">
+        <source>Circular table ordering detected</source>
+        <target state="final">Cirkulær tabelsortering registreret</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">Validering af sikkerhedssymbolet af denne formular fejlede. Venligst genindlæs formularen og send den igen.</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">Udvidelse "%s" er ikke installeret.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">Undlad venligst at linke til denne side.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">En SQL-fejl opstod. Dette kan skyldes en modsætning mellem TCA og databasen. Prøv at afvikle database-sammenligning (compare) i Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">Database fejl</target>
+      </trans-unit>
+      <trans-unit id="error.items_proc_func_error" approved="yes">
+        <source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+        <target state="final">Der opstod en fejl under forsøget med at proccesere emner for felt "%1$s" (%2$s).</target>
+      </trans-unit>
+      <trans-unit id="error.invalidEmail" approved="yes">
+        <source>"%s" is not a valid e-mail address.</source>
+        <target state="final">"%s" er ikke en gyldig e-mailadresse.</target>
+      </trans-unit>
+      <trans-unit id="error.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>Non system maintainers cannot change details of system maintainers. The values have not been updated.</source>
+        <target state="final">Brugere som ikke er systemvedligeholdere, kan ikke ændre detaljer for systemvedligeholdere. Værdierne er ikke blevet opdateret.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.information.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer. Changing details of system maintainers is not allowed.</source>
+        <target state="final">Denne bruger er en systemvedligeholder. Ændring af detaljer for systemvedligeholdere er ikke tilladt.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer</source>
+        <target state="final">Denne bruger er systemvedligeholder</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" approved="yes">
+        <source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+        <target state="final">Denne bruger optræder i listen over tilladte systemvedligeholdere og vil få adgang på systemniveau hvis admin adgang aktiveres.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritFromParentPage" approved="yes">
+        <source>This page will most likely use backend layout "%s", inherited from a parent page.</source>
+        <target state="final">Denne side vil højst sandsynligt bruge backend layout "%s", arvet fra en overordnet side.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritedFromParentPage" approved="yes">
+        <source>This page is currently using backend layout "%s", inherited from a parent page.</source>
+        <target state="final">Denne side bruger i øjeblikket backend layout "%s", arvet fra en overordnet side.</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.header" approved="yes">
+        <source>Possible misconfiguration detected</source>
+        <target state="final">Mulig fejlkonfiguration blev fundet</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.message" approved="yes">
+        <source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+        <target state="final">Redigering af mindst en plugin var aktiveret, men redigering af sideindhold af typen "Indsæt plugin" er stadig ikke tilladt. Gruppemedlemmer vil ikke være i stand til at redigere plugins, med mindre du aktiverer redigering for denne indholdstype.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLanguageIsocode" approved="yes">
+        <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+        <target state="final">Manglende ISO kode for sprog "%s" (UID %d). Redigér sprogelementet og angiv det.</target>
+      </trans-unit>
+      <trans-unit id="labels.deleteTitle" approved="yes">
+        <source>Revert to default Constant</source>
+        <target state="final">Gå tilbage til standard konstanter</target>
+      </trans-unit>
+      <trans-unit id="labels.editTitle" approved="yes">
+        <source>Edit this Constant</source>
+        <target state="final">Redigér denne konstant</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">Sideoversættelse</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.title" approved="yes">
+        <source>Error in Path</source>
+        <target state="final">Fejl i sti</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.message" approved="yes">
+        <source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+        <target state="final">Du indtastede en ugyldig sti til dette fil-lager. Bemærk at "../" og "//" ikke er tilladt når der anvendes absolut sti.</target>
+      </trans-unit>
+      <trans-unit id="iframe.listFrame" approved="yes">
+        <source>List frame (content area) to create and modify pages, content and records</source>
+        <target state="final">Listeramme (indholdsområde) til at oprette og ændre sider, indhold og elementer</target>
+      </trans-unit>
+      <trans-unit id="message.confirmation" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Er du sikker?</target>
+      </trans-unit>
+      <trans-unit id="labels.datepicker.today" approved="yes">
+        <source>Today</source>
+        <target state="final">I dag</target>
+      </trans-unit>
+      <trans-unit id="labels.inputfield.clearButton.title" approved="yes">
+        <source>Clear input</source>
+        <target state="final">Ryd indtastning</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open" approved="yes">
+        <source>Open context menu</source>
+        <target state="final">Åbn kontekstmenu</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open.recordLabel" approved="yes">
+        <source>Open context menu for record: %s</source>
+        <target state="final">Åbn kontekstmenu for element: %s</target>
+      </trans-unit>
+      <trans-unit id="labels.invalidSiteSets" approved="yes">
+        <source>Invalid site sets</source>
+        <target state="final">Ugyldige webstedssæt</target>
+      </trans-unit>
+      <trans-unit id="error.site.invalidSetDependencies" approved="yes">
+        <source>This site depends on invalid site sets</source>
+        <target state="final">Dette websted afhænger af ugyldige webstedssæt</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.notFound" approved="yes">
+        <source>Site set '%1$s' not found (referenced by '%2$s')</source>
+        <target state="final">Webstedssæt '%1$s' ikke fundet (refereret af '%2$s')</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.missingDependency" approved="yes">
+        <source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret: Manglende afhængighed '%2$s'</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.circularDependency" approved="yes">
+        <source>Site set '%1$s' is disabled: Circular dependency '%2$s'</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret: Cirkulær afhængighed '%2$s'</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettingsDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings definitions: %2$s</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret på grund af ugyldige definitions-indstillinger: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidCategoryDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid category definitions: %2$s</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret på grund af ugyldige kategori-indstillinger: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettings" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings: %2$s</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret på grund af ugyldige indstillinger: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidRouteEnhancers" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid route enhancers: %2$s</source>
+        <target state="final">Webstedssæt '%1$s' er deaktiveret på grund af ugyldige route-indstillinger: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSet" approved="yes">
+        <source>Invalid site set '%1$s': %2$s</source>
+        <target state="final">Ugyldigt webstedssæt '%1$s': %2$s</target>
+      </trans-unit>
+      <trans-unit id="countries.default" approved="yes">
+        <source>Default countries</source>
+        <target state="final">Standardlande</target>
+      </trans-unit>
+      <trans-unit id="countries.prioritized" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">Prioriterede lande</target>
+      </trans-unit>
+      <trans-unit id="notifications.button.clearAll" approved="yes">
+        <source>Clear all</source>
+        <target state="final">Ryd alle</target>
+      </trans-unit>
+      <trans-unit id="labels.noSelectableItemsAvailable" approved="yes">
+        <source>No selectable items available. Check TCA, related records and TSconfig.</source>
+        <target state="final">Ingen valgbare emner tilgængelige. Tjek TCA, relaterede elementer og TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="size_in_bytes" approved="yes">
+        <source>{numberOfBytes, plural, one {# byte} other {# bytes}}</source>
+        <target state="final">{numberOfBytes, plural, one {# byte} other {# bytes}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
