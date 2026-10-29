@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Prepiši obstoječe datoteke</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Izberite mesto nove strani</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Nazaj</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Ustvari novo stran</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Tu vstavi novo stran</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Vstavi nov zapis</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Premakni elemente</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopiraj elemente</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Naredi kopijo elementa namesto da ga premakneš</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">Išči katero koli vrsto vsebine</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Vsebina</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Zgodovina / Razveljavi</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">Ne prikaži v meniju</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">Čarovnik 'Ustvari novo'</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">Skrij navigacijo</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
