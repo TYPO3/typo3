@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title" approved="yes">
+        <source>Slugs updated and redirects created</source>
+        <target state="final">Slugy Aktualizovány a vytvořeno přesměrování</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title" approved="yes">
+        <source>Slugs updated</source>
+        <target state="final">Slugy aktualizovány</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update" approved="yes">
+        <source>Revert update</source>
+        <target state="final">Vrátit změnu</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect" approved="yes">
+        <source>Revert redirects only</source>
+        <target state="final">Vrátit pouze přesměrování</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Došlo k chybě</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message" approved="yes">
+        <source>Sorry something went wrong.</source>
+        <target state="final">Omlouváme se, něco se pokazilo.</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Návrat změn dopadl úspěšně</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message" approved="yes">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target state="final">Všechny změny ostatních stránek byly vráceny zpět.</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Návrat změn dopadl úspěšně</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message" approved="yes">
+        <source>All created redirects have been reverted.</source>
+        <target state="final">Všechna vytvořená přesměrování byla zrušena.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
