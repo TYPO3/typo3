@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="downloadRecord" approved="yes">
+        <source>Download %d record</source>
+        <target state="final">Datensatz %d herunterladen</target>
+      </trans-unit>
+      <trans-unit id="downloadRecords" approved="yes">
+        <source>Download %d records</source>
+        <target state="final">Datensätze %d herunterladen</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Herunterladen</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordSettings" approved="yes">
+        <source>Download %s: %d Record</source>
+        <target state="final">Download %s: %d Datensatz</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordsSettings" approved="yes">
+        <source>Download %s: %d Records</source>
+        <target state="final">Download %s: %d Datensätze</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.generalSettings" approved="yes">
+        <source>General settings</source>
+        <target state="final">Allgemeine Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.columnsToDownload" approved="yes">
+        <source>Columns to download</source>
+        <target state="final">Herunterzuladende Spalten</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.selectedColumns" approved="yes">
+        <source>Selected columns</source>
+        <target state="final">Ausgewählte Spalten</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.allColumns" approved="yes">
+        <source>All columns</source>
+        <target state="final">Alle Spalten</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.valueFormat" approved="yes">
+        <source>Format of values</source>
+        <target state="final">Format der Werte</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.rawValues" approved="yes">
+        <source>Raw values</source>
+        <target state="final">Rohdaten</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.processedValues" approved="yes">
+        <source>Processed values</source>
+        <target state="final">Verarbeitete Werte</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.default" approved="yes">
+        <source>Default: %s</source>
+        <target state="final">Standard: %s</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename" approved="yes">
+        <source>Filename</source>
+        <target state="final">Dateiname</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename.placeholder" approved="yes">
+        <source>e.g. %s_ddmmyy-hhmm</source>
+        <target state="final">z. B. %s_ddmmyy-hhmm</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Format</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.csv" approved="yes">
+        <source>CSV</source>
+        <target state="final">CSV</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.json" approved="yes">
+        <source>JSON</source>
+        <target state="final">JSON</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv" approved="yes">
+        <source>CSV options</source>
+        <target state="final">CSV-Optionen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter" approved="yes">
+        <source>Delimiter</source>
+        <target state="final">Feldtrennzeichen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.comma" approved="yes">
+        <source>comma</source>
+        <target state="final">Komma</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.semicolon" approved="yes">
+        <source>semicolon</source>
+        <target state="final">Semikolon</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.pipe" approved="yes">
+        <source>pipe</source>
+        <target state="final">Senkrechter Strich</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.custom" approved="yes">
+        <source>user defined</source>
+        <target state="final">benutzerdefiniert</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote" approved="yes">
+        <source>Quote character</source>
+        <target state="final">Feldbegrenzerzeichen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.doublequote" approved="yes">
+        <source>double quote</source>
+        <target state="final">Doppeltes Anführungszeichen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.singlequote" approved="yes">
+        <source>single quote</source>
+        <target state="final">Einfaches Anführungszeichen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.space" approved="yes">
+        <source>space</source>
+        <target state="final">Leerzeichen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.custom" approved="yes">
+        <source>user defined</source>
+        <target state="final">benutzerdefiniert</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json" approved="yes">
+        <source>JSON options</source>
+        <target state="final">JSON-Optionen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta" approved="yes">
+        <source>Meta information</source>
+        <target state="final">Metainformationen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.full" approved="yes">
+        <source>Add all relevant information to the download</source>
+        <target state="final">Alle relevanten Informationen zum Download hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.prefix" approved="yes">
+        <source>Prefix the download with table name and page id</source>
+        <target state="final">Dem Download den Tabellennamen und die Seiten-ID voranstellen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.none" approved="yes">
+        <source>No information, only download records</source>
+        <target state="final">Keine Informationen, nur Datensätze herunterladen</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.preset" approved="yes">
+        <source>Preset</source>
+        <target state="final">Voreinstellung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
