@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">ページコンテンツを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage" approved="yes">
+        <source>Edit translated page content</source>
+        <target state="final">翻訳されたページのコンテンツを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage" approved="yes">
+        <source>View translated page</source>
+        <target state="final">翻訳されたページを表示</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">ページプロパティを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties" approved="yes">
+        <source>Edit translated page properties</source>
+        <target state="final">翻訳されたページのコンテンツを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">すべてのページプロパティを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties" approved="yes">
+        <source>Edit all translated page properties</source>
+        <target state="final">すべての翻訳されたページのプロパティを編集</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">コンテンツエレメント カウント</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
