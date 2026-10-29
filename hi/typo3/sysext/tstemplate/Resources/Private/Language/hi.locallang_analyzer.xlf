@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Included TypoScript</source>
+        <target state="final">सम्मिलित TypoScript</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Included TypoScript for record "%s"</source>
+        <target state="final">रिकॉर्ड के लिए सम्मिलित TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">वर्तमान पृष्ठ के लिए सम्मिलित TypoScript और शामिल करने के क्रम का अवलोकन।</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">कोई TypoScript नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">चयनित रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">निरंतरताएँ</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">सेटअप</target>
+      </trans-unit>
+      <trans-unit id="panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">सिंटैक्स स्कैनर चेतावनियाँ</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">%s सिंटैक्स चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">%s सिंटैक्स चेतावनियाँ</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">प्रभावित कोड स्निपेट दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में अवैध लाइन, लाइन नंबर "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में अतिरिक्त ब्रेस, लाइन नंबर "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में ब्रेस की कमी, लाइन नंबर "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">आयात "%1$s" में फ़ाइल नहीं खोज पा रहा है, लाइन नंबर "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">कोड दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">संभावित शामिल करने / आयात समेत कोड दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.root" approved="yes">
+        <source>Root</source>
+        <target state="final">मूल</target>
+      </trans-unit>
+      <trans-unit id="tree.child.sysTemplateRecord" approved="yes">
+        <source>TypoScript record (page UID %s)</source>
+        <target state="final">TypoScript रिकॉर्ड (पृष्ठ UID %s)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">"@import" के माध्यम से शामिल</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">स्थिति (तब)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">स्थिति (अन्यथा)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">स्थिति (अंत)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScript" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">"$GLOBALS" के माध्यम से शामिल</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">"$GLOBALS" के माध्यम से शामिल</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel" approved="yes">
+        <source>Default content rendering</source>
+        <target state="final">डिफ़ॉल्ट सामग्री प्रदर्शन</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ExtensionStatic" approved="yes">
+        <source>TypoScript set (loaded automatically)</source>
+        <target state="final">TypoScript सेट (स्वतः लोड होने वाला)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.File" approved="yes">
+        <source>Part of a TypoScript set</source>
+        <target state="final">TypoScript सेट का एक हिस्सा</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileDatabase" approved="yes">
+        <source>TypoScript set</source>
+        <target state="final">TypoScript सेट</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileFile" approved="yes">
+        <source>TypoScript set (included via file)</source>
+        <target state="final">TypoScript सेट (फ़ाइल के माध्यम से शामिल)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Root" approved="yes">
+        <source>Root</source>
+        <target state="final">मूल</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">कोड सेगमेंट</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">साइट</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SiteTemplate" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">साइट कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SysTemplate" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">TypoScript रिकॉर्ड</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
