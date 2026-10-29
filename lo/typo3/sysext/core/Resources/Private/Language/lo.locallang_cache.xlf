@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="page.label" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">ລ້າງແຄຊສຳລັບໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">ລ້າງແຄຊສ່ວນໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">ລ້າງແຄຊສ່ວນໜ້າເວັບ ແລະ ແຄຊທີ່ກ່ຽວຂ້ອງກັບໜ້າຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="group.all.label" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">ລ້າງແຄຊທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="group.all.description" approved="yes">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target state="final">ລ້າງແຄຊສ່ວນໜ້າເວັບ ແລະ ແຄຊທີ່ກ່ຽວຂ້ອງກັບໜ້າ, ລວມເຖິງທຸກໆແຄຊທີ່ກ່ຽວຂ້ອງກັບລະບົບ, ເຊັ່ນ: ການປັບໃຫ້ເຂົ້າກັບທ້ອງຖິ່ນ, ການຕັ້ງຄ່າສ່ວນເສີມ, ແຄຊໄຟລ໌ ແລະ ແຄຊອັອບໂຄດ. ການສ້າງແຄຊເຫຼົ່ານີ້ຄືນໃໝ່ອາດຈະໃຊ້ເວລາໄລຍະໜຶ່ງ.</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title" approved="yes">
+        <source>Caches cleared</source>
+        <target state="final">ລ້າງແຄຊສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message" approved="yes">
+        <source>Caches have been cleared.</source>
+        <target state="final">ແຄຊໄດ້ຖືກລ້າງສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດຂຶ້ນ</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" approved="yes">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດຂຶ້ນໃນຂະນະທີ່ກຳລັງລ້າງແຄຊ. ບາງແຄຊອາດຈະບໍ່ໄດ້ຖືກລ້າງໃຫ້ສຳເລັດ.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title" approved="yes">
+        <source>Page cache cleared</source>
+        <target state="final">ລ້າງແຄຊຂອງໜ້າເວັບສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message" approved="yes">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target state="final">ລ້າງແຄຊຂອງໜ້າເວັບສຳລັບ '%s' ສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title" approved="yes">
+        <source>Page cache not cleared</source>
+        <target state="final">ແຄຊຂອງໜ້າເວັບບໍ່ໄດ້ຖືກລ້າງ</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message" approved="yes">
+        <source>Page cache could not be cleared.</source>
+        <target state="final">ບໍ່ສາມາດລ້າງແຄຊຂອງໜ້າເວັບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title" approved="yes">
+        <source>Frontend caches cleared</source>
+        <target state="final">ລ້າງແຄຊສ່ວນໜ້າເວັບສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message" approved="yes">
+        <source>Frontend caches have been cleared.</source>
+        <target state="final">ແຄຊສ່ວນໜ້າເວັບໄດ້ຖືກລ້າງສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title" approved="yes">
+        <source>All caches cleared</source>
+        <target state="final">ລ້າງທຸກແຄຊສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message" approved="yes">
+        <source>All caches have been cleared.</source>
+        <target state="final">ແຄຊທັງໝົດໄດ້ຖືກລ້າງສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
