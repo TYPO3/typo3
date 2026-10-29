@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/Modules/permissions.xlf" date="2026-11-10T13:37:37Z" product-name="permissions" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Permessi</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage page access permissions</source>
+        <target state="final">Gestisci i permessi di accesso alla pagina</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Administers which backend users and groups can access and edit pages in the site tree. For each page, an owner user and group can be assigned, and read, write, and edit permissions defined. These settings control who can view or modify content within the page hierarchy.</source>
+        <target state="final">Amministra quali utenti e gruppi di backend possono accedere e modificare le pagine nell'albero del sito. Per ogni pagina possono essere assegnati un utente proprietario e un gruppo, e definire i permessi di lettura, scrittura e modifica. Queste impostazioni controllano chi può visualizzare o modificare il contenuto all'interno della gerarchia delle pagine.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
