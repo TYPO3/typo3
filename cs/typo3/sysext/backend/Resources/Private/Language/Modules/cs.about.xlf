@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">O TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">Zobrazuje základní informace o aplikaci TYPO3, verzi a licenčních podmínkách.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">O TYPO3</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Logo TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">Informace o TYPO3</target>
+      </trans-unit>
+      <trans-unit id="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 CMS - Profesionální systém pro správu obsahu webu</target>
+      </trans-unit>
+      <trans-unit id="minor" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
+        <target state="final">TYPO3 CMS je podnikový systém pro správu obsahu s otevřeným zdrojovým kódem, který se používá mezinárodně pro vytváření a správu webových stránek všech typů, z malých pracovišť pro neziskové podniky do vícejazyčných řešení pro velké korporace.&lt;br /&gt;&lt;br /&gt;Další informace naleznete na &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS je &lt;b&gt;volně k dispozici&lt;/b&gt; pod licencí &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;(GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Používáte %s %s</target>
+      </trans-unit>
+      <trans-unit id="cms_description" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Copyright %s %s</source>
+        <target state="final">TYPO3 CMS je open source systém pro správu obsahu podnikové třídy, který se mezinárodně používá k vytváření a správě webových stránek všech typů, od malých stránek pro neziskové organizace až po vícejazyčná podniková řešení pro velké korporace.&lt;br /&gt;&lt;br /&gt; Další informace naleznete na adrese &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS je &lt;b&gt;volně dostupný&lt;/b&gt; pod licencí &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3 (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Copyright %s %s</target>
+      </trans-unit>
+      <trans-unit id="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">Příspěvky komunity</target>
+      </trans-unit>
+      <trans-unit id="information_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="final">Navštivte &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt;, pokud chcete vědět proč TYPO3 válí.</target>
+      </trans-unit>
+      <trans-unit id="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">Core Team</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="final">Navštivte &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; pro kompletní seznam členů.&lt;br /&gt;&lt;br /&gt;Git repozitář a ChangeLog naleznete &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;zde&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Autoři rozšíření</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Toto je seznam lidí, kteří se podíleli na rozšíření, která používáte ve vaší instalaci.</target>
+      </trans-unit>
+      <trans-unit id="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Rozšíření</target>
+      </trans-unit>
+      <trans-unit id="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="donation.sectionHeadline" approved="yes">
+        <source>TYPO3 Donation and community</source>
+        <target state="final">TYPO3 Dary a komunita</target>
+      </trans-unit>
+      <trans-unit id="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">TYPO3 dary</target>
+      </trans-unit>
+      <trans-unit id="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">Bylo by skvělé, kdybyste mohli přispět i malým darem. TYPO3 je Open Source a spoléhá na dary od svých uživatelů a příznivců.&lt;br/&gt;&lt;b&gt;Děkujeme vám&lt;/b&gt; za vaši pomoc při zlepšování tohoto skvělého systému pro správu obsahu!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">Přispět teď</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">Externí knihovny</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">Jádro TYPO3 CMS používá a děkuje těmto externím Open Source projektům:</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.name" approved="yes">
+        <source>Project name</source>
+        <target state="final">Název projektu</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.website" approved="yes">
+        <source>Website</source>
+        <target state="final">Web</target>
+      </trans-unit>
+      <trans-unit id="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Systém pro správu obsahu webu</target>
+      </trans-unit>
+      <trans-unit id="modules.headline" approved="yes">
+        <source>Modules</source>
+        <target state="final">Moduly</target>
+      </trans-unit>
+      <trans-unit id="modules.introtext" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">Toto je stručný popis dostupných modulů.</target>
+      </trans-unit>
+      <trans-unit id="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">Funkce se mohou lišit v závislosti na vašich webových stránkách a oprávněních</target>
+      </trans-unit>
+      <trans-unit id="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Jste přihlášeni jako uživatel</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Otevřít modul</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">Otevřít %1s modul</target>
+      </trans-unit>
+      <trans-unit id="noSubModules" approved="yes">
+        <source>There are currently no functions available for this module.</source>
+        <target state="final">V současné době nejsou k dispozici žádné funkce pro tento modul.</target>
+      </trans-unit>
+      <trans-unit id="noSubModulesWithTitle" approved="yes">
+        <source>There are currently no functions available for the %1s module.</source>
+        <target state="final">Momentálně nejsou k dispozici žádné funkce pro modul %1s.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
