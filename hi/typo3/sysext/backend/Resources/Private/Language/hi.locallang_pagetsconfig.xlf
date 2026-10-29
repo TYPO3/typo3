@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="module.pagetsconfig.noAccess" approved="yes">
+        <source>Access to this module denied.</source>
+        <target state="final">इस मॉड्यूल तक पहुँच अस्वीकृत है।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.headline" approved="yes">
+        <source>Pages containing page TSconfig</source>
+        <target state="final">page TSconfig युक्त पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.description" approved="yes">
+        <source>Global overview of all pages in the database containing page TSconfig.</source>
+        <target state="final">page TSconfig युक्त डेटाबेस में सभी पृष्ठों का वैश्विक अवलोकन।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.noRecords" approved="yes">
+        <source>There are no pages containing page TSconfig settings in the page configuration.</source>
+        <target state="final">पृष्ठ कॉन्फ़िगरेशन में page TSconfig सेटिंग्स वाले कोई पृष्ठ नहीं हैं।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.pagetitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">पृष्ठ शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" approved="yes">
+        <source>Number of lines of code in field "TSconfig"</source>
+        <target state="final">"TSconfig" फ़ील्ड में कोड की पंक्तियों की संख्या</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.headline" approved="yes">
+        <source>Active page TSconfig of page "%s"</source>
+        <target state="final">पृष्ठ "%s" का सक्रिय page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.description" approved="yes">
+        <source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+        <target state="final">सिस्टम के वर्तमान page TSconfig का अवलोकन। मानों और नामों के लिए लक्षित खोज संभव है। परिणामों की सूची को शर्तों के अनुसार फ़िल्टर भी किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in page TSconfig</source>
+        <target state="final">page TSconfig में कॉन्स्टेंट्स प्रतिस्थापित करें</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">टिप्पणियाँ दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">कुंजियों को वर्णानुक्रम में क्रमित करें</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">शर्तें</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s सक्रिय शर्तें</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s सक्रिय शर्त</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" approved="yes">
+        <source>Site settings usage: [%s]</source>
+        <target state="final">साइट सेटिंग्स का उपयोग: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">साइट सेटिंग्स से कॉन्स्टेंट्स</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.activePageTsConfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">पृष्ठ TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" approved="yes">
+        <source>No suitable page TSconfig available.</source>
+        <target state="final">उपयुक्त page TSconfig उपलब्ध नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">कॉन्स्टेंट उपयोग: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.headline" approved="yes">
+        <source>Included page TSconfig of page "%s"</source>
+        <target state="final">पृष्ठ "%s" का शामिल page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">वर्तमान पृष्ठ के लिए शामिल TypoScript और शामिल करने के क्रम का अवलोकन।</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">साइट सेटिंग्स से कॉन्स्टेंट्स</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">पृष्ठ TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">सिंटैक्स स्कैनर चेतावनियाँ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">%s सिंटैक्स चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">%s सिंटैक्स चेतावनियाँ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">प्रभावित कोड स्निपेट दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में अमान्य पंक्ति, पंक्ति संख्या "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में अतिरिक्त ब्रैस, पंक्ति संख्या "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में ब्रैस अनुपस्थित, पंक्ति संख्या "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">"%1$s" में Import को कोई फ़ाइल नहीं मिली, पंक्ति संख्या "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">कोड खंड</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">"@import" के माध्यम से शामिल</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">शर्त (then)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">शर्त (else)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">शर्त (end)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">कोड दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">संभावित includes/imports सहित कोड दिखाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
