@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Rechten</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">Permissies wijzigen</target>
+      </trans-unit>
+      <trans-unit id="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">Legenda</target>
+      </trans-unit>
+      <trans-unit id="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Eigenaar</target>
+      </trans-unit>
+      <trans-unit id="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">Groep</target>
+      </trans-unit>
+      <trans-unit id="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">Iedereen</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">De instelling »Alleen beheerders« voor deze pagina uitschakelen. Momenteel is de pagina en alle inhoud geblokkeerd voor het bewerken door iedereen anders dan beheerders.</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">Het »alleen-beheerders« slot voor het bewerken van deze pagina inschakelen</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">Afbreken</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">BEWERKEN</target>
+      </trans-unit>
+      <trans-unit id="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">Recursief gebruiken</target>
+      </trans-unit>
+      <trans-unit id="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">Getroffen pagina's</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">Getroffen pagina's</target>
+      </trans-unit>
+      <trans-unit id="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">Gebruikersoverzicht</target>
+      </trans-unit>
+      <trans-unit id="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Modus</target>
+      </trans-unit>
+      <trans-unit id="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Diepte</target>
+      </trans-unit>
+      <trans-unit id="level" approved="yes">
+        <source>level</source>
+        <target state="final">niveau</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">niveau's</target>
+      </trans-unit>
+      <trans-unit id="User" approved="yes">
+        <source>User</source>
+        <target state="final">Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="changeOwner" approved="yes">
+        <source>Change owner</source>
+        <target state="final">Eigenaar wijzigen</target>
+      </trans-unit>
+      <trans-unit id="changeGroup" approved="yes">
+        <source>Change group</source>
+        <target state="final">Groep wijzigen</target>
+      </trans-unit>
+      <trans-unit id="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">Definitie: 'inhoud' zijn records van alle tabellen op deze pagina - behalve records uit de tabel 'pages' (Pagina's).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">Toegang gegeven</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">Toegang geweigerd</target>
+      </trans-unit>
+      <trans-unit id="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">Pagina tonen</target>
+      </trans-unit>
+      <trans-unit id="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Inhoud bewerken</target>
+      </trans-unit>
+      <trans-unit id="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Pagina bewerken</target>
+      </trans-unit>
+      <trans-unit id="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">Pagina verwijderen</target>
+      </trans-unit>
+      <trans-unit id="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">Nieuwe pagina's</target>
+      </trans-unit>
+      <trans-unit id="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">Pagina en inhoud tonen/kopiëren</target>
+      </trans-unit>
+      <trans-unit id="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">Inhoud wijzigen/toevoegen/verwijderen/verplaatsen.</target>
+      </trans-unit>
+      <trans-unit id="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">Pagina wijzigen, bijv. paginatitel wijzigen, etc.</target>
+      </trans-unit>
+      <trans-unit id="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">Pagina en inhoud verwijderen/verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">Nieuwe pagina's onder deze pagina aanmaken.</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">Werkruimtewaarschuwing</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" approved="yes">
+        <source>Permissions set in a workspace take effect only after the related elements are published. To apply permissions immediately, configure them in the Live workspace. (Permissions are always evaluated based on the Live workspace record or the placeholder of a draft version)</source>
+        <target state="final">De in een werkruimte ingestelde rechten worden pas van kracht nadat de gerelateerde elementen zijn gepubliceerd. Om de rechten onmiddellijk toe te passen kunnen ze in de Live werkruimte ingesteld worden. (Rechten worden altijd geëvalueerd op basis van het Live werkruimte record of de plaatshouder van een conceptversie)</target>
+      </trans-unit>
+      <trans-unit id="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">niet ingesteld</target>
+      </trans-unit>
+      <trans-unit id="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">verwijderd</target>
+      </trans-unit>
+      <trans-unit id="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">Er zijn geen gebruikersgroepen</target>
+      </trans-unit>
+      <trans-unit id="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - geen -   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - ongewijzigd laten -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
