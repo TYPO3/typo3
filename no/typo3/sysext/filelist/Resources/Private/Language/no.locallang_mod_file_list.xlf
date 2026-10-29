@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Vis klippebord</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Lim inn innholdet fra klippebordet</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Lim inn i: Innholdet fra klippebordet settes inn i denne mappen</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Str</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">filer</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Midlertidige filer</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papirkurv</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Adgang nektet.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Du prøver å få tilgang til en mappe i et lagringsområde som ikke er blabar.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Mangler mappetillatelser</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Du har ikke tilgang til mappen "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Mappe ikke funnet.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Mappen "%s" kan ikke nås. Prøver å bruke overordna mappe(ne).</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Oversett metadat</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Lag metadata av denne filen for %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Redigere metadata av denne filen for %s</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Målet var ikke en katalog!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
