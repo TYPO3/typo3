@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">अनुमतियाँ बदलें</target>
+      </trans-unit>
+      <trans-unit id="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">लीजेंड</target>
+      </trans-unit>
+      <trans-unit id="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">मालिक</target>
+      </trans-unit>
+      <trans-unit id="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">समूह</target>
+      </trans-unit>
+      <trans-unit id="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">सभी</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">इस पृष्ठ के लिए »Admin-only« संपादन लॉक अक्षम करें। वर्तमान में यह पृष्ठ और समस्त सामग्री सभी गैर-एडमिन उपयोगकर्ताओं के लिए संपादन हेतु लॉक है।</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">इस पृष्ठ के लिए »Admin-only« संपादन लॉक सक्षम करें</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">सहेजें</target>
+      </trans-unit>
+      <trans-unit id="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">रद्द करें</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">संपादन</target>
+      </trans-unit>
+      <trans-unit id="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">पुनरावर्ती रूप से सेट करें</target>
+      </trans-unit>
+      <trans-unit id="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">प्रभावित पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">प्रभावित पृष्ठों</target>
+      </trans-unit>
+      <trans-unit id="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">उपयोगकर्ता अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">मोड</target>
+      </trans-unit>
+      <trans-unit id="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="level" approved="yes">
+        <source>level</source>
+        <target state="final">स्तर</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">स्तरों</target>
+      </trans-unit>
+      <trans-unit id="User" approved="yes">
+        <source>User</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="changeOwner" approved="yes">
+        <source>Change owner</source>
+        <target state="final">मालिक बदलें</target>
+      </trans-unit>
+      <trans-unit id="changeGroup" approved="yes">
+        <source>Change group</source>
+        <target state="final">समूह बदलें</target>
+      </trans-unit>
+      <trans-unit id="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">परिभाषा: 'content' किसी पृष्ठ पर सभी तालिकाओं के रिकॉर्ड होते हैं - सिवाय तालिका 'pages' (पृष्ठ) के रिकॉर्डों के।</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">पहुँच स्वीकृत</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">पहुँच अस्वीकृत</target>
+      </trans-unit>
+      <trans-unit id="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">सामग्री संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">कंटेंट एडिट करे</target>
+      </trans-unit>
+      <trans-unit id="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">पृष्ठ संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">नए पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">नए पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">पृष्ठ और सामग्री दिखाएँ/कॉपी करें।</target>
+      </trans-unit>
+      <trans-unit id="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">सामग्री बदलें/जोड़ें/हटाएँ/स्थानांतरित करें।</target>
+      </trans-unit>
+      <trans-unit id="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">पृष्ठ बदलें, उदा. पृष्ठ शीर्षक बदलना आदि।</target>
+      </trans-unit>
+      <trans-unit id="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">पृष्ठ और सामग्री हटाएँ/स्थानांतरित करें।</target>
+      </trans-unit>
+      <trans-unit id="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">इस पृष्ठ के अंतर्गत नए पृष्ठ बनाएँ।</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">वर्कस्पेस चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" approved="yes">
+        <source>Permissions set in a workspace take effect only after the related elements are published. To apply permissions immediately, configure them in the Live workspace. (Permissions are always evaluated based on the Live workspace record or the placeholder of a draft version)</source>
+        <target state="final">वर्कस्पेस में आप जो अनुमतियाँ सेट करते हैं, वे तत्वों पर केवल प्रकाशित होने के बाद ही प्रभावी होती हैं! यदि आपको ऐसी अनुमतियाँ सेट करनी हैं जो अभी प्रभावी हों, तो आपको यह Live वर्कस्पेस में करना होगा। (ड्राफ्ट संस्करण के Live वर्कस्पेस रिकॉर्ड/placeholder पर ही अनुमतियों का मूल्यांकन किया जाता है)</target>
+      </trans-unit>
+      <trans-unit id="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">निर्धारित नहीं</target>
+      </trans-unit>
+      <trans-unit id="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">हटाया गया</target>
+      </trans-unit>
+      <trans-unit id="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">कोई उपयोगकर्ता समूह मौजूद नहीं हैं।</target>
+      </trans-unit>
+      <trans-unit id="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - कोई नहीं -   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - जैसा है वैसा ही छोड़ें -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
