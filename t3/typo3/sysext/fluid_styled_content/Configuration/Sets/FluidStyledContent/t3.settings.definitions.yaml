@@ -1,0 +1,99 @@
+categories:
+  fsc: null
+  fsc.templates:
+    parent: crwdns416763:0crwdne416763:0
+  fsc.content:
+    parent: crwdns416765:0crwdne416765:0
+settings:
+  styles.content.defaultHeaderType:
+    default: 0
+    type: crwdns416769:0crwdne416769:0
+    category: crwdns416771:0crwdne416771:0
+  styles.content.shortcut.tables:
+    default: crwdns416773:0crwdne416773:0
+    type: crwdns416775:0crwdne416775:0
+    category: crwdns416777:0crwdne416777:0
+  styles.content.image.lazyLoading:
+    default: crwdns416779:0crwdne416779:0
+    type: crwdns416781:0crwdne416781:0
+    enum:
+      - crwdns416783:0crwdne416783:0
+      - crwdns416785:0crwdne416785:0
+      - crwdns416787:0crwdne416787:0
+    category: crwdns416789:0crwdne416789:0
+  styles.content.image.imageDecoding:
+    default: 'crwdns416791:0crwdne416791:0'
+    type: crwdns416793:0crwdne416793:0
+    enum:
+      - crwdns416795:0crwdne416795:0
+      - crwdns416797:0crwdne416797:0
+      - crwdns416799:0crwdne416799:0
+    category: crwdns416801:0crwdne416801:0
+  styles.content.textmedia.maxW:
+    default: 0
+    type: crwdns416805:0crwdne416805:0
+    category: crwdns416807:0crwdne416807:0
+  styles.content.textmedia.maxWInText:
+    default: 0
+    type: crwdns416811:0crwdne416811:0
+    category: crwdns416813:0crwdne416813:0
+  styles.content.textmedia.columnSpacing:
+    default: 0
+    type: crwdns416817:0crwdne416817:0
+    category: crwdns416819:0crwdne416819:0
+  styles.content.textmedia.rowSpacing:
+    default: 0
+    type: crwdns416823:0crwdne416823:0
+    category: crwdns416825:0crwdne416825:0
+  styles.content.textmedia.textMargin:
+    default: 0
+    type: crwdns416829:0crwdne416829:0
+    category: crwdns416831:0crwdne416831:0
+  styles.content.textmedia.borderColor:
+    default: 'crwdns416833:0crwdne416833:0'
+    type: crwdns416835:0crwdne416835:0
+    category: crwdns416837:0crwdne416837:0
+  styles.content.textmedia.borderWidth:
+    default: 0
+    type: crwdns416841:0crwdne416841:0
+    category: crwdns416843:0crwdne416843:0
+  styles.content.textmedia.borderPadding:
+    default: 0
+    type: crwdns416847:0crwdne416847:0
+    category: crwdns416849:0crwdne416849:0
+  styles.content.textmedia.linkWrap.width:
+    default: crwdns416851:0crwdne416851:0
+    type: crwdns416853:0crwdne416853:0
+    category: crwdns416855:0crwdne416855:0
+  styles.content.textmedia.linkWrap.height:
+    default: crwdns416857:0crwdne416857:0
+    type: crwdns416859:0crwdne416859:0
+    category: crwdns416861:0crwdne416861:0
+  styles.content.textmedia.linkWrap.newWindow:
+    default: false
+    type: crwdns416863:0crwdne416863:0
+    category: crwdns416865:0crwdne416865:0
+  styles.content.textmedia.linkWrap.lightboxEnabled:
+    default: false
+    type: crwdns416867:0crwdne416867:0
+    category: crwdns416869:0crwdne416869:0
+  styles.content.textmedia.linkWrap.lightboxCssClass:
+    default: crwdns416871:0crwdne416871:0
+    type: crwdns416873:0crwdne416873:0
+    category: crwdns416875:0crwdne416875:0
+  styles.content.textmedia.linkWrap.lightboxRelAttribute:
+    default: 'crwdns416877:0crwdne416877:0'
+    type: crwdns416879:0crwdne416879:0
+    category: crwdns416881:0crwdne416881:0
+  styles.templates.templateRootPath:
+    default: 'crwdns416883:0crwdne416883:0'
+    type: crwdns416885:0crwdne416885:0
+    category: crwdns416887:0crwdne416887:0
+  styles.templates.partialRootPath:
+    default: 'crwdns416889:0crwdne416889:0'
+    type: crwdns416891:0crwdne416891:0
+    category: crwdns416893:0crwdne416893:0
+  styles.templates.layoutRootPath:
+    default: 'crwdns416895:0crwdne416895:0'
+    type: crwdns416897:0crwdne416897:0
+    category: crwdns416899:0crwdne416899:0
