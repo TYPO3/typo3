@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="reactions" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Reactions</source>
+        <target state="final">Реакции</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage incoming HTTP webhooks to external system</source>
+        <target state="final">Управление входящими HTTP-перехватами для внешней системы</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Configure secure endpoints that allow external services to trigger actions in TYPO3. Respond to webhooks from GitHub, payment providers, form services, and other platforms to automate workflows.</source>
+        <target state="final">Настройте защищенные конечные точки, которые позволяют внешним службам запускать действия в TYPO3. Отвечайте на веб-запросы от GitHub, поставщиков платежей, служб форм и других платформ для автоматизации рабочих процессов.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Reactions — Manage Incoming HTTP Webhooks</source>
+        <target state="final">Реакции — управление входящими HTTP-перехватами</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.title" approved="yes">
+        <source>No reactions found!</source>
+        <target state="final">Реакции не найдены!</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found.message" approved="yes">
+        <source>There are currently no reaction records found in the database.</source>
+        <target state="final">Записи реакции в базе данных не найдены.</target>
+      </trans-unit>
+      <trans-unit id="reaction_create" approved="yes">
+        <source>Create new reaction</source>
+        <target state="final">Создать новую реакцию</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.title" approved="yes">
+        <source>Create your first reaction</source>
+        <target state="final">Создайте свою первую реакцию</target>
+      </trans-unit>
+      <trans-unit id="reaction_types.message" approved="yes">
+        <source>Choose what TYPO3 should do when an external system calls it. Each reaction gets its own endpoint and secret.</source>
+        <target state="final">Выберите, что делать TYPO3 при вызове внешней системы. Каждая реакция получает свою конечную точку и секрет.</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create" approved="yes">
+        <source>Create reaction</source>
+        <target state="final">Создать реакцию</target>
+      </trans-unit>
+      <trans-unit id="reaction_type.create.title" approved="yes">
+        <source>Create a reaction of type "%s"</source>
+        <target state="final">Создать реакцию типа "%s"</target>
+      </trans-unit>
+      <trans-unit id="column.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Цель</target>
+      </trans-unit>
+      <trans-unit id="target.page_missing" approved="yes">
+        <source>Page %s does not exist</source>
+        <target state="final">Страница %s не существует</target>
+      </trans-unit>
+      <trans-unit id="user.missing" approved="yes">
+        <source>No user</source>
+        <target state="final">Нет пользователя</target>
+      </trans-unit>
+      <trans-unit id="user.not_found" approved="yes">
+        <source>User %s does not exist</source>
+        <target state="final">Пользователь %s не существует</target>
+      </trans-unit>
+      <trans-unit id="user.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">отключено</target>
+      </trans-unit>
+      <trans-unit id="last_call.never" approved="yes">
+        <source>never</source>
+        <target state="final">никогда</target>
+      </trans-unit>
+      <trans-unit id="last_call.status" approved="yes">
+        <source>HTTP %s</source>
+        <target state="final">HTTP %s</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.title" approved="yes">
+        <source>No reactions found</source>
+        <target state="final">Реакции не найдены</target>
+      </trans-unit>
+      <trans-unit id="reaction_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no reactions could be found.</source>
+        <target state="final">При текущем наборе фильтров реакции не обнаружены.</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Удалить все фильтры</target>
+      </trans-unit>
+      <trans-unit id="reaction_no_implementation_class" approved="yes">
+        <source>Implementation class for reaction type "%s" is missing.</source>
+        <target state="final">Реализация класса для типа реакции "%s" отсутствует.</target>
+      </trans-unit>
+      <trans-unit id="reaction_example" approved="yes">
+        <source>Example</source>
+        <target state="final">Пример</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out" approved="yes">
+        <source>Try Out</source>
+        <target state="final">Попробовать</target>
+      </trans-unit>
+      <trans-unit id="reaction_try_out_title" approved="yes">
+        <source>Try Out: %s</source>
+        <target state="final">Пробовать: %s</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_hint" approved="yes">
+        <source>Send this request from an external system. Replace the placeholder with the secret of the reaction and customize the field values.</source>
+        <target state="final">Отправьте этот запрос из внешней системы. Замените заполнитель на секретный код реакции и настройте значения полей.</target>
+      </trans-unit>
+      <trans-unit id="reaction_example_copy" approved="yes">
+        <source>Copy example</source>
+        <target state="final">Копировать пример</target>
+      </trans-unit>
+      <trans-unit id="dry_run" approved="yes">
+        <source>Dry run</source>
+        <target state="final">Пробный прогон</target>
+      </trans-unit>
+      <trans-unit id="dry_run_hint" approved="yes">
+        <source>Resolves a payload against the field map as the user this reaction impersonates. No record is written and the secret is not checked. The target table may still reject a value when the record is actually written.</source>
+        <target state="final">Сопоставляет полезную нагрузку с картой полей от имени пользователя, за которого выдает себя эта реакция. Запись не производится, и секретный ключ не проверяется. Целевая таблица может отклонить значение при фактической записи в нее.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_error" approved="yes">
+        <source>The dry run could not be resolved.</source>
+        <target state="final">Не удалось провести пробный прогон.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_payload" approved="yes">
+        <source>Payload</source>
+        <target state="final">Полезная нагрузка</target>
+      </trans-unit>
+      <trans-unit id="dry_run_submit" approved="yes">
+        <source>Execute dry run</source>
+        <target state="final">Выполнить пробный запуск</target>
+      </trans-unit>
+      <trans-unit id="dry_run_invalid_json" approved="yes">
+        <source>The payload is not a JSON object. The endpoint treats such a request as an empty payload.</source>
+        <target state="final">Полезная нагрузка не является объектом JSON. Конечная точка обрабатывает такой запрос как запрос с пустой полезной нагрузкой.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_no_record" approved="yes">
+        <source>No record would be created</source>
+        <target state="final">Запись не будет создана</target>
+      </trans-unit>
+      <trans-unit id="dry_run_record" approved="yes">
+        <source>A record would be created in table "%1$s" on page %2$s, as user "%3$s".</source>
+        <target state="final">Запись будет создана в таблице "%1$s" на странице %2$s от имени пользователя "%3$s".</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.disabled" approved="yes">
+        <source>The reaction is disabled, so the endpoint rejects every request.</source>
+        <target state="final">Реакция отключена, поэтому конечная точка отклоняет все запросы.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.scheduled" approved="yes">
+        <source>The reaction is not active yet, so the endpoint rejects every request until its start date.</source>
+        <target state="final">Реакция еще не началась, поэтому конечная точка отклоняет все запросы до указанной даты.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.expired" approved="yes">
+        <source>The reaction has expired, so the endpoint rejects every request.</source>
+        <target state="final">Срок действия реакции истёк, поэтому конечная точка отклоняет все запросы.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.noUser" approved="yes">
+        <source>The reaction impersonates no backend user, or one that is disabled or deleted, so there is nobody to write the record as.</source>
+        <target state="final">Реакция имитирует действия пользователя, который не является администратором, либо администратора, который был отключен или удален, поэтому запись некому записать.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.tableNotPermitted" approved="yes">
+        <source>The impersonated user may not modify records of the target table.</source>
+        <target state="final">Пользователь, от имени которого выполняется действие, не может изменять записи в целевой таблице.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageMissing" approved="yes">
+        <source>The storage page does not exist.</source>
+        <target state="final">Страница хранилища не существует.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_obstacle.pageNotPermitted" approved="yes">
+        <source>The impersonated user may not create records on the storage page.</source>
+        <target state="final">Пользователь, от имени которого выполняется вход, не может создавать записи на странице хранилища.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_fields" approved="yes">
+        <source>Fields resolved from the payload</source>
+        <target state="final">Поля, определенные из полезной нагрузки</target>
+      </trans-unit>
+      <trans-unit id="dry_run_skipped" approved="yes">
+        <source>Fields that would be skipped</source>
+        <target state="final">Поля, которые будут пропущены</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notMappable" approved="yes">
+        <source>The target table offers no such field.</source>
+        <target state="final">В целевой таблице нет такого поля.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.notPermitted" approved="yes">
+        <source>The impersonated user may not write this field.</source>
+        <target state="final">Пользователь, от имени которого совершается действие, не может записать это поле.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.placeholderUnresolved" approved="yes">
+        <source>The payload carries no value under the path of the placeholder.</source>
+        <target state="final">Полезная нагрузка не содержит данных по пути к заполнителю.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.resolvedToNothing" approved="yes">
+        <source>The payload carries nothing under the path of the placeholder.</source>
+        <target state="final">Полезная нагрузка не содержит ничего по пути к заполнителю.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotHoldable" approved="yes">
+        <source>The checkbox cannot hold this value.</source>
+        <target state="final">Флажок не может содержать это значение.</target>
+      </trans-unit>
+      <trans-unit id="dry_run_reason.valueNotOffered" approved="yes">
+        <source>The field does not offer this value.</source>
+        <target state="final">Поле не содержит такого значения.</target>
+      </trans-unit>
+      <trans-unit id="reaction_endpoint" approved="yes">
+        <source>Endpoint</source>
+        <target state="final">Конечная точка</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Сбросить</target>
+      </trans-unit>
+      <trans-unit id="filter.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type" approved="yes">
+        <source>Reaction Type</source>
+        <target state="final">Тип реакции</target>
+      </trans-unit>
+      <trans-unit id="filter.onlyEnabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Включено</target>
+      </trans-unit>
+      <trans-unit id="filter.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="filter.called.ever" approved="yes">
+        <source>Called at least once</source>
+        <target state="final">Вызывается хотя бы один раз</target>
+      </trans-unit>
+      <trans-unit id="filter.called.never" approved="yes">
+        <source>Never called</source>
+        <target state="final">Никогда не вызывается</target>
+      </trans-unit>
+      <trans-unit id="filter.reaction_type.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">назад</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">далее</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">первая</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">последняя</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Cтраница</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete reactions</source>
+        <target state="final">Удалить реакции</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked reactions? You can restore deleted reactions from the TYPO3 recycler.</source>
+        <target state="final">Удалить все отмеченные реакции? Вы можете восстановить удаленные реакции из корзины TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
