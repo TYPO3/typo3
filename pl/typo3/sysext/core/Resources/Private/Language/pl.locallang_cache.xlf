@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="page.label" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Wyczyść pamięć podręczną tej strony</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Wyczyść pamięć podręczną frontendu</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Czyści pamięć podręczną frontendu i pamięci podręczne związane ze stronami.</target>
+      </trans-unit>
+      <trans-unit id="group.all.label" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Wyczyść całą pamięć podręczną</target>
+      </trans-unit>
+      <trans-unit id="group.all.description" approved="yes">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target state="final">Czyści pamięć podręczną frontendu i pamięci podręczne związane ze stronami oraz wszystkie pamięci podręczne związane z systemem, w tym lokalizacji, konfiguracji rozszerzeń, plików i opcode. Odbudowa tych pamięci podręcznych może chwilę potrwać.</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title" approved="yes">
+        <source>Caches cleared</source>
+        <target state="final">Pamięć podręczna została wyczyszczona</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message" approved="yes">
+        <source>Caches have been cleared.</source>
+        <target state="final">Pamięć podręczna została wyczyszczona.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Wystąpił błąd</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" approved="yes">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target state="final">Wystąpił błąd podczas czyszczenia pamięci podręcznej. Część pamięci podręcznych mogła nie zostać wyczyszczona.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title" approved="yes">
+        <source>Page cache cleared</source>
+        <target state="final">Pamięć podręczna strony została wyczyszczona</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message" approved="yes">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target state="final">Pamięć podręczna strony '%s' została wyczyszczona.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title" approved="yes">
+        <source>Page cache not cleared</source>
+        <target state="final">Nie wyczyszczono pamięci podręcznej strony</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message" approved="yes">
+        <source>Page cache could not be cleared.</source>
+        <target state="final">Nie można wyczyścić pamięci podręcznej strony.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title" approved="yes">
+        <source>Frontend caches cleared</source>
+        <target state="final">Pamięć podręczna frontendu została wyczyszczona</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message" approved="yes">
+        <source>Frontend caches have been cleared.</source>
+        <target state="final">Pamięć podręczna frontendu została wyczyszczona.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title" approved="yes">
+        <source>All caches cleared</source>
+        <target state="final">Cała pamięć podręczna została wyczyszczona</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message" approved="yes">
+        <source>All caches have been cleared.</source>
+        <target state="final">Cała pamięć podręczna została wyczyszczona.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
