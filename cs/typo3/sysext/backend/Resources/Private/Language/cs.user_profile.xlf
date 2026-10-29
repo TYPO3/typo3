@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/user_profile.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="user_settings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">Uživatelská nastavení</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jazyk</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable" approved="yes">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+        <target state="final">Vybraný jazyk „%s“ není k dispozici, dokud nebudou nainstalovány jazykové soubory.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.admin" approved="yes">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+        <target state="final">V modulu Údržba můžete pomocí funkce „Spravovat jazykové balíčky“ snadno stáhnout nové jazykové soubory.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.user" approved="yes">
+        <source>Please ask your system administrator to do this.</source>
+        <target state="final">Požádejte svého správce systému, aby to udělal.</target>
+      </trans-unit>
+      <trans-unit id="simulate" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simulovat BE-uživatele</target>
+      </trans-unit>
+      <trans-unit id="start_module" approved="yes">
+        <source>Start up in the following module</source>
+        <target state="final">Spouštět v následujícím modulu</target>
+      </trans-unit>
+      <trans-unit id="email_me_at_login" approved="yes">
+        <source>Notify me by email when somebody logs in from my account</source>
+        <target state="final">Upozorněte mě e-mailem, když se někdo přihlásí z mého účtu</target>
+      </trans-unit>
+      <trans-unit id="help_text" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Zobrazit nápovědu, je-li to možné</target>
+      </trans-unit>
+      <trans-unit id="max_title_len" approved="yes">
+        <source>Maximum length of displayed labels / record titles</source>
+        <target state="final">Maximální délka zobrazených popisků / názvů záznamů</target>
+      </trans-unit>
+      <trans-unit id="edit_doc_module_upload" approved="yes">
+        <source>Allow to directly upload files when editing or creating records</source>
+        <target state="final">Povolit přímé nahrávání souborů při úpravách nebo vytváření záznamů</target>
+      </trans-unit>
+      <trans-unit id="display_recently_used" approved="yes">
+        <source>Enable dynamic "recently used" category in wizards</source>
+        <target state="final">Zapnout dynamickou kategorii „Nedávno použité“ v průvodcích</target>
+      </trans-unit>
+      <trans-unit id="edit_functions_tab" approved="yes">
+        <source>Edit and advanced functions</source>
+        <target state="final">Úpravy a pokročilé funkce</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard" approved="yes">
+        <source>Reset all values to default</source>
+        <target state="final">Obnovit všechny hodnoty na výchozí</target>
+      </trans-unit>
+      <trans-unit id="reset_tab" approved="yes">
+        <source>Reset configuration</source>
+        <target state="final">Obnovit nastavení</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration" approved="yes">
+        <source>Reset configuration and clear temporary data</source>
+        <target state="final">Obnovit nastavení a vymazat dočasná data</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration_button" approved="yes">
+        <source>Reset profile settings to default state</source>
+        <target state="final">Obnovit výchozí nastavení profilu</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard_question" approved="yes">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target state="final">Opravdu chcete obnovit všechny hodnoty na výchozí?</target>
+      </trans-unit>
+      <trans-unit id="functions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Pokročilé funkce</target>
+      </trans-unit>
+      <trans-unit id="copy_levels" approved="yes">
+        <source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
+        <target state="final">Rekurzivní kopírování: Zadejte počet podúrovní stránky, které se mají při kopírování stránky zahrnout</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">úrovně</target>
+      </trans-unit>
+      <trans-unit id="be_user_real_name" approved="yes">
+        <source>Your name</source>
+        <target state="final">Vaše jméno</target>
+      </trans-unit>
+      <trans-unit id="be_user_avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="be_user_email" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Vaše emailová adresa</target>
+      </trans-unit>
+      <trans-unit id="save" approved="yes">
+        <source>Save configuration</source>
+        <target state="final">Uložit nastavení</target>
+      </trans-unit>
+      <trans-unit id="new_password" approved="yes">
+        <source>New password</source>
+        <target state="final">Nové heslo</target>
+      </trans-unit>
+      <trans-unit id="new_password_again" approved="yes">
+        <source>New password (repetition)</source>
+        <target state="final">Nové heslo (znovu)</target>
+      </trans-unit>
+      <trans-unit id="new_password_ok" approved="yes">
+        <source>Password was updated.</source>
+        <target state="final">Heslo bylo změněno.</target>
+      </trans-unit>
+      <trans-unit id="password_policy_failed" approved="yes">
+        <source>The password was not updated, since it does not meet the password policy requirements.</source>
+        <target state="final">Heslo není aktualizováno, protože nesplňuje požadavky zásad hesla.</target>
+      </trans-unit>
+      <trans-unit id="account_security" approved="yes">
+        <source>Account security</source>
+        <target state="final">Zabezpečení účtu</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">Vícefázové ověřování</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.not_available" approved="yes">
+        <source>Multi-factor authentication is currently not available.</source>
+        <target state="final">Vícefázové ověřování není momentálně k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.description" approved="yes">
+        <source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+        <target state="final">Použijte vícefázové ověření k zabezpečení vašeho účtu tím, že zadáte další faktor vedle vašeho hesla.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.locked_mfa_providers" approved="yes">
+        <source>Some providers are currently locked</source>
+        <target state="final">Někteří poskytovatelé jsou momentálně uzamčeni</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Povoleno</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.setup_link_title" approved="yes">
+        <source>Setup multi-factor authentication</source>
+        <target state="final">Nastavit vícefázové ověření</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.manage_link_title" approved="yes">
+        <source>Manage multi-factor authentication</source>
+        <target state="final">Spravovat vícefázové ověřování</target>
+      </trans-unit>
+      <trans-unit id="setup_was_updated" approved="yes">
+        <source>Profile settings were updated.</source>
+        <target state="final">Nastavení profilu bylo aktualizováno.</target>
+      </trans-unit>
+      <trans-unit id="new_password_failed" approved="yes">
+        <source>Password was not updated because the entered passwords do not match.</source>
+        <target state="final">Heslo nebylo aktualizováno, protože zadaná hesla se neshodují.</target>
+      </trans-unit>
+      <trans-unit id="old_password_failed" approved="yes">
+        <source>Password was not updated because the current password entered is incorrect.</source>
+        <target state="final">Heslo nebylo aktualizováno, protože zadané heslo není správné.</target>
+      </trans-unit>
+      <trans-unit id="settings_are_reset" approved="yes">
+        <source>The profile settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="final">Nastavení profilu bylo obnoveno na výchozí hodnoty a dočasná data byla vymazána.</target>
+      </trans-unit>
+      <trans-unit id="start_module.first_in_menu" approved="yes">
+        <source>- First module in menu -</source>
+        <target state="final">- První modul v menu -</target>
+      </trans-unit>
+      <trans-unit id="avatar.clear" approved="yes">
+        <source>Remove selected avatar image</source>
+        <target state="final">Odstranit vybraný avatar</target>
+      </trans-unit>
+      <trans-unit id="avatar.open_file_browser" approved="yes">
+        <source>Open file browser to select avatar image</source>
+        <target state="final">Otevřete prohlížeč souborů a vyberte obrázek avataru</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format" approved="yes">
+        <source>Format of window title in backend</source>
+        <target state="final">Formát názvu okna v backendu</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.sitename_first" approved="yes">
+        <source>[sitename] · [title]</source>
+        <target state="final">[sitename] · [title]</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.title_first" approved="yes">
+        <source>[title] · [sitename]</source>
+        <target state="final">[title] · [sitename]</target>
+      </trans-unit>
+      <trans-unit id="warning.chinese_simplified" approved="yes">
+        <source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
+        <target state="final">Zjednodušená čínština (starší verze) – Upozornění: Níže vyberte možnost „Zjednodušená čínština“, protože tato volba je nesprávná kvůli starším verzím TYPO3 a brzy bude pravděpodobně odstraněna.</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week" approved="yes">
+        <source>First day of week in calendar popups</source>
+        <target state="final">První den týdne ve vyskakovacích oknech kalendáře</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week.inherit" approved="yes">
+        <source>Use default based on personal backend language setting</source>
+        <target state="final">Použít výchozí nastavení podle osobního jazykového nastavení</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
