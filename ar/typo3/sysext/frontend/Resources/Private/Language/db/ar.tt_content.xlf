@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="ar">
+  <file id="f1">
+    <unit id="hidden">
+      <segment state="final">
+        <source>Visibility of content element</source>
+        <target>ظُهور عنصر المحتوى</target>
+      </segment>
+    </unit>
+    <unit id="type">
+      <segment state="final">
+        <source>Type</source>
+        <target>النوع</target>
+      </segment>
+    </unit>
+    <unit id="column">
+      <segment state="final">
+        <source>Column</source>
+        <target>العمود</target>
+      </segment>
+    </unit>
+    <unit id="filelink_size">
+      <segment state="final">
+        <source>Display file size information</source>
+        <target>عرضُ معلوماتِ حجمِ الملفاتِ</target>
+      </segment>
+    </unit>
+    <unit id="header">
+      <segment state="final">
+        <source>Header</source>
+        <target>الترويسة</target>
+      </segment>
+    </unit>
+    <unit id="header_type">
+      <segment state="final">
+        <source>Type</source>
+        <target>النوع</target>
+      </segment>
+    </unit>
+    <unit id="header_layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>التصميم</target>
+      </segment>
+    </unit>
+    <unit id="header_position">
+      <segment state="final">
+        <source>Alignment</source>
+        <target>المُحاذاة</target>
+      </segment>
+    </unit>
+    <unit id="header_link">
+      <segment state="final">
+        <source>Link</source>
+        <target>الرابط</target>
+      </segment>
+    </unit>
+    <unit id="subheader">
+      <segment state="final">
+        <source>Subheader</source>
+        <target>عنوان فرعي</target>
+      </segment>
+    </unit>
+    <unit id="date">
+      <segment state="final">
+        <source>Date</source>
+        <target>التاريخ</target>
+      </segment>
+    </unit>
+    <unit id="bodytext">
+      <segment state="final">
+        <source>Text</source>
+        <target>النص</target>
+      </segment>
+    </unit>
+    <unit id="imageorientation">
+      <segment state="final">
+        <source>Position and Alignment</source>
+        <target>الموضع والمحاذاة</target>
+      </segment>
+    </unit>
+    <unit id="imagecols">
+      <segment state="final">
+        <source>Number of Columns</source>
+        <target>عدد الأعمدة</target>
+      </segment>
+    </unit>
+    <unit id="imagewidth">
+      <segment state="final">
+        <source>Width of each element (px)</source>
+        <target>عرض كل عنصر (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageheight">
+      <segment state="final">
+        <source>Height of each element (px)</source>
+        <target>طول كل عنصر (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageborder">
+      <segment state="final">
+        <source>Border around each element</source>
+        <target>الإطار حول كل عنصر</target>
+      </segment>
+    </unit>
+    <unit id="image_zoom">
+      <segment state="final">
+        <source>Enlarge on Click</source>
+        <target>التكبير عند النقر</target>
+      </segment>
+    </unit>
+    <unit id="section_index">
+      <segment state="final">
+        <source>Show in Section Menus</source>
+        <target>إظهار في قسم القوائم</target>
+      </segment>
+    </unit>
+    <unit id="link_to_top">
+      <segment state="final">
+        <source>Append with Link to Top of Page</source>
+        <target>إلحاق مع الرابط إلى أعلى الصفحة</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>تخطيط</target>
+      </segment>
+    </unit>
+    <unit id="frame_class">
+      <segment state="final">
+        <source>Frame</source>
+        <target>الإطار</target>
+      </segment>
+    </unit>
+    <unit id="space_before_class">
+      <segment state="final">
+        <source>Space Before</source>
+        <target>المسافة قبل</target>
+      </segment>
+    </unit>
+    <unit id="space_after_class">
+      <segment state="final">
+        <source>Space After</source>
+        <target>المسافة بعد</target>
+      </segment>
+    </unit>
+    <unit id="uploads.media">
+      <segment state="final">
+        <source>Single files</source>
+        <target>ملفاتٌ منفردةٌ</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
