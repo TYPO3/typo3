@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="internal_note" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Vidinės pastabos</target>
+      </trans-unit>
+      <trans-unit id="new_internal_note" approved="yes">
+        <source>Create internal note for this page</source>
+        <target state="final">Sukurti vidinę pastabą šiam puslapiui</target>
+      </trans-unit>
+      <trans-unit id="author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autorius</target>
+      </trans-unit>
+      <trans-unit id="date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Asmeninė</target>
+      </trans-unit>
+      <trans-unit id="category.1" approved="yes">
+        <source>Instructions</source>
+        <target state="final">Instrukcijos</target>
+      </trans-unit>
+      <trans-unit id="category.2" approved="yes">
+        <source>Template</source>
+        <target state="final">Šablonas</target>
+      </trans-unit>
+      <trans-unit id="category.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">Pastabos</target>
+      </trans-unit>
+      <trans-unit id="category.4" approved="yes">
+        <source>To-do</source>
+        <target state="final">Užduotis</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Taip</target>
+      </trans-unit>
+      <trans-unit id="author_deleted" approved="yes">
+        <source>Unknown author</source>
+        <target state="final">Nežinomas autorius</target>
+      </trans-unit>
+      <trans-unit id="widget_group.sys_note_widget.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">Sistemos pastabos</target>
+      </trans-unit>
+      <!-- To be moved to messages.xlf - see https://forge.typo3.org/issues/108900 -->
+      <trans-unit id="delete" approved="yes">
+        <source>Delete internal note</source>
+        <target state="final">Ištrinti vidinę pastabą</target>
+      </trans-unit>
+      <trans-unit id="delete_note" approved="yes">
+        <source>Delete this note? You can restore it in the module "Recycler".</source>
+        <target state="final">Ištrinti šią pastabą? Ją galėsite atkurti modulyje „Recycler“.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
