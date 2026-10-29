@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">إعدادات إعادة التوجيه</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">تحديث slugs جميع الصفحات الفرعية تلقائيَّاً</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">إنشاء عمليات إعادة توجيه للصفحات ذات slugs الجديدة تلقائياً</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">العمر الافتراضي لسجلات إعادة التوجيه بالأيام</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">رمز حالة HTTP لإعادة التوجيه، 301 هو الافتراضي</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">تنظيف إعادة التوجيهات التي تزيد أعمارها عن عدد الأيام المحددة</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">تنظيف عمليات إعادة التوجيه التي تتطابق مع النِطاق/النِطاقات المُقدمة</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">تنظيف إعادة التوجيهات التي يتم استدعاؤها مرات أقل من العدد المُعطى</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path" approved="yes">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+        <target state="final">تنظيف إعادة التوجيهات المطابقة للمسار المعطى (كطلب قاعدة البيانات)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">تنظيف إعادة التوجيهات المطابقة لنوع الإنشاء المحدَّد</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">تنظيف إعادة التوجيهات المطابقة لنوع الإنشاء المحدَّد</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus" approved="yes">
+        <source>Cleanup redirects matching provided integrity status</source>
+        <target state="final">تنظيف إعادة التوجيهات المطابقة لنوع الإنشاء المحدَّد</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType" approved="yes">
+        <source>Cleanup redirects matching provided redirect type</source>
+        <target state="final">تنظيف إعادة التوجيهات المطابقة لنوع إعادة التوجيه المُحدَّد</target>
+      </trans-unit>
+      <trans-unit id="created_on" approved="yes">
+        <source>on</source>
+        <target state="final">تشغيل</target>
+      </trans-unit>
+      <trans-unit id="not_tracked" approved="yes">
+        <source>[Not Tracked]</source>
+        <target state="final">[لم يتم التعقّب]</target>
+      </trans-unit>
+      <trans-unit id="no_qrcode" approved="yes">
+        <source>Not enough information for generating a QR Code.</source>
+        <target state="final">لا توجد معلومات كافية لإنشاء رمز QR.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
