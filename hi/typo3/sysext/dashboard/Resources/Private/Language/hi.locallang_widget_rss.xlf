@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">Customizable RSS feed से नवीनतम प्रविष्टियाँ प्रदर्शित करता है</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">लेबल</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">विजेट का लेबल परिभाषित किया</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">RSS फ़ीड प्रदान करने वाले URL या फ़ाइल को परिभाषित करता है। 
+विजेट इसे पढ़कर प्रविष्टियाँ प्रदर्शित करता है।</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limit</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">परिभाषित करता है कि कितने RSS दिखाए जाने चाहिए</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">आजीवन</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">यह निर्धारित करता है कि RSS Feed को पुनः प्राप्त करने के लिए कितनी देर तक (सेकंड में) प्रतीक्षा करनी है।</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title" approved="yes">
+        <source>Missing feed configuration</source>
+        <target state="final">अनुपलब्ध feed configuration</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message" approved="yes">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target state="final">कृपया items प्राप्त करने के लिए feed URL configure करें.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title" approved="yes">
+        <source>Feed error</source>
+        <target state="final">Feed त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message" approved="yes">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target state="final">"%1$s" पर फ़ीड को parse नहीं किया जा सका</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title" approved="yes">
+        <source>No items to display</source>
+        <target state="final">प्रदर्शित करने के लिए कोई items नहीं</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message" approved="yes">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target state="final">"%1$s" पर feed में कोई items नहीं है.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
