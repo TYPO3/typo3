@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/messages.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="menu.label">
+        <source>Menu</source>
+        <target>crwdns390578:0crwdne390578:0</target>
+      </trans-unit>
+      <trans-unit id="menu.main.label">
+        <source>Main menu</source>
+        <target>crwdns390580:0crwdne390580:0</target>
+      </trans-unit>
+      <trans-unit id="menu.language.label">
+        <source>Language menu</source>
+        <target>crwdns393010:0crwdne393010:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
