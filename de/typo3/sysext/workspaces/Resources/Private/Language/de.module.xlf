@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="workspaces" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Process content through the current publishing workflow</source>
+        <target state="final">Verarbeite Inhalte über den aktuellen Publishing-Workflow</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
+        <target state="final">Dieses Modul enthält eine Übersicht über alle Elemente im aktuellen Arbeitsumgebung und ermöglicht es, den Überprüfungs- und Veröffentlichungsworkflow für diese Elemente fortzusetzen.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Publish</source>
+        <target state="final">Veröffentlichen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
