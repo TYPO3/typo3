@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="headline">
+        <source>Move page "%1$s" [%2$d]</source>
+        <target>crwdns379576:0%1$scrwdnd379576:0%2$dcrwdne379576:0</target>
+      </trans-unit>
+      <trans-unit id="currentPath">
+        <source>Current path</source>
+        <target>crwdns379578:0crwdne379578:0</target>
+      </trans-unit>
+      <trans-unit id="makeCopy">
+        <source>Copy page instead of moving page</source>
+        <target>crwdns379580:0crwdne379580:0</target>
+      </trans-unit>
+      <trans-unit id="samePageConflict">
+        <source>The page "%1$s" [%2$d] cannot get moved into itself.</source>
+        <target>crwdns379582:0%1$scrwdnd379582:0%2$dcrwdne379582:0</target>
+      </trans-unit>
+      <trans-unit id="action.pasteAbove">
+        <source>Paste above</source>
+        <target>crwdns379584:0crwdne379584:0</target>
+      </trans-unit>
+      <trans-unit id="action.pasteBelow">
+        <source>Paste below</source>
+        <target>crwdns379586:0crwdne379586:0</target>
+      </trans-unit>
+      <trans-unit id="action.pasteInto">
+        <source>Paste into</source>
+        <target>crwdns379588:0crwdne379588:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.title">
+        <source>Page successfully moved</source>
+        <target>crwdns379590:0crwdne379590:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.message">
+        <source>The page "%s" has been successfully moved.</source>
+        <target>crwdns379592:0%scrwdne379592:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.title">
+        <source>Page successfully copied</source>
+        <target>crwdns379594:0crwdne379594:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.message">
+        <source>The page "%s" has been successfully copied.</source>
+        <target>crwdns379596:0%scrwdne379596:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.dismiss">
+        <source>Dismiss</source>
+        <target>crwdns379598:0crwdne379598:0</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.open">
+        <source>Open "%s"</source>
+        <target>crwdns379600:0%scrwdne379600:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
