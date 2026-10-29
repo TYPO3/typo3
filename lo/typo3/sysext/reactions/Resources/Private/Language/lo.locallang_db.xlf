@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="reactions" approved="yes">
+        <source>Reactions</source>
+        <target state="final">ການຕອບສະໜອງ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction" approved="yes">
+        <source>System Reactions</source>
+        <target state="final">Reaction ຂອງລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name.description" approved="yes">
+        <source>Meaningful name of the reaction</source>
+        <target state="final">ຊື່ທີ່ສື່ຄວາມໝາຍຂອງ reaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">ຕົວລະບຸ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier.description" approved="yes">
+        <source>This is your unique reaction identifier within the TYPO3 URL</source>
+        <target state="final">ນີ້ແມ່ນຕົວລະບຸ reaction ທີ່ບໍ່ຊ້ຳກັນຂອງເຈົ້າພາຍໃນ URL ຂອງ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">ຄວາມລັບ (Secret)</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.description" approved="yes">
+        <source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
+        <target state="final">ຄວາມລັບແມ່ນຈຳເປັນເພື່ອເອີ້ນໃຊ້ reaction ຈາກພາຍນອກ. ຄວາມລັບສາມາດສ້າງໃໝ່ໄດ້ທຸກເວລາ, ແຕ່ຈະສະແດງໃຫ້ເຫັນພຽງຄັ້ງດຽວ (ຈົນກວ່າຂໍ້ມູນຈະຖືກບັນທຶກ).</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.passwordGenerator" approved="yes">
+        <source>Generate secret token</source>
+        <target state="final">ສ້າງໂທເຄັນລັບ (Secret token)</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type" approved="yes">
+        <source>Reaction Type</source>
+        <target state="final">ປະເພດ Reaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reactions.reaction_type.description" approved="yes">
+        <source>Select the reaction type to be configured.</source>
+        <target state="final">ເລືອກປະເພດ reaction ທີ່ຈະຕັ້ງຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.select" approved="yes">
+        <source>Select a reaction</source>
+        <target state="final">ເລືອກ reaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.create_record" approved="yes">
+        <source>Create database record</source>
+        <target state="final">ສ້າງຂໍ້ມູນລົງໃນຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user" approved="yes">
+        <source>Impersonate User</source>
+        <target state="final">ສວມສິດຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user.description" approved="yes">
+        <source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
+        <target state="final">ເລືອກຜູ້ໃຊ້ທີ່ມີສິດການເຂົ້າເຖິງທີ່ເໝາະສົມ ເຊິ່ງໄດ້ຮັບອະນຸຍາດໃຫ້ເພີ່ມຂໍ້ມູນປະເພດນີ້. ຫາກບໍ່ແນ່ໃຈ, ໃຫ້ໃຊ້ຜູ້ໃຊ້ CLI.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name" approved="yes">
+        <source>Table</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.description" approved="yes">
+        <source>Select one tables to display the corresponding fields.</source>
+        <target state="final">ເລືອກໜຶ່ງຕາຕະລາງເພື່ອສະແດງຟີວ (fields) ທີ່ກ່ຽວຂ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.select" approved="yes">
+        <source>Select a table</source>
+        <target state="final">ເລືອກຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">ບ່ອນເກັບຂໍ້ມູນ (PID)</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">ເລືອກໜ້າທີ່ຈະໃຫ້ສ້າງຂໍ້ມູນໃໝ່ລົງໄປ.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields" approved="yes">
+        <source>Fields</source>
+        <target state="final">ຟີວ (Fields)</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the reaction.</source>
+        <target state="final">ການຕັ້ງຄ່າທົ່ວໄປຂອງ reaction.</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">ການຕັ້ງຄ່າເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected reaction type</source>
+        <target state="final">ການຕັ້ງຄ່າສະເພາະສຳລັບປະເພດ reaction ທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.noFields" approved="yes">
+        <source>The selected table '%s' does not define any valid fields to be configured.</source>
+        <target state="final">ຕາຕະລາງ '%s' ທີ່ເລືອກໄວ້ ບໍ່ໄດ້ກຳນົດຟີວທີ່ຖືກຕ້ອງສຳລັບການຕັ້ງຄ່າ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
