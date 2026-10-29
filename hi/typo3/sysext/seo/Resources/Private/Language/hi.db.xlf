@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">सर्च इंजन के लिए शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">कोई सूचकांक नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">इस पृष्ठ को अनुक्रमित करें</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" approved="yes">
+        <source>No follow</source>
+        <target state="final">कोई अनुसरण नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" approved="yes">
+        <source>Follow this page</source>
+        <target state="final">इस पेज को फ़ॉलो करें</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" approved="yes">
+        <source>Open Graph Title</source>
+        <target state="final">ग्राफ़ शीर्षक खोलें</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" approved="yes">
+        <source>Open Graph Description</source>
+        <target state="final">ग्राफ़ विवरण खोलें</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" approved="yes">
+        <source>Open Graph Image</source>
+        <target state="final">ग्राफ़ छवि खोलें</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" approved="yes">
+        <source>X / Twitter Title</source>
+        <target state="final">X / ट्विटर  शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" approved="yes">
+        <source>X / Twitter Description</source>
+        <target state="final">X / ट्विटर  विवरण</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" approved="yes">
+        <source>X / Twitter Image</source>
+        <target state="final">X / ट्विटर  छवि</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" approved="yes">
+        <source>Type of card to show</source>
+        <target state="final">दिखाने के लिए कार्ड का प्रकार</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" approved="yes">
+        <source>Summary Card</source>
+        <target state="final">सारांश कार्ड</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" approved="yes">
+        <source>Summary Card with a large image</source>
+        <target state="final">बड़ी छवि वाला सारांश कार्ड</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" approved="yes">
+        <source>Canonical link</source>
+        <target state="final">कैननिकल लिंक</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link.description" approved="yes">
+        <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
+        <target state="final">एक कैननिकल यूआरएल उस पेज का यूआरएल होता है जिसे सर्च इंजन डुप्लिकेट पेजों के समूह में से सबसे प्रतिनिधि पेज के रूप में चुनने की सलाह देते हैं। इसे अक्सर डुप्लिकेशन हटाना भी कहा जाता है, और यह प्रक्रिया सर्च इंजन को डुप्लिकेट कंटेंट के केवल एक ही वर्शन को सर्च परिणामों में दिखाने में मदद करती है। TYPO3 इसे स्पष्ट रूप से सेट न किए जाने पर पेज के सबसे संभावित यूआरएल पर स्वचालित रूप से सेट कर देता है - जो कि संभवतः पेज का ही यूआरएल होता है। यदि इसे यहाँ सेट किया जाता है, तो पेज को XML साइटमैप से हटा दिया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">आवृत्ति बदलें</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">कोई नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">हमेशा</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">प्रति घंटा</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">दैनिक</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">साप्ताहिक</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">महीने के</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">सालाना</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">कभी नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">प्राथमिकता</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
