@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/statistics.xlf" date="2026-11-10T13:37:37Z" product-name="statistics" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Shows database record statistics</source>
+        <target state="final">Mostra statistiche sui record del database</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Get statistics for database records, including total, translated, hidden, and deleted pages, page type distribution, and and detailed table records with lost record detection. The report analyzes the entire page tree.</source>
+        <target state="final">Ottieni statistiche per i record del database, tra cui le pagine totali, tradotte, nascoste e cancellate, la distribuzione del tipo di pagina e i record di tabella dettagliati con rilevamento dei record perduti. Il rapporto analizza l'intero albero delle pagine.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">Statistiche dei Record</target>
+      </trans-unit>
+      <trans-unit id="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">Tipi di documento</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">Tipi di documento (identificativo di sistema)</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Conteggio</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagine</target>
+      </trans-unit>
+      <trans-unit id="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">Numero totale di pagine nella lingua predefinita</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">Numero totale di pagine tradotte</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">Pagine contrassegnate come eliminate</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">Pagine nascoste</target>
+      </trans-unit>
+      <trans-unit id="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">Nome della tabella</target>
+      </trans-unit>
+      <trans-unit id="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">Record totali / persi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
