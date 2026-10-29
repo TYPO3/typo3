@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="button.group.modalOk" approved="yes">
+        <source>Create group</source>
+        <target state="final">ສ້າງກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">ວຽກທີ່ກຳນົດເວລາໄວ້</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">ກວດສອບການຕິດຕັ້ງ</target>
+      </trans-unit>
+      <trans-unit id="function.add" approved="yes">
+        <source>New task</source>
+        <target state="final">ວຽກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="function.group.add" approved="yes">
+        <source>New group</source>
+        <target state="final">ກຸ່ມໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="function.group.label" approved="yes">
+        <source>Group name</source>
+        <target state="final">ຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">ສະຄຣິບ CLI</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">ລະບົບກຳລັງເຮັດວຽກໃນໂໝດ Composer</target>
+      </trans-unit>
+      <trans-unit id="msg.composerMode" approved="yes">
+        <source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+                </source>
+        <target state="final">
+					ລະບົບກຳລັງເຮັດວຽກໃນໂໝດ composer, ບໍ່ສາມາດກວດສອບເສັ້ນທາງໄປຫາໄຟລ໌ `typo3` ທີ່ສາມາດປະມວນຜົນໄດ້ຢ່າງແນ່ນອນ.
+					ໂດຍມາດຕະຖານ, ຄຳສັ່ງສຳລັບການເຮັດວຽກໃນໂໝດ composer ແມ່ນ `vendor/bin/typo3 scheduler:run`.
+                </target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">ການເຮັດວຽກຄັ້ງລ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">ອັດຕະໂນມັດ</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">ປະເພດ Backend</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">ຈຳນວນມື້ກ່ອນການລຶບໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll" approved="yes">
+        <source>Check/uncheck all</source>
+        <target state="final">ເລືອກ/ຍົກເລີກການເລືອກທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="label.class" approved="yes">
+        <source>Task</source>
+        <target state="final">ວຽກ</target>
+      </trans-unit>
+      <trans-unit id="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType" approved="yes">
+        <source>Definition type</source>
+        <target state="final">ປະເພດການກຳນົດ</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">ໄລຍະຫ່າງ</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron" approved="yes">
+        <source>Cron command</source>
+        <target state="final">ຄຳສັ່ງ Cron</target>
+      </trans-unit>
+      <trans-unit id="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">ຄຳອະທິບາຍ</target>
+      </trans-unit>
+      <trans-unit id="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="label.end" approved="yes">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target state="final">ສິ້ນສຸດ (ຊມ:ນທ ວວ-ດດ-ປປປປ)</target>
+      </trans-unit>
+      <trans-unit id="scheduledFrom" approved="yes">
+        <source>Start at</source>
+        <target state="final">ເລີ່ມເມື່ອ</target>
+      </trans-unit>
+      <trans-unit id="scheduledUntil" approved="yes">
+        <source>Run periodically until</source>
+        <target state="final">ເຮັດວຽກເປັນໄລຍະຈົນເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" approved="yes">
+        <source>Execute</source>
+        <target state="final">ປະມວນຜົນ</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" approved="yes">
+        <source>Execute on next cron job</source>
+        <target state="final">ປະມວນຜົນໃນຮອບວຽກ cron ຖັດໄປ</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">ຄວາມຖີ່</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long" approved="yes">
+        <source>Frequency (seconds or cron command)</source>
+        <target state="final">ຄວາມຖີ່ (ວິນາທີ ຫຼື ຄຳສັ່ງ cron)</target>
+      </trans-unit>
+      <trans-unit id="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ລະຫັດ (ID)</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">ການປະມວນຜົນຄັ້ງລ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">ດ້ວຍຕົນເອງ</target>
+      </trans-unit>
+      <trans-unit id="label.manually" approved="yes">
+        <source>manually</source>
+        <target state="final">ດ້ວຍຕົນເອງ</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">ການປະມວນຜົນຄັ້ງຖັດໄປ</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">ການປະມວນຜົນແບບຂະໜານ</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">ອະນຸຍາດໃຫ້ປະມວນຜົນແບບຂະໜານ</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">ເວລາຂອງເຊີເວີ</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">ເວລາພັກ</target>
+      </trans-unit>
+      <trans-unit id="label.start" approved="yes">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target state="final">ເລີ່ມ (ຊມ:ນທ ວວ-ດດ-ປປປປ)</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage" approved="yes">
+        <source>Storage to index</source>
+        <target state="final">ບ່ອນເກັບຂໍ້ມູນທີ່ຈະເຮັດດັດຊະນີ</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount" approved="yes">
+        <source>Number of files per run</source>
+        <target state="final">ຈຳນວນໄຟລ໌ຕໍ່ການເຮັດວຽກໜຶ່ງຄັ້ງ</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors" approved="yes">
+        <source>Registered extractors</source>
+        <target state="final">ເຄື່ອງມືຖອດຖອນຂໍ້ມູນທີ່ລົງທະບຽນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" approved="yes">
+        <source>%1$s with priority %2$d</source>
+        <target state="final">%1$s ດ້ວຍລະດັບຄວາມສຳຄັນ %2$d</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors" approved="yes">
+        <source>Following extractors have been registered and will be used when running this task</source>
+        <target state="final">ເຄື່ອງມືຖອດຖອນຂໍ້ມູນຕໍ່ໄປນີ້ໄດ້ຖືກລົງທະບຽນແລ້ວ ແລະ ຈະຖືກນຳໃຊ້ເມື່ອວຽກນີ້ເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors" approved="yes">
+        <source>There currently is no extractor registered. This task will have no effect.</source>
+        <target state="final">ປະຈຸບັນບໍ່ມີເຄື່ອງສະກັດຂໍ້ມູນທີ່ລົງທະບຽນໄວ້. ໜ້າວຽກນີ້ຈະບໍ່ມີຜົນຫຍັງ.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">ອະນາໄມຕາຕະລາງທັງໝົດທີ່ມີຢູ່</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables.description" approved="yes">
+        <source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
+        <target state="final">ໝາຍເຫດ: ລາຍການຈາກຕາຕະລາງທັງໝົດທີ່ມີຢູ່ຈະຖືກລຶບໂດຍອີງຕາມຕົວເລືອກ "expirePeriod" ທີ່ກຳນົດສະເພາະແຕ່ລະຕາຕະລາງ.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">ຕາຕະລາງທີ່ຈະອະນາໄມ</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">ຕາຕະລາງ: %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">ຕາຕະລາງທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">ລຶບລາຍການທີ່ເກົ່າກວ່າຈຳນວນມື້ທີ່ກຳນົດ</target>
+      </trans-unit>
+      <trans-unit id="label.optimizeDatabaseTables.selectTables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">ຕາຕະລາງຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="label.status" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="runningType" approved="yes">
+        <source>Run task multiple times?</source>
+        <target state="final">ເຮັດວຽກຫຼາຍຄັ້ງບໍ?</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">ເຮັດຊ້ຳ</target>
+      </trans-unit>
+      <trans-unit id="label.type.single" approved="yes">
+        <source>Single</source>
+        <target state="final">ຄັ້ງດຽວ</target>
+      </trans-unit>
+      <trans-unit id="label.group" approved="yes">
+        <source>Task group</source>
+        <target state="final">ກຸ່ມວຽກ</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup" approved="yes">
+        <source>Not assigned to any task group</source>
+        <target state="final">ບໍ່ໄດ້ກຳນົດໃຫ້ກຸ່ມວຽກໃດໆ</target>
+      </trans-unit>
+      <trans-unit id="label.group.isDisabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="label.group.unused" approved="yes">
+        <source>Unused task groups</source>
+        <target state="final">ກຸ່ມວຽກທີ່ບໍ່ໄດ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="label.group.tableColumn" approved="yes">
+        <source>Group</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="label.group.enable" approved="yes">
+        <source>Enable group</source>
+        <target state="final">ເປີດໃຊ້ງານກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="label.group.disable" approved="yes">
+        <source>Disable group</source>
+        <target state="final">ປິດໃຊ້ງານກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="label.group.edit" approved="yes">
+        <source>Edit group</source>
+        <target state="final">ແກ້ໄຂກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="label.errorClass" approved="yes">
+        <source>Broken tasks</source>
+        <target state="final">ວຽກທີ່ຂັດຂ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="label.saveAndCreateNewTask" approved="yes">
+        <source>Save and create new task</source>
+        <target state="final">ບັນທຶກ ແລະ ສ້າງວຽກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand" approved="yes">
+        <source>Add option</source>
+        <target state="final">ເພີ່ມຕົວເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="label.setOptionForCommand" approved="yes">
+        <source>Set option</source>
+        <target state="final">ກຳນົດຕົວເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="label.runOnCli" approved="yes">
+        <source>Run on CLI</source>
+        <target state="final">ເຮັດວຽກຜ່ານ CLI</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript" approved="yes">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
+        <target state="final">ສະຄຣິບສຳລັບປະມວນຜົນຕົວຈັດຕາຕະລາງ (Scheduler) ຈາກ command line ແມ່ນ: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptExecutable" approved="yes">
+        <source>The web server user is allowed execute this script.</source>
+        <target state="final">ຜູ້ໃຊ້ເວັບເຊີເວີໄດ້ຮັບອະນຸຍາດໃຫ້ປະມວນຜົນສະຄຣິບນີ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptNotExecutable" approved="yes">
+        <source>The web server user is not allowed to execute this script.</source>
+        <target state="final">ຜູ້ໃຊ້ເວັບເຊີເວີບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະມວນຜົນສະຄຣິບນີ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.delete" approved="yes">
+        <source>Are you sure you want to delete this task?</source>
+        <target state="final">ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບວຽກນີ້?</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError" approved="yes">
+        <source>The task could not be deleted.</source>
+        <target state="final">ບໍ່ສາມາດລຶບວຽກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess" approved="yes">
+        <source>The task was successfully deleted.</source>
+        <target state="final">ລຶບວຽກສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate" approved="yes">
+        <source>The end date is before the start date.</source>
+        <target state="final">ວັນທີສິ້ນສຸດແມ່ນກ່ອນວັນທີເລີ່ມຕົ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed" approved="yes">
+        <source>Task "%s" with uid "%s" has been executed.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ໄດ້ຖືກປະມວນຜົນແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target state="final">ຄວາມຖີ່ບໍ່ຖືກຕ້ອງ. ກະລຸນາໃສ່ຈຳນວນວິນາທີ ຫຼື ຄຳສັ່ງ cron ທີ່ຖືກຕ້ອງ. ຕົວວິເຄາະ cron ລະບຸວ່າ: %1$s [ລະຫັດ: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun" approved="yes">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target state="final">ຂໍ້ມູນກ່ຽວກັບການປະມວນຜົນຄັ້ງລ້າສຸດຂອງຕົວຈັດຕາຕະລາງບໍ່ຄົບຖ້ວນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target state="final">ຄວາມຖີ່ບໍ່ຖືກຕ້ອງ. ກະລຸນາໃສ່ຈຳນວນວິນາທີ ຫຼື ຄຳສັ່ງ cron ທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime" approved="yes">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target state="final">ກະລຸນາໃສ່ເວລາພັກທີ່ຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ 0 (ສູນ).</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun" approved="yes">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target state="final">ຕົວຈັດຕາຕະລາງເລີ່ມວຽກຄັ້ງລ້າສຸດ (%1$s) ໃນວັນທີ %2$s ເວລາ %3$s ແລະ ສິ້ນສຸດໃນວັນທີ %4$s ເວລາ %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">ວຽກທີ່ກຳລັງເຮັດວຽກຢູ່ບໍ່ສາມາດລຶບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask" approved="yes">
+        <source>A running task may not be edited.</source>
+        <target state="final">ວຽກທີ່ກຳລັງເຮັດວຽກຢູ່ບໍ່ສາມາດແກ້ໄຂໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask" approved="yes">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target state="final">ວຽກນີ້ບໍ່ໄດ້ກຳລັງເຮັດວຽກ. ບໍ່ມີການປະມວນຜົນໃດໆທີ່ຈະຍົກເລີກເຄື່ອງໝາຍ.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail" approved="yes">
+        <source>Please enter an email address.</source>
+        <target state="final">ກະລຸນາໃສ່ທີ່ຢູ່ວີເມວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency" approved="yes">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target state="final">ບໍ່ໄດ້ກຳນົດຄວາມຖີ່, ບໍ່ວ່າຈະເປັນໄລຍະຫ່າງ ຫຼື ຄຳສັ່ງ cron.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun" approved="yes">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target state="final">ຕົວຈັດຕາຕະລາງຍັງບໍ່ເຄີຍເຮັດວຽກ ຫຼື ຂໍ້ມູນກ່ຽວກັບການເຮັດວຽກຄັ້ງລ້າສຸດເສຍຫາຍ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidRunningType" approved="yes">
+        <source>The selected task type must be either "single execution" or "recurring execution".</source>
+        <target state="final">ປະເພດວຽກທີ່ເລືອກຕ້ອງເປັນ "ການປະມວນຜົນຄັ້ງດຽວ" ຫຼື "ການປະມວນຜົນແບບເຮັດຊ້ຳ".</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks" approved="yes">
+        <source>No tasks found</source>
+        <target state="final">ບໍ່ພົບວຽກ</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.createNew" approved="yes">
+        <source>There are currently no configured tasks found. You can create a new one.</source>
+        <target state="final">ປັດຈຸບັນບໍ່ພົບວຽກທີ່ຕັ້ງຄ່າໄວ້. ເຈົ້າສາມາດສ້າງວຽກໃໝ່ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.nonAvailable" approved="yes">
+        <source>There are currently no tasks available in the system to be configured.</source>
+        <target state="final">ປັດຈຸບັນບໍ່ມີວຽກໃດໆໃນລະບົບທີ່ສາມາດຕັ້ງຄ່າໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted" approved="yes">
+        <source>Task "%s" with uid "%s" has not been executed.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ຍັງບໍ່ໄດ້ຖືກປະມວນຜົນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed" approved="yes">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">ການປະມວນຜົນວຽກ "%1$s" ລົ້ມເຫຼວດ້ວຍຂໍ້ຄວາມດັ່ງນີ້: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulingFailed" approved="yes">
+        <source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">ການຈັດຕາຕະລາງວຽກ "%1$s" ລົ້ມເຫຼວດ້ວຍຂໍ້ຄວາມດັ່ງນີ້: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.toggleDisableFailed" approved="yes">
+        <source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">ການປ່ຽນສະຖານະປິດໃຊ້ງານຂອງວຽກ "%1$s" ລົ້ມເຫຼວດ້ວຍຂໍ້ຄວາມດັ່ງນີ້: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.stopTaskFailed" approved="yes">
+        <source>Stopping task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">ການຢຸດວຽກ "%1$s" ລົ້ມເຫຼວດ້ວຍຂໍ້ຄວາມດັ່ງນີ້: %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault" approved="yes">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target state="final">ການປະມວນຜົນລົ້ມເຫຼວ, ແຕ່ບໍ່ສາມາດດຶງຂໍ້ຄວາມຂໍ້ຜິດພາດມາໄດ້ (ມັນອາດຈະໃຫຍ່ເກີນໄປ). ຂໍອະໄພ.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport" approved="yes">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target state="final">ການປະມວນຜົນລົ້ມເຫຼວ: %1$d, %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate" approved="yes">
+        <source>Please define a start date.</source>
+        <target state="final">ກະລຸນາກຳນົດວັນທີເລີ່ມຕົ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate" approved="yes">
+        <source>Start date is invalid.</source>
+        <target state="final">ວັນທີເລີ່ມຕົ້ນບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate" approved="yes">
+        <source>End date is invalid.</source>
+        <target state="final">ວັນທີສິ້ນສຸດບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidNumberOfDays" approved="yes">
+        <source>Number of days is invalid.</source>
+        <target state="final">ຈຳນວນມື້ບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingCacheBackends" approved="yes">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target state="final">ບາງ cache backends ທີ່ເລືອກບໍ່ມີຢູ່. ກະລຸນາເລືອກສະເພາະ backends ທີ່ມີຢູ່ຈິງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.noCacheBackendSelected" approved="yes">
+        <source>Please select at least one cache backend.</source>
+        <target state="final">ກະລຸນາເລືອກ cache backend ຢ່າງໜ້ອຍໜຶ່ງອັນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass" approved="yes">
+        <source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target state="final"><![CDATA[<strong>ວຽກຕໍ່ໄປນີ້ຂັດຂ້ອງ.</strong> ຖ້າວຽກຂອງເຈົ້າບໍ່ມີ class ທີ່ລົງທະບຽນໄວ້, ເເຈົ້າຄວນພິຈາລະນາຕິດຕັ້ງ extension ທີ່ໃຫ້ວຽກເຫຼົ່ານັ້ນຄືນໃໝ່ ຫຼື ພຽງແຕ່ລຶບວຽກນັ້ນຖິ້ມ. ໃນກໍລະນີທີ່ຂໍ້ຜິດພາດແມ່ນ "Cannot unserialize [class]", class ທີ່ແຈ້ງເຕືອນນັ້ນຕ້ອງຖືກຍ້າຍອອກຈາກ task class ຂອງເຈົ້າ, ເນື່ອງຈາກບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ນຳໃຊ້ຍ້ອນເຫດຜົນດ້ານຄວາມປອດໄພ. ກະລຸນາກວດສອບນຳວ່າ ວຽກໃດໜຶ່ງທີ່ລະບຸໄວ້ຈຳເປັນຕ້ອງໄດ້ສ້າງຂຶ້ນໃໝ່ດ້ວຍຕົນເອງຫຼືບໍ່ (ເຊິ່ງອາດຈະຈຳເປັນຫຼັງຈາກການອັບເດດ extension ຍ້ອນການປ່ຽນແປງທີ່ສຳຄັນ ຫຼື ບໍ່ມີສະຄຣິບການຍ້າຍຂໍ້ມູນ).]]></target>
+      </trans-unit>
+      <trans-unit id="msg.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">ຂໍ້ຄວາມຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.title" approved="yes">
+        <source>%s registered scheduler tasks can not be executed</source>
+        <target state="final">%s ວຽກຂອງຕົວຈັດຕາຕະລາງທີ່ລົງທະບຽນໄວ້ບໍ່ສາມາດປະມວນຜົນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.message" approved="yes">
+        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks.</a>]]></source>
+        <target state="final"><![CDATA[<a href="#scheduler-task-group-missing">ກະລຸນາກວດສອບໜ້າວຽກທີ່ຜິດພາດ.</a>]]></target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck" approved="yes">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target state="final">ໜ້ານີ້ຈະກວດສອບວ່າເງື່ອນໄຂເບື້ອງຕົ້ນສຳລັບການເຮັດວຽກຂອງຕົວຈັດຕາຕະລາງໃນຮູບແບບ cron job ຄົບຖ້ວນຫຼືບໍ່. ມັນຍັງສະແດງຂໍ້ມູນກ່ຽວກັບການເຮັດວຽກຄັ້ງລ້າສຸດຂອງຕົວຈັດຕາຕະລາງນຳອີກ.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">ເວລາປັດຈຸບັນຂອງເຊີເວີແມ່ນ %s.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">ວັນທີ ແລະ ເວລາທັງໝົດໃນຕົວຈັດຕາຕະລາງແມ່ນວັດແທກຕາມເວລາຂອງເຊີເວີ, ເນື່ອງຈາກຕົວຈັດຕາຕະລາງເຮັດວຽກຢູ່ຝັ່ງເຊີເວີເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.stop" approved="yes">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target state="final">ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການໝາຍວຽກນີ້ວ່າບໍ່ໄດ້ເຮັດວຽກຢູ່? ໝາຍເຫດ: ນີ້ຈະບໍ່ຢຸດສະຄຣິບຕົວຈິງ (ຖ້າບໍ່ໝັ້ນໃຈ ກະລຸນາເບິ່ງຄູ່ມື).</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError" approved="yes">
+        <source>The task could not be marked as non-running.</source>
+        <target state="final">ບໍ່ສາມາດໝາຍວຽກວ່າບໍ່ໄດ້ເຮັດວຽກຢູ່.</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess" approved="yes">
+        <source>The task was successfully marked as non-running.</source>
+        <target state="final">ໝາຍວຽກວ່າບໍ່ໄດ້ເຮັດວຽກຢູ່ສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound" approved="yes">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target state="final">ບໍ່ພົບວຽກທີ່ຮ້ອງຂໍ (UID: %d).</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError" approved="yes">
+        <source>The task could not be updated.</source>
+        <target state="final">ບໍ່ສາມາດອັບເດດວຽກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingDatabaseTables" approved="yes">
+        <source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+        <target state="final">ບາງຕາຕະລາງຖານຂໍ້ມູນທີ່ເລືອກບໍ່ມີຢູ່. ກະລຸນາເລືອກສະເພາະຕາຕະລາງທີ່ມີຢູ່ຈິງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.noDatabaseTablesSelected" approved="yes">
+        <source>Please select at least one database table.</source>
+        <target state="final">ກະລຸນາເລືອກຕາຕະລາງຖານຂໍ້ມູນຢ່າງໜ້ອຍໜຶ່ງຕາຕະລາງ.</target>
+      </trans-unit>
+      <trans-unit id="msg.unregisteredCommand" approved="yes">
+        <source>Command with identifier "%s" has not been registered.</source>
+        <target state="final">ຄຳສັ່ງທີ່ມີຕົວລະບຸ "%s" ຍັງບໍ່ໄດ້ຖືກລົງທະບຽນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingArguments" approved="yes">
+        <source>Error parsing current set of arguments: "%s".</source>
+        <target state="final">ຂໍ້ຜິດພາດໃນການວິເຄາະຊຸດຂອງ argument ປັດຈຸບັນ: "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingOptions" approved="yes">
+        <source>Error parsing current set of options: "%s".</source>
+        <target state="final">ຂໍ້ຜິດພາດໃນການວິເຄາະຊຸດຂອງ option ປັດຈຸບັນ: "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing" approved="yes">
+        <source>Argument "%s" is mandatory.</source>
+        <target state="final">Argument "%s" ແມ່ນຈຳເປັນ.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ໄດ້ຖືກເປີດໃຊ້ງານແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskDisabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been disabled.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ໄດ້ຖືກປິດໃຊ້ງານແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabledAndQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ໄດ້ຖືກເປີດໃຊ້ງານ ແລະ ຈັດເຂົ້າຄິວເພື່ອປະມວນຜົນໃນການເຮັດວຽກຂອງຕົວຈັດຕາຕະລາງ CLI ຄັ້ງຖັດໄປ.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
+        <target state="final">ວຽກ "%s" ທີ່ມີ uid "%s" ໄດ້ຖືກຈັດເຂົ້າຄິວເພື່ອປະມວນຜົນໃນການເຮັດວຽກຂອງຕົວຈັດຕາຕະລາງ CLI ຄັ້ງຖັດໄປ.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.deleted" approved="yes">
+        <source>Successfully deleted scheduler group.</source>
+        <target state="final">ລຶບກຸ່ມຕົວຈັດຕາຕະລາງສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.delete.failed" approved="yes">
+        <source>Failed to delete scheduler group.</source>
+        <target state="final">ລຶບກຸ່ມຕົວຈັດຕາຕະລາງລົ້ມເຫຼວ.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskType" approved="yes">
+        <source>Invalid Task type</source>
+        <target state="final">ປະເພດວຽກບໍ່ຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="msg.defaultExpirePeriod" approved="yes">
+        <source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
+        <target state="final">ຈະໃຊ້ໄລຍະເວລາໝົດອາຍຸມາດຕະຖານ %d ມື້, ທີ່ຕັ້ງຄ່າໄວ້ສຳລັບຕາຕະລາງທີ່ເລືອກ "%s".</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None</source>
+        <target state="final">ບໍ່ມີ</target>
+      </trans-unit>
+      <trans-unit id="status" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="status.progress" approved="yes">
+        <source>Progress</source>
+        <target state="final">ຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="status.disabledByGroup" approved="yes">
+        <source>disabled by group</source>
+        <target state="final">ຖືກປິດໃຊ້ງານໂດຍກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">ລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">ຊ້າກວ່າກຳນົດ</target>
+      </trans-unit>
+      <trans-unit id="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">ກຳລັງເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">ຈັດຕາຕະລາງແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="task" approved="yes">
+        <source>Task</source>
+        <target state="final">ວຽກ</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>TYPO3 Scheduler administration module</source>
+        <target state="final">ໂມດູລການຈັດການ TYPO3 Scheduler</target>
+      </trans-unit>
+      <trans-unit id="action.run_task" approved="yes">
+        <source>Run task</source>
+        <target state="final">ເລີ່ມວຽກ</target>
+      </trans-unit>
+      <trans-unit id="action.run_task_cron" approved="yes">
+        <source>Run task on next cron job</source>
+        <target state="final">ເລີ່ມວຽກໃນຮອບວຽກ cron ຖັດໄປ</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">ການເກັບຂີ້ເຫຍື້ອຂອງລະບົບ Cache (Garbage Collection)</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.name" approved="yes">
+        <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
+        <target state="final">[ຍົກເລີກແລ້ວ] File Abstraction Layer: ວຽກເຮັດດັດຊະນີ</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.description" approved="yes">
+        <source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+        <target state="final">ເຮັດວຽກການເຮັດດັດຊະນີໂດຍອີງຕາມການຕັ້ງຄ່າການເຮັດດັດຊະນີ ແລະ ຂໍ້ມູນບ່ອນເກັບຂໍ້ມູນ/ໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">File Abstraction Layer: ອັບເດດດັດຊະນີບ່ອນເກັບຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.description" approved="yes">
+        <source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
+        <target state="final">ອັບເດດຂໍ້ມູນດັດຊະນີ/Cache ຂອງບ່ອນເກັບຂໍ້ມູນ; ຈຳເປັນສະເພາະເມື່ອມີການປ່ຽນແປງໃນບ່ອນເກັບຂໍ້ມູນນອກລະບົບ backend (ເຊັ່ນ FTP, RemoteStorages).</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">File Abstraction Layer: ຖອດຖອນ metadata ໃນບ່ອນເກັບຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.description" approved="yes">
+        <source>Extracts metadata for all files in storage which have been changed since last run.</source>
+        <target state="final">ຖອດຖອນ metadata ສຳລັບໄຟລ໌ທັງໝົດໃນບ່ອນເກັບຂໍ້ມູນທີ່ມີການປ່ຽນແປງນັບຕັ້ງແຕ່ການເຮັດວຽກຄັ້ງລ້າສຸດ.</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">ການເກັບຂີ້ເຫຍື້ອໃນຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">ການເກັບຂີ້ເຫຍື້ອໃນ Fileadmin</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.name" approved="yes">
+        <source>Execute console commands</source>
+        <target state="final">ປະມວນຜົນຄຳສັ່ງຄອນໂຊນ (Console commands)</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.description" approved="yes">
+        <source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
+        <target state="final">ອະນຸຍາດໃຫ້ຕັ້ງຄ່າ ແລະ ປະມວນຜົນຄຳສັ່ງຄອນໂຊນທົ່ວໄປຜ່ານລະບົບຕົວຈັດຕາຕະລາງ.</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.name" approved="yes">
+        <source>Optimize MySQL database tables</source>
+        <target state="final">ປັບແຕ່ງ (Optimize) ຕາຕະລາງຖານຂໍ້ມູນ MySQL</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.name" approved="yes">
+        <source>Anonymize IP addresses in database tables</source>
+        <target state="final">ເຮັດໃຫ້ທີ່ຢູ່ IP ໃນຕາຕະລາງຖານຂໍ້ມູນເປັນນາມມະຍົດ (Anonymize)</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table" approved="yes">
+        <source>Table to anonymize</source>
+        <target state="final">ຕາຕະລາງທີ່ຈະເຮັດໃຫ້ເປັນນາມມະຍົດ</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationTable" approved="yes">
+        <source>Table: %s after %s days</source>
+        <target state="final">ຕາຕະລາງ: %s ຫຼັງຈາກ %s ມື້</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">ຕາຕະລາງທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.numberOfDays" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">ຈັດການລາຍການທີ່ເກົ່າກວ່າຈຳນວນມື້ທີ່ກຳນົດ</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask" approved="yes">
+        <source>Mask level</source>
+        <target state="final">ລະດັບການປິດບັງ (Mask level)</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.1" approved="yes">
+        <source>Last byte for IPv4 / Interface ID for IPv6</source>
+        <target state="final">ໄບຕ໌ສຸດທ້າຍສຳລັບ IPv4 / Interface ID ສຳລັບ IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.2" approved="yes">
+        <source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+        <target state="final">2 ໄບຕ໌ສຸດທ້າຍສຳລັບ IPv4 / Interface &amp; SLA ID ສຳລັບ IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration" approved="yes">
+        <source>Command configuration</source>
+        <target state="final">ການຕັ້ງຄ່າຄຳສັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration.description" approved="yes">
+        <source>Configure available arguments and options for the command.</source>
+        <target state="final">ຕັ້ງຄ່າ argument ແລະ option ທີ່ມີຢູ່ສຳລັບຄຳສັ່ງ.</target>
+      </trans-unit>
+      <trans-unit id="command.example1" approved="yes">
+        <source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
+        <target state="final">ທຸກໆວັນໃນອາທິດ ແຕ່ວັນຈັນເຖິງວັນສຸກ ເວລາ 09:00 ແລະ 15:00</target>
+      </trans-unit>
+      <trans-unit id="command.example2" approved="yes">
+        <source>Every 2 hours</source>
+        <target state="final">ທຸກໆ 2 ຊົ່ວໂມງ</target>
+      </trans-unit>
+      <trans-unit id="command.example3" approved="yes">
+        <source>Every 20 minutes</source>
+        <target state="final">ທຸກໆ 20 ນາທີ</target>
+      </trans-unit>
+      <trans-unit id="command.example4" approved="yes">
+        <source>Every Tuesday at 07:00</source>
+        <target state="final">ທຸກໆວັນອັງຄານ ເວລາ 07:00</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.noLastRun" approved="yes">
+        <source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+        <target state="final"><![CDATA[ເບິ່ງຄືວ່າຕົວຈັດຕາຕະລາງຍັງບໍ່ເຄີຍເຮັດວຽກເທື່ອ. ກະລຸນາກວດສອບ <a href="%1$s">ການຕັ້ງຄ່າ</a> ຂອງເຈົ້າ.]]></target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel" approved="yes">
+        <source>Last Scheduler run</source>
+        <target state="final">ການເຮັດວຽກຂອງຕົວຈັດຕາຕະລາງຄັ້ງລ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunValue" approved="yes">
+        <source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+        <target state="final">%1$s ເວລາ %2$s, ໄລຍະເວລາ %3$s, (ເລີ່ມເມື່ອ %4$s)</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">ຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.message" approved="yes">
+        <source>Could not create group</source>
+        <target state="final">ບໍ່ສາມາດສ້າງກຸ່ມໄດ້</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.input.field.label" approved="yes">
+        <source>Enter a group name</source>
+        <target state="final">ປ້ອນຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.button.edit.label" approved="yes">
+        <source>Edit group name</source>
+        <target state="final">ແກ້ໄຂຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.placeholder" approved="yes">
+        <source>Search for any kind of tasks</source>
+        <target state="final">ຄົ້ນຫາວຽກທຸກປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.noResults" approved="yes">
+        <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+        <target state="final">ໜ້າເສຍດາຍ ບໍ່ມີວຽກຂອງຕົວຈັດຕາຕະລາງທີ່ກົງກັບການຄົ້ນຫາຂອງເຈົ້າ, ກະລຸນາລອງໃໝ່.</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+      <trans-unit id="delete_group" approved="yes">
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+        <target state="final">ລຶບກຸ່ມໜ້າວຽກນີ້ບໍ? ທ່ານສາມາດກູ້ຄືນມັນໄດ້ໃນໂມດູນ "Recycler".</target>
+      </trans-unit>
+      <trans-unit id="delete_task" approved="yes">
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+        <target state="final">ລຶບໜ້າວຽກນີ້ບໍ? ທ່ານສາມາດກູ້ຄືນມັນໄດ້ໃນໂມດູນ "Recycler".</target>
+      </trans-unit>
+      <trans-unit id="task.count" approved="yes">
+        <source>{count, plural, one {# task} other {# tasks}}</source>
+        <target state="final">{count, plural, one {# ວຽກ} other {# ວຽກ}}</target>
+      </trans-unit>
+      <trans-unit id="unusedGroups.count" approved="yes">
+        <source>{count, plural, one {# unused task group} other {# unused task groups}}</source>
+        <target state="final">{count, plural, one {# ກຸ່ມວຽກທີ່ບໍ່ໄດ້ໃຊ້} other {# ກຸ່ມວຽກທີ່ບໍ່ໄດ້ໃຊ້}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
