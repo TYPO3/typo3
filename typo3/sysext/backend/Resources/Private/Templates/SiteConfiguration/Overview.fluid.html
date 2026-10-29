@@ -548,7 +548,7 @@
                                     <f:translate key="overview.languages" domain="backend.siteconfiguration" />:
                                 </strong>
                                 <div>
-                                    <core:icon identifier="{page.siteConfiguration.allLanguages.0.flagIdentifier}" /> {page.siteConfiguration.allLanguages.0.title}
+                                    <core:icon identifier="{page.siteConfiguration.defaultLanguage.flagIdentifier}" /> {page.siteConfiguration.defaultLanguage.title}
                                     <f:if condition="{page.siteConfiguration.allLanguages -> f:count()} > 1">
                                         <f:variable name="siteLanguageAmount" value="{page.siteConfiguration.allLanguages -> f:count()}" />
                                         <f:translate
