@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/redirects.xlf" date="2026-11-10T13:37:37Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Redirect Administration</source>
+        <target>crwdns384074:0crwdne384074:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Manage URL redirects to prevent broken links and route traffic to preferred destinations.</source>
+        <target>crwdns393422:0crwdne393422:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Redirects</source>
+        <target>crwdns384078:0crwdne384078:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
