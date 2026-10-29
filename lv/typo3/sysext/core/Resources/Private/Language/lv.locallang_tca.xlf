@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">Labot tiešsaistē (Online)</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">Mainīt lietotāju grupu</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">Izveidot jaunu grupu</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">Parādīt grupas</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Faili: Atarhivēt</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Faili: Augšupielāde,Kopēšana,Pārvietošana,Dzēšana,Pārsaukšana,Jauns,Labot</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Mape: Pārvietot,Dzēst,Pārsaukt,Jauns</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Mape: Kopēt</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Mape: Dzēst rekursīvi (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Paplašināti</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Pieeja</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Mape: Kopēt</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Faili: Atarhivēt</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Faili: Augšupielāde,Kopēšana,Pārvietošana,Dzēšana,Pārsaukšana,Jauns,Labot</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Mape: Pārvietot,Dzēst,Pārsaukt,Jauns</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Mape: Kopēt</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Mape: Dzēst rekursīvi (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Paplašināti</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Lietotāji</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Ielādes punkti</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">Publicēšana</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Citi</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Pieeja</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Lapa</target>
+      </trans-unit>
+      <trans-unit id="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Administrācijas lietotājs</target>
+      </trans-unit>
+      <trans-unit id="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Administrācijas lietotāju grupa</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darba lauks</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
