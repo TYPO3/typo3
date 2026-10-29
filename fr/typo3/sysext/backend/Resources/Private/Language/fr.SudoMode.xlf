@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="verify" approved="yes">
+        <source>Verify</source>
+        <target state="final">Vérifier</target>
+      </trans-unit>
+      <trans-unit id="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="verifyWithUserPassword" approved="yes">
+        <source>Verify with user password</source>
+        <target state="final">Vérifier avec le mot de passe de l'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="verifyWithInstallToolPassword" approved="yes">
+        <source>Verify with Install Tool password</source>
+        <target state="final">Vérifier avec le mot de passe de l'outil d'installation</target>
+      </trans-unit>
+      <trans-unit id="accessGranted" approved="yes">
+        <source>Access granted</source>
+        <target state="final">Accès autorisé</target>
+      </trans-unit>
+      <trans-unit id="invalidPassword" approved="yes">
+        <source>Invalid password</source>
+        <target state="final">Mot de passe invalide</target>
+      </trans-unit>
+      <trans-unit id="userPasswordMode" approved="yes">
+        <source>Use user password instead</source>
+        <target state="final">Utiliser le mot de passe utilisateur à la place</target>
+      </trans-unit>
+      <trans-unit id="installToolPasswordMode" approved="yes">
+        <source>Use Install Tool password instead</source>
+        <target state="final">Utiliser le mot de passe de l'outil d'installation à la place</target>
+      </trans-unit>
+      <trans-unit id="sudoModeUserPasswordExplanation" approved="yes">
+        <source>Authentication is required to perform this action. Please enter your user password to proceed.</source>
+        <target state="final">L'authentification est nécessaire pour effectuer cette action. Veuillez entrer votre mot de passe utilisateur pour continuer.</target>
+      </trans-unit>
+      <trans-unit id="sudoModeInstallToolPasswordExplanation" approved="yes">
+        <source>Authentication is required to perform this action. Please enter the Install Tool password to proceed.</source>
+        <target state="final">L'authentification est nécessaire pour effectuer cette action. Veuillez entrer le mot de passe de l'outil d'installation pour continuer.</target>
+      </trans-unit>
+      <trans-unit id="verificationFailed" approved="yes">
+        <source>Verification failed</source>
+        <target state="final">Echec de la vérification</target>
+      </trans-unit>
+      <trans-unit id="verificationExpired" approved="yes">
+        <source>Confirmation has expired. Please try again.</source>
+        <target state="final">La confirmation a expiré. Veuillez réessayer.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
