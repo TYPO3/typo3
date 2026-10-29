@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">הדבק אחרי: תוכן לוח גזירות יושתל אחרי רשומה זו</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">הדבק לתוך: תוכן לוח גזירות יושתל בתוך דף זה</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">הדבק בתוך תוכן לוח גזירות</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">בחר הכל/בטל בחירה</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">העבר רשומות נבחרות ללוח גזירות</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">בחר כפלים</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">ערוך נבחרים</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">מחק נבחרים</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">האם הנך בטוח כי ברצונך למחוק כל הרשומות הנבחרות מהטבלה "%s"?</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">ערוך רשומה</target>
+      </trans-unit>
+      <trans-unit id="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">ערוך דף</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New record</source>
+        <target state="final">רשומה חדשה</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">צור דף חדש אחרי דף זה</target>
+      </trans-unit>
+      <trans-unit id="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">צור רשומה חדשה אחרי רשומה זו</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">צור רשומה חדשה</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">לעלות ברשימה</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">לרדת ברשימה</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">לשנות מיקום של פריט תוכן</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">להזיז דף</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">להחביא רשומה</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">בטל החבאת רשומה</target>
+      </trans-unit>
+      <trans-unit id="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">להחביא דף</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">בטל החבאת דף</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">הזז דף זה למיקום אחרי דף אב נוכחי (פנימה)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">הזז דף זה להיות תת-דף של הדף לעיל (החוצה)</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">הצג גרסאות</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">קבע הרשאות לדף</target>
+      </trans-unit>
+      <trans-unit id="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">תצוגה מורחבת</target>
+      </trans-unit>
+      <trans-unit id="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">הצג כל הטבלאות</target>
+      </trans-unit>
+      <trans-unit id="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">הצג טבלה זו בלבד</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">הצג לוח גזירות</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">ערוך כל שדות המוצגים של רשומות המוצגות</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">ערוך שדה "%s" של רשומות המוצגות</target>
+      </trans-unit>
+      <trans-unit id="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">תצוגת לוקליזציה</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">ברירת מחדל</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">כל השפות</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">מציג פרטי תוכן של</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
