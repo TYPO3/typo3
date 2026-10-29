@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/link_management.xlf" date="2025-11-13T19:45:15Z" product-name="backend" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Link Management</source>
+        <target state="final">Управление на връзките</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
