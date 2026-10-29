@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="module.pagetsconfig.noAccess" approved="yes">
+        <source>Access to this module denied.</source>
+        <target state="final">Accès à ce module refusé.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.headline" approved="yes">
+        <source>Pages containing page TSconfig</source>
+        <target state="final">Pages contenant de la configuration TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.description" approved="yes">
+        <source>Global overview of all pages in the database containing page TSconfig.</source>
+        <target state="final">Aperçu global de toutes les pages de la base de données contenant du TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.noRecords" approved="yes">
+        <source>There are no pages containing page TSconfig settings in the page configuration.</source>
+        <target state="final">Il n'y a pas de pages contenant du TSconfig de page dans leur configuration.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.pagetitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titre de la page</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" approved="yes">
+        <source>Number of lines of code in field "TSconfig"</source>
+        <target state="final">Nombre de lignes de code dans le champ « TSconfig »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.headline" approved="yes">
+        <source>Active page TSconfig of page "%s"</source>
+        <target state="final">TSconfig de page actif sur la page « %s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.description" approved="yes">
+        <source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+        <target state="final">Aperçu du TSconfig de page actuel du système. Une recherche ciblée de valeurs et de noms est possible. La liste des résultats peut également être filtrée selon les conditions.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in page TSconfig</source>
+        <target state="final">Substituer les constantes dans le TSconfig de page</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">Afficher les commentaires</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">Trier les clés par ordre alphabétique</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">Conditions</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s conditions activées</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s condition activée</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" approved="yes">
+        <source>Site settings usage: [%s]</source>
+        <target state="final">Utilisation des paramètres de site : [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">Constantes depuis les paramètres de site</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.activePageTsConfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">TSconfig de page</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" approved="yes">
+        <source>No suitable page TSconfig available.</source>
+        <target state="final">Aucun TSconfig de page approprié n'est disponible.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">Utilisation de la constante : [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.headline" approved="yes">
+        <source>Included page TSconfig of page "%s"</source>
+        <target state="final">TSconfig de page inclus de la page « %s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">Aperçu du TypoScript inclus et de l'ordre d'inclusion pour la page actuelle.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">Constantes depuis les paramètres de site</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">TSconfig de page</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">Avertissements de l'inspecteur de syntaxe</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">Avertissement de syntaxe %s</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">Avertissements de syntaxe %s</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">Afficher le fragment de code affecté</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">Ligne invalide dans « %1$s », numéro de ligne « %2$s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">Parenthèse en excès dans « %1$s », numéro de ligne « %2$s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">Parenthèse manquante dans « %1$s », numéro de ligne « %2$s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">L'importation ne trouve pas de fichier dans « %1$s », numéro de ligne « %2$s »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">Segment de code</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">Inclus via « @import »</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">Condition (then)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">Condition (else)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">Condition (fin)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">Site</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">Montrer le code</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">Afficher le code incluant les éventuelles inclusions/importations</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
