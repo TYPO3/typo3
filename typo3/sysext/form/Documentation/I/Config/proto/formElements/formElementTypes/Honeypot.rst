@@ -24,6 +24,9 @@ Properties
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.honeypot.properties.elementerrorclassattribute:
 ..  include:: Honeypot/properties/elementErrorClassAttribute.rst.txt
 
+..  _prototypes.prototypeIdentifier.formelementsdefinition.honeypot.properties.fluidadditionalattributes:
+..  include:: Honeypot/properties/fluidAdditionalAttributes.rst.txt
+
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.honeypot.properties.renderashiddenfield:
 ..  include:: Honeypot/properties/renderAsHiddenField.rst.txt
 

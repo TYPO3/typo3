@@ -543,6 +543,25 @@ final class RequestHandlingTest extends FunctionalTestCase
         }
     }
 
+    #[DataProvider('theHoneypotElementChangesWithEveryCallOfTheFirstFormStepDataProvider')]
+    #[Test]
+    public function theHoneypotElementIsRenderedWithAutocompleteOffAndAriaHidden(string $formIdentifier): void
+    {
+        $uri = static::ROOT_PAGE_BASE_URI . '/form';
+        $subject = new FormDataFactory();
+
+        $internalRequest = new InternalRequest($uri)->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $pageMarkup = (string)$this->executeFrontendSubRequest($internalRequest, null, true)->getBody();
+        $elementData = $subject->fromHtmlMarkupAndXpath($pageMarkup, '//form[@id="' . $formIdentifier . '"]')->toArray()['elementData'];
+
+        $honeypots = array_filter($elementData, static fn(array $element): bool => $element['__isHoneypot']);
+        self::assertNotEmpty($honeypots, 'honeypot element exists');
+        $honeypot = reset($honeypots);
+
+        self::assertSame('off', $honeypot['autocomplete'] ?? null, 'autocomplete of the honeypot is rendered');
+        self::assertSame('true', $honeypot['aria-hidden'] ?? null, 'aria-hidden of the honeypot is kept');
+    }
+
     #[DataProvider('theCachingBehavesTheSameForAllFormIntegrationVariantsDataProvider')]
     #[Test]
     public function theFormIsShownAgainIfTheHoneypotIsFilledWithoutFrontendSession(string $formIdentifier, string $formNamePrefix): void

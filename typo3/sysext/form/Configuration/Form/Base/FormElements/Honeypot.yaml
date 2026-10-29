@@ -318,6 +318,8 @@ prototypes:
           containerClassAttribute: form-element
           elementClassAttribute: form-control
           elementErrorClassAttribute: ~
+          fluidAdditionalAttributes:
+            autocomplete: 'off'
           renderAsHiddenField: false
           styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
         variants:

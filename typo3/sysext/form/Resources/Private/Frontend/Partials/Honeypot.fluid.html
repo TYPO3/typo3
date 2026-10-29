@@ -4,7 +4,7 @@
         <f:form.hidden property="{element.identifier}" id="{element.uniqueIdentifier}" data="{id: element.identifier}" />
     </f:then>
     <f:else>
-        <f:form.textfield property="{element.identifier}" id="{element.uniqueIdentifier}" class="{element.properties.elementClassAttribute}" data="{id: element.identifier}" additionalAttributes="{aria-hidden: 'true'}" tabindex="-1" style="{element.properties.styleAttribute}" />
+        <f:form.textfield property="{element.identifier}" id="{element.uniqueIdentifier}" class="{element.properties.elementClassAttribute}" data="{id: element.identifier}" additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}" aria="{hidden: 'true'}" tabindex="-1" style="{element.properties.styleAttribute}" />
     </f:else>
 </f:if>
 </html>
