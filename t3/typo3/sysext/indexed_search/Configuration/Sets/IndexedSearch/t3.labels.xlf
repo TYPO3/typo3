@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Configuration/Sets/IndexedSearch/labels.xlf" date="2024-09-05T09:00:00Z" product-name="indexed_search" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Indexed Search</source>
+        <target>crwdns416971:0crwdne416971:0</target>
+      </trans-unit>
+      <trans-unit id="categories.indexedsearch">
+        <source>Indexed Search</source>
+        <target>crwdns416973:0crwdne416973:0</target>
+      </trans-unit>
+      <trans-unit id="categories.indexedsearch.templates">
+        <source>Templates</source>
+        <target>crwdns416975:0crwdne416975:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.view.templateRootPath">
+        <source>Path to template root (FE)</source>
+        <target>crwdns416977:0crwdne416977:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.view.partialRootPath">
+        <source>Path to template partials (FE)</source>
+        <target>crwdns416979:0crwdne416979:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.view.layoutRootPath">
+        <source>Path to template layouts (FE)</source>
+        <target>crwdns416981:0crwdne416981:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.targetPid">
+        <source>Set the target page where search results are shown</source>
+        <target>crwdns416983:0crwdne416983:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.rootPidList">
+        <source>A list of integer which should be root-pages to search from</source>
+        <target>crwdns416985:0crwdne416985:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.pagination_type">
+        <source>Pagination implementation used for search results</source>
+        <target>crwdns416987:0crwdne416987:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.indexedsearch.pagination_type">
+        <source>Select between simple pagination (all pages) and sliding window pagination.</source>
+        <target>crwdns416989:0crwdne416989:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.pagination_type.enum.simple">
+        <source>Simple</source>
+        <target>crwdns416991:0crwdne416991:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.pagination_type.enum.slidingWindow">
+        <source>Sliding window</source>
+        <target>crwdns416993:0crwdne416993:0</target>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.page_links">
+        <source>Maximum number of links shown for sliding window pagination</source>
+        <target>crwdns416995:0crwdne416995:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.indexedsearch.page_links">
+        <source>Defines the maximum number of page links displayed when sliding window pagination is active.</source>
+        <target>crwdns416997:0crwdne416997:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
