@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="abstract">
+      <segment state="initial">
+        <source>Abstract</source>
+        <target>crwdns378518:0crwdne378518:0</target>
+      </segment>
+    </unit>
+    <unit id="author">
+      <segment state="initial">
+        <source>Author Name</source>
+        <target>crwdns378520:0crwdne378520:0</target>
+      </segment>
+    </unit>
+    <unit id="author_email">
+      <segment state="initial">
+        <source>Author Email</source>
+        <target>crwdns378522:0crwdne378522:0</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout">
+      <segment state="initial">
+        <source>Backend Layout (this page only)</source>
+        <target>crwdns378524:0crwdne378524:0</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout_next_level">
+      <segment state="initial">
+        <source>Backend Layout (subpages of this page)</source>
+        <target>crwdns378526:0crwdne378526:0</target>
+      </segment>
+    </unit>
+    <unit id="cache_tags">
+      <segment state="initial">
+        <source>Cache Tags</source>
+        <target>crwdns378528:0crwdne378528:0</target>
+      </segment>
+    </unit>
+    <unit id="cache_timeout">
+      <segment state="initial">
+        <source>Cache Lifetime</source>
+        <target>crwdns378530:0crwdne378530:0</target>
+      </segment>
+    </unit>
+    <unit id="content_from_pid">
+      <segment state="initial">
+        <source>Show Content from this page</source>
+        <target>crwdns378532:0crwdne378532:0</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="initial">
+        <source>Description for search engines</source>
+        <target>crwdns378534:0crwdne378534:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype">
+      <segment state="initial">
+        <source>Type</source>
+        <target>crwdns378536:0crwdne378536:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.be_user_section">
+      <segment state="initial">
+        <source>Backend User Section</source>
+        <target>crwdns393676:0crwdne393676:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment state="initial">
+        <source>Standard Page</source>
+        <target>crwdns393678:0crwdne393678:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment state="initial">
+        <source>Link</source>
+        <target>crwdns393680:0crwdne393680:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment state="initial">
+        <source>Mount Point</source>
+        <target>crwdns393682:0crwdne393682:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment state="initial">
+        <source>Shortcut</source>
+        <target>crwdns393684:0crwdne393684:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment state="initial">
+        <source>Menu Separator</source>
+        <target>crwdns393686:0crwdne393686:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment state="initial">
+        <source>Folder</source>
+        <target>crwdns393688:0crwdne393688:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment state="initial">
+        <source>Link</source>
+        <target>crwdns393690:0crwdne393690:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment state="initial">
+        <source>Page</source>
+        <target>crwdns393692:0crwdne393692:0</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment state="initial">
+        <source>Special</source>
+        <target>crwdns393694:0crwdne393694:0</target>
+      </segment>
+    </unit>
+    <unit id="extend_to_subpages">
+      <segment state="initial">
+        <source>Extend to Subpages</source>
+        <target>crwdns378538:0crwdne378538:0</target>
+      </segment>
+    </unit>
+    <unit id="hidden">
+      <segment state="initial">
+        <source>Page visible</source>
+        <target>crwdns378540:0crwdne378540:0</target>
+      </segment>
+    </unit>
+    <unit id="is_siteroot">
+      <segment state="initial">
+        <source>Use as Root Page</source>
+        <target>crwdns378542:0crwdne378542:0</target>
+      </segment>
+    </unit>
+    <unit id="keywords">
+      <segment state="initial">
+        <source>Keywords</source>
+        <target>crwdns378544:0crwdne378544:0</target>
+      </segment>
+    </unit>
+    <unit id="link">
+      <segment state="initial">
+        <source>Link destination</source>
+        <target>crwdns381034:0crwdne381034:0</target>
+      </segment>
+    </unit>
+    <unit id="link.description">
+      <segment state="initial">
+        <source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+        <target>crwdns381036:0crwdne381036:0 </target>
+      </segment>
+    </unit>
+    <unit id="l18n_cfg">
+      <segment state="initial">
+        <source>Localization</source>
+        <target>crwdns378546:0crwdne378546:0</target>
+      </segment>
+    </unit>
+    <unit id="last_updated">
+      <segment state="initial">
+        <source>Last Update</source>
+        <target>crwdns378548:0crwdne378548:0</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="initial">
+        <source>Frontend Layout</source>
+        <target>crwdns378550:0crwdne378550:0</target>
+      </segment>
+    </unit>
+    <unit id="link.target">
+      <segment state="initial">
+        <source>Link target</source>
+        <target>crwdns378552:0crwdne378552:0</target>
+      </segment>
+    </unit>
+    <unit id="media">
+      <segment state="initial">
+        <source>Media</source>
+        <target>crwdns378554:0crwdne378554:0</target>
+      </segment>
+    </unit>
+    <unit id="module">
+      <segment state="initial">
+        <source>Contains Plugin</source>
+        <target>crwdns378556:0crwdne378556:0</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid">
+      <segment state="initial">
+        <source>Mounted page</source>
+        <target>crwdns378558:0crwdne378558:0</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid_ol">
+      <segment state="initial">
+        <source>Mount Point Display Option</source>
+        <target>crwdns378560:0crwdne378560:0</target>
+      </segment>
+    </unit>
+    <unit id="nav_hide">
+      <segment state="initial">
+        <source>Page enabled in menus</source>
+        <target>crwdns378562:0crwdne378562:0</target>
+      </segment>
+    </unit>
+    <unit id="nav_title">
+      <segment state="initial">
+        <source>Alternative Navigation Title</source>
+        <target>crwdns378564:0crwdne378564:0</target>
+      </segment>
+    </unit>
+    <unit id="new_until">
+      <segment state="initial">
+        <source>Mark as 'New' Until</source>
+        <target>crwdns378566:0crwdne378566:0</target>
+      </segment>
+    </unit>
+    <unit id="no_search">
+      <segment state="initial">
+        <source>Include in Search</source>
+        <target>crwdns378568:0crwdne378568:0</target>
+      </segment>
+    </unit>
+    <unit id="php_tree_stop">
+      <segment state="initial">
+        <source>Hide child pages in page tree</source>
+        <target>crwdns378570:0crwdne378570:0</target>
+      </segment>
+    </unit>
+    <unit id="shortcut">
+      <segment state="initial">
+        <source>Shortcut to page</source>
+        <target>crwdns378572:0crwdne378572:0</target>
+      </segment>
+    </unit>
+    <unit id="shortcut_mode">
+      <segment state="initial">
+        <source>Shortcut Mode</source>
+        <target>crwdns378574:0crwdne378574:0</target>
+      </segment>
+    </unit>
+    <unit id="slug">
+      <segment state="initial">
+        <source>URL Segment</source>
+        <target>crwdns378576:0crwdne378576:0</target>
+      </segment>
+    </unit>
+    <unit id="subtitle">
+      <segment state="initial">
+        <source>Subtitle</source>
+        <target>crwdns378578:0crwdne378578:0</target>
+      </segment>
+    </unit>
+    <unit id="target">
+      <segment state="initial">
+        <source>Target</source>
+        <target>crwdns378580:0crwdne378580:0</target>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment state="initial">
+        <source>Page title</source>
+        <target>crwdns378582:0crwdne378582:0</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig">
+      <segment state="initial">
+        <source>Page TSconfig</source>
+        <target>crwdns378584:0crwdne378584:0</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig_includes">
+      <segment state="initial">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target>crwdns378586:0crwdne378586:0</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="initial">
+        <source>URL</source>
+        <target>crwdns378588:0crwdne378588:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
