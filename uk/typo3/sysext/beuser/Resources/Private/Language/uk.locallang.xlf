@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Імʼя користувача</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Електронна адреса</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Адміністратор</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Користувачі</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Так</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Ні</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Ніколи</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Почати</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Зупинити</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Остання авторизація</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Обмеження мов</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Точки монтування файлів</target>
+      </trans-unit>
+      <trans-unit id="groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Групи</target>
+      </trans-unit>
+      <trans-unit id="languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Мови</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Категорії</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Доступи</target>
+      </trans-unit>
+      <trans-unit id="modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Модулі</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">Дозволи таблиці</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" approved="yes">
+        <source>Inherit</source>
+        <target state="final">Успадкувати</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" approved="yes">
+        <source>Direct</source>
+        <target state="final">Прямий</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUser" approved="yes">
+        <source>Backend User</source>
+        <target state="final">Бекенд-користувач</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Внутрішні користувачі</target>
+      </trans-unit>
+      <trans-unit id="backendUserDetails" approved="yes">
+        <source>Backend user details</source>
+        <target state="final">Основна інформація про користувача</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Групи користувачів бекенд</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Порівняти внутрішніх користувачів</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Користувачі онлайн</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фільтр</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Скинути</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">попередній</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">наступний</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">перший</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">останній</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Оновити</target>
+      </trans-unit>
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">Перейти на користувача</target>
+      </trans-unit>
+      <trans-unit id="lockedMfaProviders" approved="yes">
+        <source>Locked MFA providers</source>
+        <target state="final">Заблоковані постачальники MFA</target>
+      </trans-unit>
+      <trans-unit id="mfaEnabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA увімкнено</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <!-- Backend users: Show -->
+      <!-- Backend users: Compare -->
+      <!-- Backend users: Online -->
+      <!-- Backend user groups: List -->
+      <!-- Backend user groups: Show -->
+      <!-- Backend user groups: Compare -->
+      <!-- File mounts -->
+      <trans-unit id="filemount.list.title" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Монтування файлів</target>
+      </trans-unit>
+      <!-- Password reset -->
+      <trans-unit id="flashMessage.resetPassword.error.title" approved="yes">
+        <source>Password reset not triggered</source>
+        <target state="final">Скидання пароля не було викликано</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" approved="yes">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target state="final">Вибачте, пароль цього користувача не може бути скинутий.</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" approved="yes">
+        <source>Password reset triggered</source>
+        <target state="final">Скидання пароля активоване</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" approved="yes">
+        <source>Password reset for email address %s initiated.</source>
+        <target state="final">Пароль скинуто для адреси електронної пошти %s.</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Відновити пароль</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Відновити Пароль</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" approved="yes">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target state="final">Ви дійсно бажаєте скинути пароль для %s?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
