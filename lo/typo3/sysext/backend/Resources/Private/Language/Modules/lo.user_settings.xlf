@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/user_settings.xlf" date="2026-04-08T12:00:00Z" product-name="typo3-cms-backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Personal profile settings</source>
+        <target state="final">ການຕັ້ງຄ່າຂໍ້ມູນສ່ວນຕົວ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
+        <target state="final">ໂມດູນນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດປັບແຕ່ງຂໍ້ມູນສ່ວນຕົວຜູ້ໃຊ້ໃນລະບົບຫຼັງບ້ານຂອງທ່ານ. ຢູ່ທີ່ນີ້ ທ່ານສາມາດປ່ຽນພາສາທີ່ໃຊ້ໃນລະບົບ, ຊື່ ແລະ ທີ່ຢູ່ອີເມວ. ນອກຈາກນີ້ ທ່ານຍັງສາມາດກຳນົດຄ່າຄຸນສົມບັດທົ່ວໄປອື່ນໆໃນລະບົບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>User Settings</source>
+        <target state="final">ການຕັ້ງຄ່າຜູ້ໃຊ້</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
