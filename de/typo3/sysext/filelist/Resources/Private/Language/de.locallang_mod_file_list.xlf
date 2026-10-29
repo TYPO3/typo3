@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Zwischenablage anzeigen</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Inhalt der Zwischenablage einfügen</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Einfügen in: Inhalt der Zwischenablage wird in diesen Ordner eingefügt</target>
+      </trans-unit>
+      <trans-unit id="editMarked" approved="yes">
+        <source>Edit Metadata</source>
+        <target state="final">Metadaten bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="editColumns" approved="yes">
+        <source>Edit specific Metadata</source>
+        <target state="final">Spezifische Metadaten bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="deleteMarked" approved="yes">
+        <source>Delete marked items</source>
+        <target state="final">Markierte Elemente löschen</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">In die Zwischenablage übertragen</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Aus der Zwischenablage entfernen</target>
+      </trans-unit>
+      <trans-unit id="deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked items from this folder?</source>
+        <target state="final">Bist du sicher, dass du alle markierten Elemente aus diesem Ordner löschen möchtest?</target>
+      </trans-unit>
+      <trans-unit id="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Name</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Größe</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">LS</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Temporäre Dateien</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">L</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Papierkorb</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">S</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Zugriff verweigert.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Sie versuchen, auf einen Ordner in einem Speicher zuzugreifen, der nicht durchsucht werden kann.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Fehlende Ordnerberechtigungen</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Sie haben keinen Zugriff auf den Ordner "%s".</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" approved="yes">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target state="final">Basisordner für lokalen Speicher fehlt oder ist nicht erlaubt</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" approved="yes">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target state="final">Vergewissern Sie sich, dass der Basisordner für den Speicher "%s" existiert und der Zugriff darauf erlaubt ist.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Ordner nicht gefunden.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Auf den Ordner "%s" kann nicht zugegriffen werden. Versuchen Sie es mit einem übergeordneten Ordner.</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Metadaten übersetzen</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Metadaten dieser Datei erstellen für %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Metadaten dieser Datei bearbeiten für %s</target>
+      </trans-unit>
+      <trans-unit id="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Parameterfehler</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Ziel war kein Verzeichnis!</target>
+      </trans-unit>
+      <trans-unit id="reloadMetadata" approved="yes">
+        <source>Reload Metadata</source>
+        <target state="final">Metadaten neu laden</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Media %1$d - %2$d</source>
+        <target state="final">Medien %1$d - %2$d</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
