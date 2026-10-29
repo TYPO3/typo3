@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title">
+        <source>Slugs updated and redirects created</source>
+        <target>crwdns60766:0crwdne60766:0</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title">
+        <source>Slugs updated</source>
+        <target>crwdns60770:0crwdne60770:0</target>
+      </trans-unit>
+      <trans-unit id="notification.page">
+        <source>"{title}" ({oldSlug} to {newSlug})</source>
+        <target>crwdns417915:0{title}crwdnd417915:0{oldSlug}crwdnd417915:0{newSlug}crwdne417915:0</target>
+      </trans-unit>
+      <trans-unit id="notification.message.changed_pages">
+        <source>{count, plural, one {You changed the slug of {pages}.} other {You changed the slugs of {pages}.}}</source>
+        <target>crwdns417917:0count={count}crwdnd417917:0pages={pages}crwdnd417917:0pages={pages}crwdne417917:0</target>
+      </trans-unit>
+      <trans-unit id="notification.message.changed_pages_and_more">
+        <source>You changed the slugs of {pages} and {count, plural, one {# more page} other {# more pages}}.</source>
+        <target>crwdns417919:0pages={pages}crwdnd417919:0count={count}crwdne417919:0</target>
+      </trans-unit>
+      <trans-unit id="notification.message.updated_sub_pages">
+        <source>{count, plural, one {# sub-page was updated automatically.} other {# sub-pages were updated automatically.}}</source>
+        <target>crwdns417921:0count={count}crwdne417921:0</target>
+      </trans-unit>
+      <trans-unit id="notification.message.created_redirects">
+        <source>{count, plural, one {# redirect was created automatically.} other {# redirects were created automatically.}}</source>
+        <target>crwdns417923:0count={count}crwdne417923:0</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update">
+        <source>Revert update</source>
+        <target>crwdns60774:0crwdne60774:0</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect">
+        <source>Revert redirects only</source>
+        <target>crwdns60776:0crwdne60776:0</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title">
+        <source>An error occurred</source>
+        <target>crwdns60778:0crwdne60778:0</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message">
+        <source>Sorry something went wrong.</source>
+        <target>crwdns60780:0crwdne60780:0</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title">
+        <source>Revert successful</source>
+        <target>crwdns60782:0crwdne60782:0</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target>crwdns141975:0crwdne141975:0</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title">
+        <source>Revert successful</source>
+        <target>crwdns60786:0crwdne60786:0</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message">
+        <source>All created redirects have been reverted.</source>
+        <target>crwdns60788:0crwdne60788:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
