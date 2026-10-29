@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Udvidelsesmanager</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Håndtér udvidelser</target>
+      </trans-unit>
+      <trans-unit id="installExtension" approved="yes">
+        <source>Install Extension</source>
+        <target state="final">Installér udvidelse</target>
+      </trans-unit>
+      <trans-unit id="composerMode.title" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Komponér-tilstand</target>
+      </trans-unit>
+      <trans-unit id="composerStrictMode.message" approved="yes">
+        <source>The system is set to composer mode. Please notice that this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
+        <target state="final">Systemet er indstillet til composer-tilstand. Bemærk venligst, at denne liste kun er til informationsformål. For at ændre, hvilke udvidelser der anvendes i systemet, skal du bruge composer. For at indstille udvidelser, bruges TYPO3 cli (extension:setup)</target>
+      </trans-unit>
+      <trans-unit id="installedExtensions" approved="yes">
+        <source>Installed Extensions</source>
+        <target state="final">Installerede udvidelser</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Hent udvidelser</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Vis alle versioner af</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Tilbage til liste</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="button.details" approved="yes">
+        <source>Show Details</source>
+        <target state="final">Vis detaljer</target>
+      </trans-unit>
+      <trans-unit id="button.remove" approved="yes">
+        <source>Remove extension</source>
+        <target state="final">Fjern udvidelse</target>
+      </trans-unit>
+      <trans-unit id="button.reimport" approved="yes">
+        <source>Re-import data</source>
+        <target state="final">Genimportér data</target>
+      </trans-unit>
+      <trans-unit id="button.updateExtension" approved="yes">
+        <source>Update extension</source>
+        <target state="final">Opdatér udvidelse</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependencies" approved="yes">
+        <source>Resolve dependencies</source>
+        <target state="final">Løs afhængigheder</target>
+      </trans-unit>
+      <trans-unit id="label.resolveDependenciesEnableButton" approved="yes">
+        <source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+        <target state="final">Jeg forstår hvad dette betyder og jeg er selv i stand til at undersøge mulige årsager.</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependenciesIgnore" approved="yes">
+        <source>Continue anyway</source>
+        <target state="final">Fortsæt alligevel</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">Download SQL dump</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Fjern</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Opdatér</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Opdatér til version %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">En opdatering er tilgængelig men denne operation er i øjeblikket deaktiveret</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deaktivér</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Aktivér</target>
+      </trans-unit>
+      <trans-unit id="extensionList.toggleStateConfirmation.reloadMessage" approved="yes">
+        <source>Please note that the backend will be fully reloaded after proceeding.</source>
+        <target state="final">Bemærk venligst, at backend vil blive fuldt genindlæst efter fortsættelse.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Download som zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" approved="yes">
+        <source>Upload Extension</source>
+        <target state="final">Upload udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Overskriv</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Udvidelse findes allerede og overskrivning var ikke valgt</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Henter formular ...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Opd.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Opdatér</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">A/D</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Aktivér / Deaktivér</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Nøgle</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Handlinger</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Tilstand</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Indlæs</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Sidst opdateret</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Forfatter</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Manual</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Søg udvidelser</target>
+      </trans-unit>
+      <trans-unit id="extensionList.search" approved="yes">
+        <source>Search term</source>
+        <target state="final">Søgeudtryk</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showAll" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showSystemExtensions" approved="yes">
+        <source>System</source>
+        <target state="final">System</target>
+      </trans-unit>
+      <trans-unit id="extensionList.filter.showLocalExtensions" approved="yes">
+        <source>Local</source>
+        <target state="final">Lokal</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Udfør</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Nulstil søg</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Din søgning</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Søg igen</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" approved="yes">
+        <source>Upload</source>
+        <target state="final">Upload</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Fjernelse af udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Denne udvidelse er i øjeblikket installeret. Fjern udvidelse?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Opdatér?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseImport" approved="yes">
+        <source>The static database data has changed. You should re-import the data.</source>
+        <target state="final">Den statiske database er ændret. Du bør gen-importere data.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload" approved="yes">
+        <source>Nothing has changed since last import. You might want to reload static database data.</source>
+        <target state="final">Intet er ændret siden sidste import. Du burde måske genindlæse data i den statiske database.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload.title" approved="yes">
+        <source>Re-import of static database data</source>
+        <target state="final">Genimport af data fra statiske databaser</target>
+      </trans-unit>
+      <trans-unit id="extensionList.databaseReload.message" approved="yes">
+        <source>This re-import will overwrite any existing static data in the database.</source>
+        <target state="final">Denne genimport vil overskrive alle eksisterende statiske data i databasen.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Version, kommentar</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Opdater udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" approved="yes">
+        <source>%s was updated</source>
+        <target state="final">%s blev opdateret</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" approved="yes">
+        <source>Removing the extension deletes its source files but the related database tables and data will remain unchanged. Please perform a database update to ensure integrity.</source>
+        <target state="final">Fjernelse af udvidelsen sletter sine kildefiler, men de relaterede databasetabeller og data forbliver uændrede. Udfør en databaseopdatering for at sikre integritet.</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.title" approved="yes">
+        <source>Please read this carefully before proceeding</source>
+        <target state="final">Læs dette omhyggeligt, inden du fortsætter</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.message" approved="yes">
+        <source><![CDATA[
+          <p>If you continue activating the extension, all dependency checks will be turned off.</p>
+          <ul>
+            <li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
+            <li>Version dependency checks are skipped</li>
+          </ul>
+          <strong>
+            Be aware that activating an extension without dependency checks may turn your TYPO3 installation unusable. In such a case manual intervention is required.
+          </strong>
+				]]></source>
+        <target state="final"><![CDATA[
+          <p>Hvis du fortsætter med at installere udvidelsen, vil alle kontroller af afhængigheder blive ignoreret.</p>
+          <ul>
+            <li>Krævede udvidelser forsøges flettet ind fra TER (hvis de ikke allerede findes på systemet)</li>
+            <li>Versionsafhængigheder ignoreres</li>
+          </ul>
+          <strong>
+            Vær opmærksom på at en installation uden kontrol af afhængigheder, kan gøre din installation ustabil.             I sådanne tilfælde vil en manual håndtering være nødvendig.
+          </strong>
+				]]></target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.proceed" approved="yes">
+        <source>Activate the extension</source>
+        <target state="final">Aktivér udvidelsen</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.headline" approved="yes">
+        <source>The following errors were found while trying to activate "%s"</source>
+        <target state="final">Følgende fejl blev fundet under forsøget på aktivering "%s"</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.requiredExtension" approved="yes">
+        <source>Required extension "%s"</source>
+        <target state="final">Krævet udvidelse "%s"</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:</source>
+        <target state="final">De følgende afhængigheder skal løses før installation:</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.extensionWithVersion" approved="yes">
+        <source>%1$s (new version %2$s)</source>
+        <target state="final">%1$s (ny version %2$s)</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" approved="yes">
+        <source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;%s</source>
+        <target state="final">&lt;h3&gt;Udvidelser markeret til %s:&lt;/h3&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Skal disse afhængigheder løses automatisk?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.modalTitle.activate" approved="yes">
+        <source>Activate Extension "%s"</source>
+        <target state="final">Aktivér udvidelse "%s"</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.modalTitle.deactivate" approved="yes">
+        <source>Deactivate Extension "%s"</source>
+        <target state="final">Deaktivér udvidelse "%s"</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorMessage" approved="yes">
+        <source>The dependencies of the following Extensions could not be resolved</source>
+        <target state="final">Afhængighederne til følgende udvidelser, kunne ikke løses</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">download</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">installér</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" approved="yes">
+        <source>update</source>
+        <target state="final">opdatér</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" approved="yes">
+        <source>Error while updating extension</source>
+        <target state="final">Fejl under opdatering af udvidelse</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">Download fejl</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveInstallError.title" approved="yes">
+        <source>Activation Error</source>
+        <target state="final">Aktiveringsfejl</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveInstallError.message" approved="yes">
+        <source>Activation failed while resolving dependencies.</source>
+        <target state="final">Aktivering mislykkedes ved løsning af afhængigheder.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">Din installation af {0} var en succes.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" approved="yes">
+        <source>Your download of {0} was successful.</source>
+        <target state="final">Din installation af {0} var en succes.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">Log</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Udvidelser</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} installeret.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" approved="yes">
+        <source>{0} downloaded.</source>
+        <target state="final">{0} downloadet.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">Udvidelses upload</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" approved="yes">
+        <source>%s was uploaded</source>
+        <target state="final">%s blev uploadet</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installedFlashMessage.message" approved="yes">
+        <source>%s was installed</source>
+        <target state="final">%s blev installeret</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">Opdatér udvidelsesliste</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">Importer og installer</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly" approved="yes">
+        <source>Import</source>
+        <target state="final">Import</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">Vis alle versioner</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">Udvidelsesnøgle</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">Sidst uploadet</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Download</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategori</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Manual</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Forfatter</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">Læs online</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.depends" approved="yes">
+        <source>Depends</source>
+        <target state="final">Afhænger</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.conflicts" approved="yes">
+        <source>Conflicts</source>
+        <target state="final">Konflikter</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.suggests" approved="yes">
+        <source>Suggests</source>
+        <target state="final">Foreslår</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.notCompatibleVersion" approved="yes">
+        <source>Not compatible with your version</source>
+        <target state="final">Ikke kompatibel med din version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove.message" approved="yes">
+        <source>Extension "%s" was removed successfully</source>
+        <target state="final">Udvidelsen "%s" blev fjernet med succes</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Nøgle</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Forfatter</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Download</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.lastUpdated" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Sidste opdatering</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showUnsuitableDistributions" approved="yes">
+        <source>Show also distributions that are not suitable for this TYPO3 version</source>
+        <target state="final">Vis alle distributioner der ikke er egnet for denne TYPO3 version</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" approved="yes">
+        <source>Official distribution</source>
+        <target state="final">Officiel distribution</target>
+      </trans-unit>
+      <trans-unit id="distributions" approved="yes">
+        <source>Get preconfigured distribution</source>
+        <target state="final">Hent prækonfigureret distribution</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" approved="yes">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target state="final">Installér venligst Import/Eksport (impexp) udvidelsen for at aktivere distributionssupport.</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" approved="yes">
+        <source>Install impexp</source>
+        <target state="final">Installér impexp</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.label" approved="yes">
+        <source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
+        <target state="final">Modtager udvidelses-liste fra TYPO3 Udvidelseslager (TER)...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">Opdatér nu</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.label" approved="yes">
+        <source>Last update</source>
+        <target state="final">Sidste opdatering</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" approved="yes">
+        <source>Time since last update</source>
+        <target state="final">Tid siden sidste opdatering</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">ukendt</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" approved="yes">
+        <source>Time of last update: </source>
+        <target state="final">Tid for sidste opdatering: </target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">Sidste opdaterings-tid ukendt.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Aldrig</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" approved="yes">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target state="final">Kan ikke deaktivere udvidelsen '%s' - Udvidelse(rne) '%s' er afhængig af den.</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" approved="yes">
+        <source>Could not install distribution '%s'</source>
+        <target state="final">Kunne ikke installere distribution '%s'</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" approved="yes">
+        <source>Congratulations...</source>
+        <target state="final">Tillykke...</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.message" approved="yes">
+        <source>You successfully installed the distribution '%s'</source>
+        <target state="final">Du installerede distributionen '%s' med succes</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.nextSteps" approved="yes">
+        <source>Now you can</source>
+        <target state="final">Nu kan du</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" approved="yes">
+        <source>View your website</source>
+        <target state="final">Se din webside</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" approved="yes">
+        <source>Start editing your website</source>
+        <target state="final">Starte redigering af din webside</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.headline" approved="yes">
+        <source>Dependencies, conflicts and suggestions</source>
+        <target state="final">Afhængigheder, konflikter og forslag</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikator</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Version</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">Opdatér liste over udvidelser fra TER</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" approved="yes">
+        <source>Makes regular updates to TER extension list. Recommended interval is once a day.</source>
+        <target state="final">Foretager regelmæssige opdateringer til TER udvidelseslisten. Anbefalet interval er en gang om dagen.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">Opdatér status på primær repository liste hos typo3.orgs</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">Fejl</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">Typo3.orgs udvidelseslager blev ikke fundet. Importér primær udvidelseslager fra typo3.org i installerings-værktøjet.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" approved="yes">
+        <source>Extension list is not up to date</source>
+        <target state="final">Udvidelseslisten er ikke opdateret</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">Det primære lagers udvidelsesliste er ældre end syv dage. Opdatér i udvidelsesmanager eller Scheduler.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">Sikkerhedsstatus på indlæste udvidelser</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s usikre udvidelse(r) fundet</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">De følgende udvidelser er usikre og brugen af dem kan skade dit system. Opdatér disse udvidelser så hurtigt som muligt eller fjern dem fra dit system:&lt;br /&gt;&lt;br /&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">Sikkerhedsstatus på eksisterende men ikke-indlæste udvidelser</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s usikre udvidelse(r) fundet</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">De følgende udvidelser blev fundet på dit system, med de er ikke installeret i øjeblikket. Slet disse udvidelser ved brug af Udvidelsesmanager:&lt;br /&gt;&lt;br /&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">Sikkerhedsstatus på indlæste udvidelser</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s forældede udvidelse(r) fundet</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">De følgende udvidelser er forældede og er måske ikke kompatible med din installation. Du bør sikre dig at disse udvidelser er kompatible og spørge udvikleren til udvidelsen om opdateringer:&lt;br/&gt;&lt;br/&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">Sikkerhedsstatus på eksisterende men ikke-indlæste udvidelser</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s forældede udvidelse(r) fundet</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">De følgende udvidelser blev fundet på dit system, men er i øjeblikket ikke intalleret. Sørg for at de er kompatible med dit system, før du installerer dem:&lt;br /&gt;&lt;br /&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotRemoveDirectory" approved="yes">
+        <source>ERROR: Could not remove extension directory "%s". Reasons</source>
+        <target state="final">FEJL: Kunne ikke fjerne udvidelses-katalog "%s". Årsager</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotCreateDirectory" approved="yes">
+        <source>ERROR: Could not create extension directory "%s"</source>
+        <target state="final">FEJL: Kunne ikke oprette udvidelses-katalog "%s"</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.installPathWasNoDirectory" approved="yes">
+        <source>ERROR: The extension install path "%s" was no directory</source>
+        <target state="final">FEJL: Udvidelsens installationssti "%s" var ikke en mappe</target>
+      </trans-unit>
+      <trans-unit id="config.automaticInstallation" approved="yes">
+        <source>Install extensions automatically after download from TER or file upload</source>
+        <target state="final">Installér udvidelser automatisk efter download fra TER eller fil upload</target>
+      </trans-unit>
+      <trans-unit id="config.offlineMode" approved="yes">
+        <source>Disable TER connection and hide menu items</source>
+        <target state="final">Deaktivér TER forbindelse og skjul menu emner</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">forrige</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">næste</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">første</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">sidste</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Udvidelser</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
