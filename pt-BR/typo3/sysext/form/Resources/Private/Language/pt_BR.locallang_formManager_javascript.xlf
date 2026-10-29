@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_prototype" approved="yes">
+        <source>Form prototype</source>
+        <target state="final">Protótipo de formulário</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" approved="yes">
+        <source>Create new form</source>
+        <target state="final">Criar novo formulário</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">Criar</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">O formulário não pôde ser salvo</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" approved="yes">
+        <source>Duplicate form "{0}"</source>
+        <target state="final">Duplicar formulário "{0}"</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Duplicar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
