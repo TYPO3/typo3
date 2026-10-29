@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="edit.headline" approved="yes">
+        <source>Site Settings for "%s"</source>
+        <target state="final">Nastavení webu pro "%s"</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.title" approved="yes">
+        <source>No settings available</source>
+        <target state="final">Nejsou dostupná žádná nastavení</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.message" approved="yes">
+        <source>The site '%s' does not provide configurable settings.</source>
+        <target state="final">Web '%s' neposkytuje konfigurovatelné nastavení.</target>
+      </trans-unit>
+      <trans-unit id="edit.yamlExport" approved="yes">
+        <source>YAML export</source>
+        <target state="final">YAML export</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Upravit nastavení webu</target>
+      </trans-unit>
+      <trans-unit id="save.message.updated" approved="yes">
+        <source>Settings updated.</source>
+        <target state="final">Nastavení aktualizováno.</target>
+      </trans-unit>
+      <trans-unit id="categories.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Jiné</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit Site Settings "%s"</source>
+        <target state="final">Upravit nastavení webu "%s"</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
