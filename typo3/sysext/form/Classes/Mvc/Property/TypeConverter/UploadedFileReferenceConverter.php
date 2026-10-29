@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\UploadedFile;
@@ -45,9 +47,10 @@ use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
  * Scope: frontend
  * @internal
  */
-class UploadedFileReferenceConverter extends AbstractTypeConverter
+class UploadedFileReferenceConverter extends AbstractTypeConverter implements LoggerAwareInterface
 {
     use ResourceInstructionTrait;
+    use LoggerAwareTrait;
 
     /**
      * Folder where the file upload should go to (including storage).
@@ -183,7 +186,19 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         } catch (TypeConverterException $e) {
             return $e->getError();
         } catch (\Exception $e) {
-            return GeneralUtility::makeInstance(Error::class, $e->getMessage(), $e->getCode());
+            $this->logger?->error('An unknown error has occurred when converting an uploaded file to a resource', [
+                'exception' => $e,
+            ]);
+            return GeneralUtility::makeInstance(
+                Error::class,
+                // not going through ->getUploadErrorMessage() due to internal logging and its scope to \UPLOAD_ERR_* constants
+                GeneralUtility::makeInstance(TranslationService::class)->translate(
+                    'upload.error.150530348',
+                    null,
+                    'EXT:form/Resources/Private/Language/locallang.xlf'
+                ),
+                1793200460
+            );
         }
 
         $this->convertedResources[$source['tmp_name']] = $resource;
