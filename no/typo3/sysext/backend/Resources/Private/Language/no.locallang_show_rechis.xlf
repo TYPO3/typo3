@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Tid</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Bruker</target>
+      </trans-unit>
+      <trans-unit id="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsområde</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">Forskjeller</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Endringer i elementet</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Tilbake</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Klikk her for å gå tilbake</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">Rull tilbake alle viste endringer</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">Rull tilbake endringer for enkelt element</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Rull tilbake endringer for dette feltet</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">via</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">merk denne endringen</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">fjern merket for denne endringen</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">Begrens historikken til dette elementet</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">Tilbake til full visning</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Oppsett</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">Vis oppføringer</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">ALT</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">markerte</target>
+      </trans-unit>
+      <trans-unit id="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">Vis forskjeller</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Vis underelementer</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Nei</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
