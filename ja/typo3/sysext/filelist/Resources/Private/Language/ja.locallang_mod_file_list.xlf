@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">クリップボードを表示</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">下に貼り付け: クリップボードの内容をこのレコードの下に貼り付けます</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">ここに貼り付け: クリップボードの内容がこのフォルダの中に挿入されます</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">クリップボードに転送</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">クリップボードから削除</target>
+      </trans-unit>
+      <trans-unit id="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">サイズ</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" approved="yes">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target state="final">ローカルストレージのベースフォルダがないか許可されていません</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" approved="yes">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target state="final">ストレージ 「%s」 のベースフォルダが存在し、アクセスが許可されていることを確認します。</target>
+      </trans-unit>
+      <trans-unit id="reloadMetadata" approved="yes">
+        <source>Reload Metadata</source>
+        <target state="final">メタデータを再読み込み</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
