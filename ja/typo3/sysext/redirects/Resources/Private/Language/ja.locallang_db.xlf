@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">リダイレクト</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">ドメイン元</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">ソース元</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">最終ヒット日時</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type" approved="yes">
+        <source>Creation Type</source>
+        <target state="final">作成タイプ</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.1" approved="yes">
+        <source>manually created</source>
+        <target state="final">手動で作成しました</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.0" approved="yes">
+        <source>automatically created</source>
+        <target state="final">自動的に作成されました</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit" approved="yes">
+        <source>... when a redirect has been hit</source>
+        <target state="final">... リダイレクトが発生したとき</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status" approved="yes">
+        <source>Integrity status</source>
+        <target state="final">整合性状態</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.description" approved="yes">
+        <source>Redirects can be checked via the command redirects:checkintegrity.</source>
+        <target state="final">リダイレクトはコマンドの redirects:checkintegrity で確認できます。</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.no_conflict" approved="yes">
+        <source>No conflict</source>
+        <target state="final">競合がありません.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.self_reference" approved="yes">
+        <source>Self reference</source>
+        <target state="final">自己参照</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
