@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">Konstanten-Editor</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Constant Editor for TypoScript record "%s"</source>
+        <target state="final">Konstanten-Editor für TypoScript Datensatz "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+        <target state="final">Überschreiben Sie Konstanten und speichern sie diese in den ausgewählten TypoScript Datensatz auf der aktuellen Seite. Im Folgenden werden nur Optionen angezeigt, die zur Bearbeitung im Konstanten-Editor zur Verfügung gestellt wurden. Es können weiter Konstanten im System existieren.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedCategory" approved="yes">
+        <source>Selected category</source>
+        <target state="final">Ausgewählte Kategorie</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Ausgewählter Datensatz</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noConstants" approved="yes">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target state="final">Es sind keine bearbeitbaren Konstanten für den Konstanten-Editor verfügbar.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
