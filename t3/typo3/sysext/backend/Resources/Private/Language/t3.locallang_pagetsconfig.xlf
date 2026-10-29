@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.pagetsconfig.noAccess">
+        <source>Access to this module denied.</source>
+        <target>crwdns275131:0crwdne275131:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.headline">
+        <source>Pages containing page TSconfig</source>
+        <target>crwdns279121:0crwdne279121:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.description">
+        <source>Global overview of all pages in the database containing page TSconfig.</source>
+        <target>crwdns279123:0crwdne279123:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.noRecords">
+        <source>There are no pages containing page TSconfig settings in the page configuration.</source>
+        <target>crwdns279125:0crwdne279125:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.pagetitle">
+        <source>Page title</source>
+        <target>crwdns279713:0crwdne279713:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines">
+        <source>Number of lines of code in field "TSconfig"</source>
+        <target>crwdns279715:0crwdne279715:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.headline">
+        <source>Active page TSconfig of page "%s"</source>
+        <target>crwdns279129:0%scrwdne279129:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.description">
+        <source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+        <target>crwdns279131:0crwdne279131:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions">
+        <source>Substitute constants in page TSconfig</source>
+        <target>crwdns279133:0crwdne279133:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayComments">
+        <source>Display comments</source>
+        <target>crwdns276195:0crwdne276195:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.sortAlphabetically">
+        <source>Sort keys alphabetically</source>
+        <target>crwdns276197:0crwdne276197:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.conditions">
+        <source>Conditions</source>
+        <target>crwdns276199:0crwdne276199:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple">
+        <source>%s active conditions</source>
+        <target>crwdns276431:0%scrwdne276431:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single">
+        <source>%s active condition</source>
+        <target>crwdns276433:0%scrwdne276433:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant">
+        <source>Site settings usage: [%s]</source>
+        <target>crwdns276205:0[%s]crwdne276205:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.configuration">
+        <source>Configuration</source>
+        <target>crwdns276207:0crwdne276207:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.siteSettings">
+        <source>Constants from site settings</source>
+        <target>crwdns276435:0crwdne276435:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.activePageTsConfig">
+        <source>Page TSconfig</source>
+        <target>crwdns278803:0crwdne278803:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable">
+        <source>No suitable page TSconfig available.</source>
+        <target>crwdns279135:0crwdne279135:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.tree.valueWithConstant">
+        <source>Constant usage: [%s]</source>
+        <target>crwdns276439:0[%s]crwdne276439:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.headline">
+        <source>Included page TSconfig of page "%s"</source>
+        <target>crwdns279139:0%scrwdne279139:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.description">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target>crwdns275159:0crwdne275159:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.siteSettings">
+        <source>Constants from site settings</source>
+        <target>crwdns276441:0crwdne276441:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.pagetsconfig">
+        <source>Page TSconfig</source>
+        <target>crwdns278809:0crwdne278809:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.configuration">
+        <source>Configuration</source>
+        <target>crwdns276445:0crwdne276445:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors">
+        <source>Syntax scanner warnings</source>
+        <target>crwdns278723:0crwdne278723:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single">
+        <source>%s syntax warning</source>
+        <target>crwdns278725:0%scrwdne278725:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple">
+        <source>%s syntax warnings</source>
+        <target>crwdns278727:0%scrwdne278727:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode">
+        <source>Show affected code snippet</source>
+        <target>crwdns278729:0crwdne278729:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target>crwdns278731:0%1$scrwdnd278731:0%2$scrwdne278731:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target>crwdns278733:0%1$scrwdnd278733:0%2$scrwdne278733:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target>crwdns278735:0%1$scrwdnd278735:0%2$scrwdne278735:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target>crwdns297508:0%1$scrwdnd297508:0%2$scrwdne297508:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment">
+        <source>Code segment</source>
+        <target>crwdns276455:0crwdne276455:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport">
+        <source>Included via "@import"</source>
+        <target>crwdns276457:0crwdne276457:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition">
+        <source>Condition (then)</source>
+        <target>crwdns276459:0crwdne276459:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse">
+        <source>Condition (else)</source>
+        <target>crwdns276461:0crwdne276461:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop">
+        <source>Condition (end)</source>
+        <target>crwdns337122:0crwdne337122:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig">
+        <source>TSconfig</source>
+        <target>crwdns276469:0crwdne276469:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Site">
+        <source>Site</source>
+        <target>crwdns342602:0crwdne342602:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode">
+        <source>Show code</source>
+        <target>crwdns276475:0crwdne276475:0</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes">
+        <source>Show code including possible includes/imports</source>
+        <target>crwdns276477:0crwdne276477:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
