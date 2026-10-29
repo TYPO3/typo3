@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title">
+        <source>Included TypoScript</source>
+        <target>crwdns275005:0crwdne275005:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord">
+        <source>Included TypoScript for record "%s"</source>
+        <target>crwdns275219:0%scrwdne275219:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.description">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target>crwdns275095:0crwdne275095:0</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound">
+        <source>No TypoScript found.</source>
+        <target>crwdns275221:0crwdne275221:0</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord">
+        <source>Selected record</source>
+        <target>crwdns275013:0crwdne275013:0</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants">
+        <source>Constants</source>
+        <target>crwdns275223:0crwdne275223:0</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup">
+        <source>Setup</source>
+        <target>crwdns275225:0crwdne275225:0</target>
+      </trans-unit>
+      <trans-unit id="panel.header.syntaxErrors">
+        <source>Syntax scanner warnings</source>
+        <target>crwdns278737:0crwdne278737:0</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration">
+        <source>Configuration</source>
+        <target>crwdns275021:0crwdne275021:0</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.single">
+        <source>%s syntax warning</source>
+        <target>crwdns278739:0%scrwdne278739:0</target>
+      </trans-unit>
+      <trans-unit id="panel.info.syntaxErrorCount.multiple">
+        <source>%s syntax warnings</source>
+        <target>crwdns278741:0%scrwdne278741:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.sourceCode">
+        <source>Show affected code snippet</source>
+        <target>crwdns278743:0crwdne278743:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.line.invalid">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target>crwdns278745:0%1$scrwdnd278745:0%2$scrwdne278745:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.excess">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target>crwdns278747:0%1$scrwdnd278747:0%2$scrwdne278747:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.brace.missing">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target>crwdns278749:0%1$scrwdnd278749:0%2$scrwdne278749:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxError.type.import.empty">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target>crwdns297636:0%1$scrwdnd297636:0%2$scrwdne297636:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCode">
+        <source>Show code</source>
+        <target>crwdns275027:0crwdne275027:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes">
+        <source>Show code including possible includes/imports</source>
+        <target>crwdns275029:0crwdne275029:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.clear">
+        <source>Clear</source>
+        <target>crwdns275035:0crwdne275035:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.root">
+        <source>Root</source>
+        <target>crwdns275037:0crwdne275037:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.sysTemplateRecord">
+        <source>TypoScript record (page UID %s)</source>
+        <target>crwdns275039:0%scrwdne275039:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.AtImport">
+        <source>Included via "@import"</source>
+        <target>crwdns275045:0crwdne275045:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Condition">
+        <source>Condition (then)</source>
+        <target>crwdns275047:0crwdne275047:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionElse">
+        <source>Condition (else)</source>
+        <target>crwdns275049:0crwdne275049:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionStop">
+        <source>Condition (end)</source>
+        <target>crwdns337124:0crwdne337124:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScript">
+        <source>Included via "$GLOBALS"</source>
+        <target>crwdns275053:0$GLOBALScrwdne275053:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey">
+        <source>Included via "$GLOBALS"</source>
+        <target>crwdns275055:0$GLOBALScrwdne275055:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
+        <source>Default content rendering</source>
+        <target>crwdns275057:0crwdne275057:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ExtensionStatic">
+        <source>TypoScript set (loaded automatically)</source>
+        <target>crwdns275059:0crwdne275059:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.File">
+        <source>Part of a TypoScript set</source>
+        <target>crwdns275061:0crwdne275061:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileDatabase">
+        <source>TypoScript set</source>
+        <target>crwdns275063:0crwdne275063:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileFile">
+        <source>TypoScript set (included via file)</source>
+        <target>crwdns275065:0crwdne275065:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Root">
+        <source>Root</source>
+        <target>crwdns275069:0crwdne275069:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Segment">
+        <source>Code segment</source>
+        <target>crwdns275227:0crwdne275227:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Site">
+        <source>Site</source>
+        <target>crwdns275073:0crwdne275073:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SiteTemplate">
+        <source>Site configuration</source>
+        <target>crwdns337136:0crwdne337136:0</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SysTemplate">
+        <source>TypoScript record</source>
+        <target>crwdns275077:0crwdne275077:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
