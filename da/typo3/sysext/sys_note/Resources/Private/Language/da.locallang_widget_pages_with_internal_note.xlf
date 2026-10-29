@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">Systemnoter</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description" approved="yes">
+        <source>Shows a list of pages with system notes.</source>
+        <target state="final">Viser en liste over alle sider med systemnoter.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title" approved="yes">
+        <source>All System Notes</source>
+        <target state="final">Alle Systemnoter</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.description" approved="yes">
+        <source>Shows a list of pages with system notes</source>
+        <target state="final">Viser en liste sider med systemnoter</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title" approved="yes">
+        <source>Notes in the category "Default"</source>
+        <target state="final">Noter i kategorien "Standard"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Default"</source>
+        <target state="final">Viser en liste over sider med systemnoter i kategorien "Standard"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title" approved="yes">
+        <source>Notes in the category "ToDo"</source>
+        <target state="final">Noter i kategorien "ToDo"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "ToDo"</source>
+        <target state="final">Viser en liste over sider med systemnoter i kategorien "ToDo"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title" approved="yes">
+        <source>Notes in the category "Template"</source>
+        <target state="final">Noter i kategorien "Skabelon"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Template"</source>
+        <target state="final">Viser en liste over sider med systemnoter i kategorien "Skabelon"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title" approved="yes">
+        <source>Notes in the category "Notes"</source>
+        <target state="final">Noter i kategorien "Noter"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Notes"</source>
+        <target state="final">Viser en liste over sider med systemnoter i kategorien "Noter"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title" approved="yes">
+        <source>Notes in the category "Instructions"</source>
+        <target state="final">Noter i kategorien "Instruktioner"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Instructions"</source>
+        <target state="final">Viser en liste over sider med systemnoter i kategorien "Instruktioner"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategori</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" approved="yes">
+        <source>Category to be displayed.</source>
+        <target state="final">Kategori der skal vises.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Oprettet</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage" approved="yes">
+        <source>Subject and message</source>
+        <target state="final">Emne og besked</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page" approved="yes">
+        <source>Go to page</source>
+        <target state="final">Gå til side</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
