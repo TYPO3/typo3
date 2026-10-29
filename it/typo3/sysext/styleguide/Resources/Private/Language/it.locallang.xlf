@@ -1,0 +1,2184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline" approved="yes">
+        <source>Components</source>
+        <target state="final">Componenti</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title" approved="yes">
+        <source>Open %1s component</source>
+        <target state="final">Apri il componente %1s</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Gestisce Alberi delle Pagine di esempio</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline" approved="yes">
+        <source>Styles</source>
+        <target state="final">Stili</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title" approved="yes">
+        <source>Open %1s style</source>
+        <target state="final">Apri lo stile %1s</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder" approved="yes">
+        <source>GifBuilder</source>
+        <target state="final">GifBuilder</target>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder.description" approved="yes">
+        <source>Live demos of every GIFBUILDER object — BOX, ELLIPSE, TEXT (with niceText and shadow variants), OUTLINE, EMBOSS, standalone SHADOW — plus every EFFECT value, the ADJUST tone curves, and the CROP / SCALE / IMAGE composites, all rendered through the real GifBuilder pipeline.</source>
+        <target state="final">Demo live di ogni oggetto GIFBUILDER — BOX, ELLIPSE, TEXT (con varianti niceText e ombra), OUTLINE, EMBOSS, SHADOW standalone — più ogni valore EFFETT, le curve di tono ADJUST, e i compositi CROP / SCALE / IMAGE, tutti resi attraverso la vera pipeline GifBuilder.</target>
+      </trans-unit>
+      <trans-unit id="styleguide" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">Guida di stile</target>
+      </trans-unit>
+      <trans-unit id="action.accordion" approved="yes">
+        <source>Accordion</source>
+        <target state="final">Accordion</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description" approved="yes">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target state="final">Comprimi le sezioni di contenuto, che espandono e collassano, per mostrare o nascondere le informazioni.</target>
+      </trans-unit>
+      <trans-unit id="action.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description" approved="yes">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target state="final">Visualizza le immagini che rappresentano gli utenti di backend con indicatori di stato opzionali.</target>
+      </trans-unit>
+      <trans-unit id="action.badges" approved="yes">
+        <source>Badges</source>
+        <target state="final">Badge</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target state="final">Piccole etichette per visualizzare le informazioni di stato, conteggio o categorizzazione.</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs" approved="yes">
+        <source>Breadcrumbs</source>
+        <target state="final">Breadcrumb</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target state="final">Breadcrumb che mostra la posizione corrente nella gerarchia del backend, inclusi moduli e record.</target>
+      </trans-unit>
+      <trans-unit id="action.buttons" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Pulsanti</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description" approved="yes">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target state="final">Elementi interattivi per innescare azioni con vari stili, dimensioni e stati.</target>
+      </trans-unit>
+      <trans-unit id="action.cards" approved="yes">
+        <source>Cards</source>
+        <target state="final">Card</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description" approved="yes">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target state="final">Contenitori flessibili per raggruppare i contenuti correlati, visualizzati singolarmente o in gruppi.</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Checkbox</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description" approved="yes">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target state="final">Controlli di form per selezionare una o più opzioni, compresi commutatori e interruttori.</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Combobox</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target state="final">Inserisci i campi con menù a discesa per selezionare o inserire i valori.</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Navigazione Contenuti</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description" approved="yes">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target state="final">Contenitore a due pannelli con area di navigazione ridimensionabile e area di contenuto flessibile.</target>
+      </trans-unit>
+      <trans-unit id="action.datetime" approved="yes">
+        <source>Datetime / Relative Time</source>
+        <target state="final">Datetime / Relativo</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description" approved="yes">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target state="final">Componente Web per visualizzare timestamp in formato relativo con supporto alla localizzazione.</target>
+      </trans-unit>
+      <trans-unit id="action.exception" approved="yes">
+        <source>Exception</source>
+        <target state="final">Eccezione</target>
+      </trans-unit>
+      <trans-unit id="action.exception.description" approved="yes">
+        <source>Shows how an exception is displayed. Throws an actual exception inside a frame to also execute JavaScript (stacktrace copy).</source>
+        <target state="final">Mostra come viene visualizzata un'eccezione. Ne emette una all'interno di un frame per eseguire anche JavaScript (con stacktrace).</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Token Colore</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description" approved="yes">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target state="final">Valori di colore predefiniti e token di progettazione utilizzati in tutta l'interfaccia del backend TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Accento e Stato</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description" approved="yes">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target state="final">Varianti di colore di stato per elementi interattivi tra cui i colori accentati e gli stati semantici.</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview" approved="yes">
+        <source>Components overview</source>
+        <target state="final">Panoramica dei componenti</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description" approved="yes">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target state="final">Sfoglia tutti i componenti di Interfaccia Utente disponibili nella libreria componenti del backend TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Strumenti per Sviluppatori</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description" approved="yes">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target state="final">Componenti e utilità specializzati per scopi di sviluppo e debug.</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Menù a tendina</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target state="final">Sovrapposizioni commutabili per visualizzare liste, menù e azioni contestuali.</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Messaggi flash</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target state="final">Notifiche temporanee per mostrare feedback sulle azioni degli utenti e sugli eventi di sistema.</target>
+      </trans-unit>
+      <trans-unit id="action.form" approved="yes">
+        <source>Form</source>
+        <target state="final">Form</target>
+      </trans-unit>
+      <trans-unit id="action.form.description" approved="yes">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target state="final">Layout completi di form che combinano vari campi e controlli.</target>
+      </trans-unit>
+      <trans-unit id="action.icons" approved="yes">
+        <source>Icons</source>
+        <target state="final">Icone</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description" approved="yes">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target state="final">Libreria completa di icone disponibili per l'uso nell'interfaccia del backend TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.infobox" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infobox</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description" approved="yes">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target state="final">Contenitori evidenziati per visualizzare informazioni importanti e aiuto contestuale.</target>
+      </trans-unit>
+      <trans-unit id="action.input" approved="yes">
+        <source>Input</source>
+        <target state="final">Campo</target>
+      </trans-unit>
+      <trans-unit id="action.input.description" approved="yes">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target state="final">Campi testo con supporto per vari tipi, stati e dimensioni.</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups" approved="yes">
+        <source>List groups</source>
+        <target state="final">Elenco gruppi</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Elenco per visualizzare una serie di contenuti.</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Gestisce alberi di pagina di esempio</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target state="final">Crea e gestisce alberi di pagine di esempio con record TCA demo o elementi di contenuto per scopi di test e dimostrazione.</target>
+      </trans-unit>
+      <trans-unit id="action.modal" approved="yes">
+        <source>Modal</source>
+        <target state="final">Finestra Modale</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description" approved="yes">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target state="final">Finestre di dialogo che appaiono sulla parte superiore del contenuto della pagina per le interazioni focalizzate.</target>
+      </trans-unit>
+      <trans-unit id="action.navs" approved="yes">
+        <source>Navs</source>
+        <target state="final">Nav</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target state="final">Componenti di navigazione tra cui tab, pill e stili di navigazione flat.</target>
+      </trans-unit>
+      <trans-unit id="action.notifications" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifiche</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target state="final">Messaggi temporanei per informare gli utenti sugli eventi con pulsanti di azione opzionali.</target>
+      </trans-unit>
+      <trans-unit id="action.pagination" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Paginazione</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target state="final">Controlli per navigare attraverso contenuti multi-pagina e gruppi di dati.</target>
+      </trans-unit>
+      <trans-unit id="action.panels" approved="yes">
+        <source>Panels</source>
+        <target state="final">Panelli</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description" approved="yes">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target state="final">Contenitori di contenuto collassabili per organizzare informazioni in sezioni.</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Indicatori di avanzamento</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description" approved="yes">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target state="final">Indicatori che mostrano lo stato di completamento dei compiti e dei processi.</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Tracciatori di avanzamento</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description" approved="yes">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target state="final">Visualizzazioni segmentate per i processi multi-step come wizard.</target>
+      </trans-unit>
+      <trans-unit id="action.radio" approved="yes">
+        <source>Radio</source>
+        <target state="final">Radio</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description" approved="yes">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target state="final">Controlli form per selezionare una singola opzione da scelte multiple.</target>
+      </trans-unit>
+      <trans-unit id="action.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Menu a tendina</target>
+      </trans-unit>
+      <trans-unit id="action.select.description" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target state="final">Menù a discesa per scegliere una o più opzioni da una lista.</target>
+      </trans-unit>
+      <trans-unit id="action.shadows" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Ombre</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description" approved="yes">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target state="final">Effetti ombra e stili di elevazione utilizzati per creare profondità nell'interfaccia.</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">Indicatori di stato</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators.description" approved="yes">
+        <source>Small colored dots that communicate the state of records, tasks, and interface elements, including animated live and loading variants.</source>
+        <target state="final">Piccoli punti colorati che comunicano lo stato di record, attività ed elementi di interfaccia, comprese le varianti animate dal vivo e di caricamento.</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview" approved="yes">
+        <source>Styles overview</source>
+        <target state="final">Panoramica degli stili</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description" approved="yes">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target state="final">Sfoglia tutti gli stili di progettazione disponibili, tra cui colori, tipografia e token visivi.</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Aree</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description" approved="yes">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target state="final">Superfici di sfondo e stili contenitore che definiscono la gerarchia visiva.</target>
+      </trans-unit>
+      <trans-unit id="action.tab" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Tab</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description" approved="yes">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target state="final">Sezioni di contenuto organizzate con intestazioni cliccabili per passare da una vista all'altra.</target>
+      </trans-unit>
+      <trans-unit id="action.tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description" approved="yes">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target state="final">Layout strutturati per la visualizzazione di dati tabulari con icone di azione opzionali.</target>
+      </trans-unit>
+      <trans-unit id="action.textarea" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Area di testo</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description" approved="yes">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target state="final">Campi testo multi-riga per inserire contenuti più lunghi.</target>
+      </trans-unit>
+      <trans-unit id="action.trees" approved="yes">
+        <source>Trees</source>
+        <target state="final">Strutture ad albero</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description" approved="yes">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target state="final">Strutture ad albero gerarchiche per la visualizzazione di dati nidificati e navigazione.</target>
+      </trans-unit>
+      <trans-unit id="action.typography" approved="yes">
+        <source>Typography</source>
+        <target state="final">Tipografia</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target state="final">Stili carattere, dimensioni, spessori e formattazione del testo utilizzati in tutto il backend.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError" approved="yes">
+        <source>An error occured while processing the page tree</source>
+        <target state="final">Si è verificato un errore durante l'elaborazione dell'Albero delle Pagine</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton" approved="yes">
+        <source>Create page tree</source>
+        <target state="final">Crea Albero delle Pagine</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Elimina Albero delle Pagine e tutti i record correlati</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Dati creati</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody" approved="yes">
+        <source>A page tree with TCA demo records was created.</source>
+        <target state="final">È stato creato un Albero delle Pagine con record TCA dimostrativi.</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Nessun dato creato</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody" approved="yes">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target state="final">Esiste già un Albero delle Pagine con record TCA dimostrativi. Si prega di eliminarlo prima.</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Dati eliminati</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">L'Albero delle Pagine e tutti i record correlati sono stati eliminati.</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel" approved="yes">
+        <source>A localized label</source>
+        <target state="final">Un'etichetta tradotta</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3" approved="yes">
+        <source>A localized help text</source>
+        <target state="final">Un testo di aiuto tradotto</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle" approved="yes">
+        <source>Form engine - Minimal table configuration</source>
+        <target state="final">Form - Configurazione base della tabella</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField" approved="yes">
+        <source>Title field</source>
+        <target state="final">Campo titolo</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets" approved="yes">
+        <source>Create page tree with site sets</source>
+        <target state="final">Crea Albero delle Pagine con Dipendenze per il Sito Web</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate" approved="yes">
+        <source>Create page tree with sys_template</source>
+        <target state="final">Crea Albero delle Pagine con sys_template</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Elimina l'Albero delle Pagine e tutti i record correlati</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Dati creati</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody" approved="yes">
+        <source>A page tree with content elements was created.</source>
+        <target state="final">È stato creato un Albero delle Pagine con elementi di contenuto.</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Nessun dato creato</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody" approved="yes">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target state="final">Esiste già un Albero delle Pagine con elementi di contenuto. Si prega di eliminarlo prima.</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Dati eliminati</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">L'Albero delle Pagine e tutti i record correlati sono stati eliminati.</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel" approved="yes">
+        <source>Item group from locallang</source>
+        <target state="final">Gruppo di elementi da locallang</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title" approved="yes">
+        <source>Styleguide Frontend</source>
+        <target state="final">Guida di stile per il Frontend</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0" approved="yes">
+        <source>Main content</source>
+        <target state="final">Contenuto principale</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.title" approved="yes">
+        <source>Styleguide Content Restrictions</source>
+        <target state="final">Guida di stile, restrizioni del contenuto</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.0" approved="yes">
+        <source>Unrestricted (any content type)</source>
+        <target state="final">Senza restrizioni (qualsiasi tipo di contenuto)</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.1" approved="yes">
+        <source>Allowed only: Header, Text, Text &amp; Media</source>
+        <target state="final">Consentiti solamente: Intestazione, Testo, Testo &amp; Media</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideContentRestrictions.colpos.2" approved="yes">
+        <source>Disallowed: Image, HTML, Text &amp; Media</source>
+        <target state="final">Non Consentiti: Immagine, HTML, Testo &amp; Media</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label" approved="yes">
+        <source>Color scheme:</source>
+        <target state="final">Schema colore:</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Schema colore</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline" approved="yes">
+        <source>Frontend Styleguide</source>
+        <target state="final">Linee guida dello stile di frontend</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext" approved="yes">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target state="final"><![CDATA[Un avatar visualizza un'immagine che rappresenta un utente di backend e può fornire informazioni aggiuntive come il loro stato.<br>L'avatar può essere visualizzato con un proprio ViewHelper. Se un'immagine avatar è memorizzata nelle impostazioni dell'utente, questa verrà utilizzata al posto dell'immagine standard.]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text" approved="yes">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target state="final">Mostra l'immagine dell'avatar dell'utente del backend o un'immagine predefinita per gli utenti senza immagine avatar.</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline" approved="yes">
+        <source>Status</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text" approved="yes">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target state="final">Se impostato, il tipo di utente di backend (utente normale o utente amministratore) e il suo stato (disabilitato o no) verranno visualizzati accanto all'avatar. </target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Badge</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target state="final">Piccole etichette per visualizzare le informazioni di stato, conteggio o categorizzazione.</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline" approved="yes">
+        <source>Shape</source>
+        <target state="final">Forma</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline" approved="yes">
+        <source>Usage within headings</source>
+        <target state="final">Utilizzo nelle intestazioni</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline" approved="yes">
+        <source>Breadcrumb</source>
+        <target state="final">Percorso di navigazione</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target state="final">Breadcrumb che mostra la posizione corrente nella gerarchia del backend, inclusi moduli e record.</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Pulsanti</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext" approved="yes">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target state="final">Elementi interattivi per innescare azioni con vari stili, dimensioni e stati.</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline" approved="yes">
+        <source>Active state</source>
+        <target state="final">Stato attivo</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline" approved="yes">
+        <source>Disabled state</source>
+        <target state="final">Stato disabilitato</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline" approved="yes">
+        <source>Types</source>
+        <target state="final">Tipi</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline" approved="yes">
+        <source>Additional icon</source>
+        <target state="final">Icona aggiuntiva</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Dimensione predefinita</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Dimensione piccola</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.headline" approved="yes">
+        <source>Button groups</source>
+        <target state="final">Gruppi di pulsanti</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.basic.headline" approved="yes">
+        <source>Basic button group</source>
+        <target state="final">Gruppo di pulsanti base</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.toolbar.headline" approved="yes">
+        <source>Button toolbar</source>
+        <target state="final">Barra dei pulsanti</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.sizes.headline" approved="yes">
+        <source>Button group sizing</source>
+        <target state="final">Dimensione gruppo pulsanti</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.dropdown.headline" approved="yes">
+        <source>Button group with dropdown</source>
+        <target state="final">Gruppo di pulsanti con menù a tendina</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.vertical.headline" approved="yes">
+        <source>Vertical button group</source>
+        <target state="final">Gruppo verticale di pulsanti</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline" approved="yes">
+        <source>Cards</source>
+        <target state="final">Card</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext" approved="yes">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target state="final">Le card possono essere visualizzate individualmente o in gruppi.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Allineamento</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text" approved="yes">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target state="final"><![CDATA[Se hai più card e ognuna ha un collegamento o un pulsante, non possono allinearsi correttamente a seconda della lunghezza dei titoli o del testo di descrizione precedentemente disposti. Per assicurarsi che si allineino indipendentemente dal contenuto precedente, posiziona il collegamento o il pulsante all'interno di <code>div.card-footer</code> e non dentro <code>div.card-body</code>. In questo modo i collegamenti saranno sempre allineati in fondo alla card.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text" approved="yes">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target state="final"><![CDATA[È possibile colorare le card. Tuttavia questa opzione è raramente utilizzata - quindi si suggerisce di utilizzare questa opzione con parsimonia. Tutte le opzioni disponibili sono elencate di seguito. Se necessario assegna una delle seguenti classi a <code>div.card</code>.<br> Se si desidera visualizzare la card nel suo stato predefinito, non è necessario aggiungere <code>.card-default</code> a </code>div.card<code>, basta omettere la classe.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text" approved="yes">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target state="final">Questo è un esempio di una card singola con il suo possibile contenuto. A meno che non sia ulteriormente definito via CSS, una card singola occupa tutta la larghezza dell'elemento in cui è stata inserita.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline" approved="yes">
+        <source>"Extension Manager" module</source>
+        <target state="final">Modulo "Gestore Estensioni"</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text" approved="yes">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target state="final">Col Gestore Estensioni è possibile utilizzare distribuzioni pre-configurate. In questo caso, le card sono state arricchite con un'immagine e alcuni badge.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline" approved="yes">
+        <source>Form fields in cards</source>
+        <target state="final">Campi di form nelle card</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text" approved="yes">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target state="final"><![CDATA[È possibile visualizzare form, e relativi campi, nelle card. Questo è fatto, per esempio, nella sezione "Upload Extension" del modulo <a href="%1s">"Extensions"</a>, in "Feature Toggles" del modulo <a href="%2s">"Impostazioni"</a> e nel sottomodulo "Ricerca nel Database" del modulo <a href="%3s">"Verifica DB"</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline" approved="yes">
+        <source>Lists in cards</source>
+        <target state="final">Elenchi nelle card</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline" approved="yes">
+        <source>Multiple cards</source>
+        <target state="final">Card multiple</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text" approved="yes">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target state="final"><![CDATA[Per utilizzare più card, includerle in un elemento <code>div.card-container</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline" approved="yes">
+        <source>Rows in cards</source>
+        <target state="final">Righe nelle card</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text" approved="yes">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target state="final">In cima, le righe sono incluse nel componente della card.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text" approved="yes">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target state="final"><![CDATA[Per dare alla card la dimensione desiderata, assegnare una delle seguenti classi alla <code>div.card</code>. Se viene utilizzata una singola card, deve essere inclusa in <code>div.card-container</code> come con card multiple.]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Checkbox</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext" approved="yes">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target state="final">Controlli di form per selezionare una o più opzioni, compresi checkbox, commutatori e interruttori.</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Layout Card</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" approved="yes">
+        <source>Checkbox toggle button</source>
+        <target state="final">Checkbox tipo interruttore</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline" approved="yes">
+        <source>Icon Toggle</source>
+        <target state="final">Icona Interruttore</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline" approved="yes">
+        <source>Labeled Toggle</source>
+        <target state="final">Interruttore Etichettato</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline" approved="yes">
+        <source>Switch</source>
+        <target state="final">Commutatore</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline" approved="yes">
+        <source>Toggle</source>
+        <target state="final">Interruttore</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Combobox</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target state="final">Campi inserimento dati con menù a discesa per selezionare o inserire i valori, combinando input di testo con funzionalità di selezione.</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Segnaposto</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Disabilitato</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline" approved="yes">
+        <source>Readonly</source>
+        <target state="final">Sola lettura</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Testo aggiuntivo</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Menù a tendina</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target state="final">Sovrapposizioni commutabili per visualizzare liste, menù e azioni contestuali.</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline" approved="yes">
+        <source>Toggles</source>
+        <target state="final">Interruttore</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Base</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline" approved="yes">
+        <source>States</source>
+        <target state="final">Stati</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Intestazione</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline" approved="yes">
+        <source>Advanced Buttons</source>
+        <target state="final">Pulsanti Avanzati</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline" approved="yes">
+        <source>Text</source>
+        <target state="final">Testo</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline" approved="yes">
+        <source>Rows</source>
+        <target state="final">Righe</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline" approved="yes">
+        <source>Divider</source>
+        <target state="final">Divisore</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabella</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline" approved="yes">
+        <source>List items with actions</source>
+        <target state="final">Lista di elementi con azioni</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline" approved="yes">
+        <source>Positions</source>
+        <target state="final">Posizioni</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline" approved="yes">
+        <source>Nested Submenu</source>
+        <target state="final">Sottomenu nidificato</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Strumenti per Sviluppatori</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext" approved="yes">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target state="final">Componenti e utilità specializzati per scopi di sviluppo e debug.</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <trans-unit id="component.exception.headline" approved="yes">
+        <source>Exception</source>
+        <target state="final">Eccezione</target>
+      </trans-unit>
+      <trans-unit id="component.exception.introtext" approved="yes">
+        <source>Page rendered by the configured exception handler when an uncaught exception occurs. The example exception is thrown for demonstration only.</source>
+        <target state="final">Pagina generata dal gestore di eccezioni quando si verifica un'eccezione non catturata. L'eccezione di esempio viene emessa solo per scopo dimostrativo.</target>
+      </trans-unit>
+      <trans-unit id="component.exception.preview.title" approved="yes">
+        <source>Exception page</source>
+        <target state="final">Pagina di eccezione</target>
+      </trans-unit>
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Messaggi flash</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target state="final">Notifiche temporanee per mostrare feedback sulle azioni degli utenti e sugli eventi di sistema in vari livelli di importanza.</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text" approved="yes">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target state="final"><![CDATA[Il colore dipende dal <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code> impostato. Sono disponibili le seguenti opzioni:]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline" approved="yes">
+        <source>Form</source>
+        <target state="final">Form</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext" approved="yes">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target state="final">Layout completi di form che combinano vari campi, controlli e validatori.</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline" approved="yes">
+        <source>Form with all fields and labels</source>
+        <target state="final">Form con tutti i campi ed etichette</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline" approved="yes">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target state="final">Form con tutti i campi e le etichette (direzione da destra a sinistra)</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline" approved="yes">
+        <source>Form fields in rows</source>
+        <target state="final">Campi form nelle righe</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline" approved="yes">
+        <source>Login form example</source>
+        <target state="final">Esempio di form di login</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infobox</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext" approved="yes">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target state="final">Questo è un widget, basato su Fluid, per il backend, che può essere inserito come assistente.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline" approved="yes">
+        <source>Custom icon</source>
+        <target state="final">Icona personalizzata</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text" approved="yes">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target state="final"><![CDATA[È possibile usare un'icona personalizzata. Basta passare l'identificatore dell'icona come <code>iconName</code> al viewhelper. L'identificatore deve essere registrato nella tua installazione TYPO3.]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Collegamenti</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.text" approved="yes">
+        <source>Links within the text are underlined, so they can be recognized without relying on the color.</source>
+        <target state="final">I collegamenti all'interno del testo sono sottolineati, in modo che possano essere riconosciuti senza fare affidamento sul colore.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline" approved="yes">
+        <source>Without icon</source>
+        <target state="final">Senza icona</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline" approved="yes">
+        <source>Input</source>
+        <target state="final">Campo</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext" approved="yes">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target state="final">Campi di input di testo che supportano vari tipi, stati e dimensioni per la voce di dati a riga singola.</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Disabilitato</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline" approved="yes">
+        <source>File upload</source>
+        <target state="final">Carica file</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Segnaposto</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Testo aggiuntivo</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline" approved="yes">
+        <source>Password</source>
+        <target state="final">Password</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline" approved="yes">
+        <source>Search</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Dimensione predefinita</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Dimensione piccola</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline" approved="yes">
+        <source>List groups</source>
+        <target state="final">Gruppi di elenchi</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Elenco per visualizzare una serie di contenuti.</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline" approved="yes">
+        <source>Borderless</source>
+        <target state="final">Senza bordi</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text" approved="yes">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target state="final"><![CDATA[Aggiungi <code>.list-group-flush</code> per rimuovere il bordo circostante e visualizzare il gruppo di liste senza bordi in un contenitore padre (ad esempio, carte)]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline" approved="yes">
+        <source>Links and buttons</source>
+        <target state="final">Collegamenti e pulsanti</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline" approved="yes">
+        <source>Modal</source>
+        <target state="final">Finestra Modale</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext" approved="yes">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target state="final">Le finestre modali da pulsanti possono essere attivate utilizzando la classe t3js-modal-trigger. Ci sono vari attributi di dati per personalizzare testo e comportamento. Non tutti sono mostrati qui.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline" approved="yes">
+        <source>Custom title and content within the modal</source>
+        <target state="final">Titolo e contenuto personalizzati all'interno della finestra modale</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Importanza</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description" approved="yes">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target state="final">Imposta lo stile visivo della finestra modale utilizzando livelli di importanza per indicare la natura del contenuto o dell'azione.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description" approved="yes">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target state="final">Controlla la larghezza della finestra modale. La dimensione predefinita aumenta in base al contenuto, mentre altre dimensioni hanno larghezze fisse.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.headline" approved="yes">
+        <source>Size configuration</source>
+        <target state="final">Configurazione dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.description" approved="yes">
+        <source>Compose width and height independently using size tokens, override only one axis, or define breakpoint-specific overrides for responsive behaviour.</source>
+        <target state="final">Componi larghezza e altezza in modo indipendente usando i token di dimensione, sovrascrivi solo una dimensione o definisci le specifiche per il comportamento responsivo.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.compose" approved="yes">
+        <source>Compose width and height</source>
+        <target state="final">Componi larghezza e altezza</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.axis" approved="yes">
+        <source>Single-axis override</source>
+        <target state="final">Sovrascrivi a una dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline" approved="yes">
+        <source>Position</source>
+        <target state="final">Posizione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.description" approved="yes">
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right. Sheet-positioned modals can also be resized, see the example below.</source>
+        <target state="final">Posiziona la modale in diversi punti sullo schermo. Le modali in alto scorrono dall'alto, quelle a destra entrano dalla destra. Le modali a foglio possono anche essere ridimensionate; vedi l'esempio qui sotto.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.headline" approved="yes">
+        <source>Resizable sheet</source>
+        <target state="final">Ridimensionabile</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.description" approved="yes">
+        <source>Sheet-positioned modals show a drag handle on their free edge. The width is stored per "resizeIdentifier" in the user's configuration, so it is remembered the next time a modal with the same identifier is opened.</source>
+        <target state="final">Le modali a foglio mostrano una maniglia di trascinamento sul bordo libero. La larghezza è memorizzata per "resizeIdentifier" nella configurazione dell'utente, quindi viene ricordato la prossima volta che viene aperto una modale con lo stesso identificativo.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.openModal" approved="yes">
+        <source>Open resizable sheet</source>
+        <target state="final">Apri foglio ridimensionabile</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline" approved="yes">
+        <source>Playground</source>
+        <target state="final">Area di prova</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description" approved="yes">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target state="final">Verifica in modo interattivo diverse configurazioni delle finestre modali selezionando le opzioni qui sotto.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Posizione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity" approved="yes">
+        <source>Severity</source>
+        <target state="final">Importanza</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Nascondi intestazione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Sfondo statico</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal" approved="yes">
+        <source>Open modal</source>
+        <target state="final">Apri modale</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Sì</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Nascondi intestazione</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description" approved="yes">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target state="final">Nascondi l'intestazione della finestra modale per un aspetto più pulito. Il titolo viene ancora utilizzato per scopi di accessibilità.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Sfondo statico</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description" approved="yes">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target state="final">Impedire la chiusura della finestra modale quando si fa clic al di fuori di essa. Gli utenti devono utilizzare i pulsanti o l'icona di chiusura per chiudere.</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline" approved="yes">
+        <source>Navs</source>
+        <target state="final">Nav</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target state="final">Componenti di navigazione tra cui tab, pill e stili di navigazione flat.</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Base</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline" approved="yes">
+        <source>Flat</source>
+        <target state="final">Flat</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline" approved="yes">
+        <source>Pills</source>
+        <target state="final">Pill</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Tab</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifiche</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target state="final">Messaggi temporanei per informare gli utenti su eventi con pulsanti di azione opzionali e diversi livelli di importanza. Le notifiche di errore persistono fino a quando non sono rimosse.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline" approved="yes">
+        <source>Action Buttons</source>
+        <target state="final">Pulsante di Azione</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text" approved="yes">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target state="final">Le notifiche possono essere arricchite con pulsanti di azione per attivare due tipi di azioni: immediata o differita.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline" approved="yes">
+        <source>Immediate Action</source>
+        <target state="final">Azione Immediata</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text" approved="yes">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target state="final">Le azioni immediate vengono eseguite direttamente quando viene attivato il pulsante di azione. La notifica verrà eliminata immediatamente. Questo tipo di azione è adatto per azioni che non richiedono tempi di elaborazione, ad esempio chiamando un modulo backend.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline" approved="yes">
+        <source>Deferred Action</source>
+        <target state="final">Azione Differita</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text" approved="yes">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target state="final">Le azioni differite sono adatte ad azioni che richiedono un periodo di tempo per la loro esecuzione, ad esempio le chiamate AJAX. Le notifiche si chiuderanno non appena l'azione sarà terminata con successo. Quando invocato, il pulsante mostrerà un'icona spinner per indicare l'attività in corso.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html" approved="yes">
+        <source>Implementation via HTML:</source>
+        <target state="final">Implementazione via HTML:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script" approved="yes">
+        <source>Implementation via script:</source>
+        <target state="final">Implementazione via script:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Importanza</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text" approved="yes">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target state="final">Tutte le notifiche scompaiono dopo 5 secondi, ad eccezione del messaggio di errore che rimarrà bloccato a meno che non venga riconfigurato.</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Paginazione</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target state="final">Controlli per navigare attraverso contenuti multi-pagina e gruppi di dati con numeri di pagina e frecce di navigazione.</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline" approved="yes">
+        <source>Panels</source>
+        <target state="final">Panelli</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext" approved="yes">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target state="final">Contenitori di contenuto collassabili per organizzare informazioni in sezioni.</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline" approved="yes">
+        <source>Collapsible</source>
+        <target state="final">Collassabile</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline" approved="yes">
+        <source>Nesting</source>
+        <target state="final">Nidificazione</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline" approved="yes">
+        <source>Variants</source>
+        <target state="final">Varianti</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline" approved="yes">
+        <source>Loader</source>
+        <target state="final">Loader</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline" approved="yes">
+        <source>Progress</source>
+        <target state="final">Avanzamento</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline" approved="yes">
+        <source>Progress Component</source>
+        <target state="final">Componente Avanzamento</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Intestazione</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline" approved="yes">
+        <source>Header with icon and actions</source>
+        <target state="final">Intestazione con icona e azioni</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline" approved="yes">
+        <source>Header with thumbnail and actions</source>
+        <target state="final">Intestazione con miniature e azioni</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline" approved="yes">
+        <source>Header with section controls</source>
+        <target state="final">Intestazione con controlli di sezione</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline" approved="yes">
+        <source>Body</source>
+        <target state="final">Corpo</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline" approved="yes">
+        <source>Footer</source>
+        <target state="final">Piè di pagina</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline" approved="yes">
+        <source>List</source>
+        <target state="final">Elenco</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabella</target>
+      </trans-unit>
+      <trans-unit id="component.panels.alerts.headline" approved="yes">
+        <source>Alerts</source>
+        <target state="final">Avvisi</target>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline" approved="yes">
+        <source>Form Sections</source>
+        <target state="final">Sezioni Form</target>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Schede</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Indicatori di avanzamento</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext" approved="yes">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target state="final"><![CDATA[Le barre di avanzamento rappresentano uno stato specifico che può essere visualizzato in modo percentuale, ad esempio la quantità di file caricati, Upgrade Wizard o spazio su disco.<br>Se la quantità esatta di dati caricati non è nota, le barre di avanzamento possono essere renderizzate in uno stato indeterminato.<br>Se possibile, utilizzare una dicitura chiara che descriva la barra di avanzamento.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline" approved="yes">
+        <source>Interactive Demos</source>
+        <target state="final">Demo Interattiva</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline" approved="yes">
+        <source>Indeterminate Progress Bar</source>
+        <target state="final">Barra di Avanzamento Indeterminata</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Crea una barra di avanzamento in stato indeterminato, quindi chiama done() per attivare la transizione al 100% e rimuoverla.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button" approved="yes">
+        <source>Start Indeterminate Progress</source>
+        <target state="final">Avvia l'Avanzamento Indeterminato</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed" approved="yes">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target state="final">Avvia l'Avanzamento Indeterminato (con ritardo)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline" approved="yes">
+        <source>Determinate Progress Bar</source>
+        <target state="final">Barra di Avanzamento Determinata</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Crea una barra di avanzamento con un valore iniziale, quindi chiama done() per attivare la transizione al 100% e rimuoverla.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button" approved="yes">
+        <source>Start Determinate Progress</source>
+        <target state="final">Avvia l'Avanzamento Determinato</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed" approved="yes">
+        <source>Start Determinate Progress (with delay)</source>
+        <target state="final">Avvia l'Avanzamento Determinato (con ritardo)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline" approved="yes">
+        <source>Reusable Progress Bar</source>
+        <target state="final">Barra di Avanzamento Riutilizzabile</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text" approved="yes">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target state="final">Dimostra come la chiamata a start() annulla un'operazione done() che è già in corso. La barra di avanzamento sottostante chiama done() dopo 1 secondo, ma start() viene chiamato 100ms più tardi per annullare la rimozione.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button" approved="yes">
+        <source>Run Demo</source>
+        <target state="final">Esegui demo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline" approved="yes">
+        <source>Custom label</source>
+        <target state="final">Etichetta personalizzata</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text" approved="yes">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target state="final">Opzionalmente, un'etichetta può essere visualizzata sotto la barra di avanzamento.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text" approved="yes">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target state="final">Per impostazione predefinita, viene visualizzata una progressione indeterminata.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline" approved="yes">
+        <source>Max value</source>
+        <target state="final">Valore massimo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" approved="yes">
+        <source>Ridiculous max value</source>
+        <target state="final">Valore massimo non significativo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Importanza</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline" approved="yes">
+        <source>Value</source>
+        <target state="final">Valore</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline" approved="yes">
+        <source>Progress Bar with Table</source>
+        <target state="final">Barra di Avanzamento con Tabella</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text" approved="yes">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target state="final">Dimostrazione dell'utilizzo di una barra di avanzamento come il primo figlio di un wrapper della tabella per indicare lo stato di caricamento.</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Tracciatori di avanzamento</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext" approved="yes">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target state="final"><![CDATA[I tracker di avanzamento sono una variante segmentata delle barre di avanzamento, dividendo la barra di avanzamento in parti uguali.<br>L'uso principale è nei componenti della procedura guidata.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline" approved="yes">
+        <source>Active stage</source>
+        <target state="final">Stato attivo</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline" approved="yes">
+        <source>Demo</source>
+        <target state="final">Demo</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Pulsanti radio</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext" approved="yes">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target state="final">Controlli di form per selezionare una singola opzione esclusiva da più scelte reciprocamente esclusive.</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Layout Card</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Navigazione Contenuti</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext" approved="yes">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target state="final"><![CDATA[Contenitore a due pannelli con area di navigazione ridimensionabile e area di contenuto flessibile. Il pannello di navigazione è opzionale, ridimensionabile e può essere collassato a sinistra. Il pannello dei contenuti è obbligatorio e riempie lo spazio rimanente.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline" approved="yes">
+        <source>Basic usage</source>
+        <target state="final">Utilizzo basilare</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text" approved="yes">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target state="final"><![CDATA[La navigazione dei contenuti utilizza spazi denominati: <code>navigation</code> e <code>content</code>. Lo spazio <code>content</code> è obbligatorio. Il pannello di navigazione può essere collassato trascinandolo al di sotto della metà della sua larghezza minima. Quando è collassato, viene visualizzato un pulsante di espansione con il titolo del pannello.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline" approved="yes">
+        <source>External controls</source>
+        <target state="final">Controlli esterni</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text" approved="yes">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target state="final"><![CDATA[Il pannello di navigazione può essere espanso o collassato programmaticamente utilizzando i metodi <code>expand()</code>, <code>collapse()</code> e <code>isCollapsed()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline" approved="yes">
+        <source>Toggle button</source>
+        <target state="final">Pulsante attiva/disattiva</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text" approved="yes">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target state="final"><![CDATA[Il componente <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> fornisce un pulsante per espandere o collassare la navigazione. Posizionalo ovunque all'interno del componente di navigazione dei contenuti. Usa <code>action="collapse"</code> per un pulsante di collasso (visibile quando espanso) o <code>action="expand"</code> per un pulsante di espansione (visibile quando è collassato). Il componente mostra/nasconde automaticamente in base allo stato di navigazione e legge le etichette dagli attributi <code>navigation-label-collapse</code> e <code>navigation-label-expand</code> della navigazione dei contenuti padre.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline" approved="yes">
+        <source>Hiding navigation</source>
+        <target state="final">Nascondi navigazione</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text" approved="yes">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target state="final"><![CDATA[Il pannello di navigazione può essere nascosto aggiungendo l'attributo <code>hidden</code> all'elemento contenuto nello spazio. Utilizza i metodi <code>showNavigation()</code>, <code>hideNavigation()</code> e <code>isNavigationHidden()</code> per il controllo programmatico.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline" approved="yes">
+        <source>Width persistence</source>
+        <target state="final">Persistenza della larghezza</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text" approved="yes">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target state="final"><![CDATA[La larghezza della navigazione viene automaticamente conservata su <code>localStorage</code> utilizzando l'attributo <code>identifier</code> del contenitore. Ridimensiona il pannello sottostante, quindi ricarica la pagina per visualizzare la larghezza ripristinata.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline" approved="yes">
+        <source>Right-to-left support</source>
+        <target state="final">Supporto da-destra-a-sinistra</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text" approved="yes">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target state="final"><![CDATA[Il contenitore si adatta automaticamente ai layout da-destra-a-sinistra. Il pannello di navigazione appare a destra e le direzioni di trascinamento sono invertite.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline" approved="yes">
+        <source>Flyout mode</source>
+        <target state="final">Modalità riquadro-a-comparsa</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text" approved="yes">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target state="final"><![CDATA[Quando il contenitore diventa troppo stretto (al di sotto di 750px), la navigazione passa automaticamente alla modalità riquadro-a-comparsa utilizzando le CSS-media-query. In modalità iquadro-a-comparsa, la navigazione sovrappone il contenuto invece di risiedere accanto e il ridimensionamento è disabilitato.]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline" approved="yes">
+        <source>Select</source>
+        <target state="final">Menu a tendina</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target state="final">Menu a discesa per scegliere una o più opzioni da un elenco predefinito di valori.</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline" approved="yes">
+        <source>Multiple selection</source>
+        <target state="final">Selezione multipla</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline" approved="yes">
+        <source>Option groups</source>
+        <target state="final">Gruppi di opzioni</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Selezione singola con gruppi di opzioni</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Selezione multipla con gruppi di opzioni</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Dimensione predefinita</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Dimensione piccola</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Selezione singola con gruppi di opzioni</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Selezione multipla con gruppi di opzioni</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <trans-unit id="component.statusIndicator.headline" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">Indicatori di stato</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.introtext" approved="yes">
+        <source>Indicators communicate the state of records, tasks, and interface elements with small colored dots, including animated variants for ongoing activity. Toggle the color scheme to preview light and dark.</source>
+        <target state="final">Gli indicatori comunicano lo stato dei record, delle attività e degli elementi di interfaccia con piccoli punti colorati, comprese le varianti animate per l'attività in corso. Commuta lo schema di colori per visualizzare in anteprima la luce e il buio.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.headline" approved="yes">
+        <source>Dots</source>
+        <target state="final">Punti</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.introtext" approved="yes">
+        <source>Small colored dots flag the state of an element without occupying much space, for example on navigation items or list rows. Each state uses a brighter, fill-tuned shade of its hue so the small filled shape stays vibrant across light and dark.</source>
+        <target state="final">Piccoli punti colorati segnalano lo stato di un elemento senza occupare molto spazio, ad esempio su elementi di navigazione o righe di elenco. Ogni stato utilizza una tonalità più luminosa e sintonizzata della tonalità in modo che la piccola forma riempita rimanga vibrante attraverso la luce e il buio.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.headline" approved="yes">
+        <source>Semantic states</source>
+        <target state="final">Stato semantico</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.introtext" approved="yes">
+        <source>Beside the base colours, a small set of semantic states name a recurring domain concept and map to one of those colours – and, where it fits, to a motion – in the stylesheet. Use them so the same concept looks identical wherever it appears in the backend, instead of each module picking its own colour: active is a plain green, online a pulsing green, running a loading blue, and disabled a red.</source>
+        <target state="final">Accanto ai colori di base, una piccola serie di stati semantici richiamano un concetto di dominio ricorrente e mappano ad uno di questi colori – e, dove si adatta, a un movimento – nel foglio di stile. Usali in modo che lo stesso concetto sembri identico ovunque appaia nel backend, invece di ogni modulo che sceglie il proprio colore: attivo è un verde semplice, online un verde pulsante, che esegue un blu di carico e disabilita un rosso.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.headline" approved="yes">
+        <source>Animated</source>
+        <target state="final">Animato</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.introtext" approved="yes">
+        <source>Motion adds an activity state on top of the colour. Each animation composes with any state colour; all are shown below so they can be verified in every state.</source>
+        <target state="final">Il movimento aggiunge uno stato di attività sopra al colore. Ogni animazione si compone di qualsiasi colore di stato; tutti sono mostrati qui sotto in modo che possano essere verificati in ogni stato.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.headline" approved="yes">
+        <source>Live</source>
+        <target state="final">Live</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.introtext" approved="yes">
+        <source>Signals that an element is active or live. A halo gently breathes in and out around the dot. Apply it with the live attribute.</source>
+        <target state="final">Segnala che un elemento è attivo o live. Un alone respira delicatamente intorno al punto. Applicalo con l'attributo vivo.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.headline" approved="yes">
+        <source>Loading</source>
+        <target state="final">Caricamento</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.introtext" approved="yes">
+        <source>Signals that an operation is in progress. A fading trail rotates around the dot like a spinner. Apply it with the loading attribute.</source>
+        <target state="final">Segnala che un'operazione è in corso. Una scia di dissolvenza ruota attorno al punto. Applicala con l'attributo di caricamento.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.headline" approved="yes">
+        <source>Reduced motion</source>
+        <target state="final">Movimento ridotto</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.introtext" approved="yes">
+        <source>When the operating system requests reduced motion (prefers-reduced-motion: reduce), the live and loading animations are switched off and the indicators render statically. The examples below force that fallback so it can be previewed regardless of your current system setting.</source>
+        <target state="final">Quando il sistema operativo richiede un movimento ridotto (prefers-reduced-motion: reduce), le animazioni da live e dal caricamento vengono disattivate e gli indicatori vengono resi statici. Gli esempi qui sotto lo forzano, in modo che possa essere visualizzato in anteprima indipendentemente dall'impostazione di sistema corrente.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.headline" approved="yes">
+        <source>In context</source>
+        <target state="final">Nel contesto</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.introtext" approved="yes">
+        <source>Indicators are inline elements, so they compose naturally next to text inside other components. When the indicator is the only cue, give it a label; when adjacent text already states the status, leave it decorative without a label.</source>
+        <target state="final">Gli indicatori sono elementi in linea, quindi si compongono naturalmente accanto al testo all'interno di altri componenti. Quando l'indicatore è l'unico indicatore, assegnare un'etichetta; quando il testo adiacente già indica lo stato, lasciarlo decorativo senza un'etichetta.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.badges.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Badge</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Liste</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.tables.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline" approved="yes">
+        <source>Tab</source>
+        <target state="final">Tab</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext" approved="yes">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target state="final">Sezioni di contenuto organizzate con intestazioni cliccabili per passare da diverse viste e pannelli.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text" approved="yes">
+        <source>Basic tab navigation with two tabs.</source>
+        <target state="final">Navigazione a schede  basica con due schede.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline" approved="yes">
+        <source>Persistence</source>
+        <target state="final">Persistenza</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text" approved="yes">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target state="final">Aggiungendo data-store-last-tab all'elenco delle schede memorizza l'ultima scheda selezionata nella sessione del browser. Ciò richiede un id stabile nell'elemento dell'elenco delle schede.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline" approved="yes">
+        <source>Validation State</source>
+        <target state="final">Stato Di Convalida</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text" approved="yes">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target state="final">Le schede contenenti errori di validità sono evidenziate con un indicatore di pericolo. La classe &lt;code&gt;has-validation-error&lt;/code&gt; viene aggiunta all'elemento &lt;code&gt;nav-item&lt;/code&gt;.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline" approved="yes">
+        <source>Scrollable</source>
+        <target state="final">Scrollabile</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text" approved="yes">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target state="final">Quando le schede non si adattano su una singola riga, le frecce di scorrimento appaiono ai bordi. Ridimensiona il contenitore per vedere l'effetto.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline" approved="yes">
+        <source>Bootstrap Migration</source>
+        <target state="final">Migrazione Bootstrap</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text" approved="yes">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target state="final">Le schede che usano gli attributi di Bootstrap data-bs-toggle vengono migrate automaticamente a data-typo3-tab in fase di esecuzione. Gli elementi di tipo anchor vengono sostituiti con pulsanti.</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext" approved="yes">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target state="final">Usa le tabelle per mostrare i dati in formato tabellare. Le icone delle azioni dovrebbero sempre essere nell'ultima cella della riga della tabella.</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text" approved="yes">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target state="final"><![CDATA[Per colorare le righe della tabella, una classe può essere aggiunta all'elemento <code>tr</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline" approved="yes">
+        <source>Color (full example)</source>
+        <target state="final">Colore (esempio)</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline" approved="yes">
+        <source>Wide tables</source>
+        <target state="final">Tabelle larghe</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Area di testo</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext" approved="yes">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target state="final">Campi di testo multi-riga per inserire e modificare contenuti più lunghi e testo formattato.</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Disabilitato</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Segnaposto</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Dimensione predefinita</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Dimensione piccola</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline" approved="yes">
+        <source>Trees</source>
+        <target state="final">Strutture ad albero</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext" approved="yes">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target state="final">Strutture ad albero gerarchiche per la visualizzazione e la navigazione di dati nidificati con nodi espandibili e collassabili.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline" approved="yes">
+        <source>Collapsible tree</source>
+        <target state="final">Struttura ad albero espandibile</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text" approved="yes">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target state="final"><![CDATA[Le strutture ad albero sono usate per mostrare la configurazione in modo più strutturato. Livelli inferiori possono essere aperti e chiusi, mentre le voci sono collassate per impostazione predefinita. Se un utente apre le voci, questo stato viene salvato nella sessione. Ci sono ulteriori attributi di dati che possono essere aggiunti a <code>div.reelist-collapse</code> per configurare lo stato di collasso.]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline" approved="yes">
+        <source>File tree</source>
+        <target state="final">Struttura ad albero per file</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text" approved="yes">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target state="final">Le strutture ad albero per file sono inizializzate via TypeScript, come per le strutture ad albero per le pagine.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Struttura ad albero per pagine</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text" approved="yes">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target state="final">Le strutture ad albero per pagine sono inizializzate via TypeScript, come nell'esempio sotto.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline" approved="yes">
+        <source>Datetime Component</source>
+        <target state="final">Componente Datetime</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext" approved="yes">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target state="final">Componente Web per la visualizzazione di timestamp in formato assoluto (predefinito) o in formato relativo (ad esempio, "2 minuti fa"). Utilizza Luxon per la formattazione localizzata e rispetta la lingua del backend dell'utente ed i formati di data configurati di TYPO3. Supporta stringhe di formato Luxon personalizzate, per il controllo completo del formato di visualizzazione. Quando si utilizza la modalità relativa, passa con il mouse sopra la data per vederne un suggerimento.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline" approved="yes">
+        <source>Basic Usage (Absolute Display)</source>
+        <target state="final">Uso di Base (Display Assoluto)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay" approved="yes">
+        <source>Absolute Display (default)</source>
+        <target state="final">Display Assoluto (predefinito)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp" approved="yes">
+        <source>ISO Timestamp</source>
+        <target state="final">Timestamp ISO</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline" approved="yes">
+        <source>Relative Time Display</source>
+        <target state="final">Display Relativo</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text" approved="yes">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target state="final">Utilizzando mode="relative", il componente visualizza i timestamp in formato relativo (ad esempio "2 ore fa"). Per vedere la data assoluta passa il mouse sopra.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay" approved="yes">
+        <source>Relative Display</source>
+        <target state="final">Display Relativo</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline" approved="yes">
+        <source>Automatic Updates in Relative Mode</source>
+        <target state="final">Aggiornamenti Automatici in Modalità Relativa</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text" approved="yes">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target state="final">In modalità relativa, il componente si aggiorna automaticamente con frequenza che si adatta in base al tempo trascorso: &lt;1 minuto, si aggiorna ogni secondo al secondo, &lt;1 ora si aggiorna ogni minuto, &lt;1 giorno, ogni 5 minuti e &gt;1 giorno, ogni 30 minuti. Nessuna configurazione necessaria.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated" approved="yes">
+        <source>Last updated:</source>
+        <target state="final">Ultimo aggiornamento:</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline" approved="yes">
+        <source>Unix Timestamp Support</source>
+        <target state="final">Supporto Timestamp Unix</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text" approved="yes">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target state="final">Il componente rileva e gestisce automaticamente i timestamp Unix (in secondi).</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Formato</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value" approved="yes">
+        <source>Value</source>
+        <target state="final">Valore</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay" approved="yes">
+        <source>Absolute Display</source>
+        <target state="final">Display Assoluto</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference" approved="yes">
+        <source>ISO Reference</source>
+        <target state="final">Riferimento ISO</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper" approved="yes">
+        <source>Fluid ViewHelper</source>
+        <target state="final">ViewHelper Fluid</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline" approved="yes">
+        <source>Mode Comparison</source>
+        <target state="final">Modalità Confronto</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text" approved="yes">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target state="final">Confronto fianco-a-fianco di display assoluto (predefinito) e relativo.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline" approved="yes">
+        <source>Absolute Display Formats</source>
+        <target state="final">Formati Display Assoluti</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text" approved="yes">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target state="final">L'attributo format è opzionale e usa il formato data configurato in TYPO3 per impostazione predefinita. Valori disponibili: data (predefinita), datetime o stringhe di formato Luxon personalizzate. I formati configurati di TYPO3 sono definiti in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] e $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display" approved="yes">
+        <source>Display</source>
+        <target state="final">Display</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault" approved="yes">
+        <source>date (default - TYPO3 configured date)</source>
+        <target state="final">data (predefinita - configurata in TYPO3)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured" approved="yes">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target state="final">datetime (configurato in TYPO3)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline" approved="yes">
+        <source>Custom Format Strings</source>
+        <target state="final">Stringhe per Formato Personalizzato</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text" approved="yes">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target state="final">L'attributo format accetta anche stringhe di formato Luxon personalizzate per il controllo completo sul formato display.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString" approved="yes">
+        <source>Custom Format String</source>
+        <target state="final">Stringa per Formato Personalizzato</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline" approved="yes">
+        <source>Relative Time Without Seconds</source>
+        <target state="final">Tempo Relativo Senza Secondi</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text" approved="yes">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target state="final">Per impostazione predefinita, la modalità relativa arrotonda fino al minuto più vicino. Utilizzare invece l'attributo relativo show-seconds per visualizzare i secondi.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds" approved="yes">
+        <source>Without Seconds (Default)</source>
+        <target state="final">Senza Secondi (Predefinito)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds" approved="yes">
+        <source>With Seconds</source>
+        <target state="final">Con Secondi</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline" approved="yes">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target state="final">Con Soglia (mostra data assoluta per vecchi timestamp)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text" approved="yes">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target state="final">In modalità relativa, utilizzando l'attributo soglia-giorni passa al formato data assoluta per i timestamp più vecchi di un determinato numero di giorni.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold" approved="yes">
+        <source>Without Threshold</source>
+        <target state="final">Senza Soglia</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold" approved="yes">
+        <source>With Threshold (90 days)</source>
+        <target state="final">Con Soglia (90 giorni)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline" approved="yes">
+        <source>Attributes</source>
+        <target state="final">Attributi</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute" approved="yes">
+        <source>Attribute</source>
+        <target state="final">Attributo</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipo</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Descrizione</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type" approved="yes">
+        <source>string (required)</source>
+        <target state="final">stringa (obbligatoria)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description" approved="yes">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target state="final">Timestamp ISO 8601 (ad esempio, "2024-01-15T10:30:00+01:00") o Timestamp Unix</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">stringa (facoltativo)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description" approved="yes">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target state="final">Modalità di visualizzazione: "assoluta" (predefinita) o "relativa"</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">stringa (facoltativo)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description" approved="yes">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target state="final">Formato per la modalità assoluta: "date" (predefinito - utilizza $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (utilizza ddmmyy + hhhmm), o stringa di formato Luxon personalizzata (ad esempio, "dd.MM.yyyy HH:mm")</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type" approved="yes">
+        <source>number (optional)</source>
+        <target state="final">numero (facoltativo)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description" approved="yes">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target state="final">Passa al formato di data assoluta per timestamp più vecchi di N giorni (solo per la modalità relativa). Predefinito: 0 (sempre relativo)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type" approved="yes">
+        <source>boolean (optional)</source>
+        <target state="final">booleano (facoltativo)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description" approved="yes">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target state="final">Mostra i secondi in modalità relativa. Quando assente (predefinito), gli orari nella visualizzazione dell'ultimo minuto come "1 minuto fa". Quando presente, vengono visualizzati "X secondi fa".</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Token Colore</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Aree utilizzate nel Backend TYPO3, per <strong>solo utilizzo interno</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Accento e Stato</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext" approved="yes">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target state="final"><![CDATA[Varianti di colore dichiarate utilizzate per gli elementi interattivi nel Backend TYPO3, solo per <strong>utilizzo interno</strong>. Questi includono i colori di accento (primario, secondario) e i colori di stato semantico (info, successo, avvertimento, pericolo, avviso) con le rispettive varianti predefinite, hover, focus e disabilitate.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline" approved="yes">
+        <source>Accent Colors</source>
+        <target state="final">Colori Accento</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline" approved="yes">
+        <source>State Colors</source>
+        <target state="final">Colori di Stato</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline" approved="yes">
+        <source>Decorative Colors</source>
+        <target state="final">Colori Decorativi</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text" approved="yes">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target state="final">Varianti di colore semplice senza significato semantico. Utilizzare questi solo per la distinzione visiva, come indicatori di workspace, etichette di categoria o etichette assegnate dagli utenti dove i colori sono solo decorativi.</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline" approved="yes">
+        <source>Icons</source>
+        <target state="final">Icone</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext" approved="yes">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target state="final">Le icone possono essere usate nei moduli del backend. TYPO3 invia automaticamente il corrispondente codice di output HTML.</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline" approved="yes">
+        <source>Overlay</source>
+        <target state="final">Sovrapposto</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline" approved="yes">
+        <source>Overview</source>
+        <target state="final">Panoramica</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline" approved="yes">
+        <source>Usage</source>
+        <target state="final">Utilizzo</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline" approved="yes">
+        <source>Bitmap</source>
+        <target state="final">Bitmap</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation" approved="yes">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target state="final">Implementazione in Fluid tramite ViewHelper:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration" approved="yes">
+        <source>Registration:</source>
+        <target state="final">Registrazione:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline" approved="yes">
+        <source>SVG</source>
+        <target state="final">SVG</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Ombre</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext" approved="yes">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Ombre usate nel Backend TYPO3, per <strong>solo utilizzo interno</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Superfici</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Aree utilizzate nel Backend TYPO3, per <strong>solo utilizzo interno</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Colore</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline" approved="yes">
+        <source>Natural</source>
+        <target state="final">Naturale</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline" approved="yes">
+        <source>Typography</source>
+        <target state="final">Tipografia</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target state="final">Stili carattere, dimensioni, spessori e formattazione del testo utilizzati in tutto il backend di TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline" approved="yes">
+        <source>Headings</source>
+        <target state="final">Intestazioni</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text" approved="yes">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target state="final"><![CDATA[Intestazione "H1" è la titolazione principale all'interno di ogni modulo del backend. Aggiunto solo una volta a ogni pagina del backend.<br>La "H2" è la titolazione per ogni sezione nei moduli del backend. Posizionala in testa a ogni sezione e usala più volte.<br>La titolazione "H3" può essere utilizzata per dividere il contenuto della sezione in unità logiche. Posizionala tra i paragrafi all'interno della sezione.<br>La titolazione "H4" potrebbe essere usata per dividere le informazioni meta / piè di pagina.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.headline" approved="yes">
+        <source>Keyboard input</source>
+        <target state="final">Inserimento da tastiera</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.text" approved="yes">
+        <source><![CDATA[Use the <code>kbd</code> element to mark up keyboard input or shortcuts. Nest <code>kbd</code> elements to compose key combinations.]]></source>
+        <target state="final"><![CDATA[Usa l'elemento <code>kbd</code> per segnare l'ingresso o le scorciatoie da tastiera. Nidifica gli elementi <code>kbd</code> per comporre combinazioni di tasti.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.sizing.text" approved="yes">
+        <source><![CDATA[Keys scale with the surrounding font size — sized in <code>em</code>, so they fit naturally inside headings, body text and small text without per-context overrides.]]></source>
+        <target state="final"><![CDATA[Scala delle chiavi con la dimensione del carattere contenuto — dimensionata in <code>em</code>, in modo da adattarsi naturalmente all'interno delle voci, corpo testo e piccolo testo senza sovrapposizione del contesto.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Collegamenti</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Elenchi</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text" approved="yes">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target state="final"><![CDATA[Per impostazione predefinita, gli elenchi puntati e numerati sono formattati, rispettivamente, con punti e decimali. Aggiungendo <code>class="list-unstyled"</code> al tag ol o ul, è possibile strutturare il contenuto in forma di elenco senza lo stile tipico della lista.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline" approved="yes">
+        <source>Ordered list</source>
+        <target state="final">Elenco numerato</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline" approved="yes">
+        <source>Unordered list</source>
+        <target state="final">Elenco puntato</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline" approved="yes">
+        <source>Paragraph</source>
+        <target state="final">Paragrafo</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline" approved="yes">
+        <source>Small text</source>
+        <target state="final">Testo piccolo</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text" approved="yes">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target state="final">Informazioni di piè di pagina, piccoli avvisi possono essere inclusi nel tag "small".</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline" approved="yes">
+        <source>Text color</source>
+        <target state="final">Colore testo</target>
+      </trans-unit>
+      <trans-unit id="elements.color.valid" approved="yes">
+        <source>Valid (LLL)</source>
+        <target state="final">Valido (LLL)</target>
+      </trans-unit>
+      <trans-unit id="example.code.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Copia</target>
+      </trans-unit>
+      <trans-unit id="example.code.copyToClipboard" approved="yes">
+        <source>Copy code to clipboard</source>
+        <target state="final">Copia il codice negli appunti</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
