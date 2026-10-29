@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancel</target>
+      </trans-unit>
+      <trans-unit id="verify" approved="yes">
+        <source>Verify</source>
+        <target state="final">Patikrinti</target>
+      </trans-unit>
+      <trans-unit id="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="verifyWithUserPassword" approved="yes">
+        <source>Verify with user password</source>
+        <target state="final">Patikrinti naudotojo slaptažodžiu</target>
+      </trans-unit>
+      <trans-unit id="verifyWithInstallToolPassword" approved="yes">
+        <source>Verify with Install Tool password</source>
+        <target state="final">Patikrinti naudojant diegimo įrankio slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="accessGranted" approved="yes">
+        <source>Access granted</source>
+        <target state="final">Prieiga suteikta</target>
+      </trans-unit>
+      <trans-unit id="invalidPassword" approved="yes">
+        <source>Invalid password</source>
+        <target state="final">Neteisingas slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="userPasswordMode" approved="yes">
+        <source>Use user password instead</source>
+        <target state="final">Naudoti vartotojo slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="installToolPasswordMode" approved="yes">
+        <source>Use Install Tool password instead</source>
+        <target state="final">Naudoti diegimo įrankio slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="sudoModeUserPasswordExplanation" approved="yes">
+        <source>Authentication is required to perform this action. Please enter your user password to proceed.</source>
+        <target state="final">Norint atlikti šį veiksmą, reikalinga autentifikacija. Norėdami tęsti, įveskite savo vartotojo slaptažodį.</target>
+      </trans-unit>
+      <trans-unit id="sudoModeInstallToolPasswordExplanation" approved="yes">
+        <source>Authentication is required to perform this action. Please enter the Install Tool password to proceed.</source>
+        <target state="final">Norint atlikti šį veiksmą, reikalinga autentifikacija. Norėdami tęsti, įveskite diegimo įrankio slaptažodį.</target>
+      </trans-unit>
+      <trans-unit id="verificationFailed" approved="yes">
+        <source>Verification failed</source>
+        <target state="final">Patikrinimas nepavyko</target>
+      </trans-unit>
+      <trans-unit id="verificationExpired" approved="yes">
+        <source>Confirmation has expired. Please try again.</source>
+        <target state="final">Patvirtinimo laikas baigėsi. Bandykite dar kartą.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
