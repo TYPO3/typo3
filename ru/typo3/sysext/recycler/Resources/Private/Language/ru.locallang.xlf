@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Корзина</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">В корзине можно выбрать удаленные данные и вернуть их. Можно вернуть и родительские элементы, если и они удалены также.</target>
+      </trans-unit>
+      <trans-unit id="label_allrecordtypes" approved="yes">
+        <source>All Record Types</source>
+        <target state="final">Все типы записей</target>
+      </trans-unit>
+      <trans-unit id="filter.search" approved="yes">
+        <source>Search term</source>
+        <target state="final">Поисковый запрос</target>
+      </trans-unit>
+      <trans-unit id="filter.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Глубина</target>
+      </trans-unit>
+      <trans-unit id="filter.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected" approved="yes">
+        <source>Delete {0} records</source>
+        <target state="final">Удалить {0} записей</target>
+      </trans-unit>
+      <trans-unit id="button.undo" approved="yes">
+        <source>Restore</source>
+        <target state="final">Восстановить</target>
+      </trans-unit>
+      <trans-unit id="button.expand" approved="yes">
+        <source>Expand record</source>
+        <target state="final">Развернуть запись</target>
+      </trans-unit>
+      <trans-unit id="button.dropdown.multiselect" approved="yes">
+        <source>Open context menu for multiselect options</source>
+        <target state="final">Открыть контекстное меню для выбора нескольких опций</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected" approved="yes">
+        <source>Restore {0} records</source>
+        <target state="final">Восстановить {0} записей</target>
+      </trans-unit>
+      <trans-unit id="button.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Перезагрузить</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">Подтверждение удаления</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header" approved="yes">
+        <source>Restore records</source>
+        <target state="final">Восстановить записи</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive" approved="yes">
+        <source>Restore content and subpages recursively</source>
+        <target state="final">Рекурсивное восстановление содержимого и подстраниц</target>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text" approved="yes">
+        <source>Permanently delete record "{0}" {1}? You cannot undo this action.</source>
+        <target state="final">Окончательно удалить запись "{0}" {1}? Это действие нельзя отменить.</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text" approved="yes">
+        <source>Permanently delete all the selected records (and any subpages)? You cannot undo this action.</source>
+        <target state="final">Удалить все выбранные записи (и подстраницы)? Это действие нельзя отменить.</target>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text" approved="yes">
+        <source>Permanently delete page "{0}" {1} and all of its contents (records and pages)? You cannot undo this action.</source>
+        <target state="final">Удалить страницу "{0}" {1} и все ее содержимое (записи и страницы)? Это действие нельзя отменить.</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text" approved="yes">
+        <source>Restore record "{0}" {1}? The record will be restored in its initial position and may become immediately active.</source>
+        <target state="final">Восстановить запись "{0}" {1}? Запись будет восстановлена в исходном месте и может стать активной сразу.</target>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text" approved="yes">
+        <source>Restore page "{0}" {1}, its contents (and any subpages)? The pages and their content are restored to their original location and may become immediately visible online.</source>
+        <target state="final">Восстановить страницу "{0}" {1}, её содержимое (и любые подстраницы)? Страницы и их содержимое восстановлены в исходное местоположение и могут сразу стать видимыми в Интернете.</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages" approved="yes">
+        <source>All parent pages have been restored to ensure a valid rootline.</source>
+        <target state="final">Все родительские страницы были восстановлены для обеспечения корректности корневой линии.</target>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text" approved="yes">
+        <source>Restore all selected records and any subpages? All records are restored to their original position and may take effect immediately, including the pages and their content that may become visible online. Undoing this requires deleting each record individually.</source>
+        <target state="final">Восстановить все выбранные записи и все подстраницы? Все записи будут восстановлены в исходном положении и могут сразу же вступить в силу, включая страницы и их содержимое, которые могут стать видимыми в режиме онлайн. Чтобы отменить это действие, необходимо удалить каждую запись по отдельности.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.unauthorized" approved="yes">
+        <source>Insufficient permissions to delete records.</source>
+        <target state="final">Недостаточно прав для удаления записей.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.norecordsselected" approved="yes">
+        <source>No records set to delete.</source>
+        <target state="final">Нет выбранных для удаления записей.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.singular" approved="yes">
+        <source>One record was deleted.</source>
+        <target state="final">Одна запись удалена.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural" approved="yes">
+        <source>%d records were deleted.</source>
+        <target state="final">%d записей удалено.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.singular" approved="yes">
+        <source>Could not delete one record.</source>
+        <target state="final">Невозможно удалить одну запись.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.plural" approved="yes">
+        <source>Could not delete %d records.</source>
+        <target state="final">Не удалось удалить %d записей.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected" approved="yes">
+        <source>No records set to restore.</source>
+        <target state="final">Не выбраны записи для восстановления.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular" approved="yes">
+        <source>One record was restored.</source>
+        <target state="final">Одна запись восстановлена.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural" approved="yes">
+        <source>%d records were restored.</source>
+        <target state="final">%d записей восстановлено.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular" approved="yes">
+        <source>Could not restore one record.</source>
+        <target state="final">Не удалось восстановить одну запись.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural" approved="yes">
+        <source>Could not restore %d records.</source>
+        <target state="final">Не удалось восстановить %d записей.</target>
+      </trans-unit>
+      <trans-unit id="alert.noDeletedRecords" approved="yes">
+        <source>No deleted records have been found.</source>
+        <target state="final">Удаленные записи не найдены.</target>
+      </trans-unit>
+      <trans-unit id="table.caption.recently_deleted_records" approved="yes">
+        <source>Recently deleted records</source>
+        <target state="final">Недавно удаленные записи</target>
+      </trans-unit>
+      <trans-unit id="table.header.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="table.header.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Название страницы</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID страницы</target>
+      </trans-unit>
+      <trans-unit id="table.header.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Запись</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">Последнее редактирование</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate" approved="yes">
+        <source>Created at</source>
+        <target state="final">Дата создания</target>
+      </trans-unit>
+      <trans-unit id="table.header.createdBy" approved="yes">
+        <source>Created by</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="table.header.deletedBy" approved="yes">
+        <source>Deleted by</source>
+        <target state="final">Удалено</target>
+      </trans-unit>
+      <trans-unit id="table.header.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Путь</target>
+      </trans-unit>
+      <trans-unit id="record.userDeleted" approved="yes">
+        <source>[Deleted user] (id=%s)</source>
+        <target state="final">[Удаленный пользователь] (id=%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
