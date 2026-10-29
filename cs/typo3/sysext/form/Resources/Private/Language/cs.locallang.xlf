@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" approved="yes">
+        <source>Uploaded image</source>
+        <target state="final">Nahraný obrázek</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560910" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Toto pole je povinné.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560718" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Toto pole je povinné.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992400" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Toto pole je povinné.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992453" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Toto pole je povinné.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238087674" approved="yes">
+        <source>You must enter a valid date.</source>
+        <target state="final">Musíte zadat platné datum.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221551320" approved="yes">
+        <source>You can only enter letters or digits.</source>
+        <target state="final">Můžete zadat pouze písmena nebo číslice.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565786" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Můžete zadat pouze neformátovaný text bez jakékoliv značky (např. bez XML tagů).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238110957" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Můžete zadat pouze neformátovaný text bez jakékoliv značky (např. bez XML tagů).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1269883975" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Můžete zadat pouze neformátovaný text bez jakékoliv značky (např. bez XML tagů).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1428504122" approved="yes">
+        <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+        <target state="final">Váš text musí mít délku %s znaků a nesmí být delší než %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108068" approved="yes">
+        <source>You must enter text which is longer than %s characters.</source>
+        <target state="final">Musíte zadat text, který je delší než %s znaků.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108069" approved="yes">
+        <source>You must enter text which is no longer than %s characters.</source>
+        <target state="final">Musíte zadat text, který není delší než %s znaků.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221559976" approved="yes">
+        <source>You must enter a valid email address.</source>
+        <target state="final">Musíte zadat platnou e-mailovou adresu.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560494" approved="yes">
+        <source>You must enter a valid number.</source>
+        <target state="final">Musíte zadat platné číslo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560288" approved="yes">
+        <source>You must enter a valid floating point number.</source>
+        <target state="final">Musíte zadat platné desetinné číslo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221563685" approved="yes">
+        <source>You must enter a valid number.</source>
+        <target state="final">Musíte zadat platné číslo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221561046" approved="yes">
+        <source>You must enter a valid number between %s and %s.</source>
+        <target state="final">Musíte zadat platné číslo mezi %s a %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565130" approved="yes">
+        <source>You must enter a valid value. Please refer to the description of this field.</source>
+        <target state="final">Musíte zadat platnou hodnotu. Podívejte se na popis tohoto pole.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002976" approved="yes">
+        <source>You must enter a countable subject.</source>
+        <target state="final">Musíte zadat počitatelný objekt.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002994" approved="yes">
+        <source>You must select between %s to %s elements.</source>
+        <target state="final">Musíte vybrat mezi %s až %s prvky.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708997" approved="yes">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target state="final">Musíte zadat instanci \TYPO3\CMS\Extbase\Domain\Model\FileReference nebo \TYPO3\CMS\Core\Resource\File.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708998" approved="yes">
+        <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+        <target state="final">Zadali jste nesprávný typ média, "%s" není pro tento soubor povolen. Podívejte se prosím na popis tohoto pole.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1613126216" approved="yes">
+        <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+        <target state="final">Poskytnutá přípona souboru "%s" se neshoduje s očekávanými typy médií. Podívejte se prosím na popis tohoto pole.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1476396435" approved="yes">
+        <source>You must NOT fill this field.</source>
+        <target state="final">Toto pole nesmíte vyplňovat.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505303626" approved="yes">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target state="final">Musíte zadat instanci \TYPO3\CMS\Extbase\Domain\Model\FileReference nebo \TYPO3\CMS\Core\Resource\File.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305752" approved="yes">
+        <source>You must select a file that is larger than %s in size.</source>
+        <target state="final">Musíte vybrat soubor, který je větší než %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305753" approved="yes">
+        <source>You must select a file that is no larger than %s.</source>
+        <target state="final">Musíte vybrat soubor, který není větší než %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293685" approved="yes">
+        <source>You must enter an instance of \DateTime.</source>
+        <target state="final">Musíte zadat instanci \DateTime.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293686" approved="yes">
+        <source>You must select a date before %s.</source>
+        <target state="final">Musíte vybrat datum před %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293687" approved="yes">
+        <source>You must select a date after %s.</source>
+        <target state="final">Musíte vybrat datum po %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1748345955" approved="yes">
+        <source>This field cannot be validated due to a configuration error. Please contact the website owner.</source>
+        <target state="final">Toto pole nelze ověřit kvůli chybě v nastavení. Obraťte se prosím na správce webu.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1556283177" approved="yes">
+        <source>Password does not match confirmation</source>
+        <target state="final">Heslo se neshoduje s jeho potvrzením</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_title" approved="yes">
+        <source>Form</source>
+        <target state="final">Formulář</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_description" approved="yes">
+        <source>A form that allows website users to submit messages.</source>
+        <target state="final">Formulář, který uživatelům umožňuje odesílat zprávy.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530345" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Byla překročena maximální velikost souboru.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530346" approved="yes">
+        <source>Upload failed. The file was only partially uploaded, please try again.</source>
+        <target state="final">Nahrání se nezdařilo. Soubor byl nahrán pouze částečně, zkuste to prosím znovu.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530347" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">Nebyl nahrán žádný soubor.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530348" approved="yes">
+        <source>Upload failed.</source>
+        <target state="final">Nahrávání selhalo.</target>
+      </trans-unit>
+      <trans-unit id="upload.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Odstranit</target>
+      </trans-unit>
+      <trans-unit id="form.configuration.module.provider" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">Formulář: Konfigurace YAML</target>
+      </trans-unit>
+      <trans-unit id="form.finisher.error" approved="yes">
+        <source>Your form could not be submitted due to a technical issue. It might be a temporary issue, but can also be related to your input.</source>
+        <target state="final">Váš formulář nemohl být odeslán z důvodu technického problému. Může se jednat o dočasný problém, ale může také souviset s vaším zadáním.</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Předchozí</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Další</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>First</source>
+        <target state="final">První</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>Last</source>
+        <target state="final">Poslední</target>
+      </trans-unit>
+      <trans-unit id="pagination.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formuláře</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Strana</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Obnovit</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
