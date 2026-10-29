@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Configuration/Sets/Form/labels.xlf" date="2026-04-15T08:00:00Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Form</source>
+        <target>crwdns416915:0crwdne416915:0</target>
+      </trans-unit>
+      <trans-unit id="categories.form">
+        <source>Form</source>
+        <target>crwdns416917:0crwdne416917:0</target>
+      </trans-unit>
+      <trans-unit id="categories.form.templates">
+        <source>Templates</source>
+        <target>crwdns416919:0crwdne416919:0</target>
+      </trans-unit>
+      <trans-unit id="categories.form.translation">
+        <source>Translation</source>
+        <target>crwdns416921:0crwdne416921:0</target>
+      </trans-unit>
+      <trans-unit id="settings.form.templates.templateRootPath">
+        <source>Path of Fluid Templates for form elements</source>
+        <target>crwdns416923:0crwdne416923:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.form.templates.templateRootPath">
+        <source>Override the default Fluid template path for all form element rendering (e.g. EXT:my_sitepackage/Resources/Private/Templates/Form/Frontend/)</source>
+        <target>crwdns416925:0crwdne416925:0</target>
+      </trans-unit>
+      <trans-unit id="settings.form.templates.partialRootPath">
+        <source>Path of Fluid Partials for form elements</source>
+        <target>crwdns416927:0crwdne416927:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.form.templates.partialRootPath">
+        <source>Override the default Fluid partial path for all form element rendering (e.g. EXT:my_sitepackage/Resources/Private/Partials/Form/Frontend/)</source>
+        <target>crwdns416929:0crwdne416929:0</target>
+      </trans-unit>
+      <trans-unit id="settings.form.templates.layoutRootPath">
+        <source>Path of Fluid Layouts for form elements</source>
+        <target>crwdns416931:0crwdne416931:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.form.templates.layoutRootPath">
+        <source>Override the default Fluid layout path for all form element rendering (e.g. EXT:my_sitepackage/Resources/Private/Layouts/Form/Frontend/)</source>
+        <target>crwdns416933:0crwdne416933:0</target>
+      </trans-unit>
+      <trans-unit id="settings.form.translation.translationFile">
+        <source>Additional translation file for form elements</source>
+        <target>crwdns416935:0crwdne416935:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.form.translation.translationFile">
+        <source>Additional XLF translation file for form element labels (e.g. EXT:my_sitepackage/Resources/Private/Language/Form/locallang.xlf)</source>
+        <target>crwdns416937:0crwdne416937:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
