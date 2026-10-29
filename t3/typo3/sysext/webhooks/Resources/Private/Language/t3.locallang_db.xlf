@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_db.xlf" date="2023-01-11T20:22:32Z" product-name="webhooks" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="webhooks">
+        <source>Webhooks</source>
+        <target>crwdns278839:0crwdne278839:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook">
+        <source>System webhooks</source>
+        <target>crwdns278841:0crwdne278841:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name">
+        <source>Name</source>
+        <target>crwdns278843:0crwdne278843:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name.description">
+        <source>Meaningful name of the webhook</source>
+        <target>crwdns278845:0crwdne278845:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url">
+        <source>URL</source>
+        <target>crwdns278851:0crwdne278851:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url.description">
+        <source>Target URL that should be called.</source>
+        <target>crwdns278853:0crwdne278853:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.method">
+        <source>HTTP Method</source>
+        <target>crwdns278855:0crwdne278855:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl">
+        <source>Verify SSL</source>
+        <target>crwdns278857:0crwdne278857:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl.description">
+        <source>Verify that the connection is secure and valid, this setting should only be disabled in case a verification is not possible.</source>
+        <target>crwdns278859:0crwdne278859:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers">
+        <source>Additional Headers</source>
+        <target>crwdns278861:0crwdne278861:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers.description">
+        <source>Additional headers that should be added to the HTTP request. Data must be provided as valid JSON string.</source>
+        <target>crwdns278863:0crwdne278863:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier">
+        <source>Identifier</source>
+        <target>crwdns278865:0crwdne278865:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier.description">
+        <source>This is your unique webhook identifier</source>
+        <target>crwdns278867:0crwdne278867:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type">
+        <source>Webhook Trigger</source>
+        <target>crwdns278869:0crwdne278869:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret">
+        <source>Secret</source>
+        <target>crwdns278871:0crwdne278871:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.description">
+        <source>The secret is mandatory to create a hash that is sent with the request. The secret can be used to verify the payload has not been modified, see the documentation for more details.</source>
+        <target>crwdns278873:0crwdne278873:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.passwordGenerator">
+        <source>Generate secret</source>
+        <target>crwdns278875:0crwdne278875:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.description">
+        <source>Trigger the webhook, ...</source>
+        <target>crwdns278877:0crwdne278877:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.select">
+        <source>Select a trigger</source>
+        <target>crwdns278879:0crwdne278879:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification">
+        <source>... when a page is added or changed</source>
+        <target>crwdns278881:0crwdne278881:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-login-error">
+        <source>... when an error occurs on log in</source>
+        <target>crwdns278883:0crwdne278883:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-mfa-error">
+        <source>... when an error occurs on multi-factor authentication</source>
+        <target>crwdns292601:0crwdne292601:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-added">
+        <source>... when a file is added</source>
+        <target>crwdns278885:0crwdne278885:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-removed">
+        <source>... when a file is removed</source>
+        <target>crwdns278887:0crwdne278887:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-updated">
+        <source>... when a file is updated</source>
+        <target>crwdns278889:0crwdne278889:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid">
+        <source>Storage PID</source>
+        <target>crwdns278891:0crwdne278891:0</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid.description">
+        <source>Select the page on which a new record is created on.</source>
+        <target>crwdns278893:0crwdne278893:0</target>
+      </trans-unit>
+      <trans-unit id="palette.config">
+        <source>Configuration</source>
+        <target>crwdns278895:0crwdne278895:0</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description">
+        <source>General configuration of the webhook.</source>
+        <target>crwdns278897:0crwdne278897:0</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings">
+        <source>HTTP Settings</source>
+        <target>crwdns278899:0crwdne278899:0</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings.description">
+        <source>Advanced HTTP request settings.</source>
+        <target>crwdns278901:0crwdne278901:0</target>
+      </trans-unit>
+      <trans-unit id="palette.additional">
+        <source>Additional configuration</source>
+        <target>crwdns278903:0crwdne278903:0</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description">
+        <source>Specific configuration for the selected webhook type</source>
+        <target>crwdns278905:0crwdne278905:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
