@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Sukces</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed" approved="yes">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target state="final">Nazwa zasobu "%s" została zmieniona na "%s".</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.resourceReplaced" approved="yes">
+        <source>The resource %s has been replaced.</source>
+        <target state="final">Zasób %s został zastąpiony.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Wystąpił błąd</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder" approved="yes">
+        <source>The resource must be a file or a folder.</source>
+        <target state="final">Zasób musi być plikiem lub folderem.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRead" approved="yes">
+        <source>Reading this resource is not permitted.</source>
+        <target state="final">Odczyt tego zasobu jest niedozwolony.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRename" approved="yes">
+        <source>Renaming this resource is not permitted.</source>
+        <target state="final">Zmiana nazwy tego zasobu jest niedozwolona.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" approved="yes">
+        <source>The resource name cannot be empty.</source>
+        <target state="final">Nazwa zasobu nie może być pusta.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameNotDifferent" approved="yes">
+        <source>The resource %s already has this name. No changes were made.</source>
+        <target state="final">Zasób %s ma już tę nazwę. Nie wprowadzono żadnych zmian.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotAvailableToUpload" approved="yes">
+        <source>No resource was selected to be uploaded.</source>
+        <target state="final">Nie wybrano żadnego zasobu do przesłania.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotRenamed" approved="yes">
+        <source>The resource %s could not be renamed.</source>
+        <target state="final">Nie można zmienić nazwy zasobu %s.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFound" approved="yes">
+        <source>The resource was not found.</source>
+        <target state="final">Nie znaleziono zasobu.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
