@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">Webhooks</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+        <target state="final">Управление исходящими HTTP-перехватами для внешней системы</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Configure TYPO3 webhooks to notify external systems when defined system events occur. Supports integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
+        <target state="final">Настройте вебхуки TYPO3 для отправки уведомлений во внешние системы при возникновении определенных системных событий. Поддерживается интеграция с такими платформами, как Slack, Discord, платежными системами, CRM-системами и другими.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+        <target state="final">Вебхуки — управление исходящими HTTP-вехуками</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">Вебхуки не найдены</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.message" approved="yes">
+        <source>There are currently no webhooks records found in the database.</source>
+        <target state="final">В настоящее время в базе данных нет записей о вебхуках.</target>
+      </trans-unit>
+      <trans-unit id="webhook_create" approved="yes">
+        <source>Create new webhook</source>
+        <target state="final">Создать новый вебхук</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">Веб-хуки не найдены</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no webhooks could be found.</source>
+        <target state="final">При текущем наборе фильтров вебхуки не были обнаружены.</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">Удалить все фильтры</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_implementation_class" approved="yes">
+        <source>Implementation class for webhook type "%s" is missing.</source>
+        <target state="final">Отсутствует класс реализации для типа вебхука "%s".</target>
+      </trans-unit>
+      <trans-unit id="webhook_example" approved="yes">
+        <source>Example</source>
+        <target state="final">Пример</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">Сбросить</target>
+      </trans-unit>
+      <trans-unit id="filter.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">Триггер вебхука</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">назад</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">далее</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">первая</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">последняя</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записей</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Cтраница</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete webhooks</source>
+        <target state="final">Удалить вебхуки</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
+        <target state="final">Удалить все отмеченные веб-хуки? Вы можете восстановить удалённые вебхуки из корзины TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
