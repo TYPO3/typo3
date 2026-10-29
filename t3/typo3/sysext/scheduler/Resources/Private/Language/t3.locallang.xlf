@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel">
+        <source>Cancel</source>
+        <target>crwdns61034:0crwdne61034:0</target>
+      </trans-unit>
+      <trans-unit id="button.group.modalOk">
+        <source>Create group</source>
+        <target>crwdns278753:0crwdne278753:0</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler">
+        <source>Scheduled tasks</source>
+        <target>crwdns61036:0crwdne61036:0</target>
+      </trans-unit>
+      <trans-unit id="function.check">
+        <source>Setup check</source>
+        <target>crwdns377816:0crwdne377816:0</target>
+      </trans-unit>
+      <trans-unit id="function.add">
+        <source>New task</source>
+        <target>crwdns278755:0crwdne278755:0</target>
+      </trans-unit>
+      <trans-unit id="function.group.add">
+        <source>New group</source>
+        <target>crwdns278757:0crwdne278757:0</target>
+      </trans-unit>
+      <trans-unit id="function.group.label">
+        <source>Group name</source>
+        <target>crwdns278759:0crwdne278759:0</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript">
+        <source>CLI script</source>
+        <target>crwdns61042:0crwdne61042:0</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode">
+        <source>System is running in Composer Mode</source>
+        <target>crwdns85748:0crwdne85748:0</target>
+      </trans-unit>
+      <trans-unit id="msg.composerMode">
+        <source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+                </source>
+        <target>
+					crwdns85750:0crwdne85750:0
+                </target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun">
+        <source>Last run</source>
+        <target>crwdns61044:0crwdne61044:0</target>
+      </trans-unit>
+      <trans-unit id="label.automatically">
+        <source>automatically</source>
+        <target>crwdns61046:0crwdne61046:0</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends">
+        <source>Backend types</source>
+        <target>crwdns61048:0crwdne61048:0</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays">
+        <source>Number of days until removing files</source>
+        <target>crwdns61050:0crwdne61050:0</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll">
+        <source>Check/uncheck all</source>
+        <target>crwdns61052:0crwdne61052:0</target>
+      </trans-unit>
+      <trans-unit id="label.class">
+        <source>Task</source>
+        <target>crwdns211346:0crwdne211346:0</target>
+      </trans-unit>
+      <trans-unit id="label.cron">
+        <source>Cron</source>
+        <target>crwdns61056:0crwdne61056:0</target>
+      </trans-unit>
+      <trans-unit id="label.defType">
+        <source>Definition type</source>
+        <target>crwdns61058:0crwdne61058:0</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval">
+        <source>Interval</source>
+        <target>crwdns61060:0crwdne61060:0</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron">
+        <source>Cron command</source>
+        <target>crwdns61062:0crwdne61062:0</target>
+      </trans-unit>
+      <trans-unit id="label.description">
+        <source>Description</source>
+        <target>crwdns61064:0crwdne61064:0</target>
+      </trans-unit>
+      <trans-unit id="label.email">
+        <source>Email</source>
+        <target>crwdns61066:0crwdne61066:0</target>
+      </trans-unit>
+      <trans-unit id="label.end">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target>crwdns61068:0crwdne61068:0</target>
+      </trans-unit>
+      <trans-unit id="scheduledFrom">
+        <source>Start at</source>
+        <target>crwdns371056:0crwdne371056:0</target>
+      </trans-unit>
+      <trans-unit id="scheduledUntil">
+        <source>Run periodically until</source>
+        <target>crwdns371058:0crwdne371058:0</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected">
+        <source>Execute</source>
+        <target>crwdns141977:0crwdne141977:0</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected">
+        <source>Execute on next cron job</source>
+        <target>crwdns141979:0crwdne141979:0</target>
+      </trans-unit>
+      <trans-unit id="label.frequency">
+        <source>Frequency</source>
+        <target>crwdns61076:0crwdne61076:0</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long">
+        <source>Frequency (seconds or cron command)</source>
+        <target>crwdns61078:0crwdne61078:0</target>
+      </trans-unit>
+      <trans-unit id="label.id">
+        <source>ID</source>
+        <target>crwdns61080:0crwdne61080:0</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution">
+        <source>Last Execution</source>
+        <target>crwdns61082:0crwdne61082:0</target>
+      </trans-unit>
+      <trans-unit id="label.manual">
+        <source>Manual</source>
+        <target>crwdns61084:0crwdne61084:0</target>
+      </trans-unit>
+      <trans-unit id="label.manually">
+        <source>manually</source>
+        <target>crwdns61086:0crwdne61086:0</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution">
+        <source>Next Execution</source>
+        <target>crwdns61090:0crwdne61090:0</target>
+      </trans-unit>
+      <trans-unit id="label.parallel">
+        <source>Parallel Execution</source>
+        <target>crwdns61092:0crwdne61092:0</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long">
+        <source>Allow Parallel Execution</source>
+        <target>crwdns61094:0crwdne61094:0</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime">
+        <source>Server time</source>
+        <target>crwdns61096:0crwdne61096:0</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime">
+        <source>Sleep time</source>
+        <target>crwdns61098:0crwdne61098:0</target>
+      </trans-unit>
+      <trans-unit id="label.start">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target>crwdns61100:0crwdne61100:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage">
+        <source>Storage to index</source>
+        <target>crwdns61102:0crwdne61102:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount">
+        <source>Number of files per run</source>
+        <target>crwdns61104:0crwdne61104:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors">
+        <source>Registered extractors</source>
+        <target>crwdns61106:0crwdne61106:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor">
+        <source>%1$s with priority %2$d</source>
+        <target>crwdns61108:0%1$scrwdnd61108:0%2$dcrwdne61108:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors">
+        <source>Following extractors have been registered and will be used when running this task</source>
+        <target>crwdns61110:0crwdne61110:0</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors">
+        <source>There currently is no extractor registered. This task will have no effect.</source>
+        <target>crwdns392820:0crwdne392820:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables">
+        <source>Clean all available tables</source>
+        <target>crwdns61114:0crwdne61114:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables.description">
+        <source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
+        <target>crwdns377466:0crwdne377466:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table">
+        <source>Table to clean up</source>
+        <target>crwdns61116:0crwdne61116:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable">
+        <source>Table: %s</source>
+        <target>crwdns61118:0%scrwdne61118:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables">
+        <source>All tables</source>
+        <target>crwdns61120:0crwdne61120:0</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays">
+        <source>Delete entries older than given number of days</source>
+        <target>crwdns61122:0crwdne61122:0</target>
+      </trans-unit>
+      <trans-unit id="label.optimizeDatabaseTables.selectTables">
+        <source>Database tables</source>
+        <target>crwdns61124:0crwdne61124:0</target>
+      </trans-unit>
+      <trans-unit id="label.status">
+        <source>Status</source>
+        <target>crwdns141981:0crwdne141981:0</target>
+      </trans-unit>
+      <trans-unit id="label.type">
+        <source>Type</source>
+        <target>crwdns61126:0crwdne61126:0</target>
+      </trans-unit>
+      <trans-unit id="runningType">
+        <source>Run task multiple times?</source>
+        <target>crwdns371060:0crwdne371060:0</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring">
+        <source>Recurring</source>
+        <target>crwdns61128:0crwdne61128:0</target>
+      </trans-unit>
+      <trans-unit id="label.type.single">
+        <source>Single</source>
+        <target>crwdns61130:0crwdne61130:0</target>
+      </trans-unit>
+      <trans-unit id="label.group">
+        <source>Task group</source>
+        <target>crwdns61132:0crwdne61132:0</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup">
+        <source>Not assigned to any task group</source>
+        <target>crwdns278763:0crwdne278763:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.isDisabled">
+        <source>disabled</source>
+        <target>crwdns279801:0crwdne279801:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.unused">
+        <source>Unused task groups</source>
+        <target>crwdns278767:0crwdne278767:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.tableColumn">
+        <source>Group</source>
+        <target>crwdns278769:0crwdne278769:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.enable">
+        <source>Enable group</source>
+        <target>crwdns278771:0crwdne278771:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.disable">
+        <source>Disable group</source>
+        <target>crwdns278773:0crwdne278773:0</target>
+      </trans-unit>
+      <trans-unit id="label.group.edit">
+        <source>Edit group</source>
+        <target>crwdns278775:0crwdne278775:0</target>
+      </trans-unit>
+      <trans-unit id="label.errorClass">
+        <source>Broken tasks</source>
+        <target>crwdns211350:0crwdne211350:0</target>
+      </trans-unit>
+      <trans-unit id="label.saveAndCreateNewTask">
+        <source>Save and create new task</source>
+        <target>crwdns61146:0crwdne61146:0</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand">
+        <source>Add option</source>
+        <target>crwdns85359:0crwdne85359:0</target>
+      </trans-unit>
+      <trans-unit id="label.setOptionForCommand">
+        <source>Set option</source>
+        <target>crwdns377468:0crwdne377468:0</target>
+      </trans-unit>
+      <trans-unit id="label.runOnCli">
+        <source>Run on CLI</source>
+        <target>crwdns377470:0crwdne377470:0</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
+        <target>crwdns61152:0%scrwdne61152:0</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptExecutable">
+        <source>The web server user is allowed execute this script.</source>
+        <target>crwdns355554:0crwdne355554:0</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptNotExecutable">
+        <source>The web server user is not allowed to execute this script.</source>
+        <target>crwdns355556:0crwdne355556:0</target>
+      </trans-unit>
+      <trans-unit id="msg.delete">
+        <source>Are you sure you want to delete this task?</source>
+        <target>crwdns61158:0crwdne61158:0</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError">
+        <source>The task could not be deleted.</source>
+        <target>crwdns61160:0crwdne61160:0</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess">
+        <source>The task was successfully deleted.</source>
+        <target>crwdns61162:0crwdne61162:0</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate">
+        <source>The end date is before the start date.</source>
+        <target>crwdns61164:0crwdne61164:0</target>
+      </trans-unit>
+      <trans-unit id="msg.executed">
+        <source>Task "%s" with uid "%s" has been executed.</source>
+        <target>crwdns211354:0%scrwdnd211354:0%scrwdne211354:0</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target>crwdns61168:0%1$scrwdnd61168:0%2$dcrwdne61168:0</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target>crwdns61170:0crwdne61170:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target>crwdns61174:0crwdne61174:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target>crwdns61176:0crwdne61176:0</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target>crwdns61178:0%1$scrwdnd61178:0%2$scrwdnd61178:0%3$scrwdnd61178:0%4$scrwdnd61178:0%5$scrwdne61178:0</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask">
+        <source>A running task may not be deleted.</source>
+        <target>crwdns211356:0crwdne211356:0</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask">
+        <source>A running task may not be edited.</source>
+        <target>crwdns61182:0crwdne61182:0</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target>crwdns61184:0crwdne61184:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail">
+        <source>Please enter an email address.</source>
+        <target>crwdns61186:0crwdne61186:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target>crwdns61188:0crwdne61188:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target>crwdns61190:0crwdne61190:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidRunningType">
+        <source>The selected task type must be either "single execution" or "recurring execution".</source>
+        <target>crwdns380802:0crwdne380802:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks">
+        <source>No tasks found</source>
+        <target>crwdns376732:0crwdne376732:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.createNew">
+        <source>There are currently no configured tasks found. You can create a new one.</source>
+        <target>crwdns376734:0crwdne376734:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.nonAvailable">
+        <source>There are currently no tasks available in the system to be configured.</source>
+        <target>crwdns376736:0crwdne376736:0</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted">
+        <source>Task "%s" with uid "%s" has not been executed.</source>
+        <target>crwdns211360:0%scrwdnd211360:0%scrwdne211360:0</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target>crwdns61200:0%1$scrwdnd61200:0%2$scrwdne61200:0</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulingFailed">
+        <source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+        <target>crwdns211362:0%1$scrwdnd211362:0%2$scrwdne211362:0</target>
+      </trans-unit>
+      <trans-unit id="msg.toggleDisableFailed">
+        <source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+        <target>crwdns211364:0%1$scrwdnd211364:0%2$scrwdne211364:0</target>
+      </trans-unit>
+      <trans-unit id="msg.stopTaskFailed">
+        <source>Stopping task "%1$s" failed with the following message: %2$s</source>
+        <target>crwdns211366:0%1$scrwdnd211366:0%2$scrwdne211366:0</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target>crwdns61202:0crwdne61202:0</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target>crwdns61204:0%1$dcrwdnd61204:0%2$scrwdne61204:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate">
+        <source>Please define a start date.</source>
+        <target>crwdns61206:0crwdne61206:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate">
+        <source>Start date is invalid.</source>
+        <target>crwdns61208:0crwdne61208:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate">
+        <source>End date is invalid.</source>
+        <target>crwdns61210:0crwdne61210:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidNumberOfDays">
+        <source>Number of days is invalid.</source>
+        <target>crwdns61212:0crwdne61212:0</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingCacheBackends">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target>crwdns61214:0crwdne61214:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noCacheBackendSelected">
+        <source>Please select at least one cache backend.</source>
+        <target>crwdns61216:0crwdne61216:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass">
+        <source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target><![CDATA[crwdns211368:0crwdne211368:0]]></target>
+      </trans-unit>
+      <trans-unit id="msg.errorMessage">
+        <source>Error message</source>
+        <target>crwdns211370:0crwdne211370:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.title">
+        <source>%s registered scheduler tasks can not be executed</source>
+        <target>crwdns61222:0%scrwdne61222:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.message">
+        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks.</a>]]></source>
+        <target><![CDATA[crwdns392822:0crwdne392822:0]]></target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target>crwdns61226:0crwdne61226:0</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime">
+        <source>Current server time is %s.</source>
+        <target>crwdns61228:0%scrwdne61228:0</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target>crwdns61230:0crwdne61230:0</target>
+      </trans-unit>
+      <trans-unit id="msg.stop">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target>crwdns61232:0crwdne61232:0</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError">
+        <source>The task could not be marked as non-running.</source>
+        <target>crwdns61234:0crwdne61234:0</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess">
+        <source>The task was successfully marked as non-running.</source>
+        <target>crwdns61236:0crwdne61236:0</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target>crwdns61238:0%dcrwdne61238:0</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError">
+        <source>The task could not be updated.</source>
+        <target>crwdns61242:0crwdne61242:0</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingDatabaseTables">
+        <source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+        <target>crwdns61244:0crwdne61244:0</target>
+      </trans-unit>
+      <trans-unit id="msg.noDatabaseTablesSelected">
+        <source>Please select at least one database table.</source>
+        <target>crwdns61246:0crwdne61246:0</target>
+      </trans-unit>
+      <trans-unit id="msg.unregisteredCommand">
+        <source>Command with identifier "%s" has not been registered.</source>
+        <target>crwdns61248:0%scrwdne61248:0</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingArguments">
+        <source>Error parsing current set of arguments: "%s".</source>
+        <target>crwdns85343:0%scrwdne85343:0</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingOptions">
+        <source>Error parsing current set of options: "%s".</source>
+        <target>crwdns85361:0%scrwdne85361:0</target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing">
+        <source>Argument "%s" is mandatory.</source>
+        <target>crwdns211372:0%scrwdne211372:0</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabled">
+        <source>Task "%s" with uid "%s" has been enabled.</source>
+        <target>crwdns211374:0%scrwdnd211374:0%scrwdne211374:0</target>
+      </trans-unit>
+      <trans-unit id="msg.taskDisabled">
+        <source>Task "%s" with uid "%s" has been disabled.</source>
+        <target>crwdns211376:0%scrwdnd211376:0%scrwdne211376:0</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabledAndQueuedForExecution">
+        <source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+        <target>crwdns211378:0%scrwdnd211378:0%scrwdne211378:0</target>
+      </trans-unit>
+      <trans-unit id="msg.taskQueuedForExecution">
+        <source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
+        <target>crwdns211380:0%scrwdnd211380:0%scrwdne211380:0</target>
+      </trans-unit>
+      <trans-unit id="msg.group.deleted">
+        <source>Successfully deleted scheduler group.</source>
+        <target>crwdns278777:0crwdne278777:0</target>
+      </trans-unit>
+      <trans-unit id="msg.group.delete.failed">
+        <source>Failed to delete scheduler group.</source>
+        <target>crwdns278779:0crwdne278779:0</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskType">
+        <source>Invalid Task type</source>
+        <target>crwdns376762:0crwdne376762:0</target>
+      </trans-unit>
+      <trans-unit id="msg.defaultExpirePeriod">
+        <source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
+        <target>crwdns377464:0%dcrwdnd377464:0%scrwdne377464:0</target>
+      </trans-unit>
+      <trans-unit id="none">
+        <source>None</source>
+        <target>crwdns61252:0crwdne61252:0</target>
+      </trans-unit>
+      <trans-unit id="status">
+        <source>Status</source>
+        <target>crwdns61254:0crwdne61254:0</target>
+      </trans-unit>
+      <trans-unit id="status.progress">
+        <source>Progress</source>
+        <target>crwdns61256:0crwdne61256:0</target>
+      </trans-unit>
+      <trans-unit id="status.disabled">
+        <source>disabled</source>
+        <target>crwdns61258:0crwdne61258:0</target>
+      </trans-unit>
+      <trans-unit id="status.disabledByGroup">
+        <source>disabled by group</source>
+        <target>crwdns277395:0crwdne277395:0</target>
+      </trans-unit>
+      <trans-unit id="status.failure">
+        <source>failure</source>
+        <target>crwdns61260:0crwdne61260:0</target>
+      </trans-unit>
+      <trans-unit id="status.late">
+        <source>late</source>
+        <target>crwdns61262:0crwdne61262:0</target>
+      </trans-unit>
+      <trans-unit id="status.running">
+        <source>running</source>
+        <target>crwdns61264:0crwdne61264:0</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled">
+        <source>scheduled</source>
+        <target>crwdns61266:0crwdne61266:0</target>
+      </trans-unit>
+      <trans-unit id="task">
+        <source>Task</source>
+        <target>crwdns61268:0crwdne61268:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>TYPO3 Scheduler administration module</source>
+        <target>crwdns61270:0crwdne61270:0</target>
+      </trans-unit>
+      <trans-unit id="action.run_task">
+        <source>Run task</source>
+        <target>crwdns61272:0crwdne61272:0</target>
+      </trans-unit>
+      <trans-unit id="action.run_task_cron">
+        <source>Run task on next cron job</source>
+        <target>crwdns61274:0crwdne61274:0</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name">
+        <source>Caching framework garbage collection</source>
+        <target>crwdns61284:0crwdne61284:0</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.description">
+        <source>Calls garbage collection of caching framework caches which use one of the selected backends. This will free up space in cache backends which do not have internal garbage collection. For the default database backend, this task should be run once a day when the database is most likely to be idle.</source>
+        <target>crwdns415747:0crwdne415747:0</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.name">
+        <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
+        <target>crwdns61288:0crwdne61288:0</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.description">
+        <source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+        <target>crwdns61290:0crwdne61290:0</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target>crwdns61292:0crwdne61292:0</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.description">
+        <source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
+        <target>crwdns61294:0crwdne61294:0</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target>crwdns61296:0crwdne61296:0</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.description">
+        <source>Extracts metadata for all files in storage which have been changed since last run.</source>
+        <target>crwdns61298:0crwdne61298:0</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name">
+        <source>Table garbage collection</source>
+        <target>crwdns61300:0crwdne61300:0</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.description">
+        <source>Deletes old entries from specific tables like sys_log.</source>
+        <target>crwdns415749:0crwdne415749:0</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name">
+        <source>Fileadmin garbage collection</source>
+        <target>crwdns61304:0crwdne61304:0</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.description">
+        <source>Empties all "_recycler_" folders under fileadmin. This helps free up space in the file system.</source>
+        <target>crwdns415751:0crwdne415751:0</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.name">
+        <source>Execute console commands</source>
+        <target>crwdns61308:0crwdne61308:0</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.description">
+        <source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
+        <target>crwdns61310:0crwdne61310:0</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.name">
+        <source>Optimize MySQL database tables</source>
+        <target>crwdns61312:0crwdne61312:0</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.description">
+        <source>Executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Please be aware that tables will be locked during the optimization process.</source>
+        <target>crwdns415753:0crwdne415753:0</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.name">
+        <source>Anonymize IP addresses in database tables</source>
+        <target>crwdns61316:0crwdne61316:0</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.description">
+        <source>Anonymizes the IP addresses from specific tables like sys_log to enforce the privacy of the persisted data.</source>
+        <target>crwdns415755:0crwdne415755:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table">
+        <source>Table to anonymize</source>
+        <target>crwdns211382:0crwdne211382:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationTable">
+        <source>Table: %s after %s days</source>
+        <target>crwdns61322:0%scrwdnd61322:0%scrwdne61322:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables">
+        <source>All tables</source>
+        <target>crwdns61324:0crwdne61324:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.numberOfDays">
+        <source>Handle entries older than given number of days</source>
+        <target>crwdns61326:0crwdne61326:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask">
+        <source>Mask level</source>
+        <target>crwdns61328:0crwdne61328:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.1">
+        <source>Last byte for IPv4 / Interface ID for IPv6</source>
+        <target>crwdns61330:0crwdne61330:0</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.2">
+        <source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+        <target>crwdns61332:0crwdne61332:0</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration">
+        <source>Command configuration</source>
+        <target>crwdns377472:0crwdne377472:0</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration.description">
+        <source>Configure available arguments and options for the command.</source>
+        <target>crwdns377474:0crwdne377474:0</target>
+      </trans-unit>
+      <trans-unit id="command.example1">
+        <source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
+        <target>crwdns95882:0crwdne95882:0</target>
+      </trans-unit>
+      <trans-unit id="command.example2">
+        <source>Every 2 hours</source>
+        <target>crwdns61336:0crwdne61336:0</target>
+      </trans-unit>
+      <trans-unit id="command.example3">
+        <source>Every 20 minutes</source>
+        <target>crwdns61338:0crwdne61338:0</target>
+      </trans-unit>
+      <trans-unit id="command.example4">
+        <source>Every Tuesday at 07:00</source>
+        <target>crwdns61340:0crwdne61340:0</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.noLastRun">
+        <source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+        <target><![CDATA[crwdns61342:0%1$scrwdne61342:0]]></target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel">
+        <source>Last Scheduler run</source>
+        <target>crwdns61344:0crwdne61344:0</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunValue">
+        <source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+        <target>crwdns61346:0%1$scrwdnd61346:0%2$scrwdnd61346:0%3$scrwdnd61346:0%4$scrwdne61346:0</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.title">
+        <source>Error</source>
+        <target>crwdns278781:0crwdne278781:0</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.message">
+        <source>Could not create group</source>
+        <target>crwdns278783:0crwdne278783:0</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.input.field.label">
+        <source>Enter a group name</source>
+        <target>crwdns297540:0crwdne297540:0</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.button.edit.label">
+        <source>Edit group name</source>
+        <target>crwdns297542:0crwdne297542:0</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.placeholder">
+        <source>Search for any kind of tasks</source>
+        <target>crwdns376696:0crwdne376696:0</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.noResults">
+        <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+        <target>crwdns376698:0crwdne376698:0</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+      <trans-unit id="delete_group">
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+        <target>crwdns391418:0crwdne391418:0</target>
+      </trans-unit>
+      <trans-unit id="delete_task">
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+        <target>crwdns391420:0crwdne391420:0</target>
+      </trans-unit>
+      <trans-unit id="task.count">
+        <source>{count, plural, one {# task} other {# tasks}}</source>
+        <target>crwdns393946:0count={count}crwdne393946:0</target>
+      </trans-unit>
+      <trans-unit id="unusedGroups.count">
+        <source>{count, plural, one {# unused task group} other {# unused task groups}}</source>
+        <target>crwdns393948:0count={count}crwdne393948:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
