@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">ワークスペース</target>
+      </trans-unit>
+      <trans-unit id="noResults" approved="yes">
+        <source>No records found.</source>
+        <target state="final">レコードはありません。</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">動作を選択してください</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">ステージ動作を選択してください</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>item</source>
+        <target state="final">項目</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">項目</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">表示するレコード</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">レビューと公開</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">ワークスペースリスト</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">次のステージへ送る</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">ライブへ公開</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">閉じる</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">%d のエレメントを処理済み</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">初期化</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">全体のワークスペースを公開してもよろしいでしょうか？</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">ワークスペース</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">一括操作を開始する準備</target>
+      </trans-unit>
+      <trans-unit id="window.version.published" approved="yes">
+        <source>Published version</source>
+        <target state="final">公開済バージョン</target>
+      </trans-unit>
+      <trans-unit id="window.version.staged" approved="yes">
+        <source>Staged version</source>
+        <target state="final">ステージングバージョン</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" approved="yes">
+        <source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</source>
+        <target state="final">使用されるステージは無効で、使用できません。 これを修正するために、インストールツールの更新ウィザードを使用することを検討してください。</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">すべて選択</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">すべて選択解除</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">コメント</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">コメント</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">履歴</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">破棄する</target>
+      </trans-unit>
+      <trans-unit id="window.integrity_warning.title" approved="yes">
+        <source>Integrity Warning</source>
+        <target state="final">整合性警告</target>
+      </trans-unit>
+      <trans-unit id="status.has_changes" approved="yes">
+        <source>Record was changed in this workspace</source>
+        <target state="final">このワークスペースでレコードが変更されました</target>
+      </trans-unit>
+      <trans-unit id="status.contains_changes" approved="yes">
+        <source>Record contains version records</source>
+        <target state="final">レコードにバージョンレコードが含まれています</target>
+      </trans-unit>
+      <trans-unit id="status.is_new" approved="yes">
+        <source>Record was created in this workspace</source>
+        <target state="final">このワークスペースでレコードが変更されました</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Selected workspace</source>
+        <target state="final">選択されたワークスペース</target>
+      </trans-unit>
+      <trans-unit id="action.switchToWorkspace" approved="yes">
+        <source>Switch to workspace</source>
+        <target state="final">ワークスペースを切り替える</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
