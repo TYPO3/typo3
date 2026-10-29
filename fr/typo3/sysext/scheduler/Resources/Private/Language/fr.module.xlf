@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="scheduler" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>TYPO3 Scheduler</source>
+        <target state="final">Planificateur TYPO3</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.</source>
+        <target state="final">Module d'administration du planificateur. Vérifiez toutes les tâches enregistrées. Ajoutez, modifiez ou supprimez des tâches.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Scheduler</source>
+        <target state="final">Planificateur</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
