@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">IR</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">ARBA</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">NE</target>
+      </trans-unit>
+      <trans-unit id="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Paieškos forma</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="form.extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">Išplėstinė santrauka</target>
+      </trans-unit>
+      <trans-unit id="form.atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">vienu metu</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">Rikiuoti pagal</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">Iš skyriaus</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">Atitikimas</target>
+      </trans-unit>
+      <trans-unit id="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">Stilius</target>
+      </trans-unit>
+      <trans-unit id="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Pridėti prie esamų paieškos žodžių</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Įprasta paieška</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Išplėstinė paieška</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Tikslus žodis</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Žodžio dalis</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Žodžio pradžia</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Žodžio pabaiga</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Sakinys</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Visi žodžiai (IR)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Bet kuris žodis (ARBA)</target>
+      </trans-unit>
+      <trans-unit id="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Visa svetainė</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Tik šis puslapis</target>
+      </trans-unit>
+      <trans-unit id="sections.-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Viršus + 1 lygis</target>
+      </trans-unit>
+      <trans-unit id="sections.-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">2 lygis ir žemiau</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">1 lygis</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Visi 1 lygio puslapiai</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">– 2 lygis</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">– Visi 2 lygio puslapiai</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Vidiniai puslapiai</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Visa medija</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Visa išorinė medija</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Viskas, mišriai</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Viskas, pagal kategorijas</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Puslapiai</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Mišrios kategorijos</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Svetainės puslapiai</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Svoris / dažnis</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Dažnis</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Arčiau viršaus</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Žodžių skaičius</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Modifikavimo data</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Dokumento pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Sukūrimo data</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending" approved="yes">
+        <source>Highest first</source>
+        <target state="final">Didžiausi pirmiausia</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">Mažiausi pirmiausia</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Skyriaus hierarchija</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Plokščias sąrašas</target>
+      </trans-unit>
+      <trans-unit id="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">puslapis</target>
+      </trans-unit>
+      <trans-unit id="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">puslapiai</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Kita</target>
+      </trans-unit>
+      <trans-unit id="result.otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">Kiti atitinkantys puslapiai tame pačiame dokumente</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target state="final">INFORMACIJA: Taip pat buvo indeksuotas dar vienas puslapis. Greičiausiai indeksuotas su kita naudotojų grupe arba be jos.</target>
+      </trans-unit>
+      <trans-unit id="result.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Kelias</target>
+      </trans-unit>
+      <trans-unit id="result.modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">Modifikuota</target>
+      </trans-unit>
+      <trans-unit id="result.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Sukurta</target>
+      </trans-unit>
+      <trans-unit id="result.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="result.noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Pastaba: šis paieškos rezultatas gali netiksliai atitikti šio puslapio turinį. Puslapio santrauka negali būti rodoma.</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Reikalinga narystė grupėse: %s</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches" approved="yes">
+        <source>matches</source>
+        <target state="final">atitikimai</target>
+      </trans-unit>
+      <trans-unit id="result.noResult" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Rezultatų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="result.inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">skyriuje</target>
+      </trans-unit>
+      <trans-unit id="result.inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">%s skyriuje</target>
+      </trans-unit>
+      <trans-unit id="result.inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">%s skyriuose</target>
+      </trans-unit>
+      <trans-unit id="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or" approved="yes">
+        <source>or</source>
+        <target state="final">arba</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and" approved="yes">
+        <source>and</source>
+        <target state="final">ir</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot" approved="yes">
+        <source>but not</source>
+        <target state="final">bet ne</target>
+      </trans-unit>
+      <trans-unit id="displayResults.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Ankstesnis</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Puslapis</target>
+      </trans-unit>
+      <trans-unit id="displayResults.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Kitas</target>
+      </trans-unit>
+      <trans-unit id="displayResults" approved="yes">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target state="final"><![CDATA[Rodomi rezultatai <strong>%1$s–%2$s</strong> iš <strong>%3$s</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general" approved="yes">
+        <source>General statistics</source>
+        <target state="final">Bendroji statistika</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages" approved="yes">
+        <source>List of indexed pages</source>
+        <target state="final">Indeksuotų puslapių sąrašas</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.externalDocuments" approved="yes">
+        <source>List of indexed external documents</source>
+        <target state="final">Indeksuotų išorinių dokumentų sąrašas</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic" approved="yes">
+        <source>Search statistics</source>
+        <target state="final">Paieškos statistika</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic" approved="yes">
+        <source>Detailed statistics</source>
+        <target state="final">Išsami statistika</target>
+      </trans-unit>
+      <trans-unit id="administration.externalDocuments.headline" approved="yes">
+        <source>List of indexed external documents</source>
+        <target state="final">Indeksuotų išorinių dokumentų sąrašas</target>
+      </trans-unit>
+      <trans-unit id="administration.index.headline" approved="yes">
+        <source>General statistics</source>
+        <target state="final">Bendroji statistika</target>
+      </trans-unit>
+      <trans-unit id="administration.pages.headline" approved="yes">
+        <source>List of indexed pages</source>
+        <target state="final">Indeksuotų puslapių sąrašas</target>
+      </trans-unit>
+      <trans-unit id="administration.statistic.headline" approved="yes">
+        <source>Detailed statistics</source>
+        <target state="final">Išsami statistika</target>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headline" approved="yes">
+        <source>Details for a single result row</source>
+        <target state="final">Vienos rezultato eilutės informacija</target>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headlineWithItemTitle" approved="yes">
+        <source>Details for single result row "%s"</source>
+        <target state="final">Vienos rezultato eilutės „%s“ informacija</target>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headline" approved="yes">
+        <source>Detail view of a single word</source>
+        <target state="final">Vieno žodžio išsamus vaizdas</target>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headlineWithWordTitle" approved="yes">
+        <source>Detail view of single word "%s"</source>
+        <target state="final">Žodžio „%s“ išsamus vaizdas</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header" approved="yes">
+        <source>Row count by database table</source>
+        <target state="final">Įrašų skaičius pagal duomenų bazės lentelę</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Kiekis</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes" approved="yes">
+        <source>Hash Header Types</source>
+        <target state="final">Hash antraščių tipai</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count" approved="yes">
+        <source>Count / Unique count</source>
+        <target state="final">Kiekis / unikalių kiekis</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word" approved="yes">
+        <source>Word</source>
+        <target state="final">Žodis</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title" approved="yes">
+        <source>List of most searched words</source>
+        <target state="final">Dažniausiai ieškomų žodžių sąrašas</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description" approved="yes">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target state="final">Statistika visiems puslapiams. Pasirinkite puslapį su indeksuota paieškos forma, kad matytumėte kelias statistikas.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all" approved="yes">
+        <source>All</source>
+        <target state="final">Visi</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days" approved="yes">
+        <source>Last 30 days</source>
+        <target state="final">Paskutinės 30 dienų</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Paskutinės 24 valandos</target>
+      </trans-unit>
+      <trans-unit id="field.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Puslapio pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">Failo pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize" approved="yes">
+        <source>Filesize</source>
+        <target state="final">Failo dydis</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount" approved="yes">
+        <source>Word count</source>
+        <target state="final">Žodžių skaičius</target>
+      </trans-unit>
+      <trans-unit id="field.words" approved="yes">
+        <source>Words</source>
+        <target state="final">Žodžiai</target>
+      </trans-unit>
+      <trans-unit id="field.mtime" approved="yes">
+        <source>Modification time</source>
+        <target state="final">Modifikavimo laikas</target>
+      </trans-unit>
+      <trans-unit id="field.indexed" approved="yes">
+        <source>Indexed</source>
+        <target state="final">Indeksuota</target>
+      </trans-unit>
+      <trans-unit id="field.updated" approved="yes">
+        <source>Updated</source>
+        <target state="final">Atnaujinta</target>
+      </trans-unit>
+      <trans-unit id="field.parseTime" approved="yes">
+        <source>Parsetime [ms]</source>
+        <target state="final">Apdorojimo laikas [ms]</target>
+      </trans-unit>
+      <trans-unit id="field.groups" approved="yes">
+        <source>#sec/gr/full</source>
+        <target state="final">#sek/gr/pilna</target>
+      </trans-unit>
+      <trans-unit id="field.sub" approved="yes">
+        <source>Sub</source>
+        <target state="final">Sub</target>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments" approved="yes">
+        <source>Static Page Arguments</source>
+        <target state="final">Statinio puslapio argumentai</target>
+      </trans-unit>
+      <trans-unit id="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Kiekis</target>
+      </trans-unit>
+      <trans-unit id="field.first" approved="yes">
+        <source>First</source>
+        <target state="final">Pirmas</target>
+      </trans-unit>
+      <trans-unit id="field.pHash" approved="yes">
+        <source>PageHash</source>
+        <target state="final">PageHash</target>
+      </trans-unit>
+      <trans-unit id="field.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Kelias</target>
+      </trans-unit>
+      <trans-unit id="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">Puslapio ID</target>
+      </trans-unit>
+      <trans-unit id="field.uniqueId" approved="yes">
+        <source>Uid</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipas</target>
+      </trans-unit>
+      <trans-unit id="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Kalba</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Dažnis</target>
+      </trans-unit>
+      <trans-unit id="field.flag" approved="yes">
+        <source>Flag</source>
+        <target state="final">Žyma</target>
+      </trans-unit>
+      <trans-unit id="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Turinys</target>
+      </trans-unit>
+      <trans-unit id="administration.notIndexed" approved="yes">
+        <source>Not indexed</source>
+        <target state="final">Neindeksuota</target>
+      </trans-unit>
+      <trans-unit id="administration.document.words" approved="yes">
+        <source>Words found on this page</source>
+        <target state="final">Šiame puslapyje rasti žodžiai</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords" approved="yes">
+        <source>Stopwords</source>
+        <target state="final">Stop žodžiai</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save" approved="yes">
+        <source>Save stopwords</source>
+        <target state="final">Išsaugoti stop žodžius</target>
+      </trans-unit>
+      <trans-unit id="administration.word" approved="yes">
+        <source>Word</source>
+        <target state="final">Žodis</target>
+      </trans-unit>
+      <trans-unit id="administration.words" approved="yes">
+        <source>Words</source>
+        <target state="final">Žodžiai</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords" approved="yes">
+        <source>Section records for this phash</source>
+        <target state="final">Šio phash skyriaus įrašai</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Apžvalga</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content" approved="yes">
+        <source>Words and content</source>
+        <target state="final">Žodžiai ir turinys</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader" approved="yes">
+        <source>Phash row content</source>
+        <target state="final">Phash eilutės turinys</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry" approved="yes">
+        <source>Remove entry</source>
+        <target state="final">Pašalinti įrašą</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries" approved="yes">
+        <source>Remove all listed entries</source>
+        <target state="final">Pašalinti visus išvardytus įrašus</target>
+      </trans-unit>
+      <trans-unit id="administration.back" approved="yes">
+        <source>Back</source>
+        <target state="final">Atgal</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Režimas</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Gylis</target>
+      </trans-unit>
+      <trans-unit id="administration.btn.details.title" approved="yes">
+        <source>Show details</source>
+        <target state="final">Rodyti išsamią informaciją</target>
+      </trans-unit>
+      <trans-unit id="administration.noPageSelected" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">Pasirinkite puslapį puslapių medyje.</target>
+      </trans-unit>
+      <trans-unit id="administration.noRecords" approved="yes">
+        <source>No records found.</source>
+        <target state="final">Įrašų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="administration.noResult" approved="yes">
+        <source>No result found.</source>
+        <target state="final">Rezultatų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="administration.noResultForPage" approved="yes">
+        <source>No result for the selected page found.</source>
+        <target state="final">Pasirinktam puslapiui rezultatų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript" approved="yes">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+        <target state="final">Klaida: patikrinkite, ar įtrauktas Indexed Search įskiepio TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.32" approved="yes">
+        <source>description</source>
+        <target state="final">aprašymas</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.64" approved="yes">
+        <source>keyword</source>
+        <target state="final">raktažodis</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.128" approved="yes">
+        <source>title</source>
+        <target state="final">pavadinimas</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
