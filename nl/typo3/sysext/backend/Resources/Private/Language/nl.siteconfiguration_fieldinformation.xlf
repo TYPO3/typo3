@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">Er moet een pagina zijn met een sitebasisvlag.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">Deze naam wordt gebruikt om een configuratiefolder te maken. Denk aan de aanbevelingen voor namen van folders (alleen a-z,0-9,_,-) en maak het uniek.</target>
+      </trans-unit>
+      <trans-unit id="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating full URLs</source>
+        <target state="final">Hoofd-URL om de frontend in de standaardtaal aan te roepen. Kan https://www.voorbeeld.nl/ zijn of gewoon /. Als het slechts een / is, kunt u er niet op vertrouwen dat TYPO3 volledige URL's maakt</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" approved="yes">
+        <source>The title of the website is used for the title tag in the frontend</source>
+        <target state="final">De titel van de website wordt gebruikt voor de title tag in de frontend</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">Hiermee zijn varianten van de site basis te specificeren. Kan gebruikt worden als er een verschillend domein voor de ontwikkelomgeving is.</target>
+      </trans-unit>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Site sets ship parts of site configuration as composable pieces. Sets deliver Settings, TypoScript, and Page TSConfig for the scope of this site.</source>
+        <target state="final">Site sets verpakken delen van de site-configuratie als samenstelbare stukken. Sets leveren instellingen, TypoScript en Page TSConfig voor deze site.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">Gebruik een volledig domein "https://www.mydomain.nl/" of "/nl/". Gebruik "/" om de hoofd-URL te houden voor de standaardtaal. Voeg taalspecifieke achtervoegsels toe om te gebruiken of configureer complete URL's voor onafhankelijke domeinen.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">Gebruikt voor taalafhankelijke datum- en geldformaten. Bijv. "nl_NL" of "en_US.UTF8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Optional, used for "hreflang" attributes - if empty, the information is retrieved from the locale</source>
+        <target state="final">Optioneel, gebruikt voor "hreflang" attributen - als dit leeg is, wordt de informatie gehaald uit de "locale"</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" approved="yes">
+        <source>With this language based Website title, you can override the Website title for this language</source>
+        <target state="final">Met deze taalafhankelijke titel van de website, kan de titel van de website voor deze taal overschreven worden</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">Gebruikt in taalmenu's</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">Zorg ervoor dat minstens 0 (niet anders gedefinieerd) geconfigureerd is om hulpvaardige foutmeldingen te tonen aan bezoekers.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">Pad naar het fluid-sjabloonbestand met een absoluut of relatief pad (vanaf site root) of door te verwijzen naar het sjabloonbestand in een extensie met een "EXT:"-voorvoegsel.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">Volledige naam van klasse die de PageErrorHandlerInterface implementeert.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">Bijvoorbeeld "https://staging.domein.tld" of "http://www.domein.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">Uitdrukking die overeenkomt met de basisvariant.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
