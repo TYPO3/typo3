@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="reactions" approved="yes">
+        <source>Reactions</source>
+        <target state="final">Réactions</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction" approved="yes">
+        <source>System Reactions</source>
+        <target state="final">Réactions système</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name.description" approved="yes">
+        <source>Meaningful name of the reaction</source>
+        <target state="final">Nom significatif de la réaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifiant</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier.description" approved="yes">
+        <source>This is your unique reaction identifier within the TYPO3 URL</source>
+        <target state="final">Ceci est votre identifiant unique de réaction dans l'URL TYPO3</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">Secret</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.description" approved="yes">
+        <source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
+        <target state="final">Le secret est requis pour appeler la réaction depuis l'extérieur. Le secret peut être recréé à tout moment, mais ne sera visible qu'une seule fois (jusqu'à ce que la réaction soit enregistrée).</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.passwordGenerator" approved="yes">
+        <source>Generate secret token</source>
+        <target state="final">Générer un jeton secret</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type" approved="yes">
+        <source>Reaction Type</source>
+        <target state="final">Type de réaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reactions.reaction_type.description" approved="yes">
+        <source>Select the reaction type to be configured.</source>
+        <target state="final">Sélectionnez le type de réaction à configurer.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.select" approved="yes">
+        <source>Select a reaction</source>
+        <target state="final">Sélectionnez une réaction</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.create_record" approved="yes">
+        <source>Create database record</source>
+        <target state="final">Créer un enregistrement</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user" approved="yes">
+        <source>Impersonate User</source>
+        <target state="final">Compte backend utilisé</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user.description" approved="yes">
+        <source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
+        <target state="final">Sélectionnez l'utilisateur avec les droits d'accès appropriés, autorisant à ajouter un enregistrement de ce type. En cas de doute, utilisez l'utilisateur CLI.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name" approved="yes">
+        <source>Table</source>
+        <target state="final">Table</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.description" approved="yes">
+        <source>Select one tables to display the corresponding fields.</source>
+        <target state="final">Sélectionnez une table pour afficher les champs correspondants.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.select" approved="yes">
+        <source>Select a table</source>
+        <target state="final">Sélectionnez une table</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">PID de stockage</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">Sélectionnez la page sur laquelle le nouvel enregistrement sera créé.</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields" approved="yes">
+        <source>Fields</source>
+        <target state="final">Champs</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the reaction.</source>
+        <target state="final">Configuration générale de la réaction.</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">Configuration additionnelle</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected reaction type</source>
+        <target state="final">Configuration spécifique pour le type de réaction sélectionné</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.noFields" approved="yes">
+        <source>The selected table '%s' does not define any valid fields to be configured.</source>
+        <target state="final">La table sélectionnée '%s' ne définit aucun champ valide à configurer.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
