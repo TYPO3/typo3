@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: Specify the directory containing the "pdftotext" and "pdfinfo" applications used to extract content from PDF files. Leave empty if not available.</source>
+        <target state="final">PDF पार्सर्स का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें PDF फ़ाइलों से सामग्री निकालने के लिए उपयोग किए जाने वाले "pdftotext" और "pdfinfo" एप्लिकेशन मौजूद हैं। यदि उपलब्ध न हों, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF Parsing Mode: Define how PDF files are split during indexing. "0" indexes the entire file at once. A positive value sets the number of pages per batch (e.g. "5" → pages 1–5, 6–10, …). A negative value sets the number of groups (e.g. "-3" → file split into 3 groups). Allowed range: -100 to 100.</source>
+        <target state="final">PDF Parsing Mode: यह तय करता है कि इंडेक्सिंग के दौरान PDF फ़ाइलों को कैसे बांटा जाएगा। "0" पूरी फ़ाइल को एक ही बार में इंडेक्स करता है। कोई पॉज़िटिव मान प्रति बैच पेजों की संख्या तय करता है (जैसे "5" → पेज 1–5, 6–10, …)। कोई नेगेटिव मान ग्रुपों की संख्या तय करता है (जैसे "-3" → फ़ाइल 3 ग्रुपों में बांटी जाएगी)। अनुमत सीमा: -100 से 100।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: Specify the directory containing the "unzip" application used to extract content from OpenOffice.org/Oasis OpenDocument files. Leave empty if not available.</source>
+        <target state="final">Unzip करने का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें OpenOffice.org/Oasis OpenDocument फ़ाइलों से कंटेंट निकालने के लिए उपयोग किया जाने वाला "unzip" एप्लिकेशन मौजूद है। यदि उपलब्ध न हो, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: Specify the directory containing the "catdoc" application used to extract content from MS WORD files. Leave empty if not available.</source>
+        <target state="final">WORD पार्सर का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें MS WORD फ़ाइलों से कंटेंट निकालने के लिए उपयोग किया जाने वाला "catdoc" एप्लिकेशन मौजूद है। यदि उपलब्ध न हो, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: Specify the directory containing the "xlhtml" application used to extract content from MS EXCEL files. Leave empty if not available.</source>
+        <target state="final">EXCEL पार्सर का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें MS EXCEL फ़ाइलों से कंटेंट निकालने के लिए उपयोग किया जाने वाला "xlhtml" एप्लिकेशन मौजूद है। यदि उपलब्ध न हो, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: Specify the directory containing the "ppthtml" application used to extract content from MS POWERPOINT files. Leave empty if not available.</source>
+        <target state="final">POWERPOINT पार्सर का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें MS POWERPOINT फ़ाइलों से कंटेंट निकालने के लिए उपयोग किया जाने वाला "ppthtml" एप्लिकेशन मौजूद है। यदि उपलब्ध न हो, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: Specify the directory containing the "unrtf" application used to extract content from RTF files. Leave empty if not available.</source>
+        <target state="final">RTF पार्सर का पाथ: उस डायरेक्टरी को निर्दिष्ट करें जिसमें RTF फ़ाइलों से कंटेंट निकालने के लिए उपयोग किया जाने वाला "unrtf" एप्लिकेशन मौजूद है। यदि उपलब्ध न हो, तो इसे खाली छोड़ दें।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: Limit the amount of full-text data stored (in bytes). Lower values reduce database usage but also restrict sentence-level searching and the length of search result excerpts.</source>
+        <target state="final">पूर्ण-टेक्स्ट डेटा की लंबाई: संग्रहीत पूर्ण-टेक्स्ट डेटा की मात्रा (बाइट्स में) को सीमित करें। कम मान डेटाबेस के उपयोग को कम करते हैं, लेकिन साथ ही वाक्य-स्तर की खोज और खोज परिणामों के अंशों की लंबाई को भी सीमित कर देते हैं।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: Prevent pages from being indexed during frontend access. Indexing is then performed only by the backend page crawler.</source>
+        <target state="final">Frontend में Indexing को Disable करें: Frontend एक्सेस के दौरान पेजों को Index होने से रोकें। इसके बाद Indexing केवल Backend पेज Crawler द्वारा ही की जाती है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for Indexed Page: Set the minimum time (in hours) that must pass before an indexed page is eligible for re-indexing, regardless of page changes.</source>
+        <target state="final">इंडेक्स किए गए पेज के लिए Min TTL (घंटे): वह न्यूनतम समय (घंटों में) सेट करें, जो इंडेक्स किए गए किसी पेज के री-इंडेक्सिंग के लिए योग्य होने से पहले बीत जाना चाहिए—भले ही पेज में कोई बदलाव हुआ हो या न हुआ हो।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max External Files to Index: Limit how many external files found on a page are indexed. This helps prevent excessive server load but may leave some documents unindexed.</source>
+        <target state="final">इंडेक्स करने के लिए अधिकतम बाहरी फ़ाइलें: किसी पेज पर मिली कितनी बाहरी फ़ाइलों को इंडेक्स किया जाए, इसकी सीमा तय करें। इससे सर्वर पर ज़्यादा लोड पड़ने से बचने में मदद मिलती है, लेकिन हो सकता है कि कुछ डॉक्यूमेंट इंडेक्स न हो पाएं।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
+        <target state="final">फ़्लैग्स के लिए बिटमास्क (एडवांस्ड): इंडेक्सिंग के दौरान HTML मेटाडेटा का वेटेज तय करें (वैल्यू रेंज: 0–255)। &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32। इन फ़ील्ड्स को कोई अतिरिक्त वेटेज न देने के लिए इसे 0 पर सेट करें। डिफ़ॉल्ट 192 सर्च रिज़ल्ट्स में टाइटल और कीवर्ड्स को प्राथमिकता देता है।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <target state="final">एक्सटेंशन को अनदेखा करें: फ़ाइल एक्सटेंशन की एक कॉमा-सेपरेटेड सूची निर्दिष्ट करें, जिन्हें बाहरी पार्सर को अनदेखा करना चाहिए, भले ही वे समर्थित हों।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
+        <target state="final">बाहरी HTML URL इंडेक्स करें: जब लक्ष्य कंटेंट प्रकार "text/html" हो, तो बाहरी लिंक की इंडेक्सिंग सक्षम करें।।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Enable MySQL specific fulltext search: After toggling this flag the database schema should be updated using System → Maintenance →  Analyze Database Structure.</source>
+        <target state="final">MySQL-विशिष्ट Fulltext Search सक्षम करें: इस फ़्लैग को टॉगल करने के बाद, System → Maintenance → Analyze Database Structure का उपयोग करके डेटाबेस स्कीमा को अपडेट किया जाना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.deleteFromIndexAfterEditing" approved="yes">
+        <source>Remove content from index if page or its content is edited</source>
+        <target state="final">यदि पृष्ठ या उसकी सामग्री संपादित की गई है तो अनुक्रमणिका से सामग्री हटाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
