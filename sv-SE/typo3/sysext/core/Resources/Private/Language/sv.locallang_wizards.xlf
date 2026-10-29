@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Små fält</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Lägg till kolumn till höger</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Ta bort kolumn</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Lägg till rad nedanför</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Ta bort rad</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Flytta till vänster</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Flytta till höger</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Flytta upp</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Flytta ner</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Flytta högst upp</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Flytt längst ner</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Flytta till första kolumn</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Flytta till sista kolumn</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Ta bort kolumn</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Ta bort rad</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
