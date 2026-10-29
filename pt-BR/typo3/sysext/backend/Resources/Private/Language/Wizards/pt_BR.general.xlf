@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="pt-BR">
+    <header/>
+    <body>
+      <!-- Step: Confirmation -->
+      <!-- Step: Finisher -->
+    </body>
+  </file>
+</xliff>
