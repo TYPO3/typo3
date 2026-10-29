@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Макет 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Макет 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Макет 3</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">Ліворуч</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Звичайний</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Праворуч</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Контур</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">Не використовується</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ім'я (не видиме в інтерфейсі)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ім'я (не видиме в інтерфейсі)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Ім'я (не видиме в інтерфейсі)</target>
+      </trans-unit>
+      <trans-unit id="header.description.ALT" approved="yes">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target state="final">Назва не буде відображатись як заголовок над елементом, але буде використано як посилання в меню.</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">Центр</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Праворуч</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">Ліворуч</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Макет 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Макет 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Макет 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">Макет 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">Макет 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Приховано</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">Тип маркерів</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">Невпорядкований список (маркери)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">Упорядкований список (числа)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">Список визначень</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">Вгорі, по центру</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">Вгорі, праворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">Вгорі, ліворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">Знизу, по центру</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">Знизу, праворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">Знизу, ліворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">В тексті, праворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">В тексті, ліворуч</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">Біля тексту, Справа</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">Біля тексту, Зліва</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Додати зображення</target>
+      </trans-unit>
+      <trans-unit id="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Стовпці</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Авто</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 рівнів (тільки вибрана сторінка)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 рівень</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 рівні</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 рівні</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 рівні</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Необмежено</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Файли</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Вибрати одинарні файли</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Додати файл</target>
+      </trans-unit>
+      <trans-unit id="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">Файл</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">Вибраний файл медіа</target>
+      </trans-unit>
+      <trans-unit id="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Колекції файлів</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">Сортувати список файлів</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">без сортування</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">за розширенням файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">за назвою файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">за типом файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">за розміром файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">за датою створення файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">за датою зміни файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">через заголовок метаданих файлу</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">Напрямок сортування</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">За зростанням (типово)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">За спаданням</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Цільовий</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Нове вікно</target>
+      </trans-unit>
+      <trans-unit id="records" approved="yes">
+        <source>Items</source>
+        <target state="final">Елементи</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">Жоден</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">Дуже маленький</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">Маленький</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">Середній</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">Великий</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">Дуже великий</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Лінійка перед</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Лінійка після</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">Відступ</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">Відступ, 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">Відступ, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">Без рамки</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Опції плагіна</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">Вибрані категорії</target>
+      </trans-unit>
+      <trans-unit id="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">Поле категорії</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Вибрані сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Запис сторінки сховища</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Текст</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Медіа</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Плагін</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Дата публікації</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Дійсний до</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Права доступу до групи користувачів</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Список з пунктами</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML код</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">Вміст таблиці</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Зовнішній вигляд</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Поведінка</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Зображення</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширено</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Доступність</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Текст &amp; Медіа</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Короткі описи</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Меню підсторінок вибраних сторінок, включаючи анотації</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Категоризований вміст</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">Елементи вмісту для вибраних категорій</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Категоризовані сторінки</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Сторінки для вибраних категорій</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Сторінки</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Меню вибраних сторінок</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Підсторінки</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Меню підсторінок вибраних сторінок</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Нещодавно оновлені сторінки</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Пов'язані сторінки</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">Індекс розділу</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Індекс підсторінок розділу з вибраних сторінок</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Меню підсторінок вибраних сторінок, включаючи розділи</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Карта сайту</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Карти сайту вибраних сторінок</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
