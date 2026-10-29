@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/site_settings.xlf" date="2026-11-10T13:37:37Z" product-name="site_settings" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Site settings</source>
+        <target state="final">Website-Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module allows you to configure site settings.</source>
+        <target state="final">Mit diesem Modul kannst du die Website-Einstellungen konfigurieren.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Settings</source>
+        <target state="final">Einstellungen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
