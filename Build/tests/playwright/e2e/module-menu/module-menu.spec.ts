@@ -22,6 +22,21 @@ test.describe('Module Menu', () => {
     await expect(firstSubItem).toBeVisible();
   });
 
+  test('double-clicking a module menu group keeps its state in sync', async ({ page }) => {
+    const contentToggle = page.locator(contentToggleSelector);
+    const firstSubItem = page.locator(contentSubItemsSelector).first();
+
+    await expect(firstSubItem).toBeVisible();
+
+    await contentToggle.dblclick();
+    await expect(firstSubItem).not.toBeVisible();
+    await expect(contentToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await contentToggle.click();
+    await expect(firstSubItem).toBeVisible();
+    await expect(contentToggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
   test('selecting a module highlights it', async ({ page, backend }) => {
     const subItemsCount = await page.locator(contentSubItemsSelector).count();
     expect(subItemsCount).toBeGreaterThanOrEqual(2);
