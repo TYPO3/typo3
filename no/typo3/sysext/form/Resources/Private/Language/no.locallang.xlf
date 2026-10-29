@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="form_new_wizard_title" approved="yes">
+        <source>Form</source>
+        <target state="final">Skjema</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530347" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">Ingen fil ble lastet opp.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530348" approved="yes">
+        <source>Upload failed.</source>
+        <target state="final">Opplasting feilet.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
