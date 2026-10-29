@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="is_offline">
+      <segment state="initial">
+        <source>offline</source>
+        <target>crwdns384250:0crwdne384250:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
