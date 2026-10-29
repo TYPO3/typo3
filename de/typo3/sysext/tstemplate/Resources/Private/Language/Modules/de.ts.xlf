@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/Modules/ts.xlf" date="2026-11-10T13:37:37Z" product-name="ts" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>TypoScript tools</source>
+        <target state="final">TypoScript-Tools</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Here you manage the TypoScript records which are in charge of the look of your website on the frontend. The module provides specialized features like a TypoScript tree, a constant editor and raw editing facilities.</source>
+        <target state="final">Hier verwaltest du die TypoScript-Datensätze, die für das Erscheinungsbild deiner Website im Frontend verantwortlich ist. Das Modul bietet spezielle Funktionen wie einen TypoScript-Baum, einen Konstanten-Editor und Rohbearbeitungsfunktionen.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
