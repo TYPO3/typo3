@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Campuri mici</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Adauga coloana la dreapta</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Elimina coloana</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Adauga linie mai jos</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Elimina linie</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Muta in stanga</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Muta in dreapta</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Muta sus</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Muta jos</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Muta in varf</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Muta la capat</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Muta in prima coloana</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Muta in ultima coloana</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Setare nume celulă și număr coloană</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Adaugă coloană</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Elimina coloana</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Adaugă linie</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Elimina linie</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Editare celulă</target>
+      </trans-unit>
+      <trans-unit id="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nume</target>
+      </trans-unit>
+      <trans-unit id="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Număr coloană</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">nesetat</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Introduceți un nume pentru celulă.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">Poziția coloanei definește în care zonă conținutul va fi afișat în frontend.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
