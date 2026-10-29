@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Setup</source>
+        <target state="final">الإعداد</target>
+      </trans-unit>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">موقع</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">مُعرّف الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" approved="yes">
+        <source>No root pages available</source>
+        <target state="final">لا توجد صفحات جذر متوفرة</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" approved="yes">
+        <source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+        <target state="final">يرجى إنشاء صفحة جذر واحدة على الأقل في وحدة المظهر. يجب أن تكون الصفحة الجذرية عبارة عن صفحة مُحتوى في المستوى الأعلى (وليس مجلدًا أو فاصلًا) أو أن يكون علامة "الصفحة الجذرية" ممكّنة (علامة التبويب خصائص الصفحة → السلوك).</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.link.label" approved="yes">
+        <source>Open the documentation</source>
+        <target state="final">فتح الوثائق "documentation"</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">إضافة تكوين موقع جديد لهذا الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">تعديل إعدادات تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">تعديل إعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable" approved="yes">
+        <source>This site provides no configurable settings</source>
+        <target state="final">هذا الموقع لا يوفر إعدادات قابلة للتكوين</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">حذف تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">عنوان URL الأساسي</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.title" approved="yes">
+        <source>Pages without a site configuration</source>
+        <target state="final">صفحات بدون تكوين موقع</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.description" approved="yes">
+        <source>The following root pages have no site configuration:</source>
+        <target state="final">الصفحات الجذر التالية لا تحتوي على تكوين الموقع:</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">تكوينات الموقع الغير مُعيّنة</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" approved="yes">
+        <source>The following site configurations don't belong to any page anymore and can be removed.</source>
+        <target state="final">المواقع التالية لا تنتمي إلى أي تكوين صفحة بعد الآن، ويمكن إزالتها.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.title" approved="yes">
+        <source>Invalid site set configurations</source>
+        <target state="final">تكوينات إعدادات الموقع غير صالحة</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.description" approved="yes">
+        <source>The following site sets contain errors and therefore could not be loaded.</source>
+        <target state="final">تحتوي إعدادات الموقع التالية على أخطاء ولذا لا يمكن تحميلها.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.set" approved="yes">
+        <source>Set</source>
+        <target state="final">ضبط</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.error" approved="yes">
+        <source>Error</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">نقاط إدخال مُكررة</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">تم استخدام نقاط الإدخال أكثر من مرة</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">صفحات أصلية مُكررة</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">يتم استخدام الصفحة مع ID "%1s" في إعدادات الموقع التالي:</target>
+      </trans-unit>
+      <trans-unit id="overview.btn.details" approved="yes">
+        <source>View details</source>
+        <target state="final">عرض التفاصيل</target>
+      </trans-unit>
+      <trans-unit id="overview.entry_point" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">نقطة الإدخال</target>
+      </trans-unit>
+      <trans-unit id="overview.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">معالجة الأخطاء</target>
+      </trans-unit>
+      <trans-unit id="overview.status.title" approved="yes">
+        <source>Status</source>
+        <target state="final">الحالة</target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.multiple" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+        <target state="final"><![CDATA[يتضمن التثبيت <strong>%s مواقع مكونة</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.single" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+        <target state="final"><![CDATA[يشمل التثبيت موقع <strong>%s تم تكوينه</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple" approved="yes">
+        <source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>صفحات الجذر %s</strong> تفتقر إلى تكوين الموقع.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.single" approved="yes">
+        <source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>صفحة %s</strong> تفتقر إلى تكوين الموقع.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.multiple" approved="yes">
+        <source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+        <target state="final"><![CDATA[لا يوجد حالياً أي <strong>%s تكوينات للموقع</strong> قد تم تعيينها لأي صفحة.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.single" approved="yes">
+        <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+        <target state="final"><![CDATA[يوجد حالياً <strong>%s تكوينات للموقع</strong> غير مخصّصة لأيّ صفحة.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">اللغات</target>
+      </trans-unit>
+      <trans-unit id="overview.languages.amount" approved="yes">
+        <source>and %s more</source>
+        <target state="final">و %s المزيد</target>
+      </trans-unit>
+      <trans-unit id="overview.root_pages_without_site_configuration.title" approved="yes">
+        <source>Sites</source>
+        <target state="final">المواقع</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets" approved="yes">
+        <source>Dependencies to site sets</source>
+        <target state="final">التبعيات الخاصة بإعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">نعم</target>
+      </trans-unit>
+      <trans-unit id="overview.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">الطرق الثابتة</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.title" approved="yes">
+        <source>No configured sites available</source>
+        <target state="final">لا توجد مواقع مٌكوّنة مُتاحة</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.message" approved="yes">
+        <source>At least one root page must have a site configuration.</source>
+        <target state="final">يجب أن تحتوي صفحة رئيسية واحدة على الأقل على إعدادات الموقع.</target>
+      </trans-unit>
+      <trans-unit id="overview.none" approved="yes">
+        <source>None</source>
+        <target state="final">لا شَيْء</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_site_identifier" approved="yes">
+        <source>Setup of "%s"</source>
+        <target state="final">إعداد الـ "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_page_title" approved="yes">
+        <source>Setup of site "%s"</source>
+        <target state="final">إعداد الموقع "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.not_configured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">لم يتم تكوينها.</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">معالجة الأخطاء</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.headline" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">اللغات</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language" approved="yes">
+        <source>Language</source>
+        <target state="final">اللغة</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">بادئة الرابط "URL" الكامل</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">الطرق الثابتة</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.route_enhancers" approved="yes">
+        <source>Route enhancers</source>
+        <target state="final">مُحسِنات المسار</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.headline" approved="yes">
+        <source>Active settings</source>
+        <target state="final">الإعدادات النشطة</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.custom_site_settings" approved="yes">
+        <source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+        <target state="final">الإعدادات ضمن تكوين الموقع (على سبيل المثال عبر ملف 'settings.yaml')</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.headline" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">الاعتماديّات</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.text" approved="yes">
+        <source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+        <target state="final"><![CDATA[يمكن تخزين الإعدادات مباشرةً عبر تكوين الموقع، أو بشكل غير مباشر عن طريق تحميلها كجزء تابع لمجموعة مواقع أخرى.<br>يتم تخزين التبعيات التالية في تكوين الموقع:]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.headline" approved="yes">
+        <source>Site settings</source>
+        <target state="final">إعدادت الموقع</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.message" approved="yes">
+        <source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+        <target state="final"><![CDATA[سيتم إدراج الإعدادات هنا بمجرد أن تكون موجودة إما في ملف <code>settings.yaml</code> داخل مجلد الموقع أو عندما تكون هناك تبعية واحدة أو أكثر لمجموعات الموقع في إعدادات الموقع.]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.title" approved="yes">
+        <source>No site settings were found for this site</source>
+        <target state="final">لم يتم العثور على إعدادات الموقع لهذا الموقع</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">تعديل إعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="edit.site_configuration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">تعديل إعدادات تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="edit.typeLabel" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="edit.createNewSite" approved="yes">
+        <source>Create new site</source>
+        <target state="final">إنشاء موقع جديد</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">المُعرّف "identifier" المُعاد تسميته</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">مُعرّف "identifier" الموقع "%1s" موجود بالفعل. تم إعادة تسميته إلى "%2s". ربما تريد تعديل الموقع مرة أخرى وتسميته باسم أفضل.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">لم يتم تغيير المُعرّف "identifier" </target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">مُعرّف الموقع "%1s" موجود بالفعل ويشير إلى موقع مختلف. تم الإحتفاظ بالمُعرّف الحالي "%2s" لهذا الموقع.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">لم يتم حفظ إعدادات تكوين الموقع</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">الحقل "%1s" حقل مطلوب، ولكن لم يتم إدخال أي قيمة له.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">تم حذف رمز الخطأ المكرر</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">تم العثور على تكوينين في معالج الأخطاء لرمز الخطأ "%1s". سيكون هذا تكوين غير صالح، وقد تم إزالة واحد منها.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">تم حذف إعدادات تكوين اللغة المُكررة</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">تم العثور على تكوينين مختلفين للغة "%1s". سيكون هذا تكوين غير صالح، وقد تمت إزالة إحدى هذه التكوينات.</target>
+      </trans-unit>
+      <trans-unit id="labels.detail" approved="yes">
+        <source>View Site Configuration "%s"</source>
+        <target state="final">عرض تكوين الموقع"%s"</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings" approved="yes">
+        <source>Edit Site Settings</source>
+        <target state="final">تعديل إعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration" approved="yes">
+        <source>Edit Site</source>
+        <target state="final">تعديل الموقع</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
