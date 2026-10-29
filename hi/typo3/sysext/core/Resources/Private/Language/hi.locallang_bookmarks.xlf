@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <trans-unit id="group_default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफ़ॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="group_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="group_records" approved="yes">
+        <source>Records</source>
+        <target state="final">रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="group_files" approved="yes">
+        <source>Files</source>
+        <target state="final">फाइल</target>
+      </trans-unit>
+      <trans-unit id="group_tools" approved="yes">
+        <source>Tools</source>
+        <target state="final">टूल्स</target>
+      </trans-unit>
+      <trans-unit id="group_miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">विविध</target>
+      </trans-unit>
+      <trans-unit id="global" approved="yes">
+        <source>Global</source>
+        <target state="final">ग्लोबल</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>All</source>
+        <target state="final">सभी</target>
+      </trans-unit>
+      <!-- UI labels -->
+      <trans-unit id="title" approved="yes">
+        <source>Bookmarks</source>
+        <target state="final">बुकमार्क</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>You have not added any bookmarks yet. Use the share icon on any backend page to create one.</source>
+        <target state="final">आपने अभी तक कोई बुकमार्क नहीं जोड़ा है। किसी भी बैकएंड पेज पर बुकमार्क बनाने के लिए शेर आइकन का उपयोग करें।</target>
+      </trans-unit>
+      <trans-unit id="notGrouped" approved="yes">
+        <source>Not grouped</source>
+        <target state="final">समूहित नहीं</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>No bookmarks yet. Add bookmarks using the share icon on pages throughout the backend.</source>
+        <target state="final">अभी कोई बुकमार्क नहीं है। बैकएंड में मौजूद पेजों पर शेर आइकन का इस्तेमाल करके बुकमार्क जोड़ें।</target>
+      </trans-unit>
+      <trans-unit id="manage" approved="yes">
+        <source>Manage bookmarks</source>
+        <target state="final">बुकमार्क प्रबंधित करें</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">बुकमार्क मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">टाइटल</target>
+      </trans-unit>
+      <trans-unit id="fieldGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">समूह</target>
+      </trans-unit>
+      <!-- Success notifications for bookmarks -->
+      <trans-unit id="success.created.title" approved="yes">
+        <source>Bookmark created</source>
+        <target state="final">बुकमार्क बनाया गया</target>
+      </trans-unit>
+      <trans-unit id="success.created.message" approved="yes">
+        <source>The bookmark was created.</source>
+        <target state="final">बुकमार्क बना दिया गया है।</target>
+      </trans-unit>
+      <trans-unit id="success.updated.title" approved="yes">
+        <source>Bookmark updated</source>
+        <target state="final">बुकमार्क अपडेट किया गया</target>
+      </trans-unit>
+      <trans-unit id="success.updated.message" approved="yes">
+        <source>Bookmark updated successfully.</source>
+        <target state="final">बुकमार्क सफलतापूर्वक अपडेट हो गया।</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.title" approved="yes">
+        <source>Bookmark deleted</source>
+        <target state="final">बुकमार्क हटा दिया गया</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.message" approved="yes">
+        <source>Bookmark deleted successfully.</source>
+        <target state="final">बुकमार्क सफलतापूर्वक हटा दिया गया।</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.title" approved="yes">
+        <source>Bookmarks deleted</source>
+        <target state="final">बुकमार्क हटा दिए गए</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.message" approved="yes">
+        <source>%d bookmark(s) deleted.</source>
+        <target state="final">%d बुकमार्क हटा दिए गए।</target>
+      </trans-unit>
+      <trans-unit id="success.moved.title" approved="yes">
+        <source>Bookmarks moved</source>
+        <target state="final">बुकमार्क्स स्थानांतरित किए गए</target>
+      </trans-unit>
+      <trans-unit id="success.moved.message" approved="yes">
+        <source>%d bookmark(s) moved.</source>
+        <target state="final">%d बुकमार्क स्थानांतरित किए गए।</target>
+      </trans-unit>
+      <!-- Success notifications for groups -->
+      <trans-unit id="success.groupCreated.title" approved="yes">
+        <source>Group created</source>
+        <target state="final">ग्रुप बनाया गया</target>
+      </trans-unit>
+      <trans-unit id="success.groupCreated.message" approved="yes">
+        <source>Group created successfully.</source>
+        <target state="final">ग्रुप सफलतापूर्वक बनाया गया।</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.title" approved="yes">
+        <source>Group updated</source>
+        <target state="final">ग्रुप अपडेट किया गया</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.message" approved="yes">
+        <source>Group updated successfully.</source>
+        <target state="final">ग्रुप सफलतापूर्वक अपडेट हो गया।</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.title" approved="yes">
+        <source>Group deleted</source>
+        <target state="final">ग्रुप हटा दिया गया</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.message" approved="yes">
+        <source>Group deleted successfully.</source>
+        <target state="final">ग्रुप सफलतापूर्वक हटा दिया गया।</target>
+      </trans-unit>
+      <!-- Error notifications for bookmarks -->
+      <trans-unit id="error.unknown.message" approved="yes">
+        <source>An unexpected error occurred.</source>
+        <target state="final">एक अप्रत्याशित त्रुटि हुई।</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.message" approved="yes">
+        <source>Bookmark not found.</source>
+        <target state="final">बुकमार्क नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="error.accessDenied.message" approved="yes">
+        <source>You do not have permission to edit this bookmark.</source>
+        <target state="final">आपको इस बुकमार्क को संपादित करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="error.globalGroupNotAllowed.message" approved="yes">
+        <source>Only administrators can assign bookmarks to global groups.</source>
+        <target state="final">केवल एडमिनिस्ट्रेटर्स ही ग्लोबल ग्रुप्स को बुकमार्क्स असाइन कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.title" approved="yes">
+        <source>Bookmark creation failed</source>
+        <target state="final">बुकमार्क बनाना विफल रहा</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.message" approved="yes">
+        <source>The bookmark could not be created.</source>
+        <target state="final">बुकमार्क नहीं बनाया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.title" approved="yes">
+        <source>Bookmark update failed</source>
+        <target state="final">बुकमार्क अपडेट विफल</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.message" approved="yes">
+        <source>The bookmark could not be updated.</source>
+        <target state="final">बुकमार्क अपडेट नहीं किया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.title" approved="yes">
+        <source>Bookmark deletion failed</source>
+        <target state="final">बुकमार्क हटाना विफल रहा</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.message" approved="yes">
+        <source>The bookmarks could not be deleted.</source>
+        <target state="final">बुकमार्क हटाए नहीं जा सके।</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.title" approved="yes">
+        <source>Move failed</source>
+        <target state="final">स्थानांतरण असफल</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.message" approved="yes">
+        <source>The bookmarks could not be moved.</source>
+        <target state="final">बुकमार्क को मूव नहीं किया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.missingRoute.message" approved="yes">
+        <source>The bookmark could not be created because route information is missing.</source>
+        <target state="final">बुकमार्क नहीं बनाया जा सका, क्योंकि रूट की जानकारी मौजूद नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkId.message" approved="yes">
+        <source>Missing bookmark ID.</source>
+        <target state="final">बुकमार्क ID गायब है।</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkIds.message" approved="yes">
+        <source>Missing bookmark IDs.</source>
+        <target state="final">बुकमार्क आईडीज़ अनुपलब्ध हैं।</target>
+      </trans-unit>
+      <!-- Error notifications for groups -->
+      <trans-unit id="error.groupCreateFailed.title" approved="yes">
+        <source>Group creation failed</source>
+        <target state="final">ग्रुप बनाने में विफलता</target>
+      </trans-unit>
+      <trans-unit id="error.groupCreateFailed.message" approved="yes">
+        <source>The group could not be created.</source>
+        <target state="final">ग्रुप नहीं बनाया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.title" approved="yes">
+        <source>Group update failed</source>
+        <target state="final">ग्रुप अपडेट असफल रहा</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.message" approved="yes">
+        <source>The group could not be updated.</source>
+        <target state="final">ग्रुप अपडेट नहीं किया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.title" approved="yes">
+        <source>Group deletion failed</source>
+        <target state="final">ग्रुप हटाना असफल रहा</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.message" approved="yes">
+        <source>The group could not be deleted.</source>
+        <target state="final">ग्रुप को हटाया नहीं जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.groupReorderFailed.message" approved="yes">
+        <source>The groups could not be reordered.</source>
+        <target state="final">ग्रुप्स का पुनः क्रम निर्धारित नहीं किया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupId.message" approved="yes">
+        <source>Missing group ID.</source>
+        <target state="final">ग्रुप आईडी अनुपलब्ध है।</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupIds.message" approved="yes">
+        <source>Missing group IDs.</source>
+        <target state="final">ग्रुप आईडीज़ अनुपलब्ध हैं।</target>
+      </trans-unit>
+      <trans-unit id="error.missingLabel.message" approved="yes">
+        <source>Group label is required.</source>
+        <target state="final">ग्रुप लेबल आवश्यक है।</target>
+      </trans-unit>
+      <!-- Button labels -->
+      <trans-unit id="action.create" approved="yes">
+        <source>Create bookmark</source>
+        <target state="final">बुकमार्क बनाएं</target>
+      </trans-unit>
+      <trans-unit id="action.remove" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">बुकमार्क हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="action.save" approved="yes">
+        <source>Save</source>
+        <target state="final">सहेजें</target>
+      </trans-unit>
+      <trans-unit id="action.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करना</target>
+      </trans-unit>
+      <trans-unit id="action.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाना</target>
+      </trans-unit>
+      <!-- Edit view labels -->
+      <trans-unit id="details" approved="yes">
+        <source>Details</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+      <trans-unit id="details.route" approved="yes">
+        <source>Route</source>
+        <target state="final">रूट</target>
+      </trans-unit>
+      <trans-unit id="details.url" approved="yes">
+        <source>URL</source>
+        <target state="final">यूआरएल</target>
+      </trans-unit>
+      <trans-unit id="details.parameters" approved="yes">
+        <source>Parameters</source>
+        <target state="final">पैरामीटर</target>
+      </trans-unit>
+      <!-- Confirmation dialogs -->
+      <trans-unit id="confirmDelete.title" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">बुकमार्क हटाएं</target>
+      </trans-unit>
+      <trans-unit id="confirmDelete.message" approved="yes">
+        <source>Delete the bookmark permanently? You cannot undo this action.</source>
+        <target state="final">बुकमार्क को हमेशा के लिए हटा दें? आप इस कार्रवाई को वापस नहीं ले सकते।</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.title" approved="yes">
+        <source>Delete bookmarks</source>
+        <target state="final">बुकमार्क हटाएं</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.message" approved="yes">
+        <source>Delete the %d bookmark(s) permanently? You cannot undo this action.</source>
+        <target state="final">क्या आप %d बुकमार्क को स्थायी रूप से हटाना चाहते हैं? इस कार्रवाई को पूर्ववत नहीं किया जा सकता।</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.title" approved="yes">
+        <source>Delete group</source>
+        <target state="final">ग्रुप हटाएं</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.message" approved="yes">
+        <source>Delete the bookmark group "%s"? Bookmarks in this group will be moved to the Default group.</source>
+        <target state="final">बुकमार्क समूह "%s" को हटाएँ? इस समूह के बुकमार्क 'डिफ़ॉल्ट' समूह में चले जाएँगे।</target>
+      </trans-unit>
+      <!-- Manager view labels -->
+      <trans-unit id="manager.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">सभी चुनें</target>
+      </trans-unit>
+      <trans-unit id="manager.deselectAll" approved="yes">
+        <source>Deselect all</source>
+        <target state="final">सभी चयन हटाएं</target>
+      </trans-unit>
+      <trans-unit id="manager.moveToGroup" approved="yes">
+        <source>Move to group</source>
+        <target state="final">ग्रुप में स्थानांतरित करें</target>
+      </trans-unit>
+      <trans-unit id="manager.deleteSelected" approved="yes">
+        <source>Delete</source>
+        <target state="final">हटाएं</target>
+      </trans-unit>
+      <trans-unit id="manager.manageGroups" approved="yes">
+        <source>Manage Groups</source>
+        <target state="final">ग्रुप प्रबंधित करें</target>
+      </trans-unit>
+      <trans-unit id="manager.newGroup" approved="yes">
+        <source>New Group</source>
+        <target state="final">नया ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="manager.createGroup" approved="yes">
+        <source>Create Group</source>
+        <target state="final">ग्रुप बनाएं</target>
+      </trans-unit>
+      <trans-unit id="manager.editGroup" approved="yes">
+        <source>Edit Group</source>
+        <target state="final">ग्रुप संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="manager.noGroups" approved="yes">
+        <source>You have not created any groups yet. Click "New Group" to create one.</source>
+        <target state="final">आपने अभी तक कोई ग्रुप नहीं बनाया है। एक बनाने के लिए "New Group" पर क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="manager.label" approved="yes">
+        <source>Label</source>
+        <target state="final">लेबल</target>
+      </trans-unit>
+      <trans-unit id="manager.back" approved="yes">
+        <source>Back</source>
+        <target state="final">वापस</target>
+      </trans-unit>
+      <trans-unit id="manager.editBookmark" approved="yes">
+        <source>Edit bookmark</source>
+        <target state="final">बुकमार्क संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="manager.dragToReorder" approved="yes">
+        <source>Drag to reorder</source>
+        <target state="final">क्रम बदलने के लिए खींचें</target>
+      </trans-unit>
+      <trans-unit id="manager.moveUp" approved="yes">
+        <source>Move up</source>
+        <target state="final">ऊपर ले जाएं</target>
+      </trans-unit>
+      <trans-unit id="manager.moveDown" approved="yes">
+        <source>Move down</source>
+        <target state="final">नीचे ले जाएं</target>
+      </trans-unit>
+      <trans-unit id="manager.locked" approved="yes">
+        <source>This bookmark cannot be edited</source>
+        <target state="final">इस बुकमार्क को संपादित नहीं किया जा सकता</target>
+      </trans-unit>
+      <trans-unit id="manager.notAccessible" approved="yes">
+        <source>Not accessible</source>
+        <target state="final">पहुँच योग्य नहीं</target>
+      </trans-unit>
+      <trans-unit id="groupType.user" approved="yes">
+        <source>My Groups</source>
+        <target state="final">मेरे ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="groupType.system" approved="yes">
+        <source>System Groups</source>
+        <target state="final">सिस्टम ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="groupType.global" approved="yes">
+        <source>Global Groups</source>
+        <target state="final">ग्लोबल ग्रुप</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
