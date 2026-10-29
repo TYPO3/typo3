@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="wizard.button.next" x-unused-since="15.0" approved="yes">
+        <source>Next</source>
+        <target state="final">Další</target>
+      </trans-unit>
+      <trans-unit id="wizard.button.prev" x-unused-since="15.0" approved="yes">
+        <source>Previous</source>
+        <target state="final">Předchozí</target>
+      </trans-unit>
+      <trans-unit id="wizard.button.cancel" x-unused-since="15.0" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušit</target>
+      </trans-unit>
+      <trans-unit id="wizard.progress" x-unused-since="15.0" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Krok {0} z {1}</target>
+      </trans-unit>
+      <trans-unit id="wizard.progressStep.configure" x-unused-since="15.0" approved="yes">
+        <source>Configure</source>
+        <target state="final">Konfigurace</target>
+      </trans-unit>
+      <trans-unit id="wizard.progressStep.finish" x-unused-since="15.0" approved="yes">
+        <source>Finish</source>
+        <target state="final">Dokončit</target>
+      </trans-unit>
+      <trans-unit id="wizard.processing.title" x-unused-since="15.0" approved="yes">
+        <source>Processing...</source>
+        <target state="final">Zpracovává se...</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.required" approved="yes">
+        <source>Required fields</source>
+        <target state="final">Povinná pole</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
