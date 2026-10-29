@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">वेबहुक</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+        <target state="final">बाह्य सिस्टम को भेजे जाने वाले HTTP वेबहुक का प्रबंधन करें</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Configure TYPO3 webhooks to notify external systems when defined system events occur. Supports integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
+        <target state="final">TYPO3 वेबहुक को कॉन्फ़िगर करें ताकि परिभाषित सिस्टम इवेंट होने पर बाहरी सिस्टम को सूचित किया जा सके। यह Slack, Discord, भुगतान प्रदाताओं, CRM सिस्टम आदि जैसे प्लेटफ़ॉर्म के साथ एकीकरण का समर्थन करता है।</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+        <target state="final">वेबहुक्स — आउटगोइंग HTTP वेबहुक्स का प्रबंधन करें</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">कोई वेबहुक नहीं मिला</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.message" approved="yes">
+        <source>There are currently no webhooks records found in the database.</source>
+        <target state="final">डेटाबेस में फिलहाल कोई वेबहुक रिकॉर्ड नहीं मिला है।</target>
+      </trans-unit>
+      <trans-unit id="webhook_create" approved="yes">
+        <source>Create new webhook</source>
+        <target state="final">नया वेबहुक बनाएं</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.title" approved="yes">
+        <source>No webhooks found</source>
+        <target state="final">कोई वेबहुक नहीं मिला</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.message" approved="yes">
+        <source>With the current set of filters applied, no webhooks could be found.</source>
+        <target state="final">वर्तमान में लागू किए गए फ़िल्टरों के साथ, कोई वेबहुक नहीं मिल सका।</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_filter" approved="yes">
+        <source>Remove all filter</source>
+        <target state="final">सभी फ़िल्टर हटा दें</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_implementation_class" approved="yes">
+        <source>Implementation class for webhook type "%s" is missing.</source>
+        <target state="final">वेबहुक प्रकार "%s" के लिए कार्यान्वयन वर्ग अनुपस्थित है।</target>
+      </trans-unit>
+      <trans-unit id="webhook_example" approved="yes">
+        <source>Example</source>
+        <target state="final">उदाहरण</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" approved="yes">
+        <source>Filter</source>
+        <target state="final">फ़िल्टर</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton" approved="yes">
+        <source>Reset</source>
+        <target state="final">रीसेट</target>
+      </trans-unit>
+      <trans-unit id="filter.name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">वेबहुक ट्रिगर</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type.showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">सब दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">पिछला</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">अगला</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">पहला</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">अंतिम</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">रिफ्रेश</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete webhooks</source>
+        <target state="final">वेबहुक हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message" approved="yes">
+        <source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
+        <target state="final">क्या आप सभी चिह्नित वेबहुक हटाना चाहते हैं? आप TYPO3 रीसाइक्लर से हटाए गए वेबहुक को पुनर्स्थापित कर सकते हैं।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
