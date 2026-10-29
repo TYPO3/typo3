@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="widget.bookmarks.title" xml:space="preserve" approved="yes">
+        <source>Bookmarks</source>
+      <target state="final">बुकमार्क्स</target></trans-unit>
+      <trans-unit id="widget.bookmarks.description" xml:space="preserve" approved="yes">
+        <source>Display your bookmarks as a dashboard widget.</source>
+      <target state="final">अपने बुकमार्क्स को डैशबोर्ड विजेट के रूप में दिखाएं।</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve" approved="yes">
+        <source>Bookmark groups</source>
+      <target state="final">बुकमार्क ग्रुप्स</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve" approved="yes">
+        <source>Bookmark groups to be displayed.</source>
+      <target state="final">प्रदर्शित किए जाने वाले बुकमार्क समूह।</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve" approved="yes">
+        <source>Limit</source>
+      <target state="final">लिमिट</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve" approved="yes">
+        <source>Maximum number of bookmarks to display.</source>
+      <target state="final">दिखाने के लिए बुकमार्क्स की अधिकतम संख्या।</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.showAll" xml:space="preserve" approved="yes">
+        <source>Show all bookmarks</source>
+      <target state="final">सभी बुकमार्क्स दिखाएं</target></trans-unit>
+      <trans-unit id="widget.bookmarks.manageBookmarks" xml:space="preserve" approved="yes">
+        <source>Manage bookmarks</source>
+      <target state="final">बुकमार्क्स मैनेज करें</target></trans-unit>
+    </body>
+  </file>
+</xliff>
