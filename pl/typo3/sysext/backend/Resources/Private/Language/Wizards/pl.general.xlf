@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="wizard.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Ładowanie...</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anuluj</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zamknij</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Dalej</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Wstecz</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.finish" approved="yes">
+        <source>Finish</source>
+        <target state="final">Zakończ</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_configuration" approved="yes">
+        <source>Loading wizard configuration...</source>
+        <target state="final">Ładowanie konfiguracji kreatora...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_steps" approved="yes">
+        <source>Loading step modules...</source>
+        <target state="final">Ładowanie modułów kroków...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_finisher" approved="yes">
+        <source>Loading finisher...</source>
+        <target state="final">Ładowanie modułu końcowego...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.pending.message" approved="yes">
+        <source>Processing data...</source>
+        <target state="final">Przetwarzanie danych...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">Błąd</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.message" approved="yes">
+        <source>Failed to process data:</source>
+        <target state="final">Nie można przetworzyć danych:</target>
+      </trans-unit>
+      <trans-unit id="wizard.finisher.load_error.message" approved="yes">
+        <source>Failed to load finisher module:</source>
+        <target state="final">Nie można załadować modułu końcowego:</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">Błąd</target>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Potwierdzenie</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Potwierdź</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description" approved="yes">
+        <source>Please review the following settings before proceeding:</source>
+        <target state="final">Przed kontynuowaniem sprawdź poniższe ustawienia:</target>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title" approved="yes">
+        <source>Finish</source>
+        <target state="final">Zakończenie</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
