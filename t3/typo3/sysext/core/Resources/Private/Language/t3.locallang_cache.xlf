@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="page.label">
+        <source>Clear cache for this page</source>
+        <target>crwdns393030:0crwdne393030:0</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label">
+        <source>Flush frontend caches</source>
+        <target>crwdns393032:0crwdne393032:0</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description">
+        <source>Clear frontend and page-related caches.</source>
+        <target>crwdns393034:0crwdne393034:0</target>
+      </trans-unit>
+      <trans-unit id="group.all.label">
+        <source>Flush all caches</source>
+        <target>crwdns393036:0crwdne393036:0</target>
+      </trans-unit>
+      <trans-unit id="group.all.description">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target>crwdns393038:0crwdne393038:0</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title">
+        <source>Caches cleared</source>
+        <target>crwdns394068:0crwdne394068:0</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message">
+        <source>Caches have been cleared.</source>
+        <target>crwdns394070:0crwdne394070:0</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title">
+        <source>An error occurred</source>
+        <target>crwdns393040:0crwdne393040:0</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target>crwdns393042:0crwdne393042:0</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title">
+        <source>Page cache cleared</source>
+        <target>crwdns393044:0crwdne393044:0</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target>crwdns393046:0%scrwdne393046:0</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title">
+        <source>Page cache not cleared</source>
+        <target>crwdns393048:0crwdne393048:0</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message">
+        <source>Page cache could not be cleared.</source>
+        <target>crwdns393050:0crwdne393050:0</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title">
+        <source>Frontend caches cleared</source>
+        <target>crwdns393052:0crwdne393052:0</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message">
+        <source>Frontend caches have been cleared.</source>
+        <target>crwdns393054:0crwdne393054:0</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title">
+        <source>All caches cleared</source>
+        <target>crwdns393056:0crwdne393056:0</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message">
+        <source>All caches have been cleared.</source>
+        <target>crwdns393058:0crwdne393058:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
