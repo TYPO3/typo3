@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf" date="2023-02-24T00:00:00Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="message.transfer_resource.title" approved="yes">
+        <source>Transfer Resource</source>
+        <target state="final">संसाधन स्थानांतरित करें</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resource.text" approved="yes">
+        <source>Transfer "%s" to "%s"?</source>
+        <target state="final">"%s" को "%s" में स्थानांतरित करें?</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.title" approved="yes">
+        <source>Transfer Resources</source>
+        <target state="final">संसाधनों को स्थानांतरित करें</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.text" approved="yes">
+        <source>Transfer %d resources to "%s"?</source>
+        <target state="final">%d संसाधनों को "%s" में स्थानांतरित करें?</target>
+      </trans-unit>
+      <trans-unit id="message.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करें</target>
+      </trans-unit>
+      <trans-unit id="message.button.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">कॉपी करें</target>
+      </trans-unit>
+      <trans-unit id="message.button.move" approved="yes">
+        <source>Move</source>
+        <target state="final">स्थानांतरित करें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
