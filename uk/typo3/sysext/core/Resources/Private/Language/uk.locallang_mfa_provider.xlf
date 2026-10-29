@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">Одноразовий пароль, який базується на поточному часі</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">Цей провайдер дозволяє автентифікуватися за допомогою набору одноразових паролів, якщо ви загубили свої
+первинні облікові дані МЗС або просто тимчасово не маєте до них доступу.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">Коди відновлення — це випадкові восьмизначні коди, які можна використовувати для автентифікації, якщо ви втратили основні облікові дані автентифікації. Кожен код дійсний лише один раз.
+Щойно всі коди відновлення буде вичерпано, вам потрібно створити новий набір. Тому періодично перевіряйте кількість кодів, що залишилися, у вікні Редагувати/Змінити провайдера.
+
+Налаштовуючи:
+1. Скопіюйте коди відновлення та зберігайте їх у безпечному місці
+2. Додайте конкретну назву для цього постачальника (необов’язково)
+3. Надішліть форму для активації постачальника - див. примітку нижче
+
+Примітка. Оскільки коди відновлення зашифровані та безпечно зберігаються, цей процес може зайняти деякий час.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">Введіть згенерований шестизначний код</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">Тепер цей код має відображатися на вашому пристрої або в програмі.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">Інформація про постачальника</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Ім'я</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">Вкажіть назву</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">Залишилися коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">Останнє використання</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">Ніколи</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">Востаннє оновлено</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Перегенерувати коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Перегенерувати коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">Крок 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">Крок 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">Крок 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">Крок 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">Крок 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">Відскануйте відображений QR-код</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">Відскануйте цей код за допомогою програми OTP (наприклад, Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">Скопіюйте спільний ключ</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">Ви також можете ввести спільний секрет вручну в програмі OTP або на пристрої.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">Введіть назву (необов'язково)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">Вкажіть власну назву для цього постачальника.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">Скопіюйте ці коди та зберігайте їх у безпечному місці.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">Перезавантажити коди відновлення</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">Оновити</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">Налагодження неможливе</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">Показати URL-адресу автентифікації</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">URL-адреса автентифікації</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Гаразд</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">Введіть шестизначний код</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">Введіть восьмизначний код відновлення</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">Ваші коди відновлення були автоматично оновлені!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Будь ласка, скопіюйте і зберігайте їх в безпечному місці: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">Коди відновлення успішно відновлено</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Будь ласка, скопіюйте і зберігайте їх в безпечному місці: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
