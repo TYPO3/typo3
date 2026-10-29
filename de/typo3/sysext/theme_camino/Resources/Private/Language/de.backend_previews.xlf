@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_previews.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="CType.label" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="link.label" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="link.config" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="backend_previews.icon.label" approved="yes">
+        <source>Icon</source>
+        <target state="final">Icon</target>
+      </trans-unit>
+      <trans-unit id="warnings.label.warning" approved="yes">
+        <source>Warning:</source>
+        <target state="final">Warnung:</target>
+      </trans-unit>
+      <trans-unit id="warnings.label.error" approved="yes">
+        <source>Error:</source>
+        <target state="final">Fehler:</target>
+      </trans-unit>
+      <trans-unit id="warnings.firstItemOnly" approved="yes">
+        <source>Only the first visible item will be used.</source>
+        <target state="final">Es wird nur das erste sichtbare Element verwendet.</target>
+      </trans-unit>
+      <trans-unit id="warnings.firstImageOnly" approved="yes">
+        <source>Only the first visible image will be used.</source>
+        <target state="final">Es wird nur das erste sichtbare Bild verwendet.</target>
+      </trans-unit>
+      <trans-unit id="warnings.firstAssetOnly" approved="yes">
+        <source>Only the first visible asset will be used.</source>
+        <target state="final">Es wird nur das erste sichtbare Asset verwendet.</target>
+      </trans-unit>
+      <trans-unit id="warnings.noImage" approved="yes">
+        <source>This element will not be shown without an active, visible image!</source>
+        <target state="final">Dieses Element wird ohne ein aktives und sichtbares Bild nicht dargestellt!</target>
+      </trans-unit>
+      <trans-unit id="warnings.noAsset" approved="yes">
+        <source>This element will not be shown without an active, visible asset!</source>
+        <target state="final">Dieses Element wird nicht ohne einen aktiven, sichtbaren Asset!</target>
+      </trans-unit>
+      <trans-unit id="warnings.noItem" approved="yes">
+        <source>This element will not be shown without an active, visible item!</source>
+        <target state="final">Dieses Element wird ohne einen aktiven, sichtbaren Eintrag nicht angezeigt!</target>
+      </trans-unit>
+      <trans-unit id="warnings.linkTargetError" approved="yes">
+        <source>Invalid link</source>
+        <target state="final">Ungültiger Link</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
