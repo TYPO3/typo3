@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">زمان</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">کاربر</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">تفاوت‌ها</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">گزارش‌کار تغییرات</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">بازگشت</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">برای بازگشت اینجا را کلیک کنید</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">عقب‌گرد همه تغبرات نشان داده شده</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">عقب‌گرد بک رکورد واحد</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">عقب‌گرد بک فيلد واحد</target>
+      </trans-unit>
+      <trans-unit id="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">توسط</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">این تغییر را نشان‌گذاری کن</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">این تغییر را از نشان‌گذاری در بیاور</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">تاریخچه را به این رکورد محدود کن</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">بازگشت به نمای کامل</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">تنظیمات</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">نمایش ورودی‌ها</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">همه</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">نشان‌گذاری شده</target>
+      </trans-unit>
+      <trans-unit id="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">نمایش تفاوت‌ها</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">نمایش عناصر زیرمجموعه:</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">نه</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">بله</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" approved="yes">
+        <source>Editing is blocked for non-admins</source>
+        <target state="final">ویرایش برای غیرمدیران مورد محدودیت واقع شده است</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
