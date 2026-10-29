@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf" date="2026-01-26T11:12:56Z" product-name="form" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">Inserisci elementi</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">Crea nuovo elemento</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.after" approved="yes">
+        <source>Create new element after</source>
+        <target state="final">Crea un nuovo elemento dopo</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.before" approved="yes">
+        <source>Create new element before</source>
+        <target state="final">Crea un nuovo elemento prima</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Rimuovi</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty" approved="yes">
+        <source>Step name is not set</source>
+        <target state="final">Nome passo non è impostato</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.hasError" approved="yes">
+        <source>Has validation errors</source>
+        <target state="final">Ha errori di convalida</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.childHasError" approved="yes">
+        <source>Contains elements with validation errors</source>
+        <target state="final">Contiene elementi con errori di convalida</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
