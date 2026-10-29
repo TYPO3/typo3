@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/statistics.xlf" date="2026-11-10T13:37:37Z" product-name="statistics" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Shows database record statistics</source>
+        <target>crwdns379156:0crwdne379156:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Get statistics for database records, including total, translated, hidden, and deleted pages, page type distribution, and and detailed table records with lost record detection. The report analyzes the entire page tree.</source>
+        <target>crwdns393408:0crwdne393408:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Record Statistics</source>
+        <target>crwdns379160:0crwdne379160:0</target>
+      </trans-unit>
+      <trans-unit id="doktype">
+        <source>Document types</source>
+        <target>crwdns380804:0crwdne380804:0</target>
+      </trans-unit>
+      <trans-unit id="doktype_value">
+        <source>Document types (value)</source>
+        <target>crwdns380806:0crwdne380806:0</target>
+      </trans-unit>
+      <trans-unit id="count">
+        <source>Count</source>
+        <target>crwdns380808:0crwdne380808:0</target>
+      </trans-unit>
+      <trans-unit id="pages">
+        <source>Pages</source>
+        <target>crwdns380810:0crwdne380810:0</target>
+      </trans-unit>
+      <trans-unit id="total_pages">
+        <source>Total number of default language pages</source>
+        <target>crwdns380812:0crwdne380812:0</target>
+      </trans-unit>
+      <trans-unit id="translated_pages">
+        <source>Total number of translated pages</source>
+        <target>crwdns380814:0crwdne380814:0</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages">
+        <source>Marked-deleted pages</source>
+        <target>crwdns380816:0crwdne380816:0</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages">
+        <source>Hidden pages</source>
+        <target>crwdns380818:0crwdne380818:0</target>
+      </trans-unit>
+      <trans-unit id="tables">
+        <source>Tables</source>
+        <target>crwdns380820:0crwdne380820:0</target>
+      </trans-unit>
+      <trans-unit id="label">
+        <source>Label</source>
+        <target>crwdns380822:0crwdne380822:0</target>
+      </trans-unit>
+      <trans-unit id="tablename">
+        <source>Table name</source>
+        <target>crwdns380824:0crwdne380824:0</target>
+      </trans-unit>
+      <trans-unit id="total_lost">
+        <source>Records total / lost</source>
+        <target>crwdns380826:0crwdne380826:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
