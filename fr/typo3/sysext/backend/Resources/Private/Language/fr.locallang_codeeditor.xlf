@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_codeeditor.xlf" date="2023-11-20T10:56:42Z" product-name="backend" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">Erreur de syntaxe : le paramètre pageID doit être un entier valide.</target>
+      </trans-unit>
+      <trans-unit id="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">Accès refusé : aucune permission pour les enregistrements de gabarit.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
