@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Folder "%s" cannot be copied because the destination already contains a folder or file named "%s".</source>
+        <target state="final">Složku „%s“ nelze zkopírovat, protože cíl již obsahuje složku nebo soubor s názvem „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" because source and destination are identical.</source>
+        <target state="final">Složku „%s“ nelze přesunout do „%s“, protože zdroj a cíl jsou identické.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>The operation could not be completed because one or more required resources are not accessible (source "%s" or destination "%s").</source>
+        <target state="final">Operaci nebylo možné dokončit, protože jeden nebo více požadovaných zdrojů není přístupných (zdroj „%s“ nebo cíl „%s“).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Folder "%s" could not be deleted. It must be empty, as recursive deletion is not enabled.</source>
+        <target state="final">Složku „%s“ nelze odstranit. Musí být prázdná, protože rekurzivní mazání není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>File "%s" cannot not be deleted due to insufficent write permissions.</source>
+        <target state="final">Soubor „%s“ nelze odstranit z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>The name "%s" is already in use.</source>
+        <target state="final">Název „%s“ je již používán.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" is not accessible</source>
+        <target state="final">Cílová cesta „%s“ není přístupná</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" is not a folder.</source>
+        <target state="final">Cíl „%s“ není složka.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Folder "%s" copied to "%s".</source>
+        <target state="final">Složka „%s“ byla zkopírována do „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Folder "%s" created in "%s".</source>
+        <target state="final">Složka „%s“ byla vytvořena v „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Folder "%s" moved to "%s".</source>
+        <target state="final">Složka „%s“ byla přesunuta do „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Folder "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Složku „%s“ nelze vytvořit v „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Folder renamed from "%s" to "%s".</source>
+        <target state="final">Složka přejmenována z „%s“ na „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Folder renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Složka přejmenována z „%s“ na „%s“, přičemž nepodporované znaky byly nahrazeny.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Folder "%s" already has this name. No changes were made.</source>
+        <target state="final">Složka „%s“ již tento název má. Nebyly provedeny žádné změny.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Folder "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Složku „%s“ nelze zkopírovat do „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" due to insufficent write permissions.</source>
+        <target state="final">Složku „%s“ nelze přesunout do „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Folder "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Složku „%s“ nelze přejmenovat v „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>The file extension of "%s" is not permitted in "%s".</source>
+        <target state="final">Přípona souboru „%s“ není v „%s“ povolena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>The file name %s or the extension %s is not allowed.</source>
+        <target state="final">Název souboru %s nebo přípona %s není povolen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>The file extension of "%s" is not permitted.</source>
+        <target state="final">Přípona souboru „%s“ není povolena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>A file with the same name "%s" already exists in "%s".</source>
+        <target state="final">Soubor se stejným názvem „%s“ již existuje v „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Soubor "%s" byl zkopírován do "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" approved="yes">
+        <source>File "%s" created.</source>
+        <target state="final">Soubor „%s“ byl vytvořen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" approved="yes">
+        <source>File renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Soubor přejmenován z „%s“ na „%s“, nepodporované znaky byly nahrazeny.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>A file with the same name already exists in "%s"</source>
+        <target state="final">Soubor se stejným názvem již existuje v „%s“</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a supported text file format. Supported formats: %s.</source>
+        <target state="final">Přípona souboru „%s“ není podporovaným formátem textového souboru. Podporované formáty: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Soubor "%s" byl přesunut do "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>The file name %s is not allowed.</source>
+        <target state="final">Název souboru %s není povolen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists.</source>
+        <target state="final">Soubor nebo adresář „%s“ již existuje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Soubor přejmenován z "%s" na "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" already has this name. No changes were made.</source>
+        <target state="final">Soubor „%s“ již má tento název. Nebyly provedeny žádné změny.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedTo" approved="yes">
+        <source>File saved to "%s".</source>
+        <target state="final">Soubor uložen do %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Soubor „%s“ nelze zkopírovat do „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Soubor „%s“ nelze vytvořit v „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Soubor „%s“ nelze přejmenovat v „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" cannot be saved due to insufficent write permissions.</source>
+        <target state="final">Soubor „%s“ nelze uložit z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">Nebyl nahrán žádný soubor.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacement.</source>
+        <target state="final">Nebyl nahrán žádný soubor pro nahrazení.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name was provided for the new folder.</source>
+        <target state="final">Pro novou složku nebylo zadáno žádné jméno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename could be generated in "%s".</source>
+        <target state="final">V „%s“ nebylo možné vygenerovat jedinečný název souboru.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" approved="yes">
+        <source>File "%s" was replaced with "%s".</source>
+        <target state="final">Soubor „%s“ byl nahrazen souborem „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists.</source>
+        <target state="final">Cíl „%s“ již existuje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file.</source>
+        <target state="final">Cíl „%s“ nebyl soubor.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination file or folder "%s" was not accessible.</source>
+        <target state="final">Cílová složka nebo soubor „%s“ nebyl přístupný.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist or is no longer available.</source>
+        <target state="final">Soubor „%s“ neexistuje nebo již není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying files between storages is not yet available.</source>
+        <target state="final">Kopírování souborů mezi úložišti zatím není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying folders between storages is not yet available.</source>
+        <target state="final">Kopírování složek mezi úložišti zatím není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving files between storages is not yet available.</source>
+        <target state="final">Přesun souborů mezi úložišti zatím není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving folders between storages is not yet available.</source>
+        <target state="final">Přesouvání složek mezi úložišti zatím není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>No file was found for the upload.</source>
+        <target state="final">Nebyl nalezen žádný soubor pro nahrání.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the maximum allowed file size.</source>
+        <target state="final">Nahraný soubor „%s“ překračuje maximální povolenou velikost souboru.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved in "%s" due to insufficent write permissions.</source>
+        <target state="final">Nahraný soubor nelze přesunout do „%s“ z důvodu nedostatečných oprávnění k zápisu.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" approved="yes">
+        <source>File "%s" uploaded to "%s".</source>
+        <target state="final">Soubor „%s“ byl nahrán do „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>Access to this folder is not permitted.</source>
+        <target state="final">Přístup k této složce není povolen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>Access to this file is not permitted.</source>
+        <target state="final">Přístup k tomuto souboru není povolen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>Copying directories is not permitted.</source>
+        <target state="final">Kopírování adresářů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>Copying files is not permitted.</source>
+        <target state="final">Kopírování souborů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" approved="yes">
+        <source>The folder name "%s" is not valid.</source>
+        <target state="final">Název složky „%s“ není platný.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>Creating folders is not permitted.</source>
+        <target state="final">Vytváření složek není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>Creating files is not permitted.</source>
+        <target state="final">Vytváření souborů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>Editing files is not permitted.</source>
+        <target state="final">Úprava souborů není povolena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>Moving folders is not permitted.</source>
+        <target state="final">Přesouvání složek není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>Moving files is not permitted.</source>
+        <target state="final">Přesouvání souborů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>Overwriting "%s" is not permitted.</source>
+        <target state="final">Přepisování „%s“ není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>Renaming folders is not permitted.</source>
+        <target state="final">Přejmenování složek není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>Renaming files is not permitted.</source>
+        <target state="final">Přejmenování souborů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>Uploading files is not permitted.</source>
+        <target state="final">Nahrávání souborů není povoleno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>Full access to the destination folder "%s" is not available.</source>
+        <target state="final">Plný přístup k cílové složce „%s“ není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation" approved="yes">
+        <source>The MIME type "%s" is not allowed for files with the extension "%s". Expected: %s.</source>
+        <target state="final">MIME typ „%s“ není povolen pro soubory s příponou „%s“. Očekávaný typ: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotAllowed" approved="yes">
+        <source>File extension "%s" is not allowed here.</source>
+        <target state="final">Přípona souboru „%s“ není zde povolena.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
