@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/db.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">लिंक वैलिडेटर</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">लिंक वैलिडेटर</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">शुरुआती पेज (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.languages" approved="yes">
+        <source>Languages to search for broken links (Leave empty for all languages).</source>
+        <target state="final">टूटे हुए लिंक खोजने के लिए भाषाएँ (सभी भाषाओं के लिए खाली छोड़ें)।</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">TSconfig ओवरराइड करें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">ईमेल रिपोर्ट भेजें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">केवल नए टूटे हुए लिंक पर ईमेल भेजें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateName" approved="yes">
+        <source>Email template name (without the extension)</source>
+        <target state="final">ईमेल टेम्पलेट का नाम (एक्सटेंशन के बिना)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format</source>
+        <target state="final">अमान्य ईमेल फ़ॉर्मेट</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid</source>
+        <target state="final">अमान्य पेज uid, कृपया एक मान्य पेज uid दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values</source>
+        <target state="final">कोई गहराई निर्धारित नहीं है, कृपया इसे उपलब्ध वैल्यूज़ में से किसी एक पर सेट करें</target>
+      </trans-unit>
+      <trans-unit id="tasks.notice.useDefaultTemplate" approved="yes">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+                </source>
+        <target state="final">
+					templateName को स्वचालित रूप से डिफ़ॉल्ट पर सेट कर दिया गया है क्योंकि या तो टास्क कॉन्फ़िगरेशन में फ़ील्ड खाली है या दिए गए नाम के लिए कोई फ़ाइल नहीं मिली। कृपया ध्यान दें कि कॉन्फ़िगर किए गए templatePath में .html और .txt दोनों फ़ाइलें मौजूद होनी चाहिए।
+                </target>
+      </trans-unit>
+      <trans-unit id="tasks.error.emptyToEmail" approved="yes">
+        <source>There must be at least one recipient defined</source>
+        <target state="final">कम से कम एक प्राप्तकर्ता निर्धारित होना चाहिए</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses</source>
+        <target state="final">एक या अधिक प्राप्तकर्ता ईमेल पतों का फ़ॉर्मेट अमान्य है</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">From हेडर में ईमेल पते का प्रारूप अमान्य है</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" approved="yes">
+        <source>The given page id %d is invalid</source>
+        <target state="final">दिया गया पेज आईडी %d अमान्य है</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.title" approved="yes">
+        <source>TYPO3 LinkValidator report</source>
+        <target state="final">TYPO3 लिंक वैलिडेटर रिपोर्ट</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview" approved="yes">
+        <source>Overview of broken links</source>
+        <target state="final">टूटे हुए लिंक का सारांश</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.all" approved="yes">
+        <source>Total broken links: %s (last report: %s)</source>
+        <target state="final">कुल टूटे हुए लिंक: %s (अंतिम रिपोर्ट: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.internal" approved="yes">
+        <source>Internal links: %s (last report: %s)</source>
+        <target state="final">आंतरिक लिंक: %s (अंतिम रिपोर्ट: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.external" approved="yes">
+        <source>External links: %s (last report: %s)</source>
+        <target state="final">बाहरी लिंक: %s (अंतिम रिपोर्ट: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.file" approved="yes">
+        <source>File / Media links: %s (last report: %s)</source>
+        <target state="final">फ़ाइल / मीडिया लिंक: %s (अंतिम रिपोर्ट: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">टूटे हुए लिंक की सूची</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.pageExplanation" approved="yes">
+        <source>If record type is "Page", the page id is the parent page.</source>
+        <target state="final">यदि रिकॉर्ड प्रकार "पेज" है, तो पेज आईडी पैरेंट पेज की होगी।</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.hoverExpalantion" approved="yes">
+        <source>Hover over an element to see more information e.g. the record title.</source>
+        <target state="final">अधिक जानकारी देखने के लिए किसी एलिमेंट पर होवर करें, जैसे कि रिकॉर्ड का शीर्षक।</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.explanation" approved="yes">
+        <source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
+        <target state="final">एक्सप्लनेशन: रिकॉर्ड | भाषा | पेज | रिकॉर्ड टाइप | टार्गेट | लिंक टाइप</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.record" approved="yes">
+        <source>Record</source>
+        <target state="final">रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.language" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.page" approved="yes">
+        <source>Page</source>
+        <target state="final"> पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.recordType" approved="yes">
+        <source>Record type</source>
+        <target state="final">रिकॉर्ड टाइप</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.target" approved="yes">
+        <source>Target</source>
+        <target state="final">लक्ष्य</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.db" approved="yes">
+        <source>Internal</source>
+        <target state="final">आंतरिक</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.external" approved="yes">
+        <source>External</source>
+        <target state="final">बाहरी</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.file" approved="yes">
+        <source>File / Media</source>
+        <target state="final">फ़ाइल / मीडिया</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
