@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="delete_group">
+      <segment state="initial">
+        <source>Delete task group</source>
+        <target>crwdns390280:0crwdne390280:0</target>
+      </segment>
+    </unit>
+    <unit id="delete_task">
+      <segment state="initial">
+        <source>Delete task</source>
+        <target>crwdns390282:0crwdne390282:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
