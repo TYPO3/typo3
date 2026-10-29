@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Dnevnik</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Raven</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Razvrsti po ravneh</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Dogodki</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Naslov strani</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Ime</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
