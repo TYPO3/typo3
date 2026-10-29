@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
+        <target state="final">यह मॉड्यूल TCA डेमो रिकॉर्ड्स या कंटेंट एलिमेंट्स के साथ पेज ट्री बनाने की सुविधा प्रदान करता है।&lt;br /&gt;इसके अलावा, TYPO3 CMS के साथ आने वाले सबसे प्रसिद्ध बैकएंड कंपोनेंट्स भी प्रस्तुत किए जाते हैं।</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Interactively explore TYPO3 backend UI components, design tokens, and example page trees for testing and demonstration.</source>
+        <target state="final">टेस्टिंग और डेमोंस्ट्रेशन के लिए TYPO3 बैकएंड UI कंपोनेंट्स, डिज़ाइन टोकन्स और उदाहरण पेज ट्रीज़ को इंटरैक्टिव तरीके से एक्सप्लोर करें।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">स्टाइलगाइड</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
