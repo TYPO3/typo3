@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_db.xlf" date="2023-01-11T20:22:32Z" product-name="webhooks" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="webhooks" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">वेबहुक</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook" approved="yes">
+        <source>System webhooks</source>
+        <target state="final">सिस्टम वेबहुक्स</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name.description" approved="yes">
+        <source>Meaningful name of the webhook</source>
+        <target state="final">वेबहुक का सार्थक नाम</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url.description" approved="yes">
+        <source>Target URL that should be called.</source>
+        <target state="final">लक्षित URL जिसे बुलाया जाना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.method" approved="yes">
+        <source>HTTP Method</source>
+        <target state="final">HTTP मेथोड</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl" approved="yes">
+        <source>Verify SSL</source>
+        <target state="final">SSL सत्यापित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl.description" approved="yes">
+        <source>Verify that the connection is secure and valid, this setting should only be disabled in case a verification is not possible.</source>
+        <target state="final">सत्यापित करें कि कनेक्शन सुरक्षित और वैध है, यह सेटिंग केवल उस स्थिति में निष्क्रिय की जानी चाहिए जब सत्यापन संभव नहीं हो।</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers" approved="yes">
+        <source>Additional Headers</source>
+        <target state="final">अतिरिक्त हेडर्स</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers.description" approved="yes">
+        <source>Additional headers that should be added to the HTTP request. Data must be provided as valid JSON string.</source>
+        <target state="final">अतिरिक्त हेडर्स जो HTTP अनुरोध में जोड़े जाने चाहिए। डेटा को वैध JSON स्ट्रिंग के रूप में प्रदान किया जाना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">पहचानकर्ता</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier.description" approved="yes">
+        <source>This is your unique webhook identifier</source>
+        <target state="final">यह आपका अद्वितीय वेबहुक पहचानकर्ता है।</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">वेबहुक ट्रिगर</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">सीक्रेट</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.description" approved="yes">
+        <source>The secret is mandatory to create a hash that is sent with the request. The secret can be used to verify the payload has not been modified, see the documentation for more details.</source>
+        <target state="final">सीक्रेट अनिवार्य है एक हैश बनाने के लिए, जो अनुरोध के साथ भेजा जाता है। सीक्रेट का उपयोग पेलोड में किए गए संशोधन की पुष्टि करने के लिए किया जा सकता है, अधिक विवरण के लिए दस्तावेज़ीकरण देखें।</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.passwordGenerator" approved="yes">
+        <source>Generate secret</source>
+        <target state="final">सीक्रेट उत्पन्न करें</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.description" approved="yes">
+        <source>Trigger the webhook, ...</source>
+        <target state="final">वेबहुक को ट्रिगर करें, ...</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.select" approved="yes">
+        <source>Select a trigger</source>
+        <target state="final">ट्रिगर का चयन करें</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification" approved="yes">
+        <source>... when a page is added or changed</source>
+        <target state="final">...जब एक पृष्ठ जोड़ा जाता है या परिवर्तित किया जाता है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-login-error" approved="yes">
+        <source>... when an error occurs on log in</source>
+        <target state="final">... जब लॉग इन पर त्रुटि होती है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-mfa-error" approved="yes">
+        <source>... when an error occurs on multi-factor authentication</source>
+        <target state="final">... जब बहुकारक प्रमाणीकरण पर त्रुटि होती है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-added" approved="yes">
+        <source>... when a file is added</source>
+        <target state="final">...जब फ़ाइल जोड़ी जाती है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-removed" approved="yes">
+        <source>... when a file is removed</source>
+        <target state="final">...जब कोई फ़ाइल हटाई जाती है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-updated" approved="yes">
+        <source>... when a file is updated</source>
+        <target state="final">...जब कोई फ़ाइल अपडेट की जाती है</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">संग्रहण PID</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">ऐसा पृष्ठ चुनें जिस पर नया रिकॉर्ड बनाया जाता है।</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the webhook.</source>
+        <target state="final">वेबहुक का सामान्य कॉन्फ़िगरेशन।</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings" approved="yes">
+        <source>HTTP Settings</source>
+        <target state="final">HTTP सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings.description" approved="yes">
+        <source>Advanced HTTP request settings.</source>
+        <target state="final">उन्नत HTTP अनुरोध सेटिंग्स।</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">अतिरिक्त कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected webhook type</source>
+        <target state="final">चयनित वेबहुक प्रकार के लिए विशिष्ट कॉन्फ़िगरेशन।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
