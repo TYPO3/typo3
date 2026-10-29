@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ゴミ箱</target>
+      </trans-unit>
+      <trans-unit id="filter.search" approved="yes">
+        <source>Search term</source>
+        <target state="final">検索キーワード</target>
+      </trans-unit>
+      <trans-unit id="filter.type" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected" approved="yes">
+        <source>Delete {0} records</source>
+        <target state="final">{0} 件のレコードを削除</target>
+      </trans-unit>
+      <trans-unit id="button.expand" approved="yes">
+        <source>Expand record</source>
+        <target state="final">レコードを展開</target>
+      </trans-unit>
+      <trans-unit id="button.dropdown.multiselect" approved="yes">
+        <source>Open context menu for multiselect options</source>
+        <target state="final">複数選択オプションのコンテキストメニューを開く</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">削除の確認</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural" approved="yes">
+        <source>%d records were deleted.</source>
+        <target state="final">%d 件のレコードが削除されました。</target>
+      </trans-unit>
+      <trans-unit id="table.caption.recently_deleted_records" approved="yes">
+        <source>Recently deleted records</source>
+        <target state="final">最近削除されたレコード</target>
+      </trans-unit>
+      <trans-unit id="table.header.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ページID</target>
+      </trans-unit>
+      <trans-unit id="table.header.record" approved="yes">
+        <source>Record</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">最終変更</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate" approved="yes">
+        <source>Created at</source>
+        <target state="final">at 作成</target>
+      </trans-unit>
+      <trans-unit id="table.header.createdBy" approved="yes">
+        <source>Created by</source>
+        <target state="final">by 作成</target>
+      </trans-unit>
+      <trans-unit id="record.userDeleted" approved="yes">
+        <source>[Deleted user] (id=%s)</source>
+        <target state="final">[削除済ユーザ] (id=%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
