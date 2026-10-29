@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Nincs regisztrált modul. Lépjen kapcsolatba a rendszer adminisztrátorral.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Hivatkozások megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Nincs elérhető mappa</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Nincs hozzáférési joga semelyik mappához. Forduljon a rendszer-adminisztrátorhoz a szükséges jogosultságok beállításához.</target>
+      </trans-unit>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Bejelentkezés felhasználónévvel és jelszóval</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Felhasználónév</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Jelszó</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Előző</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Következő</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">A bejelentkezési kísérlet sajnos nem volt sikeres</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Ellenőrizze, hogy a megadott felhasználónév és jelszó helyes-e beleértve a kis- és nagybetűs karaktereket is.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Bejelentkezési adatok ellenőrzése...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Bejelentkezés</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Továbbiak a TYPO3-ról</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logó</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Adományozás</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
