@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">anzuzeigende Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="group.core" approved="yes">
+        <source>System &amp; Infrastructure</source>
+        <target state="final">System &amp; Infrastruktur</target>
+      </trans-unit>
+      <trans-unit id="group.data" approved="yes">
+        <source>Data &amp; Content</source>
+        <target state="final">Daten &amp; Inhalte</target>
+      </trans-unit>
+      <trans-unit id="group.backend" approved="yes">
+        <source>Backend &amp; Users</source>
+        <target state="final">Backend &amp; Benutzer</target>
+      </trans-unit>
+      <trans-unit id="group.sites" approved="yes">
+        <source>Sites</source>
+        <target state="final">Sites</target>
+      </trans-unit>
+      <trans-unit id="group.requestHandling" approved="yes">
+        <source>HTTP &amp; Security</source>
+        <target state="final">HTTP &amp; Sicherheit</target>
+      </trans-unit>
+      <trans-unit id="group.events" approved="yes">
+        <source>Events &amp; Integrations</source>
+        <target state="final">Events &amp; Integrationen</target>
+      </trans-unit>
+      <trans-unit id="group.frameworks" approved="yes">
+        <source>Rendering &amp; Frameworks</source>
+        <target state="final">Rendering &amp; Frameworks</target>
+      </trans-unit>
+      <trans-unit id="group.extensions" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline" approved="yes">
+        <source>Configuration of "%1s"</source>
+        <target state="final">Konfiguration von "%1s"</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" approved="yes">
+        <source>TYPO3_CONF_VARS (Global Configuration)</source>
+        <target state="final">TYPO3_CONF_VARS (Globale Konfiguration)</target>
+      </trans-unit>
+      <trans-unit id="tca" approved="yes">
+        <source>TCA (Table Configuration Array)</source>
+        <target state="final">TCA (Table Configuration Array)</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig" approved="yes">
+        <source>User TSconfig (BE_USER-&gt;getTSConfig())</source>
+        <target state="final">Benutzer-TSconfig (BE_USER-&gt;getTSConfig())</target>
+      </trans-unit>
+      <trans-unit id="beUser" approved="yes">
+        <source>User Settings (BE_USER-&gt;uc)</source>
+        <target state="final">Benutzereinstellungen (BE_USER-&gt;uc)</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Konfiguration für Benutzereinstellungen)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Backendrouten</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP-Middleware (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations" approved="yes">
+        <source>Content Security Policy Mutations</source>
+        <target state="final">Content-Security-Policy-Mutationen</target>
+      </trans-unit>
+      <trans-unit id="sitesTcaConfiguration" approved="yes">
+        <source>Sites: TCA Configuration</source>
+        <target state="final">Sites: TCA-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="sitesYamlConfiguration" approved="yes">
+        <source>Sites: YAML Configuration</source>
+        <target state="final">Sites: YAML-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Event Listeners (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders" approved="yes">
+        <source>MFA Providers</source>
+        <target state="final">MFA Anbieter</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" approved="yes">
+        <source>Soft Reference Parsers</source>
+        <target state="final">Soft-Referenz-Parser</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems" approved="yes">
+        <source>Backend Toolbar Items</source>
+        <target state="final">Backend Toolbar Elemente</target>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage" approved="yes">
+        <source>Symfony Expression Language Providers</source>
+        <target state="final">Symfony ExpressionLanguage Providers</target>
+      </trans-unit>
+      <trans-unit id="translationDomainList" approved="yes">
+        <source>Translation Domain List</source>
+        <target state="final">Übersetzungs-Domänenliste</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares" approved="yes">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target state="final">Doctrine DBAL Driver Middlewares</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">Formular: YAML-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="t3services" approved="yes">
+        <source>T3_SERVICES (Registered Services)</source>
+        <target state="final">T3_SERVICES (Registrierte Dienste)</target>
+      </trans-unit>
+      <trans-unit id="backendModules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Backend-Module</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">Tabellenberechtigungen pro Seitentyp</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">Alle Datensätze durchsuchen</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Suchen</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Volltextsuche</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Datensätze auswählen</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Ergebnisse zählen</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Anfrage erläutern</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">CSV-Export</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" approved="yes">
+        <source>The query returned no results.</source>
+        <target state="final">Die Abfrage lieferte keine Ergebnisse.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions" approved="yes">
+        <source>Query options</source>
+        <target state="final">Abfrageoptionen</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL" approved="yes">
+        <source>Full SQL query</source>
+        <target state="final">Vollständige SQL-Abfrage</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error" approved="yes">
+        <source>SQL error</source>
+        <target state="final">SQL Fehler</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings" approved="yes">
+        <source>Query compilation</source>
+        <target state="final">Zusammenstellung der Abfrage</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage" approved="yes">
+        <source>Load/save query</source>
+        <target state="final">Abfrage laden/speichern</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">Ergebnis</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound" approved="yes">
+        <source>records found.</source>
+        <target state="final">Einträge gefunden.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound" approved="yes">
+        <source>No records found.</source>
+        <target state="final">Keine Datensätze gefunden.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label" approved="yes">
+        <source>Load</source>
+        <target state="final">Laden</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label" approved="yes">
+        <source>Save</source>
+        <target state="final">Speichern</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label" approved="yes">
+        <source>Group by</source>
+        <target state="final">Gruppieren nach</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limit</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label" approved="yes">
+        <source>Result type</source>
+        <target state="final">Ergebnistyp</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label" approved="yes">
+        <source>Order by</source>
+        <target state="final">Sortieren nach</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Absteigend</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label" approved="yes">
+        <source>Search type</source>
+        <target state="final">Suchtyp</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label" approved="yes">
+        <source>Query</source>
+        <target state="final">Abfrage</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label" approved="yes">
+        <source>Fields</source>
+        <target state="final">Felder</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label" approved="yes">
+        <source>Saved queries</source>
+        <target state="final">Gespeicherte Abfragen</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0" approved="yes">
+        <source>[New]</source>
+        <target state="final">[Neu]</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" approved="yes">
+        <source>Negate</source>
+        <target state="final">Negieren</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">SQL-Teile anzeigen</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Formatierte Strings, Labels und Datumsangaben statt der Originalwerte im Ergebnis anzeigen</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+        <target state="final">Originalwerte in Klammern nicht als Präfix für Ergebnisse mit Label verwenden</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Auswahlfeldoptionen für Relationen nach Label und nicht nach Wert sortieren</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Auch gelöschte Einträge anzeigen (mit Wiederherstellen-Schaltfläche)</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">Keine Ergebnisse für „%s“ gefunden.</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword" approved="yes">
+        <source>Enter a search term to search for records</source>
+        <target state="final">Geben Sie einen Suchbegriff ein, um nach Datensätzen zu suchen</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Anzahl</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">Gesamte Datenbank durchsuchen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
