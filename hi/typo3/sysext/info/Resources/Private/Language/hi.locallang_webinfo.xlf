@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">पेजट्री अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">बेसिक सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">कैश और उम्र</target>
+      </trans-unit>
+      <trans-unit id="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">रिकॉर्ड अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts" approved="yes">
+        <source>Layouts</source>
+        <target state="final">लेआउट्स</target>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout" approved="yes">
+        <source>Actual backend layout</source>
+        <target state="final">वास्तविक बैकएंड लेआउट</target>
+      </trans-unit>
+      <trans-unit id="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">लोकलाइज़ेशन अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">पृष्ठ कॉन्टेंट संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage" approved="yes">
+        <source>Edit translated page content</source>
+        <target state="final">अनुवादित पृष्ठ कॉन्टेंट संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">पेज देखें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage" approved="yes">
+        <source>View translated page</source>
+        <target state="final">अनुवादित पृष्ठ देखें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">पृष्ठ प्रॉपर्टीज़ संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties" approved="yes">
+        <source>Edit translated page properties</source>
+        <target state="final">अनुवादित पृष्ठ प्रॉपर्टीज़ को संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">सभी पृष्ठ प्रॉपर्टीज़ संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties" approved="yes">
+        <source>Edit all translated page properties</source>
+        <target state="final">सभी अनुवादित पृष्ठ प्रॉपर्टीज़ संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre" approved="yes">
+        <source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
+        <target state="final">इस भाषा के लिए कई अनुवादित पृष्ठ रिकॉर्ड मौजूद हैं, लेकिन केवल एक की अनुमति है। कृपया अतिरिक्त रिकॉर्ड हटा दें।</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">नया अनुवाद शीर्षक बनाएं</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">कंटेंट एलिमेंट की संख्या</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title" approved="yes">
+        <source>No access</source>
+        <target state="final">कोई पहुंच नहीं</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message" approved="yes">
+        <source>You don't have access to this module.</source>
+        <target state="final">आपको इस मॉड्यूल तक पहुंच नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="info.noContent.message" approved="yes">
+        <source>There are no page information available.</source>
+        <target state="final">कोई पृष्ठ जानकारी उपलब्ध नहीं है ।</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">कृपया पेज ट्री में एक पृष्ठ चुनें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
