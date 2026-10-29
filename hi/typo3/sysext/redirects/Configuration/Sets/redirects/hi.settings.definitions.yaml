@@ -1,0 +1,7 @@
+categories:
+  redirects: null
+settings:
+  redirects.autoUpdateSlugs:
+    default: true
+  redirects.autoCreateRedirects:
+    default: true
