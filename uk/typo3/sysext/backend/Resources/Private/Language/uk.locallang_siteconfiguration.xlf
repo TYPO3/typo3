@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Додайте нову конфігурацію сайту для цього сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Видалити конфігурацію сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Невикористані конфігурації сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Дубльовані точки входу</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">Наступні точки входу використовуються більше одного разу:</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">Дубльовані кореневі сторінки</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">Сторінка з ідентифікатором "%1s" використовується в таких конфігураціях сайту:</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Перейменований ідентифікатор</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Даний ідентифікатор сайту "%1s" уже існує. Її було перейменовано на "%2s". Можливо, ви захочете знову відредагувати сайт і дати йому кращу назву.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Ідентифікатор не змінено</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">Даний ідентифікатор сайту "%1s" уже існує та вказує на інший сайт. Існуючий ідентифікатор "%2s" для цього сайту збережено.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Конфігурацію сайту не збережено</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Поле "%1s" - це обов'язкове поле, але значення не було вказано.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Дубльований код помилки видалено</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Знайдено дві конфігурації обробника помилок для коду помилки "%1s". Це була б недійсна конфігурація, висячу конфігурацію видалено.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Видалено дублікат налаштувань мови</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Знайдено дві мовні конфігурації для мови"%1s. Це може бути недійсна конфігурація, незадіяна була видалена.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
