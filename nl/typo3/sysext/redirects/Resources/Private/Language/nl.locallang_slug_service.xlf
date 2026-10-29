@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title" approved="yes">
+        <source>Slugs updated and redirects created</source>
+        <target state="final">Slugs bijgewerkt en doorverwijzingen aangemaakt</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title" approved="yes">
+        <source>Slugs updated</source>
+        <target state="final">Slugs bijgewerkt</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update" approved="yes">
+        <source>Revert update</source>
+        <target state="final">Bijwerken terugdraaien</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect" approved="yes">
+        <source>Revert redirects only</source>
+        <target state="final">Alleen doorverwijzingen terugdraaien</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Er is een fout opgetreden</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message" approved="yes">
+        <source>Sorry something went wrong.</source>
+        <target state="final">Sorry, er ging iets mis.</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Terugdraaien is gelukt</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message" approved="yes">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target state="final">Alle wijzigingen van slugs van subpagina's zijn teruggedraaid.</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Terugdraaien is gelukt</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message" approved="yes">
+        <source>All created redirects have been reverted.</source>
+        <target state="final">Alle aangemaakte doorverwijzingen zijn teruggedraaid.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
