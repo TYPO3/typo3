@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="linkBrowser" approved="yes">
+        <source>Link Browser</source>
+        <target state="final">लिंक ब्राउज़र</target>
+      </trans-unit>
+      <trans-unit id="openLinkWizard" approved="yes">
+        <source>Open link wizard</source>
+        <target state="final">लिंक विज़ार्ड खोलें</target>
+      </trans-unit>
+      <trans-unit id="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">लिंक हटाएं</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">छवि अपलोड करें</target>
+      </trans-unit>
+      <trans-unit id="update" approved="yes">
+        <source>Update</source>
+        <target state="final">अपडेट</target>
+      </trans-unit>
+      <trans-unit id="path" approved="yes">
+        <source>Path</source>
+        <target state="final">मार्ग</target>
+      </trans-unit>
+      <trans-unit id="page" approved="yes">
+        <source>Page</source>
+        <target state="final">पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="file" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">फ़ोल्डर</target>
+      </trans-unit>
+      <trans-unit id="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">बाहरी URL</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">ईमेल</target>
+      </trans-unit>
+      <trans-unit id="email.subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Subject</target>
+      </trans-unit>
+      <trans-unit id="email.cc" approved="yes">
+        <source>CC</source>
+        <target state="final">सीसी</target>
+      </trans-unit>
+      <trans-unit id="email.bcc" approved="yes">
+        <source>BCC</source>
+        <target state="final">बीसीसी</target>
+      </trans-unit>
+      <trans-unit id="email.body" approved="yes">
+        <source>Body</source>
+        <target state="final">मुख्य भाग</target>
+      </trans-unit>
+      <trans-unit id="telephone" approved="yes">
+        <source>Telephone</source>
+        <target state="final">टेलीफ़ोन</target>
+      </trans-unit>
+      <trans-unit id="special" approved="yes">
+        <source>Special</source>
+        <target state="final">विशेष</target>
+      </trans-unit>
+      <trans-unit id="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">फ़ोल्डर ट्री</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>Files</source>
+        <target state="final">फ़ाइलें</target>
+      </trans-unit>
+      <trans-unit id="folders" approved="yes">
+        <source>Folders</source>
+        <target state="final">फ़ोल्डर</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">लक्ष्य</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" approved="yes">
+        <source>Relationship</source>
+        <target state="final">संबंध</target>
+      </trans-unit>
+      <trans-unit id="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">सीएसएस-क्लास</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">अतिरिक्त लिंक पैरामीटर</target>
+      </trans-unit>
+      <trans-unit id="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">नया विंडो</target>
+      </trans-unit>
+      <trans-unit id="top" approved="yes">
+        <source>Top</source>
+        <target state="final">ऊपर</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">कोई नहीं - नया लिंक!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">पृष्ठ ट्री</target>
+      </trans-unit>
+      <trans-unit id="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">सामग्री तत्व</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">रिकॉर्ड चुनें</target>
+      </trans-unit>
+      <trans-unit id="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">सूची में जोड़ें...</target>
+      </trans-unit>
+      <trans-unit id="info" approved="yes">
+        <source>Info</source>
+        <target state="final">जानकारी</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">ईमेल पता</target>
+      </trans-unit>
+      <trans-unit id="telephoneNumber" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">टेलीफ़ोन नंबर</target>
+      </trans-unit>
+      <trans-unit id="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">लिंक सेट करें</target>
+      </trans-unit>
+      <trans-unit id="linkTo" approved="yes">
+        <source>Link to %s</source>
+        <target state="final">%s के लिए लिंक</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">छवि यहाँ दिखाये गए से अधिक बड़ी है! फुल साइज़ छवियों के साथ पृष्ठ फिर से ड्रॉ करने के लिए क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">अपनी छवि को खोजें और क्लिक करें और फिर उसे मुख्य विंडो में एडिटर में खींचकर छोड़ें।</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">आप इस फ़ोल्डर से छवियाँ नहीं खींच सकते (पीला) क्योंकि यह सर्वर पर आंतरिक है।</target>
+      </trans-unit>
+      <trans-unit id="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">वर्तमान लिंक</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">त्रुटि: फ़ाइल पथ (%s) में अमान्य वर्ण पाया गया। फ़ाइल जोड़ी नहीं जा सकती है!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">चयन टॉगल करें</target>
+      </trans-unit>
+      <trans-unit id="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">चयन आयात करें</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" approved="yes">
+        <source>Record selector</source>
+        <target state="final">रिकॉर्ड चयनकर्ता</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" approved="yes">
+        <source>File selector</source>
+        <target state="final">फ़ाइल सेलेक्टर</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" approved="yes">
+        <source>Folder selector</source>
+        <target state="final">फ़ोल्डर सेलेक्टर</target>
+      </trans-unit>
+      <trans-unit id="createFolder" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">नया फ़ोल्डर बनाएं</target>
+      </trans-unit>
+      <trans-unit id="page_id" approved="yes">
+        <source>Page ID</source>
+        <target state="final">पृष्ठ आईडी</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Force download</source>
+        <target state="final">बलपूर्वक डाउनलोड करें</target>
+      </trans-unit>
+      <trans-unit id="download.customFilename" approved="yes">
+        <source>Custom filename</source>
+        <target state="final">कस्टम फ़ाइल नाम</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">थंबनेल दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="no_files" approved="yes">
+        <source>No files found in %s</source>
+        <target state="final">कोई फ़ाइल %s में नहीं मिली</target>
+      </trans-unit>
+      <trans-unit id="no_files_search" approved="yes">
+        <source>No files found in %s for "%s"</source>
+        <target state="final">"%s" के लिए %s में कोई फ़ाइल नहीं मिली।</target>
+      </trans-unit>
+      <trans-unit id="recordNotFound" approved="yes">
+        <source>Record not found</source>
+        <target state="final">रिकॉर्ड नहीं मिला</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
