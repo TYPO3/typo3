@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="general" approved="yes">
+        <source>General</source>
+        <target state="final">जनरल</target>
+      </trans-unit>
+      <trans-unit id="access" approved="yes">
+        <source>Access</source>
+        <target state="final">पहुंच</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" approved="yes">
+        <source>Access capabilities</source>
+        <target state="final">पहुँच क्षमताएँ</target>
+      </trans-unit>
+      <trans-unit id="account_security" approved="yes">
+        <source>Account security</source>
+        <target state="final">खाता सुरक्षा</target>
+      </trans-unit>
+      <trans-unit id="backend_appearance" approved="yes">
+        <source>Backend appearance</source>
+        <target state="final">बैकएंड का स्वरूप</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">श्रेणियाँ</target>
+      </trans-unit>
+      <trans-unit id="capabilities" approved="yes">
+        <source>Capabilities</source>
+        <target state="final">क्षमताएं</target>
+      </trans-unit>
+      <trans-unit id="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">नोट्स</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">विस्तारित किया गया</target>
+      </trans-unit>
+      <trans-unit id="appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">रूप-रंग</target>
+      </trans-unit>
+      <trans-unit id="behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">व्यवहार</target>
+      </trans-unit>
+      <trans-unit id="images" approved="yes">
+        <source>Images</source>
+        <target state="final">छवियाँ</target>
+      </trans-unit>
+      <trans-unit id="accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">सुलभता</target>
+      </trans-unit>
+      <trans-unit id="text" approved="yes">
+        <source>Text</source>
+        <target state="final">पाठ</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Media</source>
+        <target state="final">मीडिया</target>
+      </trans-unit>
+      <trans-unit id="plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">प्लगइन</target>
+      </trans-unit>
+      <trans-unit id="personalization" approved="yes">
+        <source>Personalization</source>
+        <target state="final">निजीकरण</target>
+      </trans-unit>
+      <trans-unit id="metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration" approved="yes">
+        <source>Reset configuration</source>
+        <target state="final">कॉन्फ़िगरेशन पुनः सेट करें</target>
+      </trans-unit>
+      <trans-unit id="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">संसाधन</target>
+      </trans-unit>
+      <trans-unit id="seo" approved="yes">
+        <source>SEO</source>
+        <target state="final">SEO</target>
+      </trans-unit>
+      <trans-unit id="socialmedia" approved="yes">
+        <source>Social Media</source>
+        <target state="final">सोशल मीडिया</target>
+      </trans-unit>
+      <trans-unit id="options" approved="yes">
+        <source>Options</source>
+        <target state="final">विकल्प</target>
+      </trans-unit>
+      <trans-unit id="audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">ऑडियो</target>
+      </trans-unit>
+      <trans-unit id="video" approved="yes">
+        <source>Video</source>
+        <target state="final">वीडियो</target>
+      </trans-unit>
+      <trans-unit id="camera" approved="yes">
+        <source>Camera</source>
+        <target state="final">कैमरा</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">अनुमतियां</target>
+      </trans-unit>
+      <trans-unit id="mounts" approved="yes">
+        <source>Mounts</source>
+        <target state="final">Mounts</target>
+      </trans-unit>
+      <trans-unit id="personaldata" approved="yes">
+        <source>Personal Data</source>
+        <target state="final">व्यक्तिगत डेटा</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>Items</source>
+        <target state="final">आइटम्स</target>
+      </trans-unit>
+      <trans-unit id="recordpermissions" approved="yes">
+        <source>Record Permissions</source>
+        <target state="final">रिकॉर्ड अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="modulepermissions" approved="yes">
+        <source>Module Permissions</source>
+        <target state="final">मॉड्यूल अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="advancedoptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">उन्नत विकल्प</target>
+      </trans-unit>
+      <trans-unit id="timing" approved="yes">
+        <source>Timing</source>
+        <target state="final">समय</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
