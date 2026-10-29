@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" approved="yes">
+        <source>Indexed search</source>
+        <target state="final">Indeksert søk</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" approved="yes">
+        <source>Indexed search statistics</source>
+        <target state="final">Statistikk for indeksert søk</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" approved="yes">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="final">Extension %s vil bli ignorert.</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" approved="yes">
+        <source>PDF tools disabled</source>
+        <target state="final">PDFverktøy slått av</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed" approved="yes">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target state="final">PDFtoText slo feil på dette dokumentet: '%s'. Muligens er pdf-filen løåst for utskrift eller kryptert</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound" approved="yes">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target state="final">'catdoc'verktøy for lesing av Word-filer ble ikke funnet i sti '%scatdoc'</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
