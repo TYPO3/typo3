@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">نشان دادن کلیپ بورد</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">چسباندن در محتویات کلیپ بورد</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">درون چسباندن: محتویات کلیپ بورد درون پوشه اضافه شد</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">حجم</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">نوع</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">فایل‌ها</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
