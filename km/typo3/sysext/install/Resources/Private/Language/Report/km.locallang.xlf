@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">ត្រួតពិនិត្យ​បរិស្ថាន​ប្រព័ន្ធ</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ត្រួតពិនិត្យ​បរិស្ថាន​ប្រព័ន្ធ​មានកំហុសឆ្គង។​កំហុសឆ្គង​ទាំងនោះ​បង្ក​ផលប៉ះពាល់​ដល់​មុខងារ​និង​​ស្ថេរភាព​​​ប្រព័ន្ធ​គ្រប់គ្រង​មាតិកា TYPO3 របស់អ្នក។​សូម​ពិនិត្យ "បរិស្ថាន​ប្រព័ន្ធ" ក្នុង​​ឧបករណ៍​តម្លើង​ដើម្បី​លម្អិត។</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ត្រួតពិនិត្យ​បរិស្ថាន​ប្រព័ន្ធ​មាន​ការព្រមាន។​ការព្រមាន​ទាំងនោះ​អាច​បង្ក​ផលអវិជ្ជមាន​ដល់​មុខងារ​​និង​​ស្ថេរភាព​​ប្រព័ន្ធ​​គ្រប់គ្រង​​មាតិកា TYPO3 របស់អ្នក។សូម​ពិនិត្យ "បរិស្ថាន​ប្រព័ន្ធ" ក្នុង​​ឧបករណ៍​តម្លើង​ដើម្បី​លម្អិត។</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ត្រួតពិនិត្យ​បរិស្ថាន​ប្រព័ន្ថ​មាន​ការកត់សម្គាល់។​កំណត់សម្គាល់​ទាំងនោះ​មិនបង្ក​រ​បញ្ហា​ដល់​មុខងារ​និង​​ស្ថេរភាព​​ប្រព័ន្ធ​​គ្រប់គ្រង​​មាតិកា TYPO3 របស់អ្នក។​សូម​ពិនិត្យ "បរិស្ថាន​ប្រព័ន្ធ" ក្នុង​​ឧបករណ៍​តម្លើង​ដើម្បី​លម្អិត។</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok">
+        <source/>
+      </trans-unit>
+      <trans-unit id="environment.status.message.info">
+        <source/>
+      </trans-unit>
+      <trans-unit id="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">ឯកសារ​ប្រព័ន្ធ</target>
+      </trans-unit>
+      <trans-unit id="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">អាចសរសេរចូល</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">សឺម៊ី​ដែលត្រូវការ​​មិនមាន</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">សឺម៊ី​មិនមាន​</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">សឺម៊ី​គួរ​តែ​​អាចសរសេរចូល</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">សឺម៊ី​មិនអាច​សរសេរចូល</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s មិនមាន។</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s មិនមាន​ហើយ​មិនអាច​​បង្កើតបាន។</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">គួរ​សម្គាល់​ផងដែរ​​ថា​​​គួរ​តែ​អាចសរសេរ​ចូលបាន​ ប្រសិនបើ​​ពិត​ជាមាន។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
