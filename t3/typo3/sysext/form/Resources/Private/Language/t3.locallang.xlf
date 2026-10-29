@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText">
+        <source>Uploaded image</source>
+        <target>crwdns56900:0crwdne56900:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560910">
+        <source>This field is mandatory.</source>
+        <target>crwdns56906:0crwdne56906:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560718">
+        <source>This field is mandatory.</source>
+        <target>crwdns56908:0crwdne56908:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992400">
+        <source>This field is mandatory.</source>
+        <target>crwdns56910:0crwdne56910:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992453">
+        <source>This field is mandatory.</source>
+        <target>crwdns56912:0crwdne56912:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238087674">
+        <source>You must enter a valid date.</source>
+        <target>crwdns56914:0crwdne56914:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221551320">
+        <source>You can only enter letters or digits.</source>
+        <target>crwdns56916:0crwdne56916:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565786">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target>crwdns56918:0crwdne56918:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238110957">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target>crwdns56920:0crwdne56920:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1269883975">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target>crwdns56922:0crwdne56922:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1428504122">
+        <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+        <target>crwdns56924:0%scrwdnd56924:0%scrwdne56924:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108068">
+        <source>You must enter text which is longer than %s characters.</source>
+        <target>crwdns56926:0%scrwdne56926:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108069">
+        <source>You must enter text which is no longer than %s characters.</source>
+        <target>crwdns56928:0%scrwdne56928:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221559976">
+        <source>You must enter a valid email address.</source>
+        <target>crwdns56930:0crwdne56930:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560494">
+        <source>You must enter a valid number.</source>
+        <target>crwdns56932:0crwdne56932:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560288">
+        <source>You must enter a valid floating point number.</source>
+        <target>crwdns56934:0crwdne56934:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221563685">
+        <source>You must enter a valid number.</source>
+        <target>crwdns56936:0crwdne56936:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221561046">
+        <source>You must enter a valid number between %s and %s.</source>
+        <target>crwdns56938:0%scrwdnd56938:0%scrwdne56938:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565130">
+        <source>You must enter a valid value. Please refer to the description of this field.</source>
+        <target>crwdns56940:0crwdne56940:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002976">
+        <source>You must enter a countable subject.</source>
+        <target>crwdns56942:0crwdne56942:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002994">
+        <source>You must select between %s to %s elements.</source>
+        <target>crwdns56944:0%scrwdnd56944:0%scrwdne56944:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708997">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target>crwdns56946:0crwdne56946:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708998">
+        <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+        <target>crwdns56948:0%scrwdne56948:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1613126216">
+        <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+        <target>crwdns134306:0%scrwdne134306:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1476396435">
+        <source>You must NOT fill this field.</source>
+        <target>crwdns56950:0crwdne56950:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505303626">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target>crwdns56952:0crwdne56952:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305752">
+        <source>You must select a file that is larger than %s in size.</source>
+        <target>crwdns56954:0%scrwdne56954:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305753">
+        <source>You must select a file that is no larger than %s.</source>
+        <target>crwdns56956:0%scrwdne56956:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293685">
+        <source>You must enter an instance of \DateTime.</source>
+        <target>crwdns211286:0crwdne211286:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293686">
+        <source>You must select a date before %s.</source>
+        <target>crwdns56958:0%scrwdne56958:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293687">
+        <source>You must select a date after %s.</source>
+        <target>crwdns56960:0%scrwdne56960:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1748345955">
+        <source>This field cannot be validated due to a configuration error. Please contact the website owner.</source>
+        <target>crwdns393754:0crwdne393754:0</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1556283177">
+        <source>Password does not match confirmation</source>
+        <target>crwdns56962:0crwdne56962:0</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_title">
+        <source>Form</source>
+        <target>crwdns56964:0crwdne56964:0</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_description">
+        <source>A form that allows website users to submit messages.</source>
+        <target>crwdns56966:0crwdne56966:0</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530345">
+        <source>Maximum file size exceeded.</source>
+        <target>crwdns56968:0crwdne56968:0</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530346">
+        <source>Upload failed. The file was only partially uploaded, please try again.</source>
+        <target>crwdns56970:0crwdne56970:0</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530347">
+        <source>No file was uploaded.</source>
+        <target>crwdns56972:0crwdne56972:0</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530348">
+        <source>Upload failed.</source>
+        <target>crwdns56974:0crwdne56974:0</target>
+      </trans-unit>
+      <trans-unit id="upload.remove">
+        <source>Remove</source>
+        <target>crwdns393020:0crwdne393020:0</target>
+      </trans-unit>
+      <trans-unit id="form.configuration.module.provider">
+        <source>Form: YAML Configuration</source>
+        <target>crwdns124578:0crwdne124578:0</target>
+      </trans-unit>
+      <trans-unit id="form.finisher.error">
+        <source>Your form could not be submitted due to a technical issue. It might be a temporary issue, but can also be related to your input.</source>
+        <target>crwdns378246:0crwdne378246:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous">
+        <source>Previous</source>
+        <target>crwdns141731:0crwdne141731:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.next">
+        <source>Next</source>
+        <target>crwdns141733:0crwdne141733:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.first">
+        <source>First</source>
+        <target>crwdns141735:0crwdne141735:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.last">
+        <source>Last</source>
+        <target>crwdns141737:0crwdne141737:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.forms">
+        <source>Forms</source>
+        <target>crwdns141739:0crwdne141739:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.page">
+        <source>Page</source>
+        <target>crwdns141741:0crwdne141741:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns141743:0crwdne141743:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
