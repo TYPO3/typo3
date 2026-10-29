@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="formManager.new_form_name" approved="yes">
+        <source>New form name</source>
+        <target state="final">Nowa nazwa formularza</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_prototype" approved="yes">
+        <source>Form prototype</source>
+        <target state="final">Prototyp formularza</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_copied" approved="yes">
+        <source>Copied form</source>
+        <target state="final">Skopiowany formularz</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anuluj</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" approved="yes">
+        <source>Create new form</source>
+        <target state="final">Utwórz nowy formularz</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">Ustawienia</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">Utwórz</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">Nie można zapisać formularza</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" approved="yes">
+        <source>Duplicate form "{0}"</source>
+        <target state="final">Duplikuj formularz "{0}"</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Duplicate</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0" approved="yes">
+        <source>Blank form</source>
+        <target state="final">Pusty formularz</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0" approved="yes">
+        <source>Predefined form</source>
+        <target state="final">Predefiniowany formularz</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
