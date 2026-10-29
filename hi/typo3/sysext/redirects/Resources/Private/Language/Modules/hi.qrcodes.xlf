@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>QR Codes</source>
+        <target state="final">QR कोड</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>QR Codes Administration</source>
+        <target state="final">QR कोड प्रशासन</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Generate and customize QR codes to provide quick, scannable access to your digital content.</source>
+        <target state="final">अपने डिजिटल कंटेंट तक त्वरित और स्कैन करने योग्य पहुंच प्रदान करने के लिए QR कोड जेनरेट और कस्टमाइज़ करें।</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>QR Code Management</source>
+        <target state="final">QR कोड प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add QR Code</source>
+        <target state="final">QR कोड जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message" approved="yes">
+        <source>No QR Code could be found with the current set of filters applied.</source>
+        <target state="final">वर्तमान में लागू किए गए फ़िल्टरों के साथ कोई QR कोड नहीं मिल सका।</target>
+      </trans-unit>
+      <trans-unit id="not_found.title" approved="yes">
+        <source>No QR Codes found</source>
+        <target state="final">कोई QR कोड नहीं मिला</target>
+      </trans-unit>
+      <trans-unit id="not_found.message" approved="yes">
+        <source>There are currently no QR Codes found in the database.</source>
+        <target state="final">डेटाबेस में फिलहाल कोई QR कोड नहीं मिला है।</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create new QR Code</source>
+        <target state="final">नया QR कोड बनाएं</target>
+      </trans-unit>
+      <trans-unit id="delete.title" approved="yes">
+        <source>Delete QR Codes</source>
+        <target state="final"> QR कोड हटाएं</target>
+      </trans-unit>
+      <trans-unit id="delete.message" approved="yes">
+        <source>Delete all marked QR Codes permanently? You cannot undo this action.</source>
+        <target state="final">क्या आप सभी चिह्नित QR कोड को स्थायी रूप से हटाना चाहते हैं? आप इस कार्रवाई को पूर्ववत नहीं कर सकते।</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">डाउनलोड</target>
+      </trans-unit>
+      <trans-unit id="show" approved="yes">
+        <source>Show QR Code</source>
+        <target state="final">QR कोड दिखाएं</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
