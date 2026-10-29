@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">कंटेंट सिक्योरिटी पॉलिसी </target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows to manage Content Security Policy settings.</source>
+        <target state="final">कंटेंट सिक्योरिटी पॉलिसी सेटिंग्स को मैनेज करने की अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">कंटेंट सिक्योरिटी पॉलिसी </target>
+      </trans-unit>
+      <trans-unit id="module.headline" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">कंटेंट सिक्योरिटी पॉलिसी </target>
+      </trans-unit>
+      <trans-unit id="module.introtext" approved="yes">
+        <source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
+        <target state="final">मौजूदा कंटेंट सिक्योरिटी पॉलिसी म्यूटेशन की लिस्ट %s मॉड्यूल में देखी जा सकती है।</target>
+      </trans-unit>
+      <trans-unit id="module.introtextLowlevelMissing" approved="yes">
+        <source>If you install the core EXT:lowlevel extension, you can see a list of the existing Content Security Policy Mutations in the %s module.</source>
+        <target state="final">अगर आप कोर EXT:lowlevel एक्सटेंशन इंस्टॉल करते हैं, तो आप %s मॉड्यूल में मौजूदा कंटेंट सिक्योरिटी पॉलिसी म्यूटेशन की लिस्ट देख सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="module.introtext.moduleName" approved="yes">
+        <source>Configuration</source>
+        <target state="final">विन्यास</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.title" approved="yes">
+        <source>Disabled feature flags</source>
+        <target state="final">अक्षम सुविधा ध्वज</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.message" approved="yes">
+        <source>The following feature flags are currently disabled and won't be shown in this module:</source>
+        <target state="final">ये फ़ीचर फ़्लैग अभी डिसेबल हैं और इस मॉड्यूल में नहीं दिखाए जाएँगे:</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.title" approved="yes">
+        <source>Reporting</source>
+        <target state="final">रिपोर्टिंग</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.message" approved="yes">
+        <source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
+        <target state="final">रिपोर्टिंग अभी इन कस्टम एंडपॉइंट्स के साथ कॉन्फ़िगर की गई है और इस मॉड्यूल में नहीं दिखाई जाएगी:</target>
+      </trans-unit>
+      <trans-unit id="module.label.noEntriesAvailable" approved="yes">
+        <source>No entries available.</source>
+        <target state="final">कोई प्रविष्टि उपलब्ध नहीं है.</target>
+      </trans-unit>
+      <trans-unit id="module.label.reports" approved="yes">
+        <source>Reports</source>
+        <target state="final">रिपोर्टों</target>
+      </trans-unit>
+      <trans-unit id="module.label.created" approved="yes">
+        <source>Created</source>
+        <target state="final">बनाया था</target>
+      </trans-unit>
+      <trans-unit id="module.label.scope" approved="yes">
+        <source>Scope</source>
+        <target state="final">दायरा</target>
+      </trans-unit>
+      <trans-unit id="module.label.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">सभी हटाएं</target>
+      </trans-unit>
+      <trans-unit id="module.label.violation" approved="yes">
+        <source>Violation</source>
+        <target state="final">उल्लंघन</target>
+      </trans-unit>
+      <trans-unit id="module.label.uri" approved="yes">
+        <source>URI</source>
+        <target state="final">URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">सभी</target>
+      </trans-unit>
+      <trans-unit id="module.label.details" approved="yes">
+        <source>Details</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+      <trans-unit id="module.label.disposition" approved="yes">
+        <source>Disposition</source>
+        <target state="final">प्रकृति</target>
+      </trans-unit>
+      <trans-unit id="module.label.directive" approved="yes">
+        <source>Directive</source>
+        <target state="final">आदेश</target>
+      </trans-unit>
+      <trans-unit id="module.label.blocked_uri" approved="yes">
+        <source>Blocked URI</source>
+        <target state="final">अवरुद्ध URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.document_uri" approved="yes">
+        <source>Document URI</source>
+        <target state="final">दस्तावेज़ URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.sample" approved="yes">
+        <source>Sample</source>
+        <target state="final">नमूना</target>
+      </trans-unit>
+      <trans-unit id="module.label.user_agent" approved="yes">
+        <source>User Agent</source>
+        <target state="final">उपयोगकर्ता एजेंट</target>
+      </trans-unit>
+      <trans-unit id="module.label.uuid" approved="yes">
+        <source>UUID</source>
+        <target state="final">UUID</target>
+      </trans-unit>
+      <trans-unit id="module.label.source_file" approved="yes">
+        <source>Source File</source>
+        <target state="final">स्रोत दस्तावेज</target>
+      </trans-unit>
+      <trans-unit id="module.label.summary" approved="yes">
+        <source>Summary</source>
+        <target state="final">सारांश</target>
+      </trans-unit>
+      <trans-unit id="module.label.suggestions" approved="yes">
+        <source>Suggestions</source>
+        <target state="final">सुझाव</target>
+      </trans-unit>
+      <trans-unit id="module.label.guide.no_record_selected" approved="yes">
+        <source>Select a row to see more information.</source>
+        <target state="final">अधिक जानकारी देखने के लिए एक पंक्ति चुनें।</target>
+      </trans-unit>
+      <trans-unit id="module.label.showDetails" approved="yes">
+        <source>Show details for "%s" violation with URI: %s</source>
+        <target state="final">URI: %s के साथ "%s" उल्लंघन का विवरण दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="module.button.apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">आवेदन करना</target>
+      </trans-unit>
+      <trans-unit id="module.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">बंद करना</target>
+      </trans-unit>
+      <trans-unit id="module.button.mute" approved="yes">
+        <source>Mute</source>
+        <target state="final">म्यूट </target>
+      </trans-unit>
+      <trans-unit id="module.button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाना</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
