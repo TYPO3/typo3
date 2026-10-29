@@ -1,0 +1,23 @@
+categories:
+  form: null
+  form.templates:
+    parent: crwdns416939:0crwdne416939:0
+  form.translation:
+    parent: crwdns416941:0crwdne416941:0
+settings:
+  form.templates.templateRootPath:
+    default: 'crwdns416943:0crwdne416943:0'
+    type: crwdns416945:0crwdne416945:0
+    category: crwdns416947:0crwdne416947:0
+  form.templates.partialRootPath:
+    default: 'crwdns416949:0crwdne416949:0'
+    type: crwdns416951:0crwdne416951:0
+    category: crwdns416953:0crwdne416953:0
+  form.templates.layoutRootPath:
+    default: 'crwdns416955:0crwdne416955:0'
+    type: crwdns416957:0crwdne416957:0
+    category: crwdns416959:0crwdne416959:0
+  form.translation.translationFile:
+    default: 'crwdns416961:0crwdne416961:0'
+    type: crwdns416963:0crwdne416963:0
+    category: crwdns416965:0crwdne416965:0
