@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label">
+        <source>Configuration to show</source>
+        <target>crwdns312870:0crwdne312870:0</target>
+      </trans-unit>
+      <trans-unit id="group.core">
+        <source>System &amp; Infrastructure</source>
+        <target>crwdns415579:0crwdne415579:0</target>
+      </trans-unit>
+      <trans-unit id="group.data">
+        <source>Data &amp; Content</source>
+        <target>crwdns415581:0crwdne415581:0</target>
+      </trans-unit>
+      <trans-unit id="group.backend">
+        <source>Backend &amp; Users</source>
+        <target>crwdns415583:0crwdne415583:0</target>
+      </trans-unit>
+      <trans-unit id="group.sites">
+        <source>Sites</source>
+        <target>crwdns415585:0crwdne415585:0</target>
+      </trans-unit>
+      <trans-unit id="group.requestHandling">
+        <source>HTTP &amp; Security</source>
+        <target>crwdns415587:0crwdne415587:0</target>
+      </trans-unit>
+      <trans-unit id="group.events">
+        <source>Events &amp; Integrations</source>
+        <target>crwdns415589:0crwdne415589:0</target>
+      </trans-unit>
+      <trans-unit id="group.frameworks">
+        <source>Rendering &amp; Frameworks</source>
+        <target>crwdns415591:0crwdne415591:0</target>
+      </trans-unit>
+      <trans-unit id="group.extensions">
+        <source>Extensions</source>
+        <target>crwdns415593:0crwdne415593:0</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline">
+        <source>Configuration of "%1s"</source>
+        <target>crwdns335680:0%1scrwdne335680:0</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars">
+        <source>TYPO3_CONF_VARS (Global Configuration)</source>
+        <target>crwdns415595:0crwdne415595:0</target>
+      </trans-unit>
+      <trans-unit id="tca">
+        <source>TCA (Table Configuration Array)</source>
+        <target>crwdns415597:0crwdne415597:0</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig">
+        <source>User TSconfig (BE_USER-&gt;getTSConfig())</source>
+        <target>crwdns415599:0crwdne415599:0</target>
+      </trans-unit>
+      <trans-unit id="beUser">
+        <source>User Settings (BE_USER-&gt;uc)</source>
+        <target>crwdns415601:0crwdne415601:0</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target>crwdns60218:0$GLOBALS['TYPO3_USER_SETTINGS']crwdne60218:0</target>
+      </trans-unit>
+      <trans-unit id="routes">
+        <source>Backend Routes</source>
+        <target>crwdns60220:0crwdne60220:0</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target>crwdns60222:0crwdne60222:0</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations">
+        <source>Content Security Policy Mutations</source>
+        <target>crwdns297526:0crwdne297526:0</target>
+      </trans-unit>
+      <trans-unit id="sitesTcaConfiguration">
+        <source>Sites: TCA Configuration</source>
+        <target>crwdns415603:0crwdne415603:0</target>
+      </trans-unit>
+      <trans-unit id="sitesYamlConfiguration">
+        <source>Sites: YAML Configuration</source>
+        <target>crwdns415605:0crwdne415605:0</target>
+      </trans-unit>
+      <trans-unit id="siteSets">
+        <source>Sites: Sets</source>
+        <target>crwdns417909:0crwdne417909:0</target>
+      </trans-unit>
+      <trans-unit id="eventListeners">
+        <source>Event Listeners (PSR-14)</source>
+        <target>crwdns60226:0crwdne60226:0</target>
+      </trans-unit>
+      <trans-unit id="mfaProviders">
+        <source>MFA Providers</source>
+        <target>crwdns415607:0crwdne415607:0</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers">
+        <source>Soft Reference Parsers</source>
+        <target>crwdns141889:0crwdne141889:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems">
+        <source>Backend Toolbar Items</source>
+        <target>crwdns211312:0crwdne211312:0</target>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage">
+        <source>Symfony Expression Language Providers</source>
+        <target>crwdns211314:0crwdne211314:0</target>
+      </trans-unit>
+      <trans-unit id="translationDomainList">
+        <source>Translation Domain List</source>
+        <target>crwdns377912:0crwdne377912:0</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target>crwdns301426:0crwdne301426:0</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration">
+        <source>Form: YAML Configuration</source>
+        <target>crwdns85351:0crwdne85351:0</target>
+      </trans-unit>
+      <trans-unit id="t3services">
+        <source>T3_SERVICES (Registered Services)</source>
+        <target>crwdns415609:0crwdne415609:0</target>
+      </trans-unit>
+      <trans-unit id="backendModules">
+        <source>Backend Modules</source>
+        <target>crwdns211316:0crwdne211316:0</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes">
+        <source>Table permissions per page type</source>
+        <target>crwdns225702:0crwdne225702:0</target>
+      </trans-unit>
+      <trans-unit id="search.submit">
+        <source>Search All Records</source>
+        <target>crwdns292561:0crwdne292561:0</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search">
+        <source>Search</source>
+        <target>crwdns60244:0crwdne60244:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch">
+        <source>Full search</source>
+        <target>crwdns60262:0crwdne60262:0</target>
+      </trans-unit>
+      <trans-unit id="selectRecords">
+        <source>Select records</source>
+        <target>crwdns60272:0crwdne60272:0</target>
+      </trans-unit>
+      <trans-unit id="countResults">
+        <source>Count results</source>
+        <target>crwdns60274:0crwdne60274:0</target>
+      </trans-unit>
+      <trans-unit id="explainQuery">
+        <source>Explain query</source>
+        <target>crwdns60276:0crwdne60276:0</target>
+      </trans-unit>
+      <trans-unit id="csvExport">
+        <source>CSV Export</source>
+        <target>crwdns60278:0crwdne60278:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage">
+        <source>The query returned no results.</source>
+        <target>crwdns333144:0crwdne333144:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions">
+        <source>Query options</source>
+        <target>crwdns333146:0crwdne333146:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL">
+        <source>Full SQL query</source>
+        <target>crwdns333148:0crwdne333148:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error">
+        <source>SQL error</source>
+        <target>crwdns333150:0crwdne333150:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings">
+        <source>Query compilation</source>
+        <target>crwdns333152:0crwdne333152:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage">
+        <source>Load/save query</source>
+        <target>crwdns333154:0crwdne333154:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result">
+        <source>Result</source>
+        <target>crwdns333156:0crwdne333156:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound">
+        <source>records found.</source>
+        <target>crwdns333158:0crwdne333158:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound">
+        <source>No records found.</source>
+        <target>crwdns333160:0crwdne333160:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label">
+        <source>Delete</source>
+        <target>crwdns333162:0crwdne333162:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label">
+        <source>Load</source>
+        <target>crwdns333164:0crwdne333164:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label">
+        <source>Save</source>
+        <target>crwdns333166:0crwdne333166:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label">
+        <source>Group by</source>
+        <target>crwdns333168:0crwdne333168:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label">
+        <source>Limit</source>
+        <target>crwdns333170:0crwdne333170:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label">
+        <source>Result type</source>
+        <target>crwdns333172:0crwdne333172:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label">
+        <source>Order by</source>
+        <target>crwdns333174:0crwdne333174:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending">
+        <source>Descending</source>
+        <target>crwdns333176:0crwdne333176:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label">
+        <source>Search type</source>
+        <target>crwdns333178:0crwdne333178:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label">
+        <source>Query</source>
+        <target>crwdns333180:0crwdne333180:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label">
+        <source>Fields</source>
+        <target>crwdns333182:0crwdne333182:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label">
+        <source>Table</source>
+        <target>crwdns333184:0crwdne333184:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label">
+        <source>Saved queries</source>
+        <target>crwdns333186:0crwdne333186:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0">
+        <source>[New]</source>
+        <target>crwdns333188:0crwdne333188:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label">
+        <source>Title</source>
+        <target>crwdns333190:0crwdne333190:0</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate">
+        <source>Negate</source>
+        <target>crwdns342942:0crwdne342942:0</target>
+      </trans-unit>
+      <trans-unit id="showSQL">
+        <source>Show SQL parts</source>
+        <target>crwdns60308:0crwdne60308:0</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target>crwdns60310:0crwdne60310:0</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+        <target>crwdns355550:0crwdne355550:0</target>
+      </trans-unit>
+      <trans-unit id="sortOptions">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target>crwdns60314:0crwdne60314:0</target>
+      </trans-unit>
+      <trans-unit id="showDeleted">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target>crwdns60316:0crwdne60316:0</target>
+      </trans-unit>
+      <trans-unit id="no_results">
+        <source>No results found for "%s".</source>
+        <target>crwdns292563:0%scrwdne292563:0</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword">
+        <source>Enter a search term to search for records</source>
+        <target>crwdns297688:0crwdne297688:0</target>
+      </trans-unit>
+      <trans-unit id="count">
+        <source>Count</source>
+        <target>crwdns60366:0crwdne60366:0</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database">
+        <source>Search whole Database</source>
+        <target>crwdns60398:0crwdne60398:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
