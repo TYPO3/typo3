@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Fillinker</target>
+      </trans-unit>
+      <trans-unit id="list.report.tooManyRedirects" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">For mange redirigeringer.</target>
+      </trans-unit>
+      <!-- external linktype check errors -->
+      <!-- HTTP status code error messages -->
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <trans-unit id="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <!-- Modal content -->
+    </body>
+  </file>
+</xliff>
