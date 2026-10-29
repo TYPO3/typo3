@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">Titre pour les moteurs de recherche</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Ne pas indexer</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">Indexer cette page</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" approved="yes">
+        <source>No follow</source>
+        <target state="final">Ne pas suivre</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" approved="yes">
+        <source>Follow this page</source>
+        <target state="final">Suivre cette page</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" approved="yes">
+        <source>Open Graph Title</source>
+        <target state="final">Titre Open Graph</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" approved="yes">
+        <source>Open Graph Description</source>
+        <target state="final">Description Open Graph</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" approved="yes">
+        <source>Open Graph Image</source>
+        <target state="final">Image Open Graph</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" approved="yes">
+        <source>X / Twitter Title</source>
+        <target state="final">Titre X / Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" approved="yes">
+        <source>X / Twitter Description</source>
+        <target state="final">Description X / Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" approved="yes">
+        <source>X / Twitter Image</source>
+        <target state="final">Image X / Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card" approved="yes">
+        <source>Type of card to show</source>
+        <target state="final">Type de carte à afficher</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary" approved="yes">
+        <source>Summary Card</source>
+        <target state="final">Carte résumé</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image" approved="yes">
+        <source>Summary Card with a large image</source>
+        <target state="final">Carte résumé avec image large</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" approved="yes">
+        <source>Canonical link</source>
+        <target state="final">Lien canonique</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link.description" approved="yes">
+        <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
+        <target state="final">Une URL canonique est l’URL d’une page qu’il est conseillé aux moteurs de recherche de choisir comme la plus représentative parmi un ensemble de pages dupliquées. Souvent appelé déduplication, ce processus aide les moteurs de recherche à n’afficher qu’une unique version d’un contenu dupliqué dans ses résultats de recherche. TYPO3 définit automatiquement cette valeur à l'URL la plus probable de la page si elle n'est pas explicitement définie – c'est souvent l’URL de la page elle-même. Si elle est définie ici, la page sera retirée du plan de site XML.</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">Fréquence de modification</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">Non définie</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">Toujours</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">Toutes les heures</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">Quotidienne</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">Hebdomadaire</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">Mensuelle</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">Annuelle</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Jamais</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Priorité</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
