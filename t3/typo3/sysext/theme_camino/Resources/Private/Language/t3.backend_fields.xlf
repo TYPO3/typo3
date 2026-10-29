@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_fields.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino" target-language="t3">
+    <header/>
+    <body>
+      <!-- General: Image crop variants -->
+      <trans-unit id="cropVariants.default">
+        <source>Default</source>
+        <target>crwdns390288:0crwdne390288:0</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.sm">
+        <source>SM (&gt; 768px)</source>
+        <target>crwdns390290:0crwdne390290:0</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.md">
+        <source>MD (&gt; 1024px)</source>
+        <target>crwdns390292:0crwdne390292:0</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.lg">
+        <source>LG (&gt; 1280px)</source>
+        <target>crwdns390294:0crwdne390294:0</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.xl">
+        <source>XL (&gt; 1440px)</source>
+        <target>crwdns390296:0crwdne390296:0</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.xxl">
+        <source>XXL (&gt; 1920px)</source>
+        <target>crwdns390298:0crwdne390298:0</target>
+      </trans-unit>
+      <!-- pages -->
+      <trans-unit id="pages.tx_themecamino_logo">
+        <source>Logo</source>
+        <target>crwdns390300:0crwdne390300:0</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_themecamino_logo.description">
+        <source>The selected file is displayed both in the header next to the main menu and in the footer.</source>
+        <target>crwdns390302:0crwdne390302:0</target>
+      </trans-unit>
+      <!-- tt_content -->
+      <trans-unit id="tt_content.group.camino_hero">
+        <source>Hero</source>
+        <target>crwdns390304:0crwdne390304:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.group.camino_teaser">
+        <source>Teaser</source>
+        <target>crwdns390306:0crwdne390306:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tabs.teaser">
+        <source>Teaser items</source>
+        <target>crwdns390308:0crwdne390308:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabel">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390310:0crwdne390310:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelconfig">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390312:0crwdne390312:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelicon">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390314:0crwdne390314:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabeliconconfig">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390316:0crwdne390316:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_person">
+        <source>Personal details</source>
+        <target>crwdns390318:0crwdne390318:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.person-palette.label">
+        <source>Quote / Testimonial</source>
+        <target>crwdns390320:0crwdne390320:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.types.person-palette.label">
+        <source>Name</source>
+        <target>crwdns390322:0crwdne390322:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.person-palette.label">
+        <source>Position / Title of the person</source>
+        <target>crwdns390324:0crwdne390324:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.label">
+        <source>Background color</source>
+        <target>crwdns390326:0crwdne390326:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.default">
+        <source>None</source>
+        <target>crwdns390328:0crwdne390328:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-10">
+        <source>Light</source>
+        <target>crwdns390330:0crwdne390330:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-80">
+        <source>Dark</source>
+        <target>crwdns390332:0crwdne390332:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-100">
+        <source>Primary color</source>
+        <target>crwdns390334:0crwdne390334:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.label.ALT">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns390336:0crwdne390336:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.description.ALT">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target>crwdns390338:0crwdne390338:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.label">
+        <source>Rank / Hierarchy</source>
+        <target>crwdns390340:0crwdne390340:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.0">
+        <source>Default (P)</source>
+        <target>crwdns390342:0crwdne390342:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.1">
+        <source>H1</source>
+        <target>crwdns390344:0crwdne390344:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.2">
+        <source>H2</source>
+        <target>crwdns390346:0crwdne390346:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.3">
+        <source>H3</source>
+        <target>crwdns390348:0crwdne390348:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.4">
+        <source>H4</source>
+        <target>crwdns390350:0crwdne390350:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.5">
+        <source>H5</source>
+        <target>crwdns390352:0crwdne390352:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.27">
+        <source>Beside text, Right (small)</source>
+        <target>crwdns390354:0crwdne390354:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.28">
+        <source>Beside Text, Left (small)</source>
+        <target>crwdns390356:0crwdne390356:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style">
+        <source>Style</source>
+        <target>crwdns390358:0crwdne390358:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.default">
+        <source>Default</source>
+        <target>crwdns390360:0crwdne390360:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.large">
+        <source>Large</source>
+        <target>crwdns390362:0crwdne390362:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.small">
+        <source>Small</source>
+        <target>crwdns390364:0crwdne390364:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link">
+        <source>Link</source>
+        <target>crwdns390366:0crwdne390366:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config">
+        <source>Link configuration</source>
+        <target>crwdns390368:0crwdne390368:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.itemgroup.inverted">
+        <source>Icon before text</source>
+        <target>crwdns390370:0crwdne390370:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.0">
+        <source>Primary button</source>
+        <target>crwdns390372:0crwdne390372:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.secondary">
+        <source>Secondary button</source>
+        <target>crwdns390374:0crwdne390374:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.soft">
+        <source>Soft button</source>
+        <target>crwdns390376:0crwdne390376:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.text">
+        <source>Text only button</source>
+        <target>crwdns390378:0crwdne390378:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted">
+        <source>Primary button, icon before text</source>
+        <target>crwdns390380:0crwdne390380:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-secondary">
+        <source>Secondary button, icon before text</source>
+        <target>crwdns390382:0crwdne390382:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-soft">
+        <source>Soft button, icon before text</source>
+        <target>crwdns390384:0crwdne390384:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-text">
+        <source>Text only button, icon before text</source>
+        <target>crwdns390386:0crwdne390386:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_icon">
+        <source>Link icon</source>
+        <target>crwdns390388:0crwdne390388:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.none">
+        <source>No Icon</source>
+        <target>crwdns390390:0crwdne390390:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-left">
+        <source>Arrow, left</source>
+        <target>crwdns390392:0crwdne390392:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-right">
+        <source>Arrow, right</source>
+        <target>crwdns390394:0crwdne390394:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron">
+        <source>Chevron</source>
+        <target>crwdns390396:0crwdne390396:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-left">
+        <source>Chevron, double left</source>
+        <target>crwdns390398:0crwdne390398:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-right">
+        <source>Chevron, double right</source>
+        <target>crwdns390400:0crwdne390400:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-left">
+        <source>Chevron, left</source>
+        <target>crwdns390402:0crwdne390402:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-right">
+        <source>Chevron, right</source>
+        <target>crwdns390404:0crwdne390404:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.close">
+        <source>Close</source>
+        <target>crwdns390406:0crwdne390406:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.download">
+        <source>Download</source>
+        <target>crwdns390408:0crwdne390408:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.globe">
+        <source>Globe</source>
+        <target>crwdns390410:0crwdne390410:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.launch">
+        <source>Launch</source>
+        <target>crwdns390412:0crwdne390412:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.mail">
+        <source>Mail</source>
+        <target>crwdns390414:0crwdne390414:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.menu">
+        <source>Menu</source>
+        <target>crwdns390416:0crwdne390416:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.phone">
+        <source>Phone</source>
+        <target>crwdns390418:0crwdne390418:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.play">
+        <source>Play</source>
+        <target>crwdns390420:0crwdne390420:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.search">
+        <source>Search</source>
+        <target>crwdns390422:0crwdne390422:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-mastodon">
+        <source>Mastodon</source>
+        <target>crwdns415799:0crwdne415799:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-facebook">
+        <source>Facebook</source>
+        <target>crwdns390424:0crwdne390424:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-instagram">
+        <source>Instagram</source>
+        <target>crwdns390426:0crwdne390426:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-linkedin">
+        <source>LinkedIn</source>
+        <target>crwdns390428:0crwdne390428:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-x">
+        <source>X (Twitter)</source>
+        <target>crwdns390430:0crwdne390430:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-xing">
+        <source>Xing</source>
+        <target>crwdns390432:0crwdne390432:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-youtube">
+        <source>YouTube</source>
+        <target>crwdns390434:0crwdne390434:0</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.zoom">
+        <source>Zoom</source>
+        <target>crwdns390436:0crwdne390436:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_label">
+        <source>Link label</source>
+        <target>crwdns390438:0crwdne390438:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements">
+        <source>List items</source>
+        <target>crwdns390440:0crwdne390440:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.appearance.newRecordLinkTitle">
+        <source>Add item</source>
+        <target>crwdns390442:0crwdne390442:0</target>
+      </trans-unit>
+      <!-- CType 'camino_author' -->
+      <trans-unit id="tt_content.CType.camino_author.label">
+        <source>Author card</source>
+        <target>crwdns390444:0crwdne390444:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_author.description">
+        <source>Insert an author card.</source>
+        <target>crwdns390446:0crwdne390446:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.camino_author.label">
+        <source>Description</source>
+        <target>crwdns390448:0crwdne390448:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_author.label">
+        <source>Contact details</source>
+        <target>crwdns390450:0crwdne390450:0</target>
+      </trans-unit>
+      <!-- CType 'camino_hero' -->
+      <trans-unit id="tt_content.CType.camino_hero.label">
+        <source>Hero / Page header</source>
+        <target>crwdns390452:0crwdne390452:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero.description">
+        <source>Insert a Hero / Page header element.</source>
+        <target>crwdns390454:0crwdne390454:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.label">
+        <source>Hero / Page header (small)</source>
+        <target>crwdns390456:0crwdne390456:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.description">
+        <source>Insert a Hero / Page header element (smaller version).</source>
+        <target>crwdns390458:0crwdne390458:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.label">
+        <source>Hero / Page header (text-only)</source>
+        <target>crwdns390460:0crwdne390460:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.description">
+        <source>Insert a Hero / Page header element (text-only version).</source>
+        <target>crwdns390462:0crwdne390462:0</target>
+      </trans-unit>
+      <!-- CType 'camino_linklist' -->
+      <trans-unit id="tt_content.CType.camino_linklist.label">
+        <source>Link list</source>
+        <target>crwdns390464:0crwdne390464:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_linklist.description">
+        <source>Insert a list of links, used for link lists / menu in the footer.</source>
+        <target>crwdns390466:0crwdne390466:0</target>
+      </trans-unit>
+      <!-- CType 'camino_sociallinks' -->
+      <trans-unit id="tt_content.CType.camino_sociallinks.label">
+        <source>Social media icons</source>
+        <target>crwdns390468:0crwdne390468:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_sociallinks.description">
+        <source>Insert a list of links to social media platforms.</source>
+        <target>crwdns390470:0crwdne390470:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.label">
+        <source>Links</source>
+        <target>crwdns390472:0crwdne390472:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.description">
+        <source>Icons are automatically set according to the link target. The following platforms are available for the link type "External URL": Mastodon, Facebook, Instagram, LinkedIn, X (Twitter) and YouTube. Links to other platforms are not supported and will use a generic icon.</source>
+        <target>crwdns415801:0crwdne415801:0</target>
+      </trans-unit>
+      <!-- CType 'camino_testimonial' -->
+      <trans-unit id="tt_content.CType.camino_testimonial.label">
+        <source>Testimonial</source>
+        <target>crwdns390476:0crwdne390476:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_testimonial.description">
+        <source>Insert a testimonial, with a quote and an optional picture of the person.</source>
+        <target>crwdns390478:0crwdne390478:0</target>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.label">
+        <source>Text-Media Teaser</source>
+        <target>crwdns390480:0crwdne390480:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.description">
+        <source>Add a teaser to link to articles, pages, and other content on your site.</source>
+        <target>crwdns390482:0crwdne390482:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.camino_textmedia_teaser.label">
+        <source>Category</source>
+        <target>crwdns390484:0crwdne390484:0</target>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser_grid' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.label">
+        <source>Text-Media Teaser Grid</source>
+        <target>crwdns390486:0crwdne390486:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.description">
+        <source>Add a grid of teasers to link to articles, pages, and other content on your site.</source>
+        <target>crwdns390488:0crwdne390488:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_textmedia_teaser_grid.label">
+        <source>Teaser items</source>
+        <target>crwdns390490:0crwdne390490:0</target>
+      </trans-unit>
+      <!-- CType 'camino_textteaser' -->
+      <trans-unit id="tt_content.CType.camino_textteaser.label">
+        <source>Text teaser</source>
+        <target>crwdns390492:0crwdne390492:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textteaser.description">
+        <source>Insert a text teaser with a CTA.</source>
+        <target>crwdns390494:0crwdne390494:0</target>
+      </trans-unit>
+      <!-- List item -->
+      <trans-unit id="tx_themecamino_list_item">
+        <source>List item</source>
+        <target>crwdns390496:0crwdne390496:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabelicon">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390498:0crwdne390498:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabeliconconfig">
+        <source>Link / Call to Action (CTA)</source>
+        <target>crwdns390500:0crwdne390500:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.category">
+        <source>Category</source>
+        <target>crwdns390510:0crwdne390510:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.date">
+        <source>Date</source>
+        <target>crwdns390512:0crwdne390512:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.header">
+        <source>Header</source>
+        <target>crwdns390514:0crwdne390514:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images">
+        <source>Images</source>
+        <target>crwdns390516:0crwdne390516:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images.addFileReference">
+        <source>Add image</source>
+        <target>crwdns390518:0crwdne390518:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link">
+        <source>Link</source>
+        <target>crwdns390520:0crwdne390520:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_config">
+        <source>Link configuration</source>
+        <target>crwdns390522:0crwdne390522:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_icon">
+        <source>Link icon</source>
+        <target>crwdns390524:0crwdne390524:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_label">
+        <source>Label for Link</source>
+        <target>crwdns390526:0crwdne390526:0</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.text">
+        <source>Text</source>
+        <target>crwdns390528:0crwdne390528:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
