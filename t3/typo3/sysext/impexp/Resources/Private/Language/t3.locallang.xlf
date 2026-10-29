@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="import">
+        <source>Import</source>
+        <target>crwdns58520:0crwdne58520:0</target>
+      </trans-unit>
+      <trans-unit id="export">
+        <source>Export</source>
+        <target>crwdns58522:0crwdne58522:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Import / Export</source>
+        <target>crwdns58524:0crwdne58524:0</target>
+      </trans-unit>
+      <trans-unit id="title_import">
+        <source>Import</source>
+        <target>crwdns58526:0crwdne58526:0</target>
+      </trans-unit>
+      <trans-unit id="title_export">
+        <source>Export</source>
+        <target>crwdns58528:0crwdne58528:0</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration">
+        <source>Configuration</source>
+        <target>crwdns58530:0crwdne58530:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile">
+        <source>SAVED FILE</source>
+        <target>crwdns58532:0crwdne58532:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes">
+        <source>Saved in "%s", bytes %s</source>
+        <target>crwdns58534:0%scrwdnd58534:0%scrwdne58534:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile">
+        <source>Problems saving file</source>
+        <target>crwdns58536:0crwdne58536:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS">
+        <source>Bad path: "%s"</source>
+        <target>crwdns58538:0%scrwdne58538:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset">
+        <source>File &amp; Preset</source>
+        <target>crwdns58540:0crwdne58540:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions">
+        <source>Advanced Options</source>
+        <target>crwdns58542:0crwdne58542:0</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages">
+        <source>Messages</source>
+        <target>crwdns58544:0crwdne58544:0</target>
+      </trans-unit>
+      <trans-unit id="execlistqu_structureToBeExported">
+        <source>Structure to be exported</source>
+        <target>crwdns58546:0crwdne58546:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_toggle_all_disabled_records">
+        <source>Toggle disabled records</source>
+        <target>crwdns58548:0crwdne58548:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportPagetreeConfiguration">
+        <source>Export pagetree configuration</source>
+        <target>crwdns58550:0crwdne58550:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_pageId">
+        <source>Page ID</source>
+        <target>crwdns58552:0crwdne58552:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tree">
+        <source>Tree</source>
+        <target>crwdns58554:0crwdne58554:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly">
+        <source>No tree exported - only tables on the page.</source>
+        <target>crwdns58556:0crwdne58556:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage">
+        <source>Tables on this page</source>
+        <target>crwdns58558:0crwdne58558:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_levels">
+        <source>Levels</source>
+        <target>crwdns58562:0crwdne58562:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeTables">
+        <source>Include tables</source>
+        <target>crwdns58564:0crwdne58564:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportSingleRecord">
+        <source>Export single record</source>
+        <target>crwdns58566:0crwdne58566:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_record">
+        <source>Record</source>
+        <target>crwdns58568:0crwdne58568:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportTablesFromPages">
+        <source>Export tables from pages</source>
+        <target>crwdns58570:0crwdne58570:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablePids">
+        <source>Table/Pids</source>
+        <target>crwdns58572:0crwdne58572:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tableListEntry">
+        <source>Table "%s" from %s</source>
+        <target>crwdns58574:0%scrwdnd58574:0%scrwdne58574:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_relationsAndExclusions">
+        <source>Relations and Exclusions</source>
+        <target>crwdns58576:0crwdne58576:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeRelationsToTables">
+        <source>Include relations to tables</source>
+        <target>crwdns58578:0crwdne58578:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_useStaticRelationsFor">
+        <source>Use static relations for tables</source>
+        <target>crwdns58580:0crwdne58580:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_showStaticRelations">
+        <source>Show static relations</source>
+        <target>crwdns58582:0crwdne58582:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeElements">
+        <source>Exclude elements</source>
+        <target>crwdns58584:0crwdne58584:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_clearAllManualExclusions">
+        <source>Clear all manual exclusions</source>
+        <target>crwdns58586:0crwdne58586:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noManuallyExcludedElementsYet">
+        <source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+        <target>crwdns58588:0crwdne58588:0</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeDisabledElements">
+        <source>Exclude disabled elements</source>
+        <target>crwdns58590:0crwdne58590:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update">
+        <source>Update</source>
+        <target>crwdns58592:0crwdne58592:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_files">
+        <source>Files</source>
+        <target>crwdns58598:0crwdne58598:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile">
+        <source>Save files in extra folder beside the export file</source>
+        <target>crwdns58600:0crwdne58600:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit">
+        <source>(supported for "Save to filename" only)</source>
+        <target>crwdns58602:0crwdne58602:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_siteConfigurations">
+        <source>Site configurations</source>
+        <target>crwdns393804:0crwdne393804:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_includeSiteConfigurations">
+        <source>Include site configurations for exported root pages (admin only)</source>
+        <target>crwdns393806:0crwdne393806:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_extensionDependencies">
+        <source>Extension dependencies</source>
+        <target>crwdns58604:0crwdne58604:0</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_selectExtensionsThatThe">
+        <source>Select extensions that the exported content depends on</source>
+        <target>crwdns58606:0crwdne58606:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update">
+        <source>Update</source>
+        <target>crwdns58608:0crwdne58608:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_presets">
+        <source>Presets</source>
+        <target>crwdns58610:0crwdne58610:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_selectPreset">
+        <source>Select preset</source>
+        <target>crwdns58612:0crwdne58612:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load">
+        <source>Load</source>
+        <target>crwdns58614:0crwdne58614:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save">
+        <source>Save</source>
+        <target>crwdns58616:0crwdne58616:0</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm">
+        <source>Please confirm</source>
+        <target>crwdns58618:0crwdne58618:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure">
+        <source>Are you sure?</source>
+        <target>crwdns58620:0crwdne58620:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete">
+        <source>Delete</source>
+        <target>crwdns58622:0crwdne58622:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge">
+        <source>Merge</source>
+        <target>crwdns58624:0crwdne58624:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_titleOfNewPreset">
+        <source>Title of new preset</source>
+        <target>crwdns58626:0crwdne58626:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_public">
+        <source>Public</source>
+        <target>crwdns58628:0crwdne58628:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_outputOptions">
+        <source>Output options</source>
+        <target>crwdns58630:0crwdne58630:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_title">
+        <source>Title</source>
+        <target>crwdns58634:0crwdne58634:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_description">
+        <source>Description</source>
+        <target>crwdns58636:0crwdne58636:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_notes">
+        <source>Notes</source>
+        <target>crwdns58638:0crwdne58638:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d_compressed">
+        <source>T3D file / compressed</source>
+        <target>crwdns141793:0crwdne141793:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d">
+        <source>T3D file</source>
+        <target>crwdns141795:0crwdne141795:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml">
+        <source>XML</source>
+        <target>crwdns58644:0crwdne58644:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_fileFormat">
+        <source>File format</source>
+        <target>crwdns58646:0crwdne58646:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_filenameSavedInS">
+        <source>Filename (saved in "%s")</source>
+        <target>crwdns58648:0%scrwdne58648:0</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport">
+        <source>Download export</source>
+        <target>crwdns58650:0crwdne58650:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename">
+        <source>Save to filename</source>
+        <target>crwdns58652:0crwdne58652:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_selectFileToImport">
+        <source>Select file to import</source>
+        <target>crwdns58654:0crwdne58654:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_file">
+        <source>File</source>
+        <target>crwdns58656:0crwdne58656:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS">
+        <source>From path: %s</source>
+        <target>crwdns279647:0%scrwdne279647:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target>crwdns58660:0crwdne58660:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_importOptions">
+        <source>Import Options</source>
+        <target>crwdns58662:0crwdne58662:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_update">
+        <source>Update</source>
+        <target>crwdns58664:0crwdne58664:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords">
+        <source>Update records</source>
+        <target>crwdns58666:0crwdne58666:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target>crwdns58668:0crwdne58668:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally">
+        <source>Ignore PID differences globally</source>
+        <target>crwdns58670:0crwdne58670:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis">
+        <source>The position of updated elements will not be updated to match the structure of the input file.</source>
+        <target>crwdns379510:0crwdne379510:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS">
+        <source>Force ALL UIDs values</source>
+        <target>crwdns58674:0crwdne58674:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr">
+        <source>BE VERY CAREFUL WITH THIS: the original UID value of all imported records will be forced to be the same (Admin Only).</source>
+        <target>crwdns379512:0crwdne379512:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_options">
+        <source>Options</source>
+        <target>crwdns58678:0crwdne58678:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences">
+        <source>Do not show differences in records</source>
+        <target>crwdns58680:0crwdne58680:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom">
+        <source>Hides the resulting differences for each field of every imported records in the preview table.</source>
+        <target>crwdns379514:0crwdne379514:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_action">
+        <source>Action</source>
+        <target>crwdns58686:0crwdne58686:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview">
+        <source>Preview</source>
+        <target>crwdns58688:0crwdne58688:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_import">
+        <source>Import</source>
+        <target>crwdns58692:0crwdne58692:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport">
+        <source>New import</source>
+        <target>crwdns58696:0crwdne58696:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_enableLogging">
+        <source>Enable logging</source>
+        <target>crwdns58698:0crwdne58698:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions">
+        <source>Write individual database actions during import to the log</source>
+        <target>crwdns141797:0crwdne141797:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy">
+        <source>This is disabled by default since there might be hundred of entries generated.</source>
+        <target>crwdns379516:0crwdne379516:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadFileFromLocal">
+        <source>Upload file from local computer</source>
+        <target>crwdns58704:0crwdne58704:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_browse">
+        <source>Browse</source>
+        <target>crwdns58706:0crwdne58706:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadStatus">
+        <source>Upload status</source>
+        <target>crwdns58708:0crwdne58708:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_success">
+        <source>Success</source>
+        <target>crwdns58710:0crwdne58710:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target>crwdns58712:0crwdne58712:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_invalidExtension">
+        <source>Only import files with the extensions "t3d" or "xml" can be uploaded.</source>
+        <target>crwdns415557:0crwdne415557:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload">
+        <source>Upload</source>
+        <target>crwdns58714:0crwdne58714:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_error">
+        <source>Upload error</source>
+        <target>crwdns58716:0crwdne58716:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_nodata">
+        <source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
+        <target>crwdns58718:0crwdne58718:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData">
+        <source>Meta data</source>
+        <target>crwdns58720:0crwdne58720:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_title">
+        <source>Title</source>
+        <target>crwdns58722:0crwdne58722:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_description">
+        <source>Description</source>
+        <target>crwdns58724:0crwdne58724:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_notes">
+        <source>Notes</source>
+        <target>crwdns58726:0crwdne58726:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_packager">
+        <source>Packager</source>
+        <target>crwdns58728:0crwdne58728:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_email">
+        <source>Email</source>
+        <target>crwdns58730:0crwdne58730:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData_1387">
+        <source>Meta data</source>
+        <target>crwdns58734:0crwdne58734:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurations">
+        <source>Site Configurations</source>
+        <target>crwdns393808:0crwdne393808:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurationsAdminOnly">
+        <source>This import contains site configurations that will not be imported because importing site configurations requires administrator privileges.</source>
+        <target>crwdns393810:0crwdne393810:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_fileStorages">
+        <source>File storages</source>
+        <target>crwdns415559:0crwdne415559:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_fileStoragesNotImported">
+        <source>File storages are not imported. Files are imported into the storage with the same base path, or into the default storage.</source>
+        <target>crwdns415561:0crwdne415561:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteIdentifier">
+        <source>Identifier</source>
+        <target>crwdns393812:0crwdne393812:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteWebsiteTitle">
+        <source>Website Title</source>
+        <target>crwdns393814:0crwdne393814:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteBase">
+        <source>Base</source>
+        <target>crwdns393816:0crwdne393816:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteRootPage">
+        <source>Root Page</source>
+        <target>crwdns393818:0crwdne393818:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguages">
+        <source>Languages</source>
+        <target>crwdns393820:0crwdne393820:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageId">
+        <source>ID</source>
+        <target>crwdns393822:0crwdne393822:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageLocale">
+        <source>Locale</source>
+        <target>crwdns393824:0crwdne393824:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteDependencies">
+        <source>Dependencies</source>
+        <target>crwdns393826:0crwdne393826:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages">
+        <source>Messages</source>
+        <target>crwdns58736:0crwdne58736:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureHasBeenImported">
+        <source>Structure has been imported, here is the result</source>
+        <target>crwdns58738:0crwdne58738:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureNotImported">
+        <source>The Import has failed, refer to the messages tab to view errors</source>
+        <target>crwdns370964:0crwdne370964:0</target>
+      </trans-unit>
+      <trans-unit id="importdata_no_default_upload_folder">
+        <source>No default upload folder</source>
+        <target>crwdns58742:0crwdne58742:0</target>
+      </trans-unit>
+      <trans-unit id="filterpage_structureToBeImported">
+        <source>Structure to be imported</source>
+        <target>crwdns58744:0crwdne58744:0</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables">
+        <source>[ ALL tables ]</source>
+        <target>crwdns211302:0crwdne211302:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_controls">
+        <source>Controls</source>
+        <target>crwdns58748:0crwdne58748:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_title">
+        <source>Title</source>
+        <target>crwdns58750:0crwdne58750:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_message">
+        <source>Message</source>
+        <target>crwdns58752:0crwdne58752:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_updateMode">
+        <source>Update Mode</source>
+        <target>crwdns58754:0crwdne58754:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_currentPath">
+        <source>Current Path</source>
+        <target>crwdns58756:0crwdne58756:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_result">
+        <source>Result</source>
+        <target>crwdns58758:0crwdne58758:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_insidePagetree">
+        <source>Inside pagetree</source>
+        <target>crwdns58760:0crwdne58760:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_outsidePagetree">
+        <source>Outside pagetree</source>
+        <target>crwdns58762:0crwdne58762:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_softReferencesFiles">
+        <source>Soft References Files</source>
+        <target>crwdns58764:0crwdne58764:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update">
+        <source>Update</source>
+        <target>crwdns58766:0crwdne58766:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert">
+        <source>Insert</source>
+        <target>crwdns58768:0crwdne58768:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew">
+        <source>Import as new</source>
+        <target>crwdns58770:0crwdne58770:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid">
+        <source>Ignore PID</source>
+        <target>crwdns58772:0crwdne58772:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid">
+        <source>Respect PID</source>
+        <target>crwdns58774:0crwdne58774:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin">
+        <source>Force UID [%s] (Admin)</source>
+        <target>crwdns58776:0[%s]crwdne58776:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude">
+        <source>Exclude</source>
+        <target>crwdns58778:0crwdne58778:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_title">
+        <source>Title</source>
+        <target>crwdns58780:0crwdne58780:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_descr">
+        <source>Descr</source>
+        <target>crwdns58782:0crwdne58782:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_value">
+        <source>Value</source>
+        <target>crwdns58786:0crwdne58786:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_record">
+        <source>Record</source>
+        <target>crwdns58788:0crwdne58788:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable">
+        <source>Editable</source>
+        <target>crwdns58790:0crwdne58790:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude">
+        <source>Exclude</source>
+        <target>crwdns58792:0crwdne58792:0</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_printerror_description">
+        <source>Description</source>
+        <target>crwdns58794:0crwdne58794:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
