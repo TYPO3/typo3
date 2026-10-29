@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lo">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>ຊ່ອງຂໍ້ມູນ "%1$s" ແມ່ນຈຳເປັນເພື່ອຊອກຫາຈຸດໝາຍຂອງລິ້ງສຳລັບໜ້າປະເພດ "%2$s". ກະລຸນາລະບຸຄ່າໃນຄຸນສົມບັດຂອງໜ້າ.</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>ລິ້ງບໍ່ຖືກຕ້ອງໃນ "%1$s": ບໍ່ສາມາດຊອກຫາຈຸດໝາຍຂອງ "%2$s" ໄດ້. ກະລຸນາເລືອກຈຸດໝາຍທີ່ຖືກຕ້ອງໃນຄຸນສົມບັດຂອງໜ້າ.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>ໜ້າປະເພດ "%1$s" ເຊື່ອມຕໍ່ຫາ %2$s ຕໍ່ໄປນີ້: %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>ໜ້າປະເພດ "%1$s" ເຊື່ອມຕໍ່ຫາ URL ທີ່ຮ້ອງຂໍໃນປັດຈຸບັນ, ແລະ ບໍ່ສາມາດສະແດງຄ່າແບບໄດນາມິກຢູ່ບ່ອນນີ້ໄດ້.</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>ໜ້າປະເພດ "%1$s" ເພີ່ມ %2$s ໃສ່ URL ທີ່ຮ້ອງຂໍໃນປັດຈຸບັນ, ແລະ ບໍ່ສາມາດສະແດງຄ່າແບບໄດນາມິກຢູ່ບ່ອນນີ້ໄດ້.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>ໜ້າປະເພດ "%1$s" ເຊື່ອມຕໍ່ຫາຂໍ້ມູນປະເພດ "%2$s" ຕໍ່ໄປນີ້: %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>ພາລາມິເຕີເພີ່ມເຕີມ: "%s".</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>ໜ້າປະເພດ "%1$s" ເຊື່ອມຕໍ່ຫາອົງປະກອບເນື້ອໃນ %2$s ໃນໜ້າ %3$s.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
