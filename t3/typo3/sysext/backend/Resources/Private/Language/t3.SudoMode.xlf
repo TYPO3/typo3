@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/SudoMode.xlf" date="2023-04-08T00:00:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="cancel">
+        <source>Cancel</source>
+        <target>crwdns279775:0crwdne279775:0</target>
+      </trans-unit>
+      <trans-unit id="verify">
+        <source>Verify</source>
+        <target>crwdns279777:0crwdne279777:0</target>
+      </trans-unit>
+      <trans-unit id="password">
+        <source>Password</source>
+        <target>crwdns279779:0crwdne279779:0</target>
+      </trans-unit>
+      <trans-unit id="verifyWithUserPassword">
+        <source>Verify with user password</source>
+        <target>crwdns279781:0crwdne279781:0</target>
+      </trans-unit>
+      <trans-unit id="verifyWithInstallToolPassword">
+        <source>Verify with Install Tool password</source>
+        <target>crwdns279783:0crwdne279783:0</target>
+      </trans-unit>
+      <trans-unit id="accessGranted">
+        <source>Access granted</source>
+        <target>crwdns279785:0crwdne279785:0</target>
+      </trans-unit>
+      <trans-unit id="invalidPassword">
+        <source>Invalid password</source>
+        <target>crwdns279787:0crwdne279787:0</target>
+      </trans-unit>
+      <trans-unit id="userPasswordMode">
+        <source>Use user password instead</source>
+        <target>crwdns279789:0crwdne279789:0</target>
+      </trans-unit>
+      <trans-unit id="installToolPasswordMode">
+        <source>Use Install Tool password instead</source>
+        <target>crwdns279791:0crwdne279791:0</target>
+      </trans-unit>
+      <trans-unit id="sudoModeUserPasswordExplanation">
+        <source>Authentication is required to perform this action. Please enter your user password to proceed.</source>
+        <target>crwdns393400:0crwdne393400:0</target>
+      </trans-unit>
+      <trans-unit id="sudoModeInstallToolPasswordExplanation">
+        <source>Authentication is required to perform this action. Please enter the Install Tool password to proceed.</source>
+        <target>crwdns393402:0crwdne393402:0</target>
+      </trans-unit>
+      <trans-unit id="verificationFailed">
+        <source>Verification failed</source>
+        <target>crwdns279793:0crwdne279793:0</target>
+      </trans-unit>
+      <trans-unit id="verificationExpired">
+        <source>Confirmation has expired. Please try again.</source>
+        <target>crwdns279795:0crwdne279795:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
