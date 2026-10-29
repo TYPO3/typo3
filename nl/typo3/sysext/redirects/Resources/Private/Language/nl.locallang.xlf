@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">Instellingen voor doorverwijzingen</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">Automatisch slugs van alle subpagina's bijwerken</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">Automatisch doorverwijzingen voor pagina's met een nieuwe slug aanmaken</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">Maximale leeftijd van doorverwijzingsrecords in dagen</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">HTTP statuscode voor doorverwijzing, 301 is standaard</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">Opschonen doorverwijzingen ouder dan het opgegeven aantal dagen</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">Doorverwijzingen opschonen van overeenkomende domein(en)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">Opschonen redirects met aantal treffers lager dan opgegeven nummer</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path" approved="yes">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+        <target state="final">Doorverwijzingen opschonen die overeenkomen met het opgegeven pad (volgens database "like" uitdrukking)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">Doorverwijzingen met de aangegeven aanmaakwijze opschonen</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">Doorverwijzingen opschonen die overeenkomen met de verstrekte statuscode(s)</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus" approved="yes">
+        <source>Cleanup redirects matching provided integrity status</source>
+        <target state="final">Doorverwijzingen met de aangegeven integriteitstatus opschonen</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType" approved="yes">
+        <source>Cleanup redirects matching provided redirect type</source>
+        <target state="final">Doorverwijzingen met de aangegeven type opschonen</target>
+      </trans-unit>
+      <trans-unit id="created_on" approved="yes">
+        <source>on</source>
+        <target state="final">op</target>
+      </trans-unit>
+      <trans-unit id="not_tracked" approved="yes">
+        <source>[Not Tracked]</source>
+        <target state="final">[Niet gevolgd]</target>
+      </trans-unit>
+      <trans-unit id="no_qrcode" approved="yes">
+        <source>Not enough information for generating a QR Code.</source>
+        <target state="final">Onvoldoende informatie voor het genereren van een QR-code.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
