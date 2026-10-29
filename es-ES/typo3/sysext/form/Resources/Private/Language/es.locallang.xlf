@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" approved="yes">
+        <source>Uploaded image</source>
+        <target state="final">Imagen subida</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560910" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Este campo es obligatorio.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560718" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Este campo es obligatorio.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992400" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Este campo es obligatorio.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1347992453" approved="yes">
+        <source>This field is mandatory.</source>
+        <target state="final">Este campo es obligatorio.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238087674" approved="yes">
+        <source>You must enter a valid date.</source>
+        <target state="final">Debe introducir una fecha válida.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221551320" approved="yes">
+        <source>You can only enter letters or digits.</source>
+        <target state="final">Solo puedes introducir letras o dígitos.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565786" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Solo puedes introducir un texto no formateo sin ningún marcado (por ejemplo, sin etiquetas XML).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238110957" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Solo puedes introducir un texto no formateo sin ningún marcado (por ejemplo, sin etiquetas XML).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1269883975" approved="yes">
+        <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+        <target state="final">Solo puedes introducir un texto no formateo sin ningún marcado (por ejemplo, sin etiquetas XML).</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1428504122" approved="yes">
+        <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+        <target state="final">Tu texto debe tener un mínimo de %s caracteres de longitud y no debe tener más de %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108068" approved="yes">
+        <source>You must enter text which is longer than %s characters.</source>
+        <target state="final">Debes introducir un texto que sea más largo que %s caracteres.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1238108069" approved="yes">
+        <source>You must enter text which is no longer than %s characters.</source>
+        <target state="final">Debes introducir un texto que no tenga más de %s caracteres.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221559976" approved="yes">
+        <source>You must enter a valid email address.</source>
+        <target state="final">Debes introducir una dirección de correo electrónico válida.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560494" approved="yes">
+        <source>You must enter a valid number.</source>
+        <target state="final">Debes introducir un número válido.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221560288" approved="yes">
+        <source>You must enter a valid floating point number.</source>
+        <target state="final">Debes introducir un número de punto flotante válido.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221563685" approved="yes">
+        <source>You must enter a valid number.</source>
+        <target state="final">Debes introducir un número válido.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221561046" approved="yes">
+        <source>You must enter a valid number between %s and %s.</source>
+        <target state="final">Debes introducir un número válido entre %s y %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1221565130" approved="yes">
+        <source>You must enter a valid value. Please refer to the description of this field.</source>
+        <target state="final">Debes introducir un valor válido. Por favor, consulta la descripción de este campo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002976" approved="yes">
+        <source>You must enter a countable subject.</source>
+        <target state="final">Debes introducir un asunto contable.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1475002994" approved="yes">
+        <source>You must select between %s to %s elements.</source>
+        <target state="final">Debes seleccionar entre los elementos %s a %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708997" approved="yes">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target state="final">Debes introducir una instancia de \TYPO3\CMS\Extbase\Domain\Model\FileReference o \TYPO3\CMS\Core\Resource\File.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1471708998" approved="yes">
+        <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+        <target state="final">Has introducido un tipo de medio incorrecto, "%s" no está permitido para este archivo. Por favor, consulta la descripción de este campo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1613126216" approved="yes">
+        <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+        <target state="final">La extensión del archivo proporcionada "%s" no coincide con los tipos de medios esperados. Por favor, consulta la descripción de este campo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1476396435" approved="yes">
+        <source>You must NOT fill this field.</source>
+        <target state="final">NO debes rellenar este campo.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505303626" approved="yes">
+        <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+        <target state="final">Debes introducir una instancia de \TYPO3\CMS\Extbase\Domain\Model\FileReference o \TYPO3\CMS\Core\Resource\File.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305752" approved="yes">
+        <source>You must select a file that is larger than %s in size.</source>
+        <target state="final">Debes seleccionar un archivo que sea de mayor tamaño que %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1505305753" approved="yes">
+        <source>You must select a file that is no larger than %s.</source>
+        <target state="final">Debes seleccionar un archivo que no sea de mayor tamaño que %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293685" approved="yes">
+        <source>You must enter an instance of \DateTime.</source>
+        <target state="final">Debes introducir una instancia de \DateTime.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293686" approved="yes">
+        <source>You must select a date before %s.</source>
+        <target state="final">Debes seleccionar una fecha anterior a %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1521293687" approved="yes">
+        <source>You must select a date after %s.</source>
+        <target state="final">Debes seleccionar una fecha posterior a %s.</target>
+      </trans-unit>
+      <trans-unit id="validation.error.1556283177" approved="yes">
+        <source>Password does not match confirmation</source>
+        <target state="final">La contraseña no coincide con la confirmación</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_title" approved="yes">
+        <source>Form</source>
+        <target state="final">Formulario</target>
+      </trans-unit>
+      <trans-unit id="form_new_wizard_description" approved="yes">
+        <source>A form that allows website users to submit messages.</source>
+        <target state="final">Un formulario que permite a los usuarios del sitio web enviar respuestas.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530345" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Excedido el tamaño máximo del archivo.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530346" approved="yes">
+        <source>Upload failed. The file was only partially uploaded, please try again.</source>
+        <target state="final">Error al cargar. El archivo solo se ha subido parcialmente. Por favor, inténtalo de nuevo.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530347" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">No se subió ningún archivo.</target>
+      </trans-unit>
+      <trans-unit id="upload.error.150530348" approved="yes">
+        <source>Upload failed.</source>
+        <target state="final">Subida fallida.</target>
+      </trans-unit>
+      <trans-unit id="form.configuration.module.provider" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">Formulario: Configuración YAML</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Anterior</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Siguiente</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>First</source>
+        <target state="final">Primero</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>Last</source>
+        <target state="final">Último</target>
+      </trans-unit>
+      <trans-unit id="pagination.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formularios</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Página</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Actualizar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
