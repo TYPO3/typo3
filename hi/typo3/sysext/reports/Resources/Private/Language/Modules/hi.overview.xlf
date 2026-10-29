@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>System monitoring and analysis reports</source>
+        <target state="final">सिस्टम निगरानी और विश्लेषण रिपोर्ट</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Access reports for monitoring and analyzing the TYPO3 installation including system status checks, database statistics, and custom reports provided by extensions.</source>
+        <target state="final">TYPO3 इंस्टॉलेशन की निगरानी और विश्लेषण के लिए रिपोर्ट तक पहुंचें, जिसमें सिस्टम स्थिति जांच, डेटाबेस सांख्यिकी और एक्सटेंशन द्वारा प्रदान की गई कस्टम रिपोर्ट शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Reports</source>
+        <target state="final">रिपोर्ट</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
