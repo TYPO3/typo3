@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="module.label.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">Odstrani vse</target>
+      </trans-unit>
+      <trans-unit id="module.label.details" approved="yes">
+        <source>Details</source>
+        <target state="final">Podrobnosti</target>
+      </trans-unit>
+      <trans-unit id="module.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
