@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>Le champ « %1$s » est nécessaire pour résoudre les liens pour les pages de type « %2$s ». Veuillez renseigner une valeur dans les propriétés de la page.</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>Le lien «%1$s» est invalide : «%2$s» ne peut pas être résolu. Sélectionnez une destination valide dans les propriétés de la page.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>La page de type « %1$s » est un lien vers %2$s : %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>La page de type « %1$s » est un lien vers l'URL de la requête courante, et la valeur dynamique ne peut pas être affichée ici.</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>La page de type « %1$s » ajoute %2$s à l'URL de la requête courante, et la valeur dynamique ne peut pas être affichée ici.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>La page de type « %1$s » renvoie au dossier suivant de type « %2$s » : %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>Paramètres additionnels : « %s ».</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>La page de type « %1$s » renvoie à l'élément de contenu %2$s sur la page %3$s.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
