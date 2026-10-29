@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Áreas de trabajo</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">Revisar y publicar</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" approved="yes">
+        <source>Create a workspace</source>
+        <target state="final">Crear un área de trabajo</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Cerrar</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Terminado de procesar %d elementos</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">Inicializar</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">¿Realmente desea publicar todo el espacio de trabajo?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">¿Realmente desea descartar todos los cambios?</target>
+      </trans-unit>
+      <trans-unit id="window.publish.title" approved="yes">
+        <source>Publish version</source>
+        <target state="final">Publicar versión</target>
+      </trans-unit>
+      <trans-unit id="window.publish.message" approved="yes">
+        <source>Do you really want to publish this version?</source>
+        <target state="final">¿Realmente desea publicar esta versión?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">¿Realmente desea publicar los elementos seleccionados?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">¿Realmente desea descartar los cambios a los elementos seleccionados?</target>
+      </trans-unit>
+      <trans-unit id="window.version.published" approved="yes">
+        <source>Published version</source>
+        <target state="final">Versión publicada</target>
+      </trans-unit>
+      <trans-unit id="window.version.staged" approved="yes">
+        <source>Staged version</source>
+        <target state="final">Versión en Stage</target>
+      </trans-unit>
+      <trans-unit id="window.integrity_warning.title" approved="yes">
+        <source>Integrity Warning</source>
+        <target state="final">Advertencia de integridad</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
