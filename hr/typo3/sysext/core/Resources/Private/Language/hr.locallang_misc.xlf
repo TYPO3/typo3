@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Prepisati postojeće stranice</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Učitajte više datoteka držanjem Shift ili CTRL-Shift gumba tijekom odabira Vaših datoteka (radi samo na modernim preglednicima).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Lokacija</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Meta podaci datoteke nisu pronađeni</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Odaberite poziciju za novu stranicu</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Stranica (odaberite položaj)</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Natrag</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Napravi novu stranicu</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Ubaciti novu stranicu ovdje</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Ubaciti novi zapis ovdje</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Premjesti elemente</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopiraj elemente</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Napravi kopiju umjesto premještanja elementa</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Zapisi sustava</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Povijest/Undo</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">"Napravi novo" čarobnjak</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Lokaliziraj</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Zapis se može lokalizirati</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Lokaliziraj sve zapise</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Sinkroniziraj sa izvornim jezikom</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Nema rezultata.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
