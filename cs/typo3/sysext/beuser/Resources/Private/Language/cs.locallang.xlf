@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Jméno uživatele</target>
+      </trans-unit>
+      <trans-unit id="avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="realName" approved="yes">
+        <source>Real name</source>
+        <target state="final">Skutečné jméno</target>
+      </trans-unit>
+      <trans-unit id="name" approved="yes">
+        <source>Name</source>
+        <target state="final">Jméno</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-mail</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrátor</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Uživatelé</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Uživatel</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ano</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Ne</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nikdy</target>
+      </trans-unit>
+      <trans-unit id="disable" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Povoleno</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Stop</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Poslední přihlášení</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Omezit na jazyky</target>
+      </trans-unit>
+      <trans-unit id="pageTreeEntryPoints" approved="yes">
+        <source>Page Tree Entry Points</source>
+        <target state="final">Vstupní body stromu stránky</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Přípojné body souborů</target>
+      </trans-unit>
+      <trans-unit id="groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Skupiny</target>
+      </trans-unit>
+      <trans-unit id="inheritance" approved="yes">
+        <source>Inheritance</source>
+        <target state="final">Dědictví</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">Skupina</target>
+      </trans-unit>
+      <trans-unit id="languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Jazyky</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategorie</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Oprávnění</target>
+      </trans-unit>
+      <trans-unit id="modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Moduly</target>
+      </trans-unit>
+      <trans-unit id="tableModes.read" approved="yes">
+        <source>Read</source>
+        <target state="final">Číst</target>
+      </trans-unit>
+      <trans-unit id="tableModes.write" approved="yes">
+        <source>Read &amp; Write</source>
+        <target state="final">Číst a psát</target>
+      </trans-unit>
+      <trans-unit id="mountsWorkspaces" approved="yes">
+        <source>Mounts and workspaces</source>
+        <target state="final">Napojení a pracovní plochy</target>
+      </trans-unit>
+      <trans-unit id="options" approved="yes">
+        <source>Options</source>
+        <target state="final">Možnosti</target>
+      </trans-unit>
+      <trans-unit id="allowedPageContentTypes" approved="yes">
+        <source>Allowed page content types</source>
+        <target state="final">Povolené typy obsahových prvků</target>
+      </trans-unit>
+      <trans-unit id="generalPermissions" approved="yes">
+        <source>General permissions</source>
+        <target state="final">Obecná oprávnění</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">Oprávnění tabulek</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" approved="yes">
+        <source>Inherit</source>
+        <target state="final">Zdědit</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" approved="yes">
+        <source>Direct</source>
+        <target state="final">Přímo</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="information.defaultWorkspace" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="information.groups.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">Název skupiny</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUser" approved="yes">
+        <source>Backend User</source>
+        <target state="final">BE-uživatel</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" approved="yes">
+        <source>Backend User Group</source>
+        <target state="final">Skupina BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">BE-uživatelé</target>
+      </trans-unit>
+      <trans-unit id="backendUserDetails" approved="yes">
+        <source>Backend user details</source>
+        <target state="final">Podrobnosti BE-uživatele</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Skupiny BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupDetails" approved="yes">
+        <source>Backend user group details</source>
+        <target state="final">Podrobnosti o skupině BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Porovnat BE-uživatele</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsersGroups" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">Porovnat skupiny BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Online uživatelé</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <trans-unit id="btn.addToCompareList" approved="yes">
+        <source>Add to compare list</source>
+        <target state="final">Přidat do seznamu pro porovnání</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUser.create" approved="yes">
+        <source>Create new backend user</source>
+        <target state="final">Vytvořit nového BE-uživatele</target>
+      </trans-unit>
+      <trans-unit id="btn.editor.create" approved="yes">
+        <source>Create editor</source>
+        <target state="final">Vytvořit editora</target>
+      </trans-unit>
+      <trans-unit id="btn.admin.create" approved="yes">
+        <source>Create admin</source>
+        <target state="final">Vytvořit administrátora</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUserGroup.create" approved="yes">
+        <source>Create new backend user group</source>
+        <target state="final">Vytvořit novou skupinu BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="btn.clearCompareList" approved="yes">
+        <source>Clear compare list</source>
+        <target state="final">Vyprázdnit porovnávací seznam</target>
+      </trans-unit>
+      <trans-unit id="btn.compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">Porovnat</target>
+      </trans-unit>
+      <trans-unit id="btn.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Odstranit</target>
+      </trans-unit>
+      <trans-unit id="btn.details" approved="yes">
+        <source>Show details</source>
+        <target state="final">Zobrazit podrobnosti</target>
+      </trans-unit>
+      <trans-unit id="btn.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Deaktivovat</target>
+      </trans-unit>
+      <trans-unit id="btn.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Upravit</target>
+      </trans-unit>
+      <trans-unit id="btn.enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">Povolit</target>
+      </trans-unit>
+      <trans-unit id="btn.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="btn.removeFromCompareList" approved="yes">
+        <source>Remove from compare list</source>
+        <target state="final">Odstranit ze seznamu porovnání</target>
+      </trans-unit>
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtrovat</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Resetovat</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">předchozí</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">další</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">první</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">poslední</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Záznamy</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Obnovit</target>
+      </trans-unit>
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">Přepnout na uživatele</target>
+      </trans-unit>
+      <trans-unit id="lockedMfaProviders" approved="yes">
+        <source>Locked MFA providers</source>
+        <target state="final">Poskytovatelé vícefázového ověřování</target>
+      </trans-unit>
+      <trans-unit id="mfaEnabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">Vícefázové ověřování povoleno</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <trans-unit id="backendUser.list.title" approved="yes">
+        <source>Backend users</source>
+        <target state="final">BE-uživatelé</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.compare" approved="yes">
+        <source>Backend users to compare</source>
+        <target state="final">BE-uživatelé k porovnání</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.allUsers" approved="yes">
+        <source>Backend users in the system</source>
+        <target state="final">BE-uživatelé v systému</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.btn.compareList" approved="yes">
+        <source>Compare selected backend users</source>
+        <target state="final">Porovnat vybrané BE-uživatele</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.table.column.group" approved="yes">
+        <source>Group</source>
+        <target state="final">Skupina</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.group" approved="yes">
+        <source>Group</source>
+        <target state="final">Skupina</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState" approved="yes">
+        <source>Login state</source>
+        <target state="final">Stav přihlášení</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.all" approved="yes">
+        <source>All</source>
+        <target state="final">Vše</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">Přihlášený před</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.never" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">Nikdy se nepřihlásil</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loggedIn" approved="yes">
+        <source>Currently logged in</source>
+        <target state="final">Aktuálně přihlášeno</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.all" approved="yes">
+        <source>All</source>
+        <target state="final">Vše</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Povoleno</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktivováno</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.all" approved="yes">
+        <source>All</source>
+        <target state="final">Vše</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrátor</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.normalUser" approved="yes">
+        <source>Normal user</source>
+        <target state="final">Běžný uživatel</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.label.online" approved="yes">
+        <source>online</source>
+        <target state="final">online</target>
+      </trans-unit>
+      <trans-unit id="backendUser.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user '%s'?</source>
+        <target state="final">Chcete opravdu odstranit uživatele %s'?</target>
+      </trans-unit>
+      <!-- Backend users: Show -->
+      <trans-unit id="backendUser.show.title" approved="yes">
+        <source>Configuration of backend user "%s"</source>
+        <target state="final">Konfigurace BE-uživatele "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Není konfigurováno.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">Kompilovaná práva a nastavení</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user. These can come from settings in the backend user record itself, as well as from settings that have been stored in backend user groups assigned to this backend user.</source>
+        <target state="final">Toto zobrazení zobrazuje všechna kompilovaná práva a nastavení vybraného uživatele backendu. Ta mohou pocházet z nastavení v samotném záznamu BE-uživatele spolu s nastavením, které bylo uloženo ve skupinách BE-uživatelů přiřazených tomuto uživateli.</target>
+      </trans-unit>
+      <!-- Backend users: Compare -->
+      <trans-unit id="backendUser.compare.title" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Porovnat BE-uživatele</target>
+      </trans-unit>
+      <!-- Backend users: Online -->
+      <trans-unit id="backendUser.online.title" approved="yes">
+        <source>Online users</source>
+        <target state="final">Online uživatelé</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">IP adresa</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">Poslední přístup</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.activeSession" approved="yes">
+        <source>Active session</source>
+        <target state="final">Aktivní relace</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.flashMessage.terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">Relace byla úspěšně ukončena.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">Skutečně odhlásit</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">Konec relace</target>
+      </trans-unit>
+      <!-- Backend user groups: List -->
+      <trans-unit id="backendUserGroup.list.title" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Skupiny BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.title" approved="yes">
+        <source>No backend user groups found</source>
+        <target state="final">Nebyly nalezeny žádné skupiny BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.message" approved="yes">
+        <source>There are currently no backend user groups found in the database.</source>
+        <target state="final">V databázi nejsou momentálně nalezeny žádné skupiny BE-uživatelů.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.compare" approved="yes">
+        <source>Backend user groups to compare</source>
+        <target state="final">BE-uživatelské skupiny k porovnání</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.allUserGroups" approved="yes">
+        <source>Backend user groups in the system</source>
+        <target state="final">BE-uživatelské skupiny v systému</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.btn.compareList" approved="yes">
+        <source>Compare selected backend user groups</source>
+        <target state="final">Porovnat vybrané skupiny</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.filter.groupTitle" approved="yes">
+        <source>Group title or group ID</source>
+        <target state="final">Název skupiny nebo ID skupiny</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">Název skupiny</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">Zdědit nastavení ze skupin</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user group '%s'?</source>
+        <target state="final">Chcete opravdu odstranit uživatelskou skupinu %s'?</target>
+      </trans-unit>
+      <!-- Backend user groups: Show -->
+      <trans-unit id="backendUserGroup.show.title" approved="yes">
+        <source>Configuration of backend user group "%s"</source>
+        <target state="final">Konfigurace skupiny BE-uživatelů "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Není konfigurováno.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">Kompilovaná práva a nastavení</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user group. These can come from settings in the backend user group record itself, as well as from settings that have been stored in backend user groups assigned to this backend user group.</source>
+        <target state="final">Tento pohled zobrazuje všechna zkompilovaná práva a nastavení vybrané skupiny BE-uživatelů. Ty mohou pocházet z nastavení v samotném záznamu skupiny, stejně jako z nastavení, která byla uložena ve skupinách přiřazených k této skupině BE-uživatelů.</target>
+      </trans-unit>
+      <!-- Backend user groups: Compare -->
+      <trans-unit id="backendUserGroup.compare.title" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">Porovnat skupiny BE-uživatelů</target>
+      </trans-unit>
+      <!-- File mounts -->
+      <trans-unit id="filemounts" approved="yes">
+        <source>File mounts</source>
+        <target state="final">Napojení souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.list.title" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Napojení souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.confirm.deletion" approved="yes">
+        <source>Are you sure, that you want to delete the file mount "%s"?</source>
+        <target state="final">Opravdu chcete smazat napojení souborů "%s"?</target>
+      </trans-unit>
+      <trans-unit id="filemount.create" approved="yes">
+        <source>Create new file mount</source>
+        <target state="final">Vyvořit nové napojení souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.title" approved="yes">
+        <source>No file mount found</source>
+        <target state="final">Nebylo nalezeno žádné napojení souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.message" approved="yes">
+        <source>Please create a file mount and select its entry point.</source>
+        <target state="final">Prosím vytvořte napojení souborů a vyberte jeho vstupní bod.</target>
+      </trans-unit>
+      <trans-unit id="filemount.link.openInFilelist" approved="yes">
+        <source>Open in file list</source>
+        <target state="final">Otevřít v seznamu souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.multiple" approved="yes">
+        <source>File mounts</source>
+        <target state="final">Napojení souborů</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.singular" approved="yes">
+        <source>File mount</source>
+        <target state="final">Napojení souborů</target>
+      </trans-unit>
+      <!-- Password reset -->
+      <trans-unit id="flashMessage.resetPassword.error.title" approved="yes">
+        <source>Password reset not triggered</source>
+        <target state="final">Obnovení hesla není spuštěno</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" approved="yes">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target state="final">Je nám líto, heslo tohoto uživatele nemůže být obnoveno.</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" approved="yes">
+        <source>Password reset triggered</source>
+        <target state="final">Obnovení hesla bylo spuštěno</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" approved="yes">
+        <source>Password reset for email address %s initiated.</source>
+        <target state="final">Obnovení hesla pro e-mailovou adresu %s bylo inicializováno.</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Obnovení hesla</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Obnovení hesla</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" approved="yes">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target state="final">Opravdu chcete resetovat heslo pro %s?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
