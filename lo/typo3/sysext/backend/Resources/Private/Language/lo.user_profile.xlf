@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/user_profile.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="user_settings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">ການຕັ້ງຄ່າຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable" approved="yes">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+        <target state="final">ພາສາທີ່ເລືອກ "%s" ຍັງບໍ່ທັນພ້ອມໃຊ້ງານ ເນື່ອງຈາກຍັງບໍ່ໄດ້ຕິດຕັ້ງໄຟລ໌ພາສາ.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.admin" approved="yes">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+        <target state="final">ທ່ານສາມາດໃຊ້ "ຈັດການແພັກເກັດພາສາ" ໃນໂມດູນການບຳລຸງຮັກສາ ເພື່ອດາວໂຫຼດໄຟລ໌ພາສາໃໝ່ໄດ້ຢ່າງງ່າຍດາຍ.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.user" approved="yes">
+        <source>Please ask your system administrator to do this.</source>
+        <target state="final">ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຂອງທ່ານເພື່ອດຳເນີນການນີ້.</target>
+      </trans-unit>
+      <trans-unit id="simulate" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">ຈຳລອງຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="start_module" approved="yes">
+        <source>Start up in the following module</source>
+        <target state="final">ເລີ່ມຕົ້ນໃນໂມດູນຕໍ່ໄປນີ້</target>
+      </trans-unit>
+      <trans-unit id="email_me_at_login" approved="yes">
+        <source>Notify me by email when somebody logs in from my account</source>
+        <target state="final">ແຈ້ງເຕືອນຂ້ອຍຜ່ານອີເມວ ເມື່ອມີການເຂົ້າສູ່ລະບົບຈາກບັນຊີຂອງຂ້ອຍ</target>
+      </trans-unit>
+      <trans-unit id="help_text" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">ສະແດງຂໍ້ຄວາມຊ່ວຍເຫຼືອເມື່ອສາມາດໃຊ້ໄດ້</target>
+      </trans-unit>
+      <trans-unit id="max_title_len" approved="yes">
+        <source>Maximum length of displayed labels / record titles</source>
+        <target state="final">ຄວາມຍາວສູງສຸດຂອງປ້າຍກຳກັບ / ຊື່ບັນທຶກທີ່ສະແດງ</target>
+      </trans-unit>
+      <trans-unit id="edit_doc_module_upload" approved="yes">
+        <source>Allow to directly upload files when editing or creating records</source>
+        <target state="final">ອະນຸຍາດໃຫ້ອັບໂຫຼດໄຟລ໌ໂດຍກົງ ເມື່ອມີການແກ້ໄຂ ຫຼື ສ້າງບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="contextual_record_edit" approved="yes">
+        <source>Use quick editing for records in the Layout module</source>
+        <target state="final">ໃຊ້ການແກ້ໄຂດ່ວນສຳລັບຂໍ້ມູນໃນໂມດູນ Layout</target>
+      </trans-unit>
+      <trans-unit id="show_hidden_files_and_folders" approved="yes">
+        <source>Show hidden files and folders in the Media module</source>
+        <target state="final">ສະແດງໄຟລ໌ ແລະ ໂຟນເດີທີ່ຖືກເຊື່ອງໄວ້ໃນໂມດູນສື່ (Media)</target>
+      </trans-unit>
+      <trans-unit id="display_recently_used" approved="yes">
+        <source>Enable dynamic "recently used" category in wizards</source>
+        <target state="final">ເປີດໃຊ້ງານໝວດໝູ່ "ທີ່ໃຊ້ຫວ່າງມໍ່ໆນີ້" ແບບໄດນາມິກໃນຕົວຊ່ວຍສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="edit_functions_tab" approved="yes">
+        <source>Edit and advanced functions</source>
+        <target state="final">ແກ້ໄຂ ແລະ ຟັງຊັນຂັ້ນສູງ</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard" approved="yes">
+        <source>Reset all values to default</source>
+        <target state="final">ຕັ້ງຄ່າທັງໝົດຄືນເປັນຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="reset_tab" approved="yes">
+        <source>Reset configuration</source>
+        <target state="final">ຕັ້ງຄ່າການກຳນົດຄ່າຄືນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration" approved="yes">
+        <source>Reset configuration and clear temporary data</source>
+        <target state="final">ຕັ້ງຄ່າການກຳນົດຄ່າຄືນໃໝ່ ແລະ ລຶບລ້າງຂໍ້ມູນຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration_button" approved="yes">
+        <source>Reset profile settings to default state</source>
+        <target state="final">ຕັ້ງຄ່າໂປຣໄຟລ໌ຄືນເປັນສະຖານະເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard_question" approved="yes">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target state="final">ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການຕັ້ງຄ່າທັງໝົດຄືນເປັນຄ່າເລີ່ມຕົ້ນ?</target>
+      </trans-unit>
+      <trans-unit id="functions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">ຟັງຊັນຂັ້ນສູງ</target>
+      </trans-unit>
+      <trans-unit id="copy_levels" approved="yes">
+        <source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
+        <target state="final">ການສຳເນົາແບບຕໍ່ເນື່ອງ: ປ້ອນຈຳນວນລະດັບຍ່ອຍຂອງໜ້າທີ່ຈະລວມເຂົ້າ ເມື່ອມີການສຳເນົາໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="be_user_real_name" approved="yes">
+        <source>Your name</source>
+        <target state="final">ຊື່ຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="be_user_avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">ຮູບແທນໂຕ</target>
+      </trans-unit>
+      <trans-unit id="be_user_email" approved="yes">
+        <source>Your email address</source>
+        <target state="final">ທີ່ຢູ່ອີເມວຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="save" approved="yes">
+        <source>Save configuration</source>
+        <target state="final">ບັນທຶກການກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="new_password" approved="yes">
+        <source>New password</source>
+        <target state="final">ລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="new_password_again" approved="yes">
+        <source>New password (repetition)</source>
+        <target state="final">ລະຫັດຜ່ານໃໝ່ (ຢືນຢັນຄືນ)</target>
+      </trans-unit>
+      <trans-unit id="new_password_ok" approved="yes">
+        <source>Password was updated.</source>
+        <target state="final">ລະຫັດຜ່ານຖືກປັບປຸງແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="password_policy_failed" approved="yes">
+        <source>The password was not updated, since it does not meet the password policy requirements.</source>
+        <target state="final">ລະຫັດຜ່ານບໍ່ໄດ້ຖືກປັບປຸງ ເນື່ອງຈາກບໍ່ຖືກຕ້ອງຕາມເງື່ອນໄຂຂອງນະໂຍບາຍລະຫັດຜ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="account_security" approved="yes">
+        <source>Account security</source>
+        <target state="final">ຄວາມປອດໄພຂອງບັນຊີ</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">ການຢືນຢັນຕົວຕົນຫຼາຍປັດໄຈ</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.not_available" approved="yes">
+        <source>Multi-factor authentication is currently not available.</source>
+        <target state="final">ການຢືນຢັນຕົວຕົນຫຼາຍປັດໄຈຍັງບໍ່ທັນສາມາດໃຊ້ງານໄດ້ໃນຕອນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.description" approved="yes">
+        <source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+        <target state="final">ໃຊ້ການຢືນຢັນຕົວຕົນຫຼາຍປັດໄຈເພື່ອຄວາມປອດໄພຂອງບັນຊີ ໂດຍການເພີ່ມປັດໄຈອື່ນນອກເໜືອຈາກລະຫັດຜ່ານຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.locked_mfa_providers" approved="yes">
+        <source>Some providers are currently locked</source>
+        <target state="final">ບາງຜູ້ໃຫ້ບໍລິການຖືກລັອກຢູ່ໃນຕອນນີ້</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.setup_link_title" approved="yes">
+        <source>Setup multi-factor authentication</source>
+        <target state="final">ຕັ້ງຄ່າການຢືນຢັນຕົວຕົນຫຼາຍປັດໄຈ</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.manage_link_title" approved="yes">
+        <source>Manage multi-factor authentication</source>
+        <target state="final">ຈັດການການຢືນຢັນຕົວຕົນຫຼາຍປັດໄຈ</target>
+      </trans-unit>
+      <trans-unit id="setup_was_updated" approved="yes">
+        <source>Profile settings were updated.</source>
+        <target state="final">ການຕັ້ງຄ່າໂປຣໄຟລ໌ຖືກປັບປຸງແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="new_password_failed" approved="yes">
+        <source>Password was not updated because the entered passwords do not match.</source>
+        <target state="final">ລະຫັດຜ່ານບໍ່ໄດ້ຖືກປັບປຸງ ເນື່ອງຈາກລະຫັດຜ່ານທີ່ປ້ອນບໍ່ກົງກັນ.</target>
+      </trans-unit>
+      <trans-unit id="old_password_failed" approved="yes">
+        <source>Password was not updated because the current password entered is incorrect.</source>
+        <target state="final">ລະຫັດຜ່ານບໍ່ໄດ້ຖືກປັບປຸງ ເນື່ອງຈາກລະຫັດຜ່ານປະຈຸບັນທີ່ປ້ອນເຂົ້າບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="settings_are_reset" approved="yes">
+        <source>The profile settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="final">ການຕັ້ງຄ່າໂປຣໄຟລ໌ໄດ້ຖືກຕັ້ງຄ່າຄືນເປັນຄ່າເລີ່ມຕົ້ນ ແລະ ຂໍ້ມູນຊົ່ວຄາວໄດ້ຖືກລຶບລ້າງແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="start_module.first_in_menu" approved="yes">
+        <source>- First module in menu -</source>
+        <target state="final">- ໂມດູນທຳອິດໃນເມນູ -</target>
+      </trans-unit>
+      <trans-unit id="avatar.clear" approved="yes">
+        <source>Remove selected avatar image</source>
+        <target state="final">ລຶບຮູບແທນໂຕທີ່ເລືອກອອກ</target>
+      </trans-unit>
+      <trans-unit id="avatar.open_file_browser" approved="yes">
+        <source>Open file browser to select avatar image</source>
+        <target state="final">ເປີດຕົວທ່ອງເວັບໄຟລ໌ເພື່ອເລືອກຮູບແທນໂຕ</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format" approved="yes">
+        <source>Format of window title in backend</source>
+        <target state="final">ຮູບແບບຂອງຊື່ໜ້າຕ່າງໃນລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.sitename_first" approved="yes">
+        <source>[sitename] · [title]</source>
+        <target state="final">[ຊື່ເວັບໄຊ] · [ຫົວຂໍ້]</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.title_first" approved="yes">
+        <source>[title] · [sitename]</source>
+        <target state="final">[ຫົວຂໍ້] · [ຊື່ເວັບໄຊ]</target>
+      </trans-unit>
+      <trans-unit id="warning.chinese_simplified" approved="yes">
+        <source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
+        <target state="final">ພາສາຈີນແບບງ່າຍ (ແບບເກົ່າ) - ຄຳເຕືອນ: ໃຫ້ເລືອກພາສາຈີນແບບງ່າຍທາງລຸ່ມນີ້, ເນື່ອງຈາກມີຄວາມຜິດພາດຈາກເວີຊັນເກົ່າຂອງ TYPO3 ແລະ ອາດຈະຖືກຖອນອອກໃນໄວໆນີ້.</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week" approved="yes">
+        <source>First day of week in calendar popups</source>
+        <target state="final">ມື້ທຳອິດຂອງອາທິດໃນປັອບອັບປະຕິທິນ</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week.inherit" approved="yes">
+        <source>Use default based on personal backend language setting</source>
+        <target state="final">ໃຊ້ຄ່າເລີ່ມຕົ້ນຕາມການຕັ້ງຄ່າພາສາສ່ວນຕົວຂອງລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
