@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="destination">
+      <segment state="initial">
+        <source>destination</source>
+        <target>crwdns381020:0crwdne381020:0</target>
+      </segment>
+    </unit>
+    <unit id="email">
+      <segment state="initial">
+        <source>email</source>
+        <target>crwdns381022:0crwdne381022:0</target>
+      </segment>
+    </unit>
+    <unit id="file">
+      <segment state="initial">
+        <source>file</source>
+        <target>crwdns381024:0crwdne381024:0</target>
+      </segment>
+    </unit>
+    <unit id="folder">
+      <segment state="initial">
+        <source>folder</source>
+        <target>crwdns381026:0crwdne381026:0</target>
+      </segment>
+    </unit>
+    <unit id="page">
+      <segment state="initial">
+        <source>page</source>
+        <target>crwdns381028:0crwdne381028:0</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="initial">
+        <source>external URL</source>
+        <target>crwdns381030:0crwdne381030:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
