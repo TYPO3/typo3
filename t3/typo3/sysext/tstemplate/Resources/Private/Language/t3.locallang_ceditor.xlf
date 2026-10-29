@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title">
+        <source>Constant Editor</source>
+        <target>crwdns275229:0crwdne275229:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord">
+        <source>Constant Editor for TypoScript record "%s"</source>
+        <target>crwdns275231:0%scrwdne275231:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.description">
+        <source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+        <target>crwdns275233:0crwdne275233:0</target>
+      </trans-unit>
+      <trans-unit id="options.selectedCategory">
+        <source>Selected category</source>
+        <target>crwdns275235:0crwdne275235:0</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord">
+        <source>Selected record</source>
+        <target>crwdns275237:0crwdne275237:0</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noConstants">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target>crwdns275239:0crwdne275239:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
