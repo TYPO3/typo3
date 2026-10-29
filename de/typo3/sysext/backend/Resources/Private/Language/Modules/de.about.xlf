@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Über TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">Zeigt die grundlegenden Informationen zur TYPO3-Anwendung, zur Version und zu den Lizenzbedingungen an.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Über TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Logo des TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">Informationen zu TYPO3</target>
+      </trans-unit>
+      <trans-unit id="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 CMS - Professionelles Web Content Management System</target>
+      </trans-unit>
+      <trans-unit id="minor" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
+        <target state="final">Das TYPO3 CMS ist ein quelloffenes Business-Level Content Management System, welches weltweit verwendet wird und jegliche Webseiten aller Arten verwaltet. Von kleinen Websites für Non-Profits bis hin zu mehrsprachigen Business Lösungen für große Konzerne. &lt;br /&gt;&lt;br /&gt;Weitere Informationen auf &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noopener noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS ist &lt;b&gt;frei verfügbar&lt;/b&gt; unter der &lt;a href="https://typo3.org/typo3-cms/overview/licenses/" target="_blank"&gt;TYPO3-Lizenz (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Du benutzt %s %s</target>
+      </trans-unit>
+      <trans-unit id="cms_description" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Copyright %s %s</source>
+        <target state="final">TYPO3 CMS ist ein Open-Source-Content-Management-System der Enterprise-Klasse, das international zum Erstellen und Verwalten von Websites aller Art eingesetzt wird – von kleinen Websites für gemeinnützige Organisationen bis hin zu mehrsprachigen Unternehmenslösungen für große Konzerne.&lt;br /&gt;&lt;br /&gt; Weitere Informationen finden Sie unter &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS ist &lt;b&gt;kostenlos verfügbar&lt;/b&gt; unter der &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-Lizenz (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Copyright %s %s
+
+Übersetzt mit DeepL.com (kostenlose Version)</target>
+      </trans-unit>
+      <trans-unit id="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">Die TYPO3-Community</target>
+      </trans-unit>
+      <trans-unit id="information_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="final">Besuche &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; wenn Du mehr darüber wissen möchtest, warum TYPO3 super ist.</target>
+      </trans-unit>
+      <trans-unit id="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">Core Team</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="final">Unter &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; findet man die vollständige Liste der aktuellen Core-Entwickler. Zum Git-Repository und dem Changelog gelangt man &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;hier&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Autoren der Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Dies ist eine Liste der Menschen, die zu den Erweiterungen, die Sie in Ihrer Installation benutzen, beigetragen haben.</target>
+      </trans-unit>
+      <trans-unit id="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Entwickler</target>
+      </trans-unit>
+      <trans-unit id="donation.sectionHeadline" approved="yes">
+        <source>TYPO3 Donation and community</source>
+        <target state="final">TYPO3 Spende und Community</target>
+      </trans-unit>
+      <trans-unit id="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">TYPO3 Spende</target>
+      </trans-unit>
+      <trans-unit id="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">TYPO3 CMS ist Open Source und setzt auf Spenden von Benutzern und Unterstützern.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Vielen Dank&lt;/b&gt; dafür, dass Sie dieses großartige Content Management System mit Ihrer Unterstützung noch besser gemacht haben!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">Jetzt spenden</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">Externe Bibliotheken</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">TYPO3 CMS-Kern verwendet und dankt diesen externen Open-Source-Projekten:</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.name" approved="yes">
+        <source>Project name</source>
+        <target state="final">Projektname</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.website" approved="yes">
+        <source>Website</source>
+        <target state="final">Webseite</target>
+      </trans-unit>
+      <trans-unit id="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Web Content-Management-System</target>
+      </trans-unit>
+      <trans-unit id="modules.headline" approved="yes">
+        <source>Modules</source>
+        <target state="final">Module</target>
+      </trans-unit>
+      <trans-unit id="modules.introtext" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">Hier finden Sie eine kurze Beschreibung der verfügbaren Module.</target>
+      </trans-unit>
+      <trans-unit id="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">Die verfügbaren Funktionen hängen von der Website und den Zugriffsrechten ab</target>
+      </trans-unit>
+      <trans-unit id="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Sie sind angemeldet als Benutzer</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Modul öffnen</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">%1s Modul öffnen</target>
+      </trans-unit>
+      <trans-unit id="noSubModules" approved="yes">
+        <source>There are currently no functions available for this module.</source>
+        <target state="final">Für dieses Modul stehen derzeit keine Funktionen zur Verfügung.</target>
+      </trans-unit>
+      <trans-unit id="noSubModulesWithTitle" approved="yes">
+        <source>There are currently no functions available for the %1s module.</source>
+        <target state="final">Für das %1s Modul stehen derzeit keine Funktionen zur Verfügung.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
