@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_fields.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino" target-language="fa">
+    <header/>
+    <body>
+      <!-- General: Image crop variants -->
+      <!-- pages -->
+      <!-- tt_content -->
+      <!-- CType 'camino_author' -->
+      <!-- CType 'camino_hero' -->
+      <!-- CType 'camino_linklist' -->
+      <!-- CType 'camino_sociallinks' -->
+      <!-- CType 'camino_testimonial' -->
+      <!-- CType 'camino_textmedia_teaser' -->
+      <!-- CType 'camino_textmedia_teaser_grid' -->
+      <!-- CType 'camino_textteaser' -->
+      <!-- List item -->
+    </body>
+  </file>
+</xliff>
