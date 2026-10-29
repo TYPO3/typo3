@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">Configuración a mostrar</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline" approved="yes">
+        <source>Configuration of "%1s"</source>
+        <target state="final">Configuración de "%1s"</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Configuración de ajustes de usuario)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Rutas del backend</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">Productos intermediarios HTTP (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations" approved="yes">
+        <source>Content Security Policy Mutations</source>
+        <target state="final">Mutaciones de Política de Seguridad de Contenido</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Listeners de Eventos (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" approved="yes">
+        <source>Soft Reference Parsers</source>
+        <target state="final">Analizadores de referencias débiles</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems" approved="yes">
+        <source>Backend Toolbar Items</source>
+        <target state="final">Elementos de la barra de herramientas</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">Formulario: Configuración YAML</target>
+      </trans-unit>
+      <trans-unit id="backendModules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Módulos Backend</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">Permisos de tabla por tipo de página</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">Buscar todos los registros</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Búsqueda</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Búsqueda completa</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Seleccionar registros</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Contar resultados</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Explicar consulta</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">Exportar CSV</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" approved="yes">
+        <source>The query returned no results.</source>
+        <target state="final">La consulta no devolvió resultados.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions" approved="yes">
+        <source>Query options</source>
+        <target state="final">Opciones de consulta</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL" approved="yes">
+        <source>Full SQL query</source>
+        <target state="final">Consulta SQL completa</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error" approved="yes">
+        <source>SQL error</source>
+        <target state="final">Error de SQL</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings" approved="yes">
+        <source>Query compilation</source>
+        <target state="final">Compilación de consultas</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage" approved="yes">
+        <source>Load/save query</source>
+        <target state="final">Cargar/guardar consulta</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">Resultado</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound" approved="yes">
+        <source>records found.</source>
+        <target state="final">registros encontrados.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound" approved="yes">
+        <source>No records found.</source>
+        <target state="final">No se han encontrado registros.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label" approved="yes">
+        <source>Delete</source>
+        <target state="final">Borrar</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">Mostrar partes SQL</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Usar cadenas formateadas, etiquetas y fechas en lugar de valores originales para los resultados</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">No se han encontrado resultados para "%s".</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
