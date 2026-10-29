@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Redirection</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.redirect_type.qr_code" approved="yes">
+        <source>QR Code</source>
+        <target state="final">QR Code</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.redirect_type.short_url" approved="yes">
+        <source>Short URL</source>
+        <target state="final">URL courte</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">Domaine source</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Chemin source</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" approved="yes">
+        <source>SSL Redirect</source>
+        <target state="final">Redirection SSL</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" approved="yes">
+        <source>Force SSL Redirect</source>
+        <target state="final">Forcer la redirection SSL</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" approved="yes">
+        <source>GET Parameters</source>
+        <target state="final">Paramètres GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" approved="yes">
+        <source>Keep GET Parameters</source>
+        <target state="final">Conserver les paramètres GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters" approved="yes">
+        <source>GET Parameters (source)</source>
+        <target state="final">Paramètres GET (source)</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0" approved="yes">
+        <source>Respect GET Parameters</source>
+        <target state="final">Respecter les paramètres GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Cible</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" approved="yes">
+        <source>Status Code HTTP Header</source>
+        <target state="final">Code de statut de l'entête HTTP</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" approved="yes">
+        <source>301 Moved Permanently</source>
+        <target state="final">301 Déplacé de façon permanente</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" approved="yes">
+        <source>302 Found</source>
+        <target state="final">302 Found</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" approved="yes">
+        <source>303 See Other</source>
+        <target state="final">303 See Other</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" approved="yes">
+        <source>307 Temporary Redirect</source>
+        <target state="final">307 Temporary Redirect</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.308" approved="yes">
+        <source>308 Permanent Redirect</source>
+        <target state="final">308 Redirection permanente</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.keep" approved="yes">
+        <source>Keep HTTP method</source>
+        <target state="final">Conserver la méthode HTTP</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.change" approved="yes">
+        <source>Change HTTP method to GET</source>
+        <target state="final">Changez la méthode HTTP en GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount" approved="yes">
+        <source>Hit count</source>
+        <target state="final">Nombre d’accès</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Dernière visite le</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" approved="yes">
+        <source>Hit Counter</source>
+        <target state="final">Compteur de visites</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" approved="yes">
+        <source>Disable Hit Counter</source>
+        <target state="final">Désactiver le compteur de visites</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Désactiver</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Statistiques</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected" approved="yes">
+        <source>Protected</source>
+        <target state="final">Protégé</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected.description" approved="yes">
+        <source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
+        <target state="final">Lorsque cette option est activée, cette redirection sera ignorée par les tâches de nettoyage planifiées qui pourraient supprimer les redirections sous certaines conditions.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" approved="yes">
+        <source>Is regular expression?</source>
+        <target state="final">Expression régulière ?</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" approved="yes">
+        <source>Yes</source>
+        <target state="final">Oui</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" approved="yes">
+        <source>Disable</source>
+        <target state="final">Désactiver</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" approved="yes">
+        <source>Deactivate redirect</source>
+        <target state="final">Désactiver la redirection</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type" approved="yes">
+        <source>Creation Type</source>
+        <target state="final">Mode de création</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.description" approved="yes">
+        <source>Defines how the redirect was created.</source>
+        <target state="final">Définit comment la redirection a été créée.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.1" approved="yes">
+        <source>manually created</source>
+        <target state="final">créée manuellement</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.0" approved="yes">
+        <source>automatically created</source>
+        <target state="final">créée automatiquement</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit" approved="yes">
+        <source>... when a redirect has been hit</source>
+        <target state="final">... quand une redirection a eu lieu</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status" approved="yes">
+        <source>Integrity status</source>
+        <target state="final">Statut d'intégrité</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.description" approved="yes">
+        <source>Redirects can be checked via the command redirects:checkintegrity.</source>
+        <target state="final">Les redirections peuvent être vérifiées via la commande redirects:checkintegrity.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.no_conflict" approved="yes">
+        <source>No conflict</source>
+        <target state="final">Aucun conflit</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.self_reference" approved="yes">
+        <source>Self reference</source>
+        <target state="final">Référence circulaire</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.invalid_target" approved="yes">
+        <source>Invalid target</source>
+        <target state="final">Cible invalide</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.createdby" approved="yes">
+        <source>Created by</source>
+        <target state="final">Créée par</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.createdon" approved="yes">
+        <source>Created</source>
+        <target state="final">Créée</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url" approved="yes">
+        <source>Short URL</source>
+        <target state="final">URL courte</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.description" approved="yes">
+        <source>Enter a Short URL or generate a random one automatically. Once saved, the Short URL cannot be changed.</source>
+        <target state="final">Entrez une URL courte ou générez une URL aléatoire automatiquement. Une fois enregistrée, l'URL courte ne sera plus modifiable.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.shortUrlGenerator" approved="yes">
+        <source>Generate Short URL</source>
+        <target state="final">Générer une URL courte</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
