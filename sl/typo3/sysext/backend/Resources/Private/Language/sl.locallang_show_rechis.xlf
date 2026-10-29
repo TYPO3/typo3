@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Čas</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Uporabnik</target>
+      </trans-unit>
+      <trans-unit id="column.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Dejanje</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">Razlike</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Dnevnik sprememb</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Nazaj</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Tukaj kliknite za nazaj</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">Razveljavi vse prikazane spremembe</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">Razveljavi spremembo zapisa</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Razveljavi spremembo polja</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">označi to spremembo</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">odznači to spremembo</target>
+      </trans-unit>
+      <trans-unit id="elementHistory_link" approved="yes">
+        <source>Show the full page history</source>
+        <target state="final">Prikaži popolno zgodovino strani</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">Omeji zgodovino na ta zapis</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">Vrni se na polni pogled</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" approved="yes">
+        <source>Preview for rollback</source>
+        <target state="final">Predogled za razveljavitev sprememb</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Nastavitve</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">Prikaži vnose</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">VSE</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">označene</target>
+      </trans-unit>
+      <trans-unit id="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">Prikaži razlike</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Ne</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Da</target>
+      </trans-unit>
+      <trans-unit id="noDifferences" approved="yes">
+        <source>There are no differences to the current page</source>
+        <target state="final">Ni razlik za trenutno stran</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
