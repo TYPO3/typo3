@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">ການກວດສອບສະພາບແວດລ້ອມຂອງລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value" approved="yes">
+        <source>%1$s Test(s)</source>
+        <target state="final">%1$s ການທົດສອບ</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ການກວດສອບສະພາບແວດລ້ອມຂອງລະບົບພົບຂໍ້ຜິດພາດ. ຂໍ້ຜິດພາດເຫຼົ່ານີ້ຈະສົ່ງຜົນກະທົບຕໍ່ການເຮັດວຽກ ແລະ ຄວາມສະຖຽນຂອງ TYPO3 CMS ຂອງທ່ານ. ກະລຸນາກວດສອບເຄື່ອງມືຕິດຕັ້ງ (Install Tool) ໃນສ່ວນ "System environment" ສຳລັບລາຍລະອຽດທັງໝົດ.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ການກວດສອບສະພາບແວດລ້ອມຂອງລະບົບພົບຄຳເຕືອນ. ຄຳເຕືອນເຫຼົ່ານີ້ອາດສົ່ງຜົນກະທົບທາງລົບຕໍ່ການເຮັດວຽກ ແລະ ຄວາມສະຖຽນຂອງ TYPO3 CMS ຂອງທ່ານ. ກະລຸນາກວດສອບເຄື່ອງມືຕິດຕັ້ງ (Install Tool) ໃນສ່ວນ "System environment" ສຳລັບລາຍລະອຽດທັງໝົດ.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">ການກວດສອບສະພາບແວດລ້ອມຂອງລະບົບພົບການແຈ້ງເຕືອນ. ສິ່ງເຫຼົ່ານີ້ບໍ່ຄວນສົ່ງຜົນກະທົບຕໍ່ການເຮັດວຽກ ແລະ ຄວາມສະຖຽນຂອງ TYPO3 CMS ຂອງທ່ານ. ກະລຸນາກວດສອບເຄື່ອງມືຕິດຕັ້ງ (Install Tool) ໃນສ່ວນ "System environment" ສຳລັບລາຍລະອຽດທັງໝົດ.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok">
+        <source/>
+      </trans-unit>
+      <trans-unit id="environment.status.message.info">
+        <source/>
+      </trans-unit>
+      <trans-unit id="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">ລະບົບໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">ສາມາດຂຽນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">ບໍ່ພົບໂຟນເດີທີ່ຈຳເປັນ</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">ບໍ່ມີໂຟນເດີຢູ່</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">ໂຟນເດີຄວນຈະສາມາດຂຽນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">ໂຟນເດີບໍ່ສາມາດຂຽນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s ບໍ່ມີຢູ່.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s ບໍ່ມີຢູ່ ແລະ ບໍ່ສາມາດສ້າງໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">ນອກຈາກນັ້ນ, ຖ້າມັນມີຢູ່ ມັນກໍຄວນຈະສາມາດຂຽນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s ຄວນຈະສາມາດຂຽນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s ຕ້ອງສາມາດຂຽນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">ການອັບເດດທີ່ຍັງເຫຼືອ</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException" approved="yes">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target state="final">ບໍ່ສາມາດດຶງຂໍ້ມູນລາຍການເວີຊັນຂອງ TYPO3 ໄດ້. ອາດເປັນໄປໄດ້ວ່າລະບົບນີ້ຖືກບລັອກໂດຍໄຟວໍ (firewall)?</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion" approved="yes">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target state="final">TYPO3 ເວີຊັນນີ້ເບິ່ງຄືວ່າເປັນເວີຊັນພັດທະນາ (development). ດັ່ງນັ້ນ ຈຶ່ງບໍ່ມີຂໍ້ມູນການອັບເດດ.</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix" approved="yes">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target state="final">ເບິ່ງຄືວ່າ TYPO3 ເວີຊັນນີ້ຍັງບໍ່ເຄີຍຖືກປ່ອຍອອກມາ (released). ດັ່ງນັ້ນ ຈຶ່ງບໍ່ມີຂໍ້ມູນການອັບເດດ.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersionSecurityRelevant" approved="yes">
+        <source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s.</source>
+        <target state="final">ມີ TYPO3 ເວີຊັນໃໝ່ໃຫ້ໃຊ້ແລ້ວ, ການອັບເດດແມ່ນກ່ຽວຂ້ອງກັບຄວາມປອດໄພ. ກະລຸນາອັບເດດເປັນເວີຊັນ %s.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersion" approved="yes">
+        <source>There is a new version of TYPO3 available. You can update to version %s.</source>
+        <target state="final">ມີ TYPO3 ເວີຊັນໃໝ່ໃຫ້ໃຊ້ແລ້ວ. ທ່ານສາມາດອັບເດດເປັນເວີຊັນ %s.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_information" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">TYPO3 ເວີຊັນ %s ທີ່ຕິດຕັ້ງຢູ່ໃນຕອນນີ້ ຈະບໍ່ໄດ້ຮັບການອັບເດດຈາກຊຸມຊົນອີກຕໍ່ໄປ, ກະລຸນາພິຈາລະນາສະໝັກນຳໃຊ້ Extended Long Term Support (ELTS). ເບິ່ງຂໍ້ມູນເພີ່ມເຕີມໄດ້ທີ່ %s.
+</target>
+      </trans-unit>
+      <trans-unit id="status_elts_download" approved="yes">
+        <source>Please visit %s to download the release in your ELTS area.</source>
+        <target state="final">ກະລຸນາເຂົ້າໄປທີ່ %s ເພື່ອດາວໂຫຼດເວີຊັນໃນສ່ວນ ELTS ຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_subscribe" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">TYPO3 ເວີຊັນ %s ທີ່ຕິດຕັ້ງຢູ່ໃນຕອນນີ້ ຈະບໍ່ໄດ້ຮັບການອັບເດດຈາກຊຸມຊົນອີກຕໍ່ໄປ, ກະລຸນາພິຈາລະນາສະໝັກນຳໃຊ້ Extended Long Term Support (ELTS). ເບິ່ງຂໍ້ມູນເພີ່ມເຕີມໄດ້ທີ່ %s.</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated" approved="yes">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target state="final">TYPO3 ເວີຊັນທີ່ທ່ານກຳລັງໃຊ້ງານຢູ່ ບໍ່ໄດ້ຮັບການຮອງຮັບອີກຕໍ່ໄປ. ທ່ານຄວນອັບເດດເປັນເວີຊັນທີ່ໄດ້ຮັບການຮອງຮັບ.</target>
+      </trans-unit>
+      <trans-unit id="status_noAutomaticCheck" approved="yes">
+        <source>Automatic update checking failed, please check for updates manually.</source>
+        <target state="final">ການກວດສອບການອັບເດດອັດຕະໂນມັດລົ້ມເຫຼວ, ກະລຸນາກວດສອບການອັບເດດດ້ວຍຕົນເອງ.</target>
+      </trans-unit>
+      <trans-unit id="status_uptodate" approved="yes">
+        <source>Your TYPO3 version is up-to-date.</source>
+        <target state="final">TYPO3 ເວີຊັນຂອງທ່ານເປັນເວີຊັນຫຼ້າສຸດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">ເຄື່ອງມືຕິດຕັ້ງ (Install Tool)</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">ເປີດໃຊ້ງານແບບຖາວອນ</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">ເປີດໃຊ້ງານແບບຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">ເຄື່ອງມືຕິດຕັ້ງ (Install Tool) ຖືກເປີດໃຊ້ງານແບບຊົ່ວຄາວ. ໃຫ້ລຶບໄຟລ໌ "%s" ເມື່ອທ່ານຕັ້ງຄ່າ TYPO3 ສຳເລັດແລ້ວ. ຖ້າບໍ່ມີການໃຊ້ງານ ເຄື່ອງມືຕິດຕັ້ງຈະຖືກປິດໂດຍອັດຕະໂນມັດພາຍໃນ %s ນາທີ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
