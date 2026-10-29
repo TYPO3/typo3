@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">アバター</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">一切なし</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">最終ログイン</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">ファイルマウントポイント</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">グループ</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="compareBackendUsersGroups" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">バックエンドユーザグループの比較</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <!-- Filter -->
+      <!-- Pagination -->
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">次へ</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ユーザー切替</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <trans-unit id="backendUser.list.title" approved="yes">
+        <source>Backend users</source>
+        <target state="final">バックエンドユーザ</target>
+      </trans-unit>
+      <!-- Backend users: Show -->
+      <!-- Backend users: Compare -->
+      <trans-unit id="backendUser.compare.title" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">バックエンドユーザを比較</target>
+      </trans-unit>
+      <!-- Backend users: Online -->
+      <!-- Backend user groups: List -->
+      <trans-unit id="backendUserGroup.list.title" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">バックエンドユーザグループ</target>
+      </trans-unit>
+      <!-- Backend user groups: Show -->
+      <!-- Backend user groups: Compare -->
+      <!-- File mounts -->
+      <trans-unit id="filemount.list.title" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">ファイルマウント</target>
+      </trans-unit>
+      <!-- Password reset -->
+    </body>
+  </file>
+</xliff>
