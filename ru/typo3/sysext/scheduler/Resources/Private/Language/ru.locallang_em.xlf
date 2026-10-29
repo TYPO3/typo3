@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="scheduler" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="scheduler.config.maxLifetime" approved="yes">
+        <source>Maximum lifetime (in minutes): A task that is still marked as running after this time is considered crashed, and its running mark is removed so it can be executed again. The process itself is not stopped. Set this higher than the runtime of your longest-running task, otherwise a task that disallows parallel execution may be started a second time while it is still running. Empty or 0 falls back to 60.</source>
+        <target state="final">Максимальное время выполнения (в минутах): задача, которая по истечении этого времени все еще помечена как выполняемая, считается завершенной, и пометка о ее выполнении удаляется, чтобы ее можно было запустить снова. Сам процесс при этом не останавливается. Установите значение выше, чем время выполнения самой длительной задачи, иначе задача, не допускающая параллельного выполнения, может быть запущена повторно, пока она еще выполняется. Если значение пустое или равно 0, по умолчанию используется значение 60.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
