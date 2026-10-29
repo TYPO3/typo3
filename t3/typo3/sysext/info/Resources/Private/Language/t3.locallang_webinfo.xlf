@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="page_title">
+        <source>Pagetree overview</source>
+        <target>crwdns59834:0crwdne59834:0</target>
+      </trans-unit>
+      <trans-unit id="pages_0">
+        <source>Basic settings</source>
+        <target>crwdns59840:0crwdne59840:0</target>
+      </trans-unit>
+      <trans-unit id="pages_2">
+        <source>Cache and Age</source>
+        <target>crwdns59842:0crwdne59842:0</target>
+      </trans-unit>
+      <trans-unit id="pages_1">
+        <source>Record overview</source>
+        <target>crwdns59844:0crwdne59844:0</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts">
+        <source>Layouts</source>
+        <target>crwdns141817:0crwdne141817:0</target>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout">
+        <source>Actual backend layout</source>
+        <target>crwdns141819:0crwdne141819:0</target>
+      </trans-unit>
+      <trans-unit id="lang_title">
+        <source>Localization overview</source>
+        <target>crwdns59866:0crwdne59866:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage">
+        <source>Edit page content</source>
+        <target>crwdns370812:0crwdne370812:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage">
+        <source>Edit translated page content</source>
+        <target>crwdns370814:0crwdne370814:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage">
+        <source>View page</source>
+        <target>crwdns59864:0crwdne59864:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage">
+        <source>View translated page</source>
+        <target>crwdns370816:0crwdne370816:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties">
+        <source>Edit page properties</source>
+        <target>crwdns370818:0crwdne370818:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties">
+        <source>Edit translated page properties</source>
+        <target>crwdns370820:0crwdne370820:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties">
+        <source>Edit all page properties</source>
+        <target>crwdns370822:0crwdne370822:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties">
+        <source>Edit all translated page properties</source>
+        <target>crwdns370824:0crwdne370824:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre">
+        <source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
+        <target>crwdns379538:0crwdne379538:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page">
+        <source>Page</source>
+        <target>crwdns59882:0crwdne59882:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default">
+        <source>Default</source>
+        <target>crwdns59884:0crwdne59884:0</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders">
+        <source>Create new translation headers</source>
+        <target>crwdns59886:0crwdne59886:0</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount">
+        <source>Content Element Count</source>
+        <target>crwdns59888:0crwdne59888:0</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth">
+        <source>Depth</source>
+        <target>crwdns141821:0crwdne141821:0</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type">
+        <source>Type</source>
+        <target>crwdns141823:0crwdne141823:0</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang">
+        <source>Language</source>
+        <target>crwdns141825:0crwdne141825:0</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title">
+        <source>No access</source>
+        <target>crwdns339022:0crwdne339022:0</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message">
+        <source>You don't have access to this module.</source>
+        <target>crwdns339024:0crwdne339024:0</target>
+      </trans-unit>
+      <trans-unit id="info.noContent.message">
+        <source>There are no page information available.</source>
+        <target>crwdns339026:0crwdne339026:0</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message">
+        <source>Please select a page in the page tree.</source>
+        <target>crwdns339028:0crwdne339028:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
