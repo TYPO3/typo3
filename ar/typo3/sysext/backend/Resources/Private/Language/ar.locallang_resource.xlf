@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">نجاح</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed" approved="yes">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target state="final">المورد "%s" تم إعادة تسميته إلى "%s".</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.resourceReplaced" approved="yes">
+        <source>The resource %s has been replaced.</source>
+        <target state="final">تم استبدال المصدر %s .</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">حدث خطأ ما</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder" approved="yes">
+        <source>The resource must be a file or a folder.</source>
+        <target state="final">يجب أن يكون المصدر مُجلداً أو ملفاً.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRead" approved="yes">
+        <source>Reading this resource is not permitted.</source>
+        <target state="final">قراءة هذا المصدرِ غيرُ مسموحٍ بهِ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRename" approved="yes">
+        <source>Renaming this resource is not permitted.</source>
+        <target state="final">إعادةُ تسميةِ هذا المصدرِ غيرُ مسموحٍ بهِ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" approved="yes">
+        <source>The resource name cannot be empty.</source>
+        <target state="final">اسم المصدر لا يمكن أن يكون فارغاً.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameNotDifferent" approved="yes">
+        <source>The resource %s already has this name. No changes were made.</source>
+        <target state="final">المصدرُ %s يحملُ هذا الاسمَ بالفعلِ. لم تُجرَ أيُّ تغييراتٍ.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotAvailableToUpload" approved="yes">
+        <source>No resource was selected to be uploaded.</source>
+        <target state="final">لم يتم تحديد أي مصدر ليتم تحميله.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotRenamed" approved="yes">
+        <source>The resource %s could not be renamed.</source>
+        <target state="final">لا يمكن إعادة تسمية المَصدر %s.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFound" approved="yes">
+        <source>The resource was not found.</source>
+        <target state="final">لم يتم العثور على المصدر.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
