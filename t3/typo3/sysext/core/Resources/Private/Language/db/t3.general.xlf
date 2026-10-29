@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="description">
+      <segment state="initial">
+        <source>Description</source>
+        <target>crwdns378638:0crwdne378638:0</target>
+      </segment>
+    </unit>
+    <unit id="editlock">
+      <segment state="initial">
+        <source>Editable for Admins Only</source>
+        <target>crwdns378590:0crwdne378590:0</target>
+      </segment>
+    </unit>
+    <unit id="enabled">
+      <segment state="initial">
+        <source>Enabled</source>
+        <target>crwdns378640:0crwdne378640:0</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="initial">
+        <source>Expiration Date</source>
+        <target>crwdns378446:0crwdne378446:0</target>
+      </segment>
+    </unit>
+    <unit id="fe_group">
+      <segment state="initial">
+        <source>Frontend User Group Access Rights</source>
+        <target>crwdns378448:0crwdne378448:0</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.hide_at_login">
+      <segment state="initial">
+        <source>Hide at login</source>
+        <target>crwdns378642:0crwdne378642:0</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.any_login">
+      <segment state="initial">
+        <source>Show at any login</source>
+        <target>crwdns378644:0crwdne378644:0</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.usergroups">
+      <segment state="initial">
+        <source>__Usergroups:__</source>
+        <target>crwdns378646:0crwdne378646:0</target>
+      </segment>
+    </unit>
+    <unit id="l18n_parent">
+      <segment state="initial">
+        <source>Transl.Orig</source>
+        <target>crwdns378648:0crwdne378648:0</target>
+      </segment>
+    </unit>
+    <unit id="language">
+      <segment state="initial">
+        <source>Language</source>
+        <target>crwdns378650:0crwdne378650:0</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="initial">
+        <source>Publish Date</source>
+        <target>crwdns378444:0crwdne378444:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_0">
+      <segment state="initial">
+        <source>This page</source>
+        <target>crwdns378604:0crwdne378604:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_1">
+      <segment state="initial">
+        <source>1 level</source>
+        <target>crwdns378606:0crwdne378606:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_2">
+      <segment state="initial">
+        <source>2 levels</source>
+        <target>crwdns378608:0crwdne378608:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_3">
+      <segment state="initial">
+        <source>3 levels</source>
+        <target>crwdns378610:0crwdne378610:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_4">
+      <segment state="initial">
+        <source>4 levels</source>
+        <target>crwdns378612:0crwdne378612:0</target>
+      </segment>
+    </unit>
+    <unit id="depth_infi">
+      <segment state="initial">
+        <source>Infinite</source>
+        <target>crwdns378614:0crwdne378614:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
