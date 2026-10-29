@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">表示する設定</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares" approved="yes">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target state="final">Doctrine DBALドライバーMiddlewares</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">ページタイプごとのテーブルのアクセス許可</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">すべてのレコードを検索</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound" approved="yes">
+        <source>No records found.</source>
+        <target state="final">レコードはありません。</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">「%s」 の結果は見つかりませんでした。</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword" approved="yes">
+        <source>Enter a search term to search for records</source>
+        <target state="final">レコードを検索する検索語を入力してください</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">カウント</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
