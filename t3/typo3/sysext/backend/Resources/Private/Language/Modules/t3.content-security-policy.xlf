@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Content Security Policy</source>
+        <target>crwdns379236:0crwdne379236:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Allows to manage Content Security Policy settings.</source>
+        <target>crwdns379238:0crwdne379238:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Content Security Policy</source>
+        <target>crwdns379240:0crwdne379240:0</target>
+      </trans-unit>
+      <trans-unit id="module.headline">
+        <source>Content Security Policy</source>
+        <target>crwdns366976:0crwdne366976:0</target>
+      </trans-unit>
+      <trans-unit id="module.introtext">
+        <source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
+        <target>crwdns366978:0%scrwdne366978:0</target>
+      </trans-unit>
+      <trans-unit id="module.introtextLowlevelMissing">
+        <source>If you install the core EXT:lowlevel extension, you can see a list of the existing Content Security Policy Mutations in the %s module.</source>
+        <target>crwdns368266:0%scrwdne368266:0</target>
+      </trans-unit>
+      <trans-unit id="module.introtext.moduleName">
+        <source>Configuration</source>
+        <target>crwdns366980:0crwdne366980:0</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.title">
+        <source>Disabled feature flags</source>
+        <target>crwdns366982:0crwdne366982:0</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.message">
+        <source>The following feature flags are currently disabled and won't be shown in this module:</source>
+        <target>crwdns366984:0crwdne366984:0</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.title">
+        <source>Reporting</source>
+        <target>crwdns366986:0crwdne366986:0</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.message">
+        <source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
+        <target>crwdns279065:0crwdne279065:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.noEntriesAvailable">
+        <source>No entries available.</source>
+        <target>crwdns279067:0crwdne279067:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.reports">
+        <source>Reports</source>
+        <target>crwdns279069:0crwdne279069:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.created">
+        <source>Created</source>
+        <target>crwdns279071:0crwdne279071:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.scope">
+        <source>Scope</source>
+        <target>crwdns279073:0crwdne279073:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.removeAll">
+        <source>Remove all</source>
+        <target>crwdns279771:0crwdne279771:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.violation">
+        <source>Violation</source>
+        <target>crwdns279075:0crwdne279075:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.uri">
+        <source>URI</source>
+        <target>crwdns279077:0crwdne279077:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.all">
+        <source>All</source>
+        <target>crwdns279079:0crwdne279079:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.details">
+        <source>Details</source>
+        <target>crwdns279081:0crwdne279081:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.disposition">
+        <source>Disposition</source>
+        <target>crwdns279083:0crwdne279083:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.directive">
+        <source>Directive</source>
+        <target>crwdns279085:0crwdne279085:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.blocked_uri">
+        <source>Blocked URI</source>
+        <target>crwdns279087:0crwdne279087:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.document_uri">
+        <source>Document URI</source>
+        <target>crwdns279089:0crwdne279089:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.sample">
+        <source>Sample</source>
+        <target>crwdns279091:0crwdne279091:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.user_agent">
+        <source>User Agent</source>
+        <target>crwdns292435:0crwdne292435:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.uuid">
+        <source>UUID</source>
+        <target>crwdns279093:0crwdne279093:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.source_file">
+        <source>Source File</source>
+        <target>crwdns292437:0crwdne292437:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.summary">
+        <source>Summary</source>
+        <target>crwdns279095:0crwdne279095:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.suggestions">
+        <source>Suggestions</source>
+        <target>crwdns279097:0crwdne279097:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.guide.no_record_selected">
+        <source>Select a row to see more information.</source>
+        <target>crwdns279099:0crwdne279099:0</target>
+      </trans-unit>
+      <trans-unit id="module.label.showDetails">
+        <source>Show details for "%s" violation with URI: %s</source>
+        <target>crwdns384094:0%scrwdnd384094:0%scrwdne384094:0</target>
+      </trans-unit>
+      <trans-unit id="module.button.apply">
+        <source>Apply</source>
+        <target>crwdns279101:0crwdne279101:0</target>
+      </trans-unit>
+      <trans-unit id="module.button.close">
+        <source>Close</source>
+        <target>crwdns279103:0crwdne279103:0</target>
+      </trans-unit>
+      <trans-unit id="module.button.mute">
+        <source>Mute</source>
+        <target>crwdns279105:0crwdne279105:0</target>
+      </trans-unit>
+      <trans-unit id="module.button.delete">
+        <source>Delete</source>
+        <target>crwdns279107:0crwdne279107:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
