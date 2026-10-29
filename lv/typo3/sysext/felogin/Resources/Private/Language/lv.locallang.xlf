@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Lietotāja autorizācija</target>
+      </trans-unit>
+      <trans-unit id="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Jūsu autorizācija ir beigta.</target>
+      </trans-unit>
+      <trans-unit id="logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Jūs tikko pārtraucāt lietotāja autorizācijas periodu šajā vietnē. Jūs varat autorizēties vēlreiz vai pieslēgties kā cits lietotājs izmantojot zemāk norādīto formu.</target>
+      </trans-unit>
+      <trans-unit id="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Autorizācijas kļūda</target>
+      </trans-unit>
+      <trans-unit id="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Autorizācija veiksmīga</target>
+      </trans-unit>
+      <trans-unit id="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Jūs esat autorizējies kā '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Pašreizējais status</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Autorizēties</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Iziet</target>
+      </trans-unit>
+      <trans-unit id="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Nosūtīt paroli</target>
+      </trans-unit>
+      <trans-unit id="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Atiestatīt paroli</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Mainīt paroli</target>
+      </trans-unit>
+      <trans-unit id="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Mainīt paroli</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Ievadiet jauno paroli:</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Atkārtojiet paroli:</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Aizmirsāt savu paroli?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+      <target state="final">Jūsu parole Sveicināti %s Jūsu lietotāja vārds ir "%s" Jūsu parole ir "%s"</target></trans-unit>
+      <trans-unit id="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Jūsu parole tika nosūtīta uz sekojošo e-pasta adresi: %s</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Atgriezties uz autorizācijas formu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
