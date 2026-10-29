@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Configuration/Sets/Felogin/labels.xlf" date="2024-09-05T08:00:00Z" product-name="felogin" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Frontend Login</source>
+        <target>crwdns416405:0crwdne416405:0</target>
+      </trans-unit>
+      <trans-unit id="categories.felogin">
+        <source>Frontend Login</source>
+        <target>crwdns416407:0crwdne416407:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.pid">
+        <source>User Storage Page</source>
+        <target>crwdns416409:0crwdne416409:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.pid">
+        <source>Define the Storage Folder with the Website User Records, using a comma separated list or single value</source>
+        <target>crwdns416411:0crwdne416411:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive">
+        <source>Recursive</source>
+        <target>crwdns416413:0crwdne416413:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.recursive">
+        <source>If set, also subfolder at configured recursive levels of the User Storage Page will be used</source>
+        <target>crwdns416415:0crwdne416415:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.0">
+        <source>0</source>
+        <target>crwdns416417:0crwdne416417:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.1">
+        <source>1</source>
+        <target>crwdns416419:0crwdne416419:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.2">
+        <source>2</source>
+        <target>crwdns416421:0crwdne416421:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.3">
+        <source>3</source>
+        <target>crwdns416423:0crwdne416423:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.4">
+        <source>4</source>
+        <target>crwdns416425:0crwdne416425:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.255">
+        <source>255</source>
+        <target>crwdns416427:0crwdne416427:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.showForgotPassword">
+        <source>Display Password Recovery Link</source>
+        <target>crwdns416429:0crwdne416429:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.showForgotPassword">
+        <source>If set, the section in the template to display the link to the forgot password dialog is visible.</source>
+        <target>crwdns416431:0crwdne416431:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.showPermaLogin">
+        <source>Display Remember Login Option</source>
+        <target>crwdns416433:0crwdne416433:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.showPermaLogin">
+        <source>If set, the section in the template to display the option to remember the login (with a cookie) is visible.</source>
+        <target>crwdns416435:0crwdne416435:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.showLogoutFormAfterLogin">
+        <source>Disable redirect after successful login, but display logout-form</source>
+        <target>crwdns416437:0crwdne416437:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.showLogoutFormAfterLogin">
+        <source>If set, the logout form will be displayed immediately after successful login.</source>
+        <target>crwdns416439:0crwdne416439:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.emailFrom">
+        <source>Email Sender Address</source>
+        <target>crwdns416441:0crwdne416441:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.emailFrom">
+        <source>email address used as sender of the change password emails</source>
+        <target>crwdns416443:0crwdne416443:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.emailFromName">
+        <source>Email Sender Name</source>
+        <target>crwdns416445:0crwdne416445:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.emailFromName">
+        <source>Name used as sender of the change password emails</source>
+        <target>crwdns416447:0crwdne416447:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.replyToEmail">
+        <source>Reply-to email Address</source>
+        <target>crwdns416449:0crwdne416449:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.replyToEmail">
+        <source>Reply-to address used in the change password emails</source>
+        <target>crwdns416451:0crwdne416451:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.dateFormat">
+        <source>Date format</source>
+        <target>crwdns416453:0crwdne416453:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.dateFormat">
+        <source>Format for the link is valid until message (forgot password email)</source>
+        <target>crwdns416455:0crwdne416455:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.email.layoutRootPath">
+        <source>Layout root path</source>
+        <target>crwdns416457:0crwdne416457:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.email.layoutRootPath">
+        <source>Path to layout directory used for emails</source>
+        <target>crwdns416459:0crwdne416459:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.email.templateRootPath">
+        <source>Template root path</source>
+        <target>crwdns416461:0crwdne416461:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.email.templateRootPath">
+        <source>Path to template directory used for emails</source>
+        <target>crwdns416463:0crwdne416463:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.email.partialRootPath">
+        <source>Partial root path</source>
+        <target>crwdns416465:0crwdne416465:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.email.partialRootPath">
+        <source>Path to partial directory used for emails</source>
+        <target>crwdns416467:0crwdne416467:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.email.templateName">
+        <source>Template name for emails.</source>
+        <target>crwdns416469:0crwdne416469:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.email.templateName">
+        <source>HTML emails get the .html file extension, plaintext emails get the .txt file extension.</source>
+        <target>crwdns416471:0crwdne416471:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectMode">
+        <source>Redirect Mode</source>
+        <target>crwdns416473:0crwdne416473:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectMode">
+        <source>Comma separated list of redirect modes.\
+Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout.\
+Warning: redirects only work if neither the plugin nor the page it is displayed on are set to `hide at login`.</source>
+        <target>crwdns416475:0crwdne416475:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectFirstMethod">
+        <source>Use First Supported Mode from Selection</source>
+        <target>crwdns416477:0crwdne416477:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectFirstMethod">
+        <source>If set the first method from redirectMode which is possible will be used</source>
+        <target>crwdns416479:0crwdne416479:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectPageLogin">
+        <source>After Successful Login Redirect to Page</source>
+        <target>crwdns416481:0crwdne416481:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectPageLogin">
+        <source>Page id to redirect to after Login</source>
+        <target>crwdns416483:0crwdne416483:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectPageLoginError">
+        <source>After Failed Login Redirect to Page</source>
+        <target>crwdns416485:0crwdne416485:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectPageLoginError">
+        <source>Page id to redirect to after Login Error</source>
+        <target>crwdns416487:0crwdne416487:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectPageLogout">
+        <source>After Logout Redirect to Page</source>
+        <target>crwdns416489:0crwdne416489:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectPageLogout">
+        <source>Page id to redirect to after Logout</source>
+        <target>crwdns416491:0crwdne416491:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.redirectDisable">
+        <source>Disable Redirect</source>
+        <target>crwdns416493:0crwdne416493:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.redirectDisable">
+        <source>If set redirecting is disabled</source>
+        <target>crwdns416495:0crwdne416495:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.forgotLinkHashValidTime">
+        <source>Time in hours how long the link for forgot password is valid</source>
+        <target>crwdns416497:0crwdne416497:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.forgotLinkHashValidTime">
+        <source>How many hours the link for forgot password is valid</source>
+        <target>crwdns416499:0crwdne416499:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.domains">
+        <source>Allowed Referrer-Redirect-Domains</source>
+        <target>crwdns416501:0crwdne416501:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.domains">
+        <source>Comma separated list of domains which are allowed for the referrer redirect mode</source>
+        <target>crwdns416503:0crwdne416503:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.view.templateRootPath">
+        <source>Path to template root (frontend)</source>
+        <target>crwdns416505:0crwdne416505:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.view.templateRootPath">
+        <source>Path to template directory used for the plugin in the frontend. Extends the default template location.</source>
+        <target>crwdns416507:0crwdne416507:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.view.partialRootPath">
+        <source>Path to template partials (frontend)</source>
+        <target>crwdns416509:0crwdne416509:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.view.partialRootPath">
+        <source>Path to partial directory for the plugin in the frontend. Extends the default partial location.</source>
+        <target>crwdns416511:0crwdne416511:0</target>
+      </trans-unit>
+      <trans-unit id="settings.felogin.view.layoutRootPath">
+        <source>Path to template layouts (frontend)</source>
+        <target>crwdns416513:0crwdne416513:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.felogin.view.layoutRootPath">
+        <source>Path to layout directory used for the plugin in the frontend. Can be used to introduce a custom layout.</source>
+        <target>crwdns416515:0crwdne416515:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
