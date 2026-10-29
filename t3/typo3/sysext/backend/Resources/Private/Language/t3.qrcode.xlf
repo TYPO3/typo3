@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/qrcode.xlf" date="2025-11-05T19:32:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="qrcode.format.png">
+        <source>PNG</source>
+        <target>crwdns379438:0crwdne379438:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.format.svg">
+        <source>SVG</source>
+        <target>crwdns379440:0crwdne379440:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.format">
+        <source>Format</source>
+        <target>crwdns379442:0crwdne379442:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.size">
+        <source>Size</source>
+        <target>crwdns379444:0crwdne379444:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.size.small">
+        <source>small</source>
+        <target>crwdns379446:0crwdne379446:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.size.medium">
+        <source>medium</source>
+        <target>crwdns379448:0crwdne379448:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.size.large">
+        <source>large</source>
+        <target>crwdns379450:0crwdne379450:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.download">
+        <source>Download</source>
+        <target>crwdns379452:0crwdne379452:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.url">
+        <source>URL</source>
+        <target>crwdns390586:0crwdne390586:0</target>
+      </trans-unit>
+      <trans-unit id="qrcode.copyUrl">
+        <source>Copy URL</source>
+        <target>crwdns390588:0crwdne390588:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
