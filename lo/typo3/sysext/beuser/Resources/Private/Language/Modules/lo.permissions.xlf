@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/Modules/permissions.xlf" date="2026-11-10T13:37:37Z" product-name="permissions" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Permissions</source>
+        <target state="final">ການອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage page access permissions</source>
+        <target state="final">ຈັດການສິດການເຂົ້າເຖິງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Administers which backend users and groups can access and edit pages in the site tree. For each page, an owner user and group can be assigned, and read, write, and edit permissions defined. These settings control who can view or modify content within the page hierarchy.</source>
+        <target state="final">ບໍລິຫານຈັດການວ່າຜູ້ໃຊ້ ແລະ ກຸ່ມສ່ວນຫຼັງເວັບໃດແດ່ທີ່ສາມາດເຂົ້າເຖິງ ແລະ ແກ້ໄຂໜ້າເວັບຕ່າງໆໃນໂຄງສ້າງເວັບໄຊ. ສຳລັບແຕ່ລະໜ້າເວັບ, ສາມາດກຳນົດຜູ້ໃຊ້ ແລະ ກຸ່ມທີ່ເປັນເຈົ້າຂອງໄດ້, ລວມທັງກຳນົດສິດການອ່ານ, ການຂຽນ ແລະ ການແກ້ໄຂ. ການຕັ້ງຄ່າເຫຼົ່ານີ້ຄວບຄຸມຜູ້ທີ່ສາມາດເບິ່ງ ຫຼື ປັບປ່ຽນເນື້ອຫາພາຍໃນລຳດັບຊັ້ນຂອງໜ້າເວັບ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
