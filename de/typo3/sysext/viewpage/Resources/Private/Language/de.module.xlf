@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/module.xlf" date="2025-11-05T16:22:37Z" product-name="viewpage" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Preview page</source>
+        <target state="final">Vorschau-Seite</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Shows the look of the current page and lets you edit the content directly.</source>
+        <target state="final">Zeigt das Aussehen der aktuellen Seite an und ermöglicht Ihnen, den Inhalt direkt zu bearbeiten.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Preview</source>
+        <target state="final">Vorschau</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
