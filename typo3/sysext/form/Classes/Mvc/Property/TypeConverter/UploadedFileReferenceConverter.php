@@ -351,7 +351,19 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter implements Lo
         } catch (TypeConverterException $e) {
             return $e->getError();
         } catch (\Exception $e) {
-            return GeneralUtility::makeInstance(Error::class, $e->getMessage(), $e->getCode());
+            $this->logger?->error('An unknown error has occurred when converting an uploaded file to a resource', [
+                'exception' => $e,
+            ]);
+            return GeneralUtility::makeInstance(
+                Error::class,
+                // not going through ->getUploadErrorMessage() due to internal logging and its scope to \UPLOAD_ERR_* constants
+                GeneralUtility::makeInstance(TranslationService::class)->translate(
+                    'upload.error.150530348',
+                    null,
+                    'EXT:form/Resources/Private/Language/locallang.xlf'
+                ),
+                1793200460
+            );
         }
 
         $this->convertedResources[$source['tmp_name']] = $resource;
