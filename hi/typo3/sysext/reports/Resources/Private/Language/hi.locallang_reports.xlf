@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ओके, ठीक</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">गलत मूल्य का पता चला</target>
+      </trans-unit>
+      <trans-unit id="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">जानकारी</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">असुरक्षित</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">अक्षम, निष्क्रिय</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">सक्षम, सक्रिय</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">स्थायी रूप से सक्षम</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">अस्थायी रूप से सक्षम</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">खाली, एम्प्टी</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">कोई नहीं, नॉन</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">कनेक्शन असफल</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">जांच करने में असफल</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">अपडेट पूरा</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">अपडेट अधूरा</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">आपके TYPO3 इंस्टॉलेशन में एक या अधिक समस्याएँ पाई गईं। अधिक जानकारी के लिए कृपया %sस्थिति रिपोर्ट%s देखें।</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">इस रिपोर्ट में आपके TYPO3 इंस्टॉलेशन से संबंधित सभी सिस्टम स्थिति सूचनाएँ शामिल हैं। अधिक जानकारी के लिए कृपया %sस्थिति रिपोर्ट%s देखें।</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">टाइपो3 सिस्टम</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">सिस्टम</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">सुरक्षा</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">कॉन्फ़िगरेशन, विन्यास</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">संदर्भ इंडेक्स</target>
+      </trans-unit>
+      <trans-unit id="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">फ़ाइल एब्स्ट्रेक्शन लेयर</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">फाइल गायब है ऐसे फ्लैग किये गए</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">यह फाइल गायब है ऐसे फ्लैग की गई है। गायब फ्लैग को रिसेट करने के लिए फाइल को रिस्टोर करे और इंडेक्सर तो रन करे।</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">मेम-कैश्ड कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">बनायी गई फाइलों की अनुमति</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">टाइपो3 द्वारा बनाई गई फ़ाइलों सब को लिखने के योग्य होने के लिए कॉन्फ़िगर कर रहे हैं। आपके सर्वर कॉन्फ़िगरेशन के आधार पर, यह सुरक्षा जोखिम सकता है । यह आमतौर पर "अन्य" के द्वारा लिखने की अनुमति न देने के लिए, बनाए मास्क को कॉन्फ़िगर किया जाये यही बेहतर है। $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] के लिए अक्सर समझदार डिफ़ॉल्ट '0660' है। यह इनस्टॉल टूल में सेट किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">बनायी गई डायरेक्ट्रीज की अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">टाइपो3 द्वारा बनाई गई डायरेक्ट्रीज सब को लिखने के योग्य होने के लिए कॉन्फ़िगर कर रहे हैं। आपके सर्वर कॉन्फ़िगरेशन के आधार पर, यह सुरक्षा जोखिम सकता है । यह आमतौर पर डायरेक्ट्रीज को "अन्य" के द्वारा लिखने की अनुमति न देने के लिए, बनाए मास्क को कॉन्फ़िगर किया जाये यही बेहतर है । $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] के लिए अक्सर समझदार डिफ़ॉल्ट '2770' है। यह इनस्टॉल टूल में सेट किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">MySQL डेटाबेस केरेक्टर सेट</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">डेटाबेस केरेक्टर सेट की जाँच करने में असफल, "डेटाबेस_केरेक्टर_सेट" के बजाय "% 1 $" की प्राप्त हुए थी।</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">आपका डिफ़ॉल्ट डेटाबेस कैरेक्टरसेट "%1$s" का उपयोग करता है, लेकिन TYPO3 के साथ केवल "utf8", "utf8mb3" या "utf8mb4" ही समर्थित है।</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">आपका डिफ़ॉल्ट डेटाबेस utf-8 का उपयोग करता है। सब ठीक है।</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">आपका डिफ़ॉल्ट डेटाबेस एक अलग कैरेक्टरसेट का उपयोग करता है, लेकिन सभी टेबल utf-8 का उपयोग करते हैं। सब ठीक है। लेकिन अपने डेटाबेस कोलेशन को ठीक करने और टेबल निर्माण सेटिंग्स की जाँच करने पर विचार करें।</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">आपका डिफ़ॉल्ट डेटाबेस "%1$s"  कैरेक्टरसेट वाली टेबल बनाने के लिए सेट है, लेकिन इसमें अलग-अलग कॉलेशन वाली टेबल या कॉलम हैं। "illegal mix of collations" त्रुटियों से बचने के लिए कृपया इन टेबल को ठीक करें।</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">एन्क्रिप्टेड बैकएंड कनेक्शन (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">आपका बैकएंड एक्सेस HTTPS के ज़रिए सुरक्षित नहीं है, बल्कि HTTP पर निर्भर करता है जो आपका सारा डेटा (लॉगिन पासवर्ड सहित) एक असुरक्षित कनेक्शन पर भेजता है। सभी आधुनिक वेबसाइटों को HTTPS पर निर्भर रहना चाहिए और केवल अलग तरीके से सुरक्षित की गई वेबसाइटों को ही HTTPS पर निर्भर रहना चाहिए, उदाहरण के लिए, कुछ इंट्रानेट इंस्टॉलेशन केवल HTTP का उपयोग कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">बैकएंड केवल HTTPS के माध्यम से सुलभ है</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[इस विकल्प को सक्रिय करने की अत्यधिक अनुशंसा की जाती है
+(<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">विश्वसनीय होस्ट्स पैटर्न</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">एन्क्रिप्शन कि</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">फाइल डेनी पैटर्न</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">.htaccess संरक्षण अपलोड</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">अपवाद संभालने वाला / त्रुटि रिपोर्टिंग</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">त्रुटियाँ प्रदर्शित करें को 1 पर सेट किया गया है - त्रुटियाँ स्टैक ट्रेस सहित त्रुटि-अपवाद-समायोजक के साथ प्रदर्शित की जाएंगी।</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">उत्पादन संदर्भ में अपवाद संभालने  सक्षम - स्टैक ट्रेस सहित पूर्ण त्रुटि संदेश दिखाएगा।</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files were found:</source>
+        <target state="final">निम्नलिखित निर्यातित फ़ाइलें पाई गईं.</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">इनस्टॉल टूल</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">PHP माड्यूल्स</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">एक या एक से अधिक मॉड्यूल गायब है।</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">नीचे दिए गए PHP मॉड्यूल(s) गायब है: %s।</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">टाइपो3 कार्य को सही ढंग से करने के लिए आपको इस मॉड्यूल को इनस्टॉल और सक्षम करने की जरुरत है।</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">में से एक: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">सभी जरूरी मॉड्यूल इनस्टॉल कर रहे हैं।</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">इनस्टॉल टूल अस्थायी रूप से सक्षम है। जब आप टाइपो3 को सेटिंग करदे तब फाइल %s को डिलीट करदे। जो उपयोग नहीं किया जा रहा तो इनस्टॉल टूल %s मिनट में स्वचालित रूप से अक्षम हो जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">सिस्टम स्थिति अपडेट</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">अगर समस्या पाई जाये तो सूचना भेजता है और सिस्टम स्थिति की जाँच चलता है।</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">%s को अधिसूचना भेजें</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">नोटिफिकेशन ईमेल एड्रेस (हर एक लाइन में एक)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">खाली या अमान्य नोटिफिकेशन ईमेल एड्रेस।</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">हमेशा सूचना मेल भेजें (केवल त्रुटियों या चेतावनियों पर ही नहीं)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">साइट%s के लिए सिस्टम स्थिति नोटिफिकेशन</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">साइट</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">मुद्दे, इश्यूज</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">XCLASS इस्तेमाल किया</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">आपकी सिस्टम में XCLASS रजिस्टर है</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS मूल या अन्य एक्सटेंशन के क्लास या मेथड को ओवर-राइट कर सकता है। यह एक बुरी बात होना जरुरी नहीं, लेकिन यह XCLASS मूल या एक्सटेंशन के बदलाव दौरान टूट सकता है। आपको एक्सटेंशन की अनुकूलता पर नजर रखना चाहिए और यह निश्चित कर लेना चाहिए की अपडेट करने बाद भी सभी फंक्शनलिटी काम कर रही है।</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2$s ने %1$s का XCLASS रजिस्टर किया</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing" approved="yes">
+        <source>Image Processing</source>
+        <target state="final">छवि प्रसंस्करण</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp" approved="yes">
+        <source>WebP support and availability</source>
+        <target state="final">WebP समर्थन और उपलब्धता</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled" approved="yes">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target state="final">इमेजमैजिक/ग्राफिक्समैजिक के माध्यम से छवि processing अक्षम है</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_configured" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में WebP इमेज जनरेशन सक्षम नहीं है। कोई भी WebP इमेज फाइल जनरेट नहीं की जाएगी।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में WebP इमेज जनरेशन सक्षम नहीं है, लेकिन यह इमेजमैजिक/ग्राफिक्समैजिक द्वारा समर्थित है।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_available" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में WebP इमेज जनरेशन सक्षम है, लेकिन इमेजमैजिक/ग्राफिक्समैजिक द्वारा इसका समर्थन नहीं किया जाता है। कृपया अपने सिस्टम वातावरण को अपडेट करें या TYPO3 कॉन्फ़िगरेशन में WebP समर्थन को अक्षम करें।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available_and_configured" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">WebP इमेज जनरेशन $TYPO3_CONF_VARS[GFX][imagefile_ext] में सक्षम है और इमेजमैजिक/ग्राफिक्समैजिक द्वारा समर्थित है — सब कुछ सही ढंग से कॉन्फ़िगर किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif" approved="yes">
+        <source>AVIF support and availability</source>
+        <target state="final">AVIF समर्थन और उपलब्धता</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_configured" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में AVIF इमेज जनरेशन सक्षम नहीं है। कोई भी AVIF इमेज फाइल जनरेट नहीं की जाएगी।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में AVIF इमेज जनरेशन सक्षम नहीं है, लेकिन यह इमेजमैजिक/ग्राफिक्समैजिक द्वारा समर्थित है।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_available" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+        <target state="final">$TYPO3_CONF_VARS[GFX][imagefile_ext] में AVIF इमेज जनरेशन सक्षम है, लेकिन यह इमेजमैजिक/ग्राफिक्समैजिक द्वारा समर्थित नहीं है। कृपया अपने सिस्टम वातावरण को अपडेट करें या TYPO3 कॉन्फ़िगरेशन में AVIF समर्थन को अक्षम करें।</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available_and_configured" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">AVIF इमेज जनरेशन $TYPO3_CONF_VARS[GFX][imagefile_ext] में सक्षम है और द्वारा समर्थित है — सब कुछ सही ढंग से कॉन्फ़िगर किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="status_problem_notification_cli_disclaimer" approved="yes">
+        <source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+        <target state="final">यह रिपोर्ट कमांड लाइन इंटरफेस (CLI) के माध्यम से तैयार की गई है। PHP सेटिंग्स और मॉड्यूल वेबसर्वर प्रक्रिया के लिए परिभाषित सेटिंग्स और मॉड्यूल से भिन्न हो सकते हैं, उदाहरण के लिए जब किसी भिन्न php.ini फ़ाइल का उपयोग किया जा रहा हो। किसी भी समस्या की स्थिति में, हमेशा इस रिपोर्ट की तुलना बैकएंड रिपोर्ट मॉड्यूल द्वारा तैयार की गई रिपोर्ट से करें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
