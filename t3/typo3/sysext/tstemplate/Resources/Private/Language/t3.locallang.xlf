@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="noRecordFound.infobox.title">
+        <source>No TypoScript record on the current page</source>
+        <target>crwdns275197:0crwdne275197:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.infobox.message">
+        <source>You need to create a TypoScript record in order to edit your configuration.</source>
+        <target>crwdns275199:0crwdne275199:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.description">
+        <source>The closest TypoScript record is located on page '%s' (uid %s).</source>
+        <target>crwdns275201:0%scrwdnd275201:0%scrwdne275201:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.link.title">
+        <source>Select this TypoScript record</source>
+        <target>crwdns275203:0crwdne275203:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.headline">
+        <source>Root TypoScript record</source>
+        <target>crwdns275205:0crwdne275205:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.description">
+        <source>Choose this option if you want this page to be the root of a new site.</source>
+        <target>crwdns275207:0crwdne275207:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.link.title">
+        <source>Create a root TypoScript record</source>
+        <target>crwdns275209:0crwdne275209:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.title.placeholder">
+        <source>NEW SITE</source>
+        <target>crwdns275211:0crwdne275211:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.headline">
+        <source>Additional TypoScript record</source>
+        <target>crwdns275213:0crwdne275213:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.description">
+        <source>An additional TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target>crwdns275321:0crwdne275321:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.link.title">
+        <source>Create an additional TypoScript record</source>
+        <target>crwdns275323:0crwdne275323:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
