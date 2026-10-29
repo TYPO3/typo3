@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Проверка ссылок</target>
+      </trans-unit>
+      <trans-unit id="overview.headline" approved="yes">
+        <source>Link check</source>
+        <target state="final">Проверка ссылок</target>
+      </trans-unit>
+      <trans-unit id="overview.headlineWithPageTitle" approved="yes">
+        <source>Link check of page "%s"</source>
+        <target state="final">Проверка ссылок страницы "%s"</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Внутренние ссылки</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Ссылки на файлы</target>
+      </trans-unit>
+      <trans-unit id="hooks.record" approved="yes">
+        <source>Record Links</source>
+        <target state="final">Запись ссылок</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Внешние ссылки</target>
+      </trans-unit>
+      <trans-unit id="filter.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Глубина</target>
+      </trans-unit>
+      <trans-unit id="filter.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="filter.type.all" approved="yes">
+        <source>All link types</source>
+        <target state="final">Все типы ссылок</target>
+      </trans-unit>
+      <trans-unit id="filter.btn.filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="label_update" approved="yes">
+        <source>Check</source>
+        <target state="final">Проверка</target>
+      </trans-unit>
+      <trans-unit id="list.check.headline" approved="yes">
+        <source>Check of link types</source>
+        <target state="final">Проверка типов ссылок</target>
+      </trans-unit>
+      <trans-unit id="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Список битых ссылок</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Сообщение об ошибке</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Поле</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Последняя проверка</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkTarget" approved="yes">
+        <source>Link target</source>
+        <target state="final">Цель ссылки</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkText" approved="yes">
+        <source>Link text</source>
+        <target state="final">Текст ссылки</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkType" approved="yes">
+        <source>Link type</source>
+        <target state="final">Тип ссылки</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.page" approved="yes">
+        <source>Located on page / folder</source>
+        <target state="final">Находится на странице / папке</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.parentPage" approved="yes">
+        <source>Parent page / folder</source>
+        <target state="final">Родительская страница / папка</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Запись</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Таблица</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="list.tableFoot.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Запись</target>
+      </trans-unit>
+      <trans-unit id="list.tableFoot.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записей</target>
+      </trans-unit>
+      <trans-unit id="list.edit" approved="yes">
+        <source>Edit record containing this broken link</source>
+        <target state="final">Изменить запись, содержащую эту неработающую ссылку</target>
+      </trans-unit>
+      <trans-unit id="list.editField" approved="yes">
+        <source>Edit only the field containing this broken link</source>
+        <target state="final">Править только лишь поле, содержащее эту неработающую ссылку</target>
+      </trans-unit>
+      <trans-unit id="list.report.btn.info.title" approved="yes">
+        <source>Display information</source>
+        <target state="final">Отображаемая информация</target>
+      </trans-unit>
+      <trans-unit id="list.report.linkText.noValue" approved="yes">
+        <source>[No value]</source>
+        <target state="final">[Нет значения]</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted" approved="yes">
+        <source>Page '###title###' (id=###uid###) is deleted.</source>
+        <target state="final">Страница '###title###' (id=###uid###) удалена.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible" approved="yes">
+        <source>Page '###title###' (id=###uid###) is not visible.</source>
+        <target state="final">Страница '###title###' (###uid###) скрыта.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting" approved="yes">
+        <source>Page (id=###uid###) does not exist.</source>
+        <target state="final">Страница (id=###uid###) не существует.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved" approved="yes">
+        <source>Record '###title###' (id=###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target state="final">Запись '###title###' (id=###uid###) не найдена на странице ###wrongpage###, но имеется на странице ###rightpage###.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted" approved="yes">
+        <source>Record '###title###' (id=###uid###) is deleted.</source>
+        <target state="final">Запись '###title###' (id=###uid###) удалена.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible" approved="yes">
+        <source>Record '###title###' (id=###uid###) is not visible.</source>
+        <target state="final">Запись '###title###' (id=###uid###) скрыта.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting" approved="yes">
+        <source>Record (id=###uid###) does not exist.</source>
+        <target state="final">Запись (id=###uid###) не существует.</target>
+      </trans-unit>
+      <trans-unit id="list.report.recordtablenotexisting" approved="yes">
+        <source>Table or link identifier '###table###' of the linked record (id=###uid###) could not be resolved.</source>
+        <target state="final">Не удалось разрешить идентификатор ссылки '###table###' связанной записи (id=###uid###).</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Информация об ошибке недоступна.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Циклическое перенаправление. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.tooManyRedirects" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Слишком много перенаправлений.</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Файл не существует.</target>
+      </trans-unit>
+      <!-- external linktype check errors -->
+      <trans-unit id="linkcheck.error.external.generic" approved="yes">
+        <source>External link is broken.</source>
+        <target state="final">Внешняя ссылка не работает.</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Невозможно найти узел. Заданный удалённый узел не найден.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Ошибка при получении данных по сети.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Ошибка (%s): "%s".</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Исключение: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Сетевая ошибка / недопустимый домен</target>
+      </trans-unit>
+      <!-- HTTP status code error messages -->
+      <trans-unit id="list.report.error.httpstatuscode.300" approved="yes">
+        <source>Multiple Choices (300).</source>
+        <target state="final">Несколько вариантов ответа (300).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.httpstatuscode.305" approved="yes">
+        <source>Use proxy (305).</source>
+        <target state="final">Использовать прокси (305).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.redirectPermanently" approved="yes">
+        <source>URL permanently redirects to another URL (%d).</source>
+        <target state="final">URL-адрес постоянно перенаправляется на другой URL-адрес (%d).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.redirectTemporary" approved="yes">
+        <source>URL temporarily redirects to another URL (%d).</source>
+        <target state="final">URL временно перенаправляется на другой URL (%d).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Нет доступа по этому адресу (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404" approved="yes">
+        <source>The requested URL was not found (404).</source>
+        <target state="final">Запрашиваемый URL не найден (404).</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Внутренняя ошибка сервера (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Внешняя ссылка возвратила код ошибки HTTP (%s).</target>
+      </trans-unit>
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <trans-unit id="list.report.error.libcurl.1" approved="yes">
+        <source>Unsupported protocol.</source>
+        <target state="final">Протокол не поддерживается.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.2" approved="yes">
+        <source>Initialization failed.</source>
+        <target state="final">Ошибка инициализации.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.3" approved="yes">
+        <source>The URL was not properly formatted.</source>
+        <target state="final">Неправильный формат URL-адреса.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.4" approved="yes">
+        <source>Feature not supported.</source>
+        <target state="final">Функция не поддерживается.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.5" approved="yes">
+        <source>Couldn't resolve proxy.</source>
+        <target state="final">Не удалось разрешить прокси.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.6" approved="yes">
+        <source>Couldn't resolve host.</source>
+        <target state="final">Не удалось разрешить хост.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.7" approved="yes">
+        <source>Failed to connect to host or proxy.</source>
+        <target state="final">Не удалось подключиться к хосту или прокси.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.8" approved="yes">
+        <source>The remote server sent data that could not be parsed.</source>
+        <target state="final">Удаленный сервер отправил данные, которые не могут быть обработаны.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.9" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Доступ запрещен.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.16" approved="yes">
+        <source>Generic HTTP/2 error.</source>
+        <target state="final">Ошибка HTTP/2.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.18" approved="yes">
+        <source>A file transfer was shorter or larger than expected.</source>
+        <target state="final">Передача файлов была короче или больше, чем ожидалось.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.28" approved="yes">
+        <source>Timeout: The remote server possibly took too long to answer.</source>
+        <target state="final">Таймаут: удаленному серверу, возможно понадобилось слишком много времени для ответа.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.35" approved="yes">
+        <source>Problem with SSl / TLS handshake.</source>
+        <target state="final">Проблема с рукопожатием SSl / TLS.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.47" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Слишком много перенаправлений.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.55" approved="yes">
+        <source>General network error. Send failed.</source>
+        <target state="final">Ошибка сети. Отправка не удалась.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.56" approved="yes">
+        <source>General network error. Receive failed.</source>
+        <target state="final">Ошибка сети. Получение не удалось.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.60" approved="yes">
+        <source>The remote server's SSL certificate was deemed not OK.</source>
+        <target state="final">SSL сертификат удалённого сервера был признан недействительным.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.63" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Превышен максимальный размер файла.</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title" approved="yes">
+        <source>No broken links found</source>
+        <target state="final">Неработающих ссылок не найдено</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links" approved="yes">
+        <source>There are no broken links for the selected link type restriction.</source>
+        <target state="final">Для выбранного ограничения по типу ссылок не обнаружено неработающих ссылок.</target>
+      </trans-unit>
+      <trans-unit id="no.access.title" approved="yes">
+        <source>No access</source>
+        <target state="final">Нет доступа</target>
+      </trans-unit>
+      <trans-unit id="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">У вас нет доступа к этим спискам.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Проверка ссылок, пожалуйста подождите.</target>
+      </trans-unit>
+      <trans-unit id="needs-recheck" approved="yes">
+        <source>Needs recheck</source>
+        <target state="final">Требуется перепроверка</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">Выберете страницу в дереве страниц.</target>
+      </trans-unit>
+      <!-- Modal content -->
+      <trans-unit id="report.modal.info.title" approved="yes">
+        <source>Broken link</source>
+        <target state="final">Неисправная ссылка</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.title.withLinkText" approved="yes">
+        <source>Broken link: "%s"</source>
+        <target state="final">Неисправная ссылка: "%s"</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.headline.link" approved="yes">
+        <source>Link properties</source>
+        <target state="final">Свойства ссылки</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.headline.record" approved="yes">
+        <source>Record information</source>
+        <target state="final">Информация о записи</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
