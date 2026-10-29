@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <trans-unit id="group_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="group_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagine</target>
+      </trans-unit>
+      <trans-unit id="group_records" approved="yes">
+        <source>Records</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="group_files" approved="yes">
+        <source>Files</source>
+        <target state="final">File</target>
+      </trans-unit>
+      <trans-unit id="group_tools" approved="yes">
+        <source>Tools</source>
+        <target state="final">Strumenti</target>
+      </trans-unit>
+      <trans-unit id="group_miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Varie</target>
+      </trans-unit>
+      <trans-unit id="global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globale</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>All</source>
+        <target state="final">Tutti</target>
+      </trans-unit>
+      <!-- UI labels -->
+      <trans-unit id="title" approved="yes">
+        <source>Bookmarks</source>
+        <target state="final">Segnalibri</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>You have not added any bookmarks yet. Use the share icon on any backend page to create one.</source>
+        <target state="final">Non hai ancora aggiunto nessun segnalibro. Usa l'icona di condivisione in qualsiasi pagina del backend per crearne uno.</target>
+      </trans-unit>
+      <trans-unit id="notGrouped" approved="yes">
+        <source>Not grouped</source>
+        <target state="final">Non raggruppati</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>No bookmarks yet. Add bookmarks using the share icon on pages throughout the backend.</source>
+        <target state="final">Ancora nessun segnalibro. Aggiungere i segnalibri usando l'icona di condivisione sulle pagine in tutto il backend.</target>
+      </trans-unit>
+      <trans-unit id="manage" approved="yes">
+        <source>Manage bookmarks</source>
+        <target state="final">Gestisci segnalibri</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">Elimina segnalibro</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">Titolo</target>
+      </trans-unit>
+      <trans-unit id="fieldGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppo</target>
+      </trans-unit>
+      <!-- Success notifications for bookmarks -->
+      <trans-unit id="success.created.title" approved="yes">
+        <source>Bookmark created</source>
+        <target state="final">Segnalibro creato</target>
+      </trans-unit>
+      <trans-unit id="success.created.message" approved="yes">
+        <source>The bookmark was created.</source>
+        <target state="final">Il segnalibro è stato creato.</target>
+      </trans-unit>
+      <trans-unit id="success.updated.title" approved="yes">
+        <source>Bookmark updated</source>
+        <target state="final">Segnalibro aggiornato</target>
+      </trans-unit>
+      <trans-unit id="success.updated.message" approved="yes">
+        <source>Bookmark updated successfully.</source>
+        <target state="final">Il segnalibro è stato aggiornato correttamente.</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.title" approved="yes">
+        <source>Bookmark deleted</source>
+        <target state="final">Segnalibro eliminato</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.message" approved="yes">
+        <source>Bookmark deleted successfully.</source>
+        <target state="final">Il segnalibro è stato eliminato correttamente.</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.title" approved="yes">
+        <source>Bookmarks deleted</source>
+        <target state="final">Segnalibri eliminati</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.message" approved="yes">
+        <source>%d bookmark(s) deleted.</source>
+        <target state="final">%d segnalibro(i) eliminato(i).</target>
+      </trans-unit>
+      <trans-unit id="success.moved.title" approved="yes">
+        <source>Bookmarks moved</source>
+        <target state="final">Segnalibri spostati</target>
+      </trans-unit>
+      <trans-unit id="success.moved.message" approved="yes">
+        <source>%d bookmark(s) moved.</source>
+        <target state="final">%d segnalibro(i) spostato(i).</target>
+      </trans-unit>
+      <!-- Success notifications for groups -->
+      <trans-unit id="success.groupCreated.title" approved="yes">
+        <source>Group created</source>
+        <target state="final">Gruppo creato</target>
+      </trans-unit>
+      <trans-unit id="success.groupCreated.message" approved="yes">
+        <source>Group created successfully.</source>
+        <target state="final">Gruppo creato correttamente.</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.title" approved="yes">
+        <source>Group updated</source>
+        <target state="final">Gruppo aggiornato</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.message" approved="yes">
+        <source>Group updated successfully.</source>
+        <target state="final">Gruppo aggiornato correttamente.</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.title" approved="yes">
+        <source>Group deleted</source>
+        <target state="final">Gruppo eliminato</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.message" approved="yes">
+        <source>Group deleted successfully.</source>
+        <target state="final">Gruppo eliminato correttamente.</target>
+      </trans-unit>
+      <!-- Error notifications for bookmarks -->
+      <trans-unit id="error.unknown.message" approved="yes">
+        <source>An unexpected error occurred.</source>
+        <target state="final">Si è verificato un errore imprevisto.</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.message" approved="yes">
+        <source>Bookmark not found.</source>
+        <target state="final">Segnalibro non trovato.</target>
+      </trans-unit>
+      <trans-unit id="error.accessDenied.message" approved="yes">
+        <source>You do not have permission to edit this bookmark.</source>
+        <target state="final">Non hai i permessi per modificare questo segnalibro.</target>
+      </trans-unit>
+      <trans-unit id="error.globalGroupNotAllowed.message" approved="yes">
+        <source>Only administrators can assign bookmarks to global groups.</source>
+        <target state="final">Solo gli amministratori possono assegnare i segnalibri ai gruppi globali.</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.title" approved="yes">
+        <source>Bookmark creation failed</source>
+        <target state="final">Creazione del segnalibro non riuscita</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.message" approved="yes">
+        <source>The bookmark could not be created.</source>
+        <target state="final">Il segnalibro non può essere creato.</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.title" approved="yes">
+        <source>Bookmark update failed</source>
+        <target state="final">Aggiornamento del segnalibro non riuscita</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.message" approved="yes">
+        <source>The bookmark could not be updated.</source>
+        <target state="final">Il segnalibro non può essere aggiornato.</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.title" approved="yes">
+        <source>Bookmark deletion failed</source>
+        <target state="final">Eliminazione del segnalibro non riuscita</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.message" approved="yes">
+        <source>The bookmarks could not be deleted.</source>
+        <target state="final">I segnalibri non possono essere eliminati.</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.title" approved="yes">
+        <source>Move failed</source>
+        <target state="final">Spostamento non riuscito</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.message" approved="yes">
+        <source>The bookmarks could not be moved.</source>
+        <target state="final">I segnalibri non possono essere spostati.</target>
+      </trans-unit>
+      <trans-unit id="error.missingRoute.message" approved="yes">
+        <source>The bookmark could not be created because route information is missing.</source>
+        <target state="final">Il segnalibro non può essere creato perché mancano le informazioni sull'indirizzamento.</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkId.message" approved="yes">
+        <source>Missing bookmark ID.</source>
+        <target state="final">ID segnalibro mancante.</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkIds.message" approved="yes">
+        <source>Missing bookmark IDs.</source>
+        <target state="final">ID segnalibri mancanti.</target>
+      </trans-unit>
+      <!-- Error notifications for groups -->
+      <trans-unit id="error.groupCreateFailed.title" approved="yes">
+        <source>Group creation failed</source>
+        <target state="final">Creazione del gruppo non riuscita</target>
+      </trans-unit>
+      <trans-unit id="error.groupCreateFailed.message" approved="yes">
+        <source>The group could not be created.</source>
+        <target state="final">Il gruppo non può essere creato.</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.title" approved="yes">
+        <source>Group update failed</source>
+        <target state="final">Aggiornamento del gruppo non riuscito</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.message" approved="yes">
+        <source>The group could not be updated.</source>
+        <target state="final">Il gruppo non può essere aggiornato.</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.title" approved="yes">
+        <source>Group deletion failed</source>
+        <target state="final">Eliminazione del gruppo non riuscita</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.message" approved="yes">
+        <source>The group could not be deleted.</source>
+        <target state="final">Il gruppo non può essere eliminato.</target>
+      </trans-unit>
+      <trans-unit id="error.groupReorderFailed.message" approved="yes">
+        <source>The groups could not be reordered.</source>
+        <target state="final">I gruppi non possono essere riordinati.</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupId.message" approved="yes">
+        <source>Missing group ID.</source>
+        <target state="final">ID gruppo mancante.</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupIds.message" approved="yes">
+        <source>Missing group IDs.</source>
+        <target state="final">ID gruppi mancanti.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLabel.message" approved="yes">
+        <source>Group label is required.</source>
+        <target state="final">L'etichetta del gruppo è richiesta.</target>
+      </trans-unit>
+      <!-- Button labels -->
+      <trans-unit id="action.create" approved="yes">
+        <source>Create bookmark</source>
+        <target state="final">Crea segnalibro</target>
+      </trans-unit>
+      <trans-unit id="action.remove" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">Rimuovi segnalibro</target>
+      </trans-unit>
+      <trans-unit id="action.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Salva</target>
+      </trans-unit>
+      <trans-unit id="action.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annulla</target>
+      </trans-unit>
+      <trans-unit id="action.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Elimina</target>
+      </trans-unit>
+      <!-- Edit view labels -->
+      <trans-unit id="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Dettagli</target>
+      </trans-unit>
+      <trans-unit id="details.route" approved="yes">
+        <source>Route</source>
+        <target state="final">Instradamento</target>
+      </trans-unit>
+      <trans-unit id="details.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="details.parameters" approved="yes">
+        <source>Parameters</source>
+        <target state="final">Parametri</target>
+      </trans-unit>
+      <!-- Confirmation dialogs -->
+      <trans-unit id="confirmDelete.title" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">Elimina segnalibro</target>
+      </trans-unit>
+      <trans-unit id="confirmDelete.message" approved="yes">
+        <source>Delete the bookmark permanently? You cannot undo this action.</source>
+        <target state="final">Eliminare il segnalibro in modo permanente? Non è possibile annullare questa azione.</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.title" approved="yes">
+        <source>Delete bookmarks</source>
+        <target state="final">Elimina segnalibri</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.message" approved="yes">
+        <source>Delete the %d bookmark(s) permanently? You cannot undo this action.</source>
+        <target state="final">Eliminare %d segnalibro/i in modo permanente? Non è possibile annullare questa azione.</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.title" approved="yes">
+        <source>Delete group</source>
+        <target state="final">Elimina gruppo</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.message" approved="yes">
+        <source>Delete the bookmark group "%s"? Bookmarks in this group will be moved to the Default group.</source>
+        <target state="final">Eliminare il gruppo di segnalibri "%s"? I segnalibri in questo gruppo saranno spostati nel gruppo Predefinito.</target>
+      </trans-unit>
+      <!-- Manager view labels -->
+      <trans-unit id="manager.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Seleziona tutto</target>
+      </trans-unit>
+      <trans-unit id="manager.deselectAll" approved="yes">
+        <source>Deselect all</source>
+        <target state="final">Deseleziona tutto</target>
+      </trans-unit>
+      <trans-unit id="manager.moveToGroup" approved="yes">
+        <source>Move to group</source>
+        <target state="final">Sposta nel gruppo</target>
+      </trans-unit>
+      <trans-unit id="manager.deleteSelected" approved="yes">
+        <source>Delete</source>
+        <target state="final">Elimina</target>
+      </trans-unit>
+      <trans-unit id="manager.manageGroups" approved="yes">
+        <source>Manage Groups</source>
+        <target state="final">Gestisci i Gruppi</target>
+      </trans-unit>
+      <trans-unit id="manager.newGroup" approved="yes">
+        <source>New Group</source>
+        <target state="final">Nuovo Gruppo</target>
+      </trans-unit>
+      <trans-unit id="manager.createGroup" approved="yes">
+        <source>Create Group</source>
+        <target state="final">Crea Gruppo</target>
+      </trans-unit>
+      <trans-unit id="manager.editGroup" approved="yes">
+        <source>Edit Group</source>
+        <target state="final">Modifica Gruppo</target>
+      </trans-unit>
+      <trans-unit id="manager.noGroups" approved="yes">
+        <source>You have not created any groups yet. Click "New Group" to create one.</source>
+        <target state="final">Non hai ancora creato nessun gruppo. Clicca su "Nuovo Gruppo" per crearne uno.</target>
+      </trans-unit>
+      <trans-unit id="manager.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etichetta</target>
+      </trans-unit>
+      <trans-unit id="manager.back" approved="yes">
+        <source>Back</source>
+        <target state="final">Indietro</target>
+      </trans-unit>
+      <trans-unit id="manager.editBookmark" approved="yes">
+        <source>Edit bookmark</source>
+        <target state="final">Modifica segnalibro</target>
+      </trans-unit>
+      <trans-unit id="manager.dragToReorder" approved="yes">
+        <source>Drag to reorder</source>
+        <target state="final">Trascina per riordinare</target>
+      </trans-unit>
+      <trans-unit id="manager.moveUp" approved="yes">
+        <source>Move up</source>
+        <target state="final">Sposta su</target>
+      </trans-unit>
+      <trans-unit id="manager.moveDown" approved="yes">
+        <source>Move down</source>
+        <target state="final">Sposta giù</target>
+      </trans-unit>
+      <trans-unit id="manager.locked" approved="yes">
+        <source>This bookmark cannot be edited</source>
+        <target state="final">Questo segnalibro non può essere modificato</target>
+      </trans-unit>
+      <trans-unit id="manager.notAccessible" approved="yes">
+        <source>Not accessible</source>
+        <target state="final">Non accessibile</target>
+      </trans-unit>
+      <trans-unit id="groupType.user" approved="yes">
+        <source>My Groups</source>
+        <target state="final">I miei gruppi</target>
+      </trans-unit>
+      <trans-unit id="groupType.system" approved="yes">
+        <source>System Groups</source>
+        <target state="final">Gruppi di sistema</target>
+      </trans-unit>
+      <trans-unit id="groupType.global" approved="yes">
+        <source>Global Groups</source>
+        <target state="final">Gruppi globali</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
