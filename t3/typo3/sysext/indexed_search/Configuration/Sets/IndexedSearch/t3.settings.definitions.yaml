@@ -1,0 +1,36 @@
+categories:
+  indexedsearch: null
+  indexedsearch.templates:
+    parent: crwdns416999:0crwdne416999:0
+settings:
+  indexedsearch.view.templateRootPath:
+    default: 'crwdns417001:0crwdne417001:0'
+    type: crwdns417003:0crwdne417003:0
+    category: crwdns417005:0crwdne417005:0
+  indexedsearch.view.partialRootPath:
+    default: 'crwdns417007:0crwdne417007:0'
+    type: crwdns417009:0crwdne417009:0
+    category: crwdns417011:0crwdne417011:0
+  indexedsearch.view.layoutRootPath:
+    default: 'crwdns417013:0crwdne417013:0'
+    type: crwdns417015:0crwdne417015:0
+    category: crwdns417017:0crwdne417017:0
+  indexedsearch.targetPid:
+    default: 0
+    type: crwdns417021:0crwdne417021:0
+    category: crwdns417023:0crwdne417023:0
+  indexedsearch.rootPidList:
+    default: 'crwdns417025:0crwdne417025:0'
+    type: crwdns417027:0crwdne417027:0
+    category: crwdns417029:0crwdne417029:0
+  indexedsearch.pagination_type:
+    default: 'crwdns417031:0crwdne417031:0'
+    type: crwdns417033:0crwdne417033:0
+    enum:
+      - crwdns417035:0crwdne417035:0
+      - crwdns417037:0crwdne417037:0
+    category: crwdns417039:0crwdne417039:0
+  indexedsearch.page_links:
+    default: 0
+    type: crwdns417043:0crwdne417043:0
+    category: crwdns417045:0crwdne417045:0
