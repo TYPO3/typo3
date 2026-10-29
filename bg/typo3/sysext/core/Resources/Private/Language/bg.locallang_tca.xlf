@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">Редактиране на Live (Online)</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">Редактирай потр. група</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">Създай нова група</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">Списък на групите</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Файлове: Разархивиране</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Файлове: Качване,Копиране,Преместване,Изтриване,Преименуване,Нов,Редактиране</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Директория: Преместване,Изтриване,Преименуване,Нова</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Директория: Копиране</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Директория: Рекурсивно изтриване (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Разширен</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Достъп</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Директория: Копиране</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Файлове: Разархивиране</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Файлове: Качване,Копиране,Преместване,Изтриване,Преименуване,Нов,Редактиране</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Директория: Преместване,Изтриване,Преименуване,Нова</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Директория: Копиране</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Директория: Рекурсивно изтриване (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Разширен</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Потребители</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Mountpoints</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">Публикуване</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Други</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Достъп</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Позволи "live" редактиране на записите от таблици без версиониране</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">Позволи на членовете да редактират записи във фаза "Review"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">Забрани автоматичното версиониране, когато се редактира</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Страница</target>
+      </trans-unit>
+      <trans-unit id="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Backend потребител</target>
+      </trans-unit>
+      <trans-unit id="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Backend потребителска група</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Работно пространство</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
