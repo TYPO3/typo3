@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Omdirigering</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">Källdomän</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Källsökväg</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" approved="yes">
+        <source>SSL Redirect</source>
+        <target state="final">SSL-Omdirigering</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" approved="yes">
+        <source>Force SSL Redirect</source>
+        <target state="final">Forcera SSL-Omdirigering</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" approved="yes">
+        <source>GET Parameters</source>
+        <target state="final">GET-Parametrar</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" approved="yes">
+        <source>Keep GET Parameters</source>
+        <target state="final">Behåll GET-Parametrar</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Mål</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" approved="yes">
+        <source>Status Code HTTP Header</source>
+        <target state="final">Statuskod HTTP-Rubrik</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" approved="yes">
+        <source>301 Moved Permanently</source>
+        <target state="final">301 Flyttad Permanent</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" approved="yes">
+        <source>302 Found</source>
+        <target state="final">302 Hittad</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" approved="yes">
+        <source>303 See Other</source>
+        <target state="final">303 Se Annan</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" approved="yes">
+        <source>307 Temporary Redirect</source>
+        <target state="final">307 Temporär Omdirigering</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" approved="yes">
+        <source>Hit Counter</source>
+        <target state="final">Träffräknare</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" approved="yes">
+        <source>Disable Hit Counter</source>
+        <target state="final">Inaktivera Träffräknare</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Inaktivera</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Statistik</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" approved="yes">
+        <source>Is regular expression?</source>
+        <target state="final">Är vanligt uttryck?</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" approved="yes">
+        <source>Disable</source>
+        <target state="final">Inaktivera</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" approved="yes">
+        <source>Deactivate redirect</source>
+        <target state="final">Inaktivera omdirigering</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
