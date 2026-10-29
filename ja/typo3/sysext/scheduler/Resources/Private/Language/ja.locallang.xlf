@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="button.group.modalOk" approved="yes">
+        <source>Create group</source>
+        <target state="final">グループを作成</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">スケジュール化したタスク</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">セットアップの確認</target>
+      </trans-unit>
+      <trans-unit id="function.add" approved="yes">
+        <source>New task</source>
+        <target state="final">新しいタスク</target>
+      </trans-unit>
+      <trans-unit id="function.group.add" approved="yes">
+        <source>New group</source>
+        <target state="final">新規グループ</target>
+      </trans-unit>
+      <trans-unit id="function.group.label" approved="yes">
+        <source>Group name</source>
+        <target state="final">グループ名</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">CLI スクリプト</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">システムはComposer Modeで実行されています</target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">最後の実行</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">自動処理</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">バックエンドの種類</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">ファイルを削除するまでの日数</target>
+      </trans-unit>
+      <trans-unit id="scheduledFrom" approved="yes">
+        <source>Start at</source>
+        <target state="final">開始位置</target>
+      </trans-unit>
+      <trans-unit id="scheduledUntil" approved="yes">
+        <source>Run periodically until</source>
+        <target state="final">次まで定期的に実行</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">頻度</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">最後の実行</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">次の実行</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">並列実行</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">並列実行を許可</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">サーバー時間</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">利用可能なテーブルをすべて消去</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables.description" approved="yes">
+        <source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
+        <target state="final">注： テーブル固有の 「有効期限」 オプションに基づいて、使用可能なすべてのテーブルからのエントリが削除されます。</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">クリーンアップするテーブル</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">テーブル： %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">全テーブル</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">指定された日数より古いエントリを削除</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="runningType" approved="yes">
+        <source>Run task multiple times?</source>
+        <target state="final">タスクを複数回実行しますか？</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">定期的</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup" approved="yes">
+        <source>Not assigned to any task group</source>
+        <target state="final">タスクグループに割り当てられていません</target>
+      </trans-unit>
+      <trans-unit id="label.group.isDisabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">無効</target>
+      </trans-unit>
+      <trans-unit id="label.group.unused" approved="yes">
+        <source>Unused task groups</source>
+        <target state="final">未使用のタスクグループ</target>
+      </trans-unit>
+      <trans-unit id="label.group.tableColumn" approved="yes">
+        <source>Group</source>
+        <target state="final">グループ</target>
+      </trans-unit>
+      <trans-unit id="label.group.enable" approved="yes">
+        <source>Enable group</source>
+        <target state="final">グループを有効にする</target>
+      </trans-unit>
+      <trans-unit id="label.group.disable" approved="yes">
+        <source>Disable group</source>
+        <target state="final">グループを無効にする</target>
+      </trans-unit>
+      <trans-unit id="label.group.edit" approved="yes">
+        <source>Edit group</source>
+        <target state="final">グループを編集</target>
+      </trans-unit>
+      <trans-unit id="label.setOptionForCommand" approved="yes">
+        <source>Set option</source>
+        <target state="final">オプションの設定</target>
+      </trans-unit>
+      <trans-unit id="label.runOnCli" approved="yes">
+        <source>Run on CLI</source>
+        <target state="final">CLI で実行</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks" approved="yes">
+        <source>No tasks found</source>
+        <target state="final">タスクが見つかりません</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.createNew" approved="yes">
+        <source>There are currently no configured tasks found. You can create a new one.</source>
+        <target state="final">現在設定されたタスクはありません。新しいタスクを作成できます。</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.nonAvailable" approved="yes">
+        <source>There are currently no tasks available in the system to be configured.</source>
+        <target state="final">現在、設定するタスクはありません。</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">現在のサーバーの時刻は %s です。</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">スケジューラのすべての日付と時刻は、サーバ側で実行されるため、サーバの時刻に従って測定されます。</target>
+      </trans-unit>
+      <trans-unit id="msg.group.deleted" approved="yes">
+        <source>Successfully deleted scheduler group.</source>
+        <target state="final">スケジューラグループを削除しました。</target>
+      </trans-unit>
+      <trans-unit id="msg.group.delete.failed" approved="yes">
+        <source>Failed to delete scheduler group.</source>
+        <target state="final">スケジューラグループの削除に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskType" approved="yes">
+        <source>Invalid Task type</source>
+        <target state="final">無効なタスクタイプ</target>
+      </trans-unit>
+      <trans-unit id="msg.defaultExpirePeriod" approved="yes">
+        <source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
+        <target state="final">選択したテーブル「%s」に対して設定されたデフォルトの有効期限期間（%d 日）が使用されます。</target>
+      </trans-unit>
+      <trans-unit id="status" approved="yes">
+        <source>Status</source>
+        <target state="final">ステータス</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">無効化済み</target>
+      </trans-unit>
+      <trans-unit id="status.disabledByGroup" approved="yes">
+        <source>disabled by group</source>
+        <target state="final">グループによって無効</target>
+      </trans-unit>
+      <trans-unit id="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">失敗</target>
+      </trans-unit>
+      <trans-unit id="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">遅延</target>
+      </trans-unit>
+      <trans-unit id="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">実行中</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">スケジュール済</target>
+      </trans-unit>
+      <trans-unit id="task" approved="yes">
+        <source>Task</source>
+        <target state="final">タスク</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">キャッシュフレームワークのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">ファイル抽象化レイヤー： ストレージインデックスを更新</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">ファイル抽象化レイヤー： ストレージ内のメタデータを抽出する</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">Fileadminのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">Fileadminのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration" approved="yes">
+        <source>Command configuration</source>
+        <target state="final">コマンドの構成</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration.description" approved="yes">
+        <source>Configure available arguments and options for the command.</source>
+        <target state="final">コマンドの使用可能な引数とオプションを設定します。</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel" approved="yes">
+        <source>Last Scheduler run</source>
+        <target state="final">最後のスケジューラ実行</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">エラー</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.message" approved="yes">
+        <source>Could not create group</source>
+        <target state="final">グループを作成できませんでした</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.input.field.label" approved="yes">
+        <source>Enter a group name</source>
+        <target state="final">グループ名を入力してください</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.button.edit.label" approved="yes">
+        <source>Edit group name</source>
+        <target state="final">グループ名を編集</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.placeholder" approved="yes">
+        <source>Search for any kind of tasks</source>
+        <target state="final">任意の種類のタスクを検索</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.noResults" approved="yes">
+        <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+        <target state="final">残念ながら、クエリと一致するスケジューラタスクはありません。別のタスクを試してください。</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+    </body>
+  </file>
+</xliff>
