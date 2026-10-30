@@ -356,6 +356,43 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         self::assertSame($expectation, $redirectUids);
     }
 
+    public static function findRedirectsByDemandOrdersBySourcePathWithinSourceHostDataProvider(): iterable
+    {
+        yield 'admin, ascending' => [
+            1,
+            'asc',
+            ['*/foo', '*/foo', '*/foofile/linkparam', 'bar.com/bar', 'bar.com/bar/foo', 'foo.com/foo/bar', 'foo.com/foo/baz'],
+        ];
+        yield 'admin, descending' => [
+            1,
+            'desc',
+            ['foo.com/foo/baz', 'foo.com/foo/bar', 'bar.com/bar/foo', 'bar.com/bar', '*/foofile/linkparam', '*/foo', '*/foo'],
+        ];
+        yield 'editor, descending' => [
+            2,
+            'desc',
+            ['bar.com/bar/foo', 'bar.com/bar', '*/foo', '*/foo'],
+        ];
+    }
+
+    #[DataProvider('findRedirectsByDemandOrdersBySourcePathWithinSourceHostDataProvider')]
+    #[Test]
+    public function findRedirectsByDemandOrdersBySourcePathWithinSourceHost(int $backendUserUid, string $orderDirection, array $expectation): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+
+        $this->get(StorageRepository::class)->getStorageObject(1)->setEvaluatePermissions(true);
+        $backendUser = $this->setUpBackendUser($backendUserUid);
+        $backendUser->userGroupsUID = [1];
+        $backendUser->groupData['webmounts'] = '13';
+
+        $repository = $this->get(RedirectRepository::class);
+        $redirects = $repository->findRedirectsByDemand(new Demand(orderField: 'source_host', orderDirection: $orderDirection));
+        $sources = array_map(static fn(array $redirect): string => $redirect['source_host'] . $redirect['source_path'], $redirects);
+        self::assertSame($expectation, $sources);
+    }
+
     #[Test]
     public function redirectsOfAllBaseVariantHostsAreFoundForEditors(): void
     {

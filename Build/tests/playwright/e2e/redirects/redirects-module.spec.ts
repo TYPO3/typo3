@@ -29,10 +29,11 @@ test('Create a new redirect', async ({ page, backend }) => {
   expect(newAmountOfRedirects).toBe(amountOfRedirects + 1);
 });
 
-test('Can edit a redirect by clicking on source path', async ({ backend }) => {
-  const sourceHost = await backend.contentFrame.locator('td:nth-child(3)').first().innerText();
-  const sourcePath = await backend.contentFrame.locator('.col-path > a').first().innerText();
-  await backend.contentFrame.locator('.col-path > a').first().click();
+test('Can edit a redirect by clicking on source', async ({ backend }) => {
+  const sourceLink = backend.contentFrame.locator('.col-path > a').first();
+  const sourceHost = await sourceLink.locator('span').innerText();
+  const sourcePath = (await sourceLink.innerText()).slice(sourceHost.length);
+  await sourceLink.click();
   await expect(backend.contentFrame.locator('h1')).toContainText(sourceHost + ', ' + sourcePath);
   await backend.contentFrame.getByRole('button', { name: 'Close' }).click();
   await expect(backend.contentFrame.locator('h1')).toContainText('Redirect Management');
@@ -46,8 +47,9 @@ test('Can open the context menu by clicking the record icon', async ({ page, bac
 
 
 test('Can edit a redirect by clicking the edit button', async ({ backend }) => {
-  const sourceHost = await backend.contentFrame.locator('td:nth-child(3)').first().innerText();
-  const sourcePath = await backend.contentFrame.locator('.col-path > a').first().innerText();
+  const sourceLink = backend.contentFrame.locator('.col-path > a').first();
+  const sourceHost = await sourceLink.locator('span').innerText();
+  const sourcePath = (await sourceLink.innerText()).slice(sourceHost.length);
   await backend.contentFrame.locator('.col-control > div > a').first().click();
   await expect(backend.contentFrame.locator('h1')).toContainText(sourceHost + ', ' + sourcePath);
   await backend.contentFrame.getByRole('button', { name: 'Close' }).click();

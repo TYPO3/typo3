@@ -18,6 +18,9 @@
       <trans-unit id="sys_redirect.source_path">
         <source>Source Path</source>
       </trans-unit>
+      <trans-unit id="sys_redirect.source">
+        <source>Source</source>
+      </trans-unit>
       <trans-unit id="sys_redirect.force_https">
         <source>SSL Redirect</source>
       </trans-unit>

@@ -38,7 +38,7 @@ class Demand
     protected const ORDER_DESCENDING = 'desc';
     protected const ORDER_ASCENDING = 'asc';
     protected const DEFAULT_ORDER_FIELD = 'source_host';
-    protected const DEFAULT_SECONDARY_ORDER_FIELD = 'source_host';
+    protected const DEFAULT_SECONDARY_ORDER_FIELD = 'source_path';
     protected const ORDER_FIELDS = ['source_host', 'source_path', 'lasthiton', 'hitcount', 'protected', 'createdon'];
 
     protected string $orderField;

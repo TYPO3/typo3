@@ -85,7 +85,7 @@ class RedirectRepository
 
         // Phase 4: Fetch full records only for the current page
         $queryBuilder = $this->getQueryBuilder();
-        return $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from('sys_redirect')
             ->where(
@@ -94,7 +94,11 @@ class RedirectRepository
                     $queryBuilder->createNamedParameter($currentPageUids, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->orderBy($demand->getOrderField(), $demand->getOrderDirection())
+            ->orderBy($demand->getOrderField(), $demand->getOrderDirection());
+        if ($demand->hasSecondaryOrdering()) {
+            $queryBuilder->addOrderBy($demand->getSecondaryOrderField(), $demand->getOrderDirection());
+        }
+        return $queryBuilder
             ->executeQuery()
             ->fetchAllAssociative();
     }
@@ -192,7 +196,7 @@ class RedirectRepository
             );
 
             if ($demand->hasSecondaryOrdering()) {
-                $queryBuilder->addOrderBy($demand->getSecondaryOrderField());
+                $queryBuilder->addOrderBy($demand->getSecondaryOrderField(), $demand->getOrderDirection());
             }
         }
 
