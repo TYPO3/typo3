@@ -32,6 +32,7 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Resource/Fixtures/ProcessedFileTest.jpg' => 'fileadmin/ProcessedFileTest.jpg',
+        'typo3/sysext/core/Tests/Functional/Resource/Fixtures/ContainerArchive.zip' => 'fileadmin/ContainerArchive.zip',
     ];
 
     private ResourceConsistencyService $subject;
@@ -68,6 +69,10 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
     {
         yield 'same file extension' => ['/fileadmin/ProcessedFileTest.jpg', 'ProcessedFileTest.jpg'];
         yield 'uppercase file extension' => ['/fileadmin/ProcessedFileTest.jpg', 'ProcessedFileTest.JPG'];
+        yield 'ZIP archive as Word document' => ['/fileadmin/ContainerArchive.zip', 'report.docx'];
+        yield 'ZIP archive as OpenDocument text' => ['/fileadmin/ContainerArchive.zip', 'report.odt'];
+        yield 'ZIP archive as PowerPoint slide' => ['/fileadmin/ContainerArchive.zip', 'report.sldx'];
+        yield 'ZIP archive as macro-enabled Excel workbook' => ['/fileadmin/ContainerArchive.zip', 'report.xlsm'];
     }
 
     #[Test]
@@ -83,8 +88,16 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
         );
     }
 
+    public static function validationFailsDataProvider(): \Generator
+    {
+        yield 'image as executable' => ['/fileadmin/ProcessedFileTest.jpg', 'ProcessedFileTest.exe'];
+        yield 'ZIP archive as OpenDocument drawing' => ['/fileadmin/ContainerArchive.zip', 'report.odg'];
+        yield 'ZIP archive as PDF document' => ['/fileadmin/ContainerArchive.zip', 'report.pdf'];
+    }
+
     #[Test]
-    public function validationFails(): void
+    #[DataProvider('validationFailsDataProvider')]
+    public function validationFails(string $localFilePath, string $targetFileName): void
     {
         $this->expectException(ResultException::class);
         $this->expectExceptionCode(1747230949);
@@ -92,8 +105,8 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
 
         $this->subject->validate(
             $this->storages[1],
-            Environment::getPublicPath() . '/fileadmin/ProcessedFileTest.jpg',
-            'ProcessedFileTest.exe'
+            Environment::getPublicPath() . $localFilePath,
+            $targetFileName
         );
     }
 
