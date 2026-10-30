@@ -6472,11 +6472,14 @@ class DataHandler
                 $listOfRelatedRecordsWithoutDiscardedRecord = array_diff($listOfRelatedRecords, [$record['uid'], $table . '_' . $record['uid']]);
                 if ($listOfRelatedRecords !== $listOfRelatedRecordsWithoutDiscardedRecord) {
                     // Update record if list changed
-                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($row['tablename']);
-                    $queryBuilder->update($row['tablename'])
-                        ->set($row['field'], implode(',', $listOfRelatedRecordsWithoutDiscardedRecord))
-                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['recuid'], Connection::PARAM_INT)))
-                        ->executeStatement();
+                    $this->connectionPool->getConnectionForTable($row['tablename'])->update(
+                        $row['tablename'],
+                        $this->insertUpdateDB_preprocessBasedOnFieldType(
+                            $row['tablename'],
+                            [$row['field'] => implode(',', $listOfRelatedRecordsWithoutDiscardedRecord)]
+                        ),
+                        ['uid' => (int)$row['recuid']]
+                    );
                 }
             }
         }
