@@ -1,0 +1,23 @@
+# Definition of the rendering of a single content element
+# This is used for system-wide settings, so needs to be defined at all times!
+lib.contentElement = FLUIDTEMPLATE
+lib.contentElement {
+  layoutRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Layouts/
+  partialRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Partials/
+  templateRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Content/
+
+  # Allows custom template file names to be overridden for additional content elements
+  templateName >
+  templateName.ifEmpty.cObject = TEXT
+  templateName.ifEmpty.cObject {
+    field = CType
+    required = 1
+    case = uppercamelcase
+  }
+
+  dataProcessing.1421884800 = record-transformation
+}
+
+# use the "default" for our own content elements
+tt_content = CASE
+tt_content.default =< lib.contentElement
