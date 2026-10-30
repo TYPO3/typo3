@@ -44,8 +44,13 @@ Section index (page content marked for section menus)
    visitor to jump to the selected content element, within that page, immediately.
 
 Recently updated pages
-   Shows a list of pages which are updated in the last 7 days. Updated only means a
-   change in the page properties, not the content on the page.
+   Shows a list of pages which are updated in the last 7 days. The menu uses the
+   field :sql:`SYS_LASTCHANGED` of the page record. It holds the newest timestamp
+   of the page record and of the records rendered on the page, and is only
+   written when the page is rendered in the frontend. A page changed in the
+   backend therefore only shows up after it has been rendered in the frontend.
+   Set :typoscript:`special.mode = tstamp` in the menu processor to only use
+   changes of the page properties.
 
 Related pages (based on keywords)
    Shows a list of the selected page and all other pages, which have one or more keywords,
