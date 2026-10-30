@@ -86,7 +86,6 @@ final readonly class WorkspacesAjaxController
             'sendToSpecificStageExecute' => $this->sendToSpecificStageExecute($call->data[0]),
             'publishRecordExecute' => $this->publishRecordExecute($call->data[0]),
             'publishCollectionExecute' => $this->publishCollectionExecute($call->data[0]),
-            'publishPageCollectionExecute' => $this->publishPageCollectionExecute($call->data[0]),
             'publishEntireWorkspace' => $this->publishEntireWorkspace($call->data[0]),
             'discardEntireWorkspace' => $this->discardEntireWorkspace($call->data[0]),
             default => throw new \RuntimeException('Not implemented', 1749983978),
@@ -101,6 +100,7 @@ final readonly class WorkspacesAjaxController
             'sendPageToNextStage' => $this->sendPageToNextStage((int)$call->data[0]),
             'sendPageToPreviousStage' => $this->sendPageToPreviousStage((int)$call->data[0]),
             'publishPageDirectly' => $this->publishPageDirectly((int)$call->data[0]),
+            'publishPageCollectionExecute' => $this->publishPageCollectionExecute($call->data[0]),
             'updateStageChangeButtons' => $this->updateStageChangeButtons((int)$call->data[0], $request),
             default => throw new \RuntimeException('Not implemented', 1762777405),
         });
