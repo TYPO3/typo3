@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Page;
 
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Page\PageLayout;
 
 /**
@@ -107,6 +108,8 @@ final class PageInformation
      */
     private ?PageLayout $pageLayout = null;
 
+    private RecordInterface $record;
+
     /**
      * @internal Only to be set by core
      */
@@ -131,6 +134,22 @@ final class PageInformation
     public function getPageRecord(): array
     {
         return $this->pageRecord;
+    }
+
+    /**
+     * @internal Only to be set by core
+     */
+    public function setRecord(RecordInterface $record): void
+    {
+        $this->record = $record;
+    }
+
+    /**
+     * The page record as resolved record object, created from getPageRecord().
+     */
+    public function getRecord(): RecordInterface
+    {
+        return $this->record;
     }
 
     /**

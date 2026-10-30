@@ -92,4 +92,18 @@ final class PageInformationFactoryTest extends FunctionalTestCase
         $pageInformation = $subject->create($request);
         self::assertSame('', $pageInformation->getMountPoint());
     }
+
+    #[Test]
+    public function createSetsRecordOfResolvedPage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/PageInformationFactoryTestRootlineImport.csv');
+        $request = new ServerRequest()
+            ->withAttribute('routing', new PageArguments(88, '0', []))
+            ->withAttribute('site', new Site('test', 2, []));
+        $pageInformation = $this->get(PageInformationFactory::class)->create($request);
+        $record = $pageInformation->getRecord();
+        self::assertSame('pages', $record->getMainType());
+        self::assertSame(88, $record->getUid());
+        self::assertSame('Sub page 1', $record->get('title'));
+    }
 }

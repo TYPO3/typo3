@@ -62,6 +62,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
                 0,
                 [
                     'You are on page Fluid Root Page',
+                    'record-title-Fluid Root Page<',
                     'This is a standard page with no content.',
                     'page-layout-identifier-Standard',
                 ],
@@ -71,6 +72,8 @@ final class PageViewContentObjectTest extends FunctionalTestCase
                 1,
                 [
                     'Vous êtes à la page Fluid Root Page FR',
+                    'record-title-Fluid Root Page FR<',
+                    'record-translation-source-title-Fluid Root Page<',
                 ],
             ],
             'special layout on root page' => [

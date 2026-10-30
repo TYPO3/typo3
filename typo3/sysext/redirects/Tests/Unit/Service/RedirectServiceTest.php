@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -103,6 +104,7 @@ final class RedirectServiceTest extends UnitTestCase
                 self::createStub(PageTypeLinkResolver::class),
                 self::createStub(PageDoktypeRegistry::class),
                 self::createStub(PageRepository::class),
+                self::createStub(RecordFactory::class),
             ),
             new FrontendTypoScriptFactory(
                 self::createStub(ContainerInterface::class),
@@ -717,6 +719,7 @@ final class RedirectServiceTest extends UnitTestCase
                     self::createStub(PageTypeLinkResolver::class),
                     self::createStub(PageDoktypeRegistry::class),
                     self::createStub(PageRepository::class),
+                    self::createStub(RecordFactory::class),
                 ),
                 new FrontendTypoScriptFactory(
                     self::createStub(ContainerInterface::class),

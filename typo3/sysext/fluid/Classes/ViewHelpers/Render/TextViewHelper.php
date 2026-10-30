@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Render;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
-use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Schema\Field\InputFieldType;
@@ -70,7 +69,6 @@ final class TextViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly TcaSchemaFactory $tcaSchema,
-        private readonly RecordFactory $recordFactory,
         private readonly DataMapFactory $dataMapFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
@@ -106,7 +104,7 @@ final class TextViewHelper extends AbstractViewHelper
         $field = $this->arguments['field'];
 
         if ($input instanceof PageInformation) {
-            $input = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $input->getPageRecord());
+            $input = $input->getRecord();
         }
 
         if (!$input instanceof RecordInterface && !$input instanceof DomainObjectInterface) {

@@ -396,7 +396,7 @@ final class TextViewHelperTest extends FunctionalTestCase
     {
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
-        $pageInformation->setPageRecord([
+        $pageRecord = [
             'uid' => 1,
             'pid' => 0,
             'doktype' => 1,
@@ -417,7 +417,15 @@ final class TextViewHelperTest extends FunctionalTestCase
             'sorting' => 0,
             'fe_group' => '',
             ...$fields,
-        ]);
+        ];
+        $pageInformation->setPageRecord($pageRecord);
+        $pageInformation->setRecord(new RawRecord(
+            uid: 1,
+            pid: 0,
+            properties: $pageRecord,
+            computedProperties: new ComputedProperties(),
+            fullType: 'pages.1'
+        ));
         return $pageInformation;
     }
 

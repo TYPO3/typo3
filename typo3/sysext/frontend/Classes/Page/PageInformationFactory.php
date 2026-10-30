@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\LinkedPageNotResolvableException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
@@ -82,6 +83,7 @@ final readonly class PageInformationFactory
         private PageTypeLinkResolver $pageTypeLinkResolver,
         private PageDoktypeRegistry $pageDoktypeRegistry,
         private PageRepository $pageRepository,
+        private RecordFactory $recordFactory,
     ) {}
 
     /**
@@ -134,6 +136,7 @@ final readonly class PageInformationFactory
             throw new PageInformationCreationFailedException($event->getResponse(), 1705420010);
         }
         $pageInformation = $event->getPageInformation();
+        $pageInformation->setRecord($this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $pageInformation->getPageRecord()));
 
         $pageInformation = $this->setSysTemplateRows($request, $pageInformation);
         $pageInformation = $this->setLocalRootLine($request, $pageInformation);
