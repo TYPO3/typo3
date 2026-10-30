@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Redirects\Data\SourceHostProvider;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\CMS\Redirects\Tests\Functional\Repository\Fixtures\DemandFixture;
@@ -334,6 +335,62 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         $redirects = $repository->findRedirectsByDemand($demand);
         $redirectUids = array_column($redirects, 'uid');
         self::assertSame($expectation, $redirectUids);
+    }
+
+    #[Test]
+    public function redirectsOfAllBaseVariantHostsAreFoundForEditors(): void
+    {
+        // The base variant matches in the testing context, as if the backend is called via the alternative entry point
+        $siteConfiguration = $this->buildSiteConfiguration(13, 'https://bar.com/');
+        $siteConfiguration['baseVariants'] = [
+            [
+                'base' => 'https://alt-bar.com/',
+                'condition' => 'applicationContext == "Testing"',
+            ],
+            [
+                'base' => 'https://staging-bar.com/',
+                'condition' => 'applicationContext == "Production/Staging"',
+            ],
+        ];
+        $this->writeSiteConfiguration(
+            'bar',
+            $siteConfiguration,
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ],
+        );
+
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file.csv');
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_redirect')->insert('sys_redirect', [
+            'uid' => 8,
+            'pid' => 0,
+            'createdon' => 1,
+            'createdby' => 2,
+            'source_host' => 'alt-bar.com',
+            'source_path' => '/alt-bar',
+            'target' => 'https://example.com/alt-bar',
+            'target_statuscode' => 301,
+            'redirect_type' => 'default',
+        ]);
+
+        $this->get(StorageRepository::class)->getStorageObject(1)->setEvaluatePermissions(true);
+        $backendUser = $this->setUpBackendUser(2);
+        $backendUser->userGroupsUID = [1];
+        $backendUser->groupData['webmounts'] = '13';
+
+        // Redirects of the main host and the variant host are found, redirects of the not mounted site "foo" are not
+        $redirects = $this->get(RedirectRepository::class)->findRedirectsByDemand(
+            new Demand(sourceHosts: ['bar.com', 'alt-bar.com', 'foo.com'])
+        );
+        $redirectUids = array_column($redirects, 'uid');
+        sort($redirectUids);
+        self::assertSame([5, 6, 8], $redirectUids);
+
+        $sourceHostProvider = $this->get(SourceHostProvider::class);
+        self::assertSame(['*', 'alt-bar.com', 'bar.com', 'staging-bar.com'], $sourceHostProvider->getAccessibleHosts());
+        // Hosts offered for selection are limited to the variant resolved in the current context
+        self::assertSame(['alt-bar.com'], $sourceHostProvider->getHosts());
     }
 
     #[Test]

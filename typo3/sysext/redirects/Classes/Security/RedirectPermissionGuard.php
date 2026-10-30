@@ -61,7 +61,7 @@ final class RedirectPermissionGuard
 
     public function getAllowedHosts(): array
     {
-        $this->allowedHosts ??= $this->sourceHostProvider->getHosts(true);
+        $this->allowedHosts ??= $this->sourceHostProvider->getAccessibleHosts();
 
         return $this->allowedHosts;
     }
