@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Configuration/Sets/camino/labels.xlf" date="2025-12-05T08:00:00Z" product-name="camino" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Theme Camino</source>
+        <target>crwdns417567:0crwdne417567:0</target>
+      </trans-unit>
+      <trans-unit id="categories.camino">
+        <source>Theme Camino</source>
+        <target>crwdns417569:0crwdne417569:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme">
+        <source>Color Scheme</source>
+        <target>crwdns417571:0crwdne417571:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.camino.colorScheme">
+        <source>Select the main color scheme</source>
+        <target>crwdns417573:0crwdne417573:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-caramel-cream">
+        <source>Caramel Cream</source>
+        <target>crwdns417575:0crwdne417575:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-ocean-breeze">
+        <source>Ocean Breeze</source>
+        <target>crwdns417577:0crwdne417577:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-forest-mist">
+        <source>Forest Mist</source>
+        <target>crwdns417579:0crwdne417579:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-violet-velvet">
+        <source>Violet Velvet</source>
+        <target>crwdns417581:0crwdne417581:0</target>
+      </trans-unit>
+      <trans-unit id="settings.camino.header.fixedPosition">
+        <source>Header: Fixed position</source>
+        <target>crwdns417583:0crwdne417583:0</target>
+      </trans-unit>
+      <trans-unit id="settings.description.camino.header.fixedPosition">
+        <source>If set, the header is always positioned at the top, which means it always stays in the same place even if the page is scrolled.</source>
+        <target>crwdns417585:0crwdne417585:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
