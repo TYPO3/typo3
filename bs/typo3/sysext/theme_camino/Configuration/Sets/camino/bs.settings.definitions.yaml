@@ -1,0 +1,5 @@
+categories:
+  camino: null
+settings:
+  camino.header.fixedPosition:
+    default: false
