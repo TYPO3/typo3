@@ -1,0 +1,16 @@
+categories:
+  camino: null
+settings:
+  camino.colorScheme:
+    default: crwdns417841:0crwdne417841:0
+    type: crwdns417843:0crwdne417843:0
+    enum:
+      - crwdns417845:0crwdne417845:0
+      - crwdns417847:0crwdne417847:0
+      - crwdns417849:0crwdne417849:0
+      - crwdns417851:0crwdne417851:0
+    category: crwdns417853:0crwdne417853:0
+  camino.header.fixedPosition:
+    default: false
+    type: crwdns417855:0crwdne417855:0
+    category: crwdns417857:0crwdne417857:0
