@@ -39,6 +39,12 @@ test('Can edit a redirect by clicking on source path', async ({ backend }) => {
 });
 
 
+test('Can open the context menu by clicking the record icon', async ({ page, backend }) => {
+  await backend.contentFrame.locator('.col-icon button[data-contextmenu-trigger]').first().click();
+  await expect(page.locator('typo3-backend-context-menu button[data-contextmenu-id="root_edit"]')).toBeVisible();
+});
+
+
 test('Can edit a redirect by clicking the edit button', async ({ backend }) => {
   const sourceHost = await backend.contentFrame.locator('td:nth-child(3)').first().innerText();
   const sourcePath = await backend.contentFrame.locator('.col-path > a').first().innerText();

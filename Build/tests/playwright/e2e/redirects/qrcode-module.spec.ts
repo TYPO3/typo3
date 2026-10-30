@@ -37,6 +37,11 @@ test('Can edit a redirect by clicking the edit button', async ({ backend }) => {
   await expect(backend.contentFrame.locator('h1')).toContainText('QR Code Management');
 });
 
+test('Can open the context menu by clicking the record icon', async ({ page, backend }) => {
+  await backend.contentFrame.locator('.col-icon button[data-contextmenu-trigger]').first().click();
+  await expect(page.locator('typo3-backend-context-menu button[data-contextmenu-id="root_edit"]')).toBeVisible();
+});
+
 test('See and download QR Code', async ({ page, backend }) => {
   const formEngineReady = await backend.formEngine.formEngineLoaded();
   await backend.contentFrame.getByRole('button', { name: 'Add QR Code' }).click();

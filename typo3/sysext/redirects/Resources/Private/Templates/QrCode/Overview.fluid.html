@@ -9,6 +9,7 @@
 
 <f:section name="Content">
 
+    <f:asset.module identifier="@typo3/backend/context-menu.js"/>
     <f:asset.module identifier="@typo3/backend/modal.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection.js"/>
     <f:asset.module identifier="@typo3/backend/multi-record-selection-edit-action.js"/>
@@ -138,20 +139,29 @@
                             </span>
                         </td>
                         <td class="col-icon">
-                            <f:alias map="{
-                                disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
-                                onlystart: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'Y-m-d H:i\')}',
-                                onlyend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'Y-m-d H:i\')}',
-                                startend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'Y-m-d H:i\')} - {f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'Y-m-d H:i\')}'
-                            }">
-                                <f:if condition="{redirect.disabled}">
-                                    <f:then><span title="{disable}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:then>
-                                    <f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
-                                    <f:else if="!{redirect.starttime} && {redirect.endtime}"><span title="{onlyend}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
-                                    <f:else if="{redirect.starttime} && {redirect.endtime}"><span title="{startend}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
-                                    <f:else><span><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
-                                </f:if>
-                            </f:alias>
+                            <button
+                                type="button"
+                                class="btn btn-link"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="sys_redirect"
+                                data-contextmenu-uid="{redirect.uid}"
+                                aria-label="{f:translate(id: 'labels.contextMenu.open', domain: 'core.core')}"
+                            >
+                                <f:alias map="{
+                                    disable: '{f:translate(key: \'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:record_disabled\')}',
+                                    onlystart: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'Y-m-d H:i\')}',
+                                    onlyend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'Y-m-d H:i\')}',
+                                    startend: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:start\')}: {f:format.date(date: redirect.starttime, format: \'Y-m-d H:i\')} - {f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop\')}: {f:format.date(date: redirect.endtime, format: \'Y-m-d H:i\')}'
+                                }">
+                                    <f:if condition="{redirect.disabled}">
+                                        <f:then><span title="{disable}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:then>
+                                        <f:else if="{redirect.starttime} && !{redirect.endtime}"><span title="{onlystart}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
+                                        <f:else if="!{redirect.starttime} && {redirect.endtime}"><span title="{onlyend}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
+                                        <f:else if="{redirect.starttime} && {redirect.endtime}"><span title="{startend}"><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
+                                        <f:else><span><core:iconForRecord table="sys_redirect" row="{redirect}" /></span></f:else>
+                                    </f:if>
+                                </f:alias>
+                            </button>
                         </td>
                         <td class="col-path">
                             <be:link.editRecord
