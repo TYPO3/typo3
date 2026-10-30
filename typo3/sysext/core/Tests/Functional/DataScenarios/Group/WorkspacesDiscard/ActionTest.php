@@ -81,6 +81,17 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function createPageAndModifyShortcutOfPageAndDiscardPage(): void
+    {
+        // pages.shortcut is a non-MM group field stored in an integer column
+        $newPageIds = $this->actionService->createNewRecord('pages', 88, ['title' => 'Testing #1']);
+        $this->recordIds['newPageId'] = $newPageIds['pages'][0];
+        $this->actionService->modifyRecord('pages', 90, ['doktype' => 4, 'shortcut' => $this->recordIds['newPageId']]);
+        $this->actionService->clearWorkspaceRecord('pages', $this->recordIds['newPageId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageNModifyShortcutNDiscardPage.csv');
+    }
+
+    #[Test]
     public function createContentAndCreateElementRelationAndDiscardContent(): void
     {
         $this->createContentAndCreateElementRelation();
