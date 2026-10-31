@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -41,6 +43,7 @@ abstract class AbstractGenerator
 {
     private ConnectionPool $connectionPool;
     private RecordFinder $recordFinder;
+    private CacheFlusher $cacheFlusher;
 
     public function injectConnectionPool(ConnectionPool $connectionPool): void
     {
@@ -50,6 +53,11 @@ abstract class AbstractGenerator
     public function injectRecordFinder(RecordFinder $recordFinder): void
     {
         $this->recordFinder = $recordFinder;
+    }
+
+    public function injectCacheFlusher(CacheFlusher $cacheFlusher): void
+    {
+        $this->cacheFlusher = $cacheFlusher;
     }
 
     /**
@@ -246,9 +254,7 @@ abstract class AbstractGenerator
     protected function clearAllCachesOnCli(): void
     {
         if (Environment::isCli()) {
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], []);
-            $dataHandler->clear_cacheCmd('all');
+            $this->cacheFlusher->flush(CacheFlushDemand::forCommand('all'));
         }
     }
 }

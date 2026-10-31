@@ -22,6 +22,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushingContext;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushLogger;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -71,7 +76,7 @@ class SimpleDataHandlerController
     protected $mirror;
 
     /**
-     * Cache command sent to ->clear_cacheCmd
+     * Cache command as known from "TCEMAIN.clearCacheCmd"
      *
      * @var string
      */
@@ -100,6 +105,8 @@ class SimpleDataHandlerController
 
     public function __construct(
         protected readonly FlashMessageService $flashMessageService,
+        protected readonly CacheFlusher $cacheFlusher,
+        protected readonly CacheFlushLogger $cacheFlushLogger,
     ) {}
 
     /**
@@ -216,9 +223,10 @@ class SimpleDataHandlerController
         // Execute actions:
         $this->tce->process_datamap();
         $this->tce->process_cmdmap();
-        // Clearing cache:
         if (!empty($this->cacheCmd)) {
-            $this->tce->clear_cacheCmd($this->cacheCmd);
+            $demand = CacheFlushDemand::forCommand($this->cacheCmd);
+            $this->cacheFlushLogger->logCommands($this->getBackendUser(), $demand->commands);
+            $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($this->getBackendUser()));
         }
         // Update page tree?
         if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
@@ -286,5 +294,10 @@ class SimpleDataHandlerController
             $clipboard->removeElement($key);
         }
         $clipboard->endClipboard();
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

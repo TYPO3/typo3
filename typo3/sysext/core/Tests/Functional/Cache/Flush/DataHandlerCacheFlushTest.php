@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Flush;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -152,6 +153,7 @@ final class DataHandlerCacheFlushTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function clearCacheCmdFlushesPageCacheAndReportsTheCommand(): void
     {
         $pageCache = $this->get(CacheManager::class)->getCache('pages');

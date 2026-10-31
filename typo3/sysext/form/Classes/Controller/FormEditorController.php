@@ -25,7 +25,8 @@ use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -88,7 +89,7 @@ class FormEditorController extends ActionController
         protected readonly ArrayFormFactory $arrayFormFactory,
         protected readonly ViewFactoryInterface $viewFactory,
         protected readonly DatabaseService $databaseService,
-        protected readonly CacheManager $cacheManager,
+        protected readonly CacheFlusher $cacheFlusher,
         protected readonly ComponentFactory $componentFactory,
         protected readonly FormEditorEnrichmentService $formEditorEnrichmentService,
     ) {}
@@ -640,11 +641,11 @@ class FormEditorController extends ActionController
             if (!$record) {
                 continue;
             }
-            $pageIdList[] = $record['pid'];
+            $pageIdList[] = (int)$record['pid'];
         }
 
-        foreach (array_unique($pageIdList) as $pageId) {
-            $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+        if ($pageIdList !== []) {
+            $this->cacheFlusher->flush(CacheFlushDemand::forPageTagsByPageIds(...$pageIdList));
         }
     }
 

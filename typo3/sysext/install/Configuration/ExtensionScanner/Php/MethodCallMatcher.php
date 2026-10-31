@@ -7157,6 +7157,13 @@ return [
             'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->clear_cacheCmd' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-111298-DataHandlerClearCacheCmd.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

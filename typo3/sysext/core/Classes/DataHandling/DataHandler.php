@@ -8895,13 +8895,15 @@ class DataHandler
      * $cacheCmd='cacheTag:[string]'
      * Flush page cache by given tag
      *
-     * Code that does not need a DataHandler otherwise should use
-     * \TYPO3\CMS\Core\Cache\Flush\CacheFlusher directly.
-     *
      * @param int|string $cacheCmd The cache command, see above description
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Use \TYPO3\CMS\Core\Cache\Flush\CacheFlusher instead.
      */
     public function clear_cacheCmd($cacheCmd): void
     {
+        trigger_error(
+            'DataHandler->clear_cacheCmd() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0. Use CacheFlusher->flush() with CacheFlushDemand::forCommand() instead.',
+            E_USER_DEPRECATED
+        );
         $demand = CacheFlushDemand::forCommand($cacheCmd);
         $this->cacheFlushLogger->logCommands($this->BE_USER, $demand->commands);
         $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($this->BE_USER));

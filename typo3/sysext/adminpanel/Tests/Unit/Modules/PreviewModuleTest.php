@@ -26,6 +26,7 @@ use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,6 +77,7 @@ final class PreviewModuleTest extends UnitTestCase
             self::createStub(ViewFactoryInterface::class),
             self::createStub(LoggerInterface::class),
             self::createStub(GroupResolver::class),
+            self::createStub(CacheFlusher::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
@@ -113,6 +115,7 @@ final class PreviewModuleTest extends UnitTestCase
             self::createStub(ViewFactoryInterface::class),
             self::createStub(LoggerInterface::class),
             $groupResolver,
+            self::createStub(CacheFlusher::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);

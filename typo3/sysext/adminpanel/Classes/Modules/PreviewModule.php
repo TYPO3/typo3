@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -67,6 +69,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         private readonly ViewFactoryInterface $viewFactory,
         private readonly LoggerInterface $logger,
         private readonly GroupResolver $groupResolver,
+        private readonly CacheFlusher $cacheFlusher,
     ) {}
 
     public function getIconIdentifier(): string
@@ -258,7 +261,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $pageId = (int)$request->getParsedBody()['TSFE_ADMIN_PANEL']['preview_clearCacheId'];
 
         try {
-            $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+            $this->cacheFlusher->flush(CacheFlushDemand::forPageTagsByPageIds($pageId));
             $this->cacheManager->getCache('fluid_template')->flush();
         } catch (NoSuchCacheException|NoSuchCacheGroupException $exception) {
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);

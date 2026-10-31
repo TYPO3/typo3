@@ -18,7 +18,8 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -38,7 +39,10 @@ class AdministrationRepository
     protected array $allPhashListed = [];
     protected array $iconFileNameCache = [];
 
-    public function __construct(private readonly ExternalMediaTypes $externalMediaTypes) {}
+    public function __construct(
+        private readonly ExternalMediaTypes $externalMediaTypes,
+        private readonly CacheFlusher $cacheFlusher,
+    ) {}
 
     /**
      * Get group list information
@@ -717,10 +721,7 @@ class AdministrationRepository
                 }
 
                 if (!empty($idList)) {
-                    $pageCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
-                    foreach ($idList as $pageId) {
-                        $pageCache->flushByTag('pageId_' . $pageId);
-                    }
+                    $this->cacheFlusher->flush(CacheFlushDemand::forPageTagsByPageIds(...$idList));
                 }
 
                 // Removing old registrations for all tables.

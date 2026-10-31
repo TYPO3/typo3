@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -78,7 +78,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 self::createStub(ArrayFormFactory::class),
                 self::createStub(ViewFactoryInterface::class),
                 self::createStub(DatabaseService::class),
-                self::createStub(CacheManager::class),
+                self::createStub(CacheFlusher::class),
                 self::createStub(ComponentFactory::class),
                 $formEditorEnrichmentServiceStub,
             ],
@@ -186,7 +186,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 self::createStub(ArrayFormFactory::class),
                 self::createStub(ViewFactoryInterface::class),
                 self::createStub(DatabaseService::class),
-                self::createStub(CacheManager::class),
+                self::createStub(CacheFlusher::class),
                 self::createStub(ComponentFactory::class),
                 $formEditorEnrichmentServiceStub,
             ],
@@ -496,7 +496,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 self::createStub(ArrayFormFactory::class),
                 self::createStub(ViewFactoryInterface::class),
                 self::createStub(DatabaseService::class),
-                self::createStub(CacheManager::class),
+                self::createStub(CacheFlusher::class),
                 self::createStub(ComponentFactory::class),
                 self::createStub(FormEditorEnrichmentService::class),
             ],
@@ -653,7 +653,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 self::createStub(ArrayFormFactory::class),
                 self::createStub(ViewFactoryInterface::class),
                 self::createStub(DatabaseService::class),
-                self::createStub(CacheManager::class),
+                self::createStub(CacheFlusher::class),
                 self::createStub(ComponentFactory::class),
                 $this->get(FormEditorEnrichmentService::class),
             ],
