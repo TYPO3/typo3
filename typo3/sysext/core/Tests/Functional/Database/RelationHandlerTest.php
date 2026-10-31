@@ -192,6 +192,37 @@ final class RelationHandlerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function convertItemArrayKeepsIdsOfTableWithoutVersioning(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmSysCategoryRelationsImport.csv');
+
+        $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $subject = new RelationHandler();
+        $subject->setWorkspaceId(1);
+        $subject->start('1,10', 'sys_category');
+
+        self::assertFalse($subject->convertItemArray());
+        self::assertSame([1, 10], array_column($subject->itemArray, 'id'));
+        self::assertSame([1, 10], $subject->tableArray['sys_category']);
+    }
+
+    #[Test]
+    public function convertItemArrayResolvesVersionIdsOfTableWithVersioning(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmSysCategoryRelationsImport.csv');
+
+        $subject = new RelationHandler();
+        $subject->setWorkspaceId(1);
+        $subject->start('1,10', 'sys_category');
+
+        self::assertTrue($subject->convertItemArray());
+        self::assertSame([1, 20], array_column($subject->itemArray, 'id'));
+        self::assertSame([1, 20], $subject->tableArray['sys_category']);
+    }
+
+    #[Test]
     public function readMmFromLocalSideIgnoresTablenamesMatchFieldNotReferringToForeignTable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmLocalSideWithTablenamesMatchFieldImport.csv');

@@ -216,6 +216,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyCategoryAndAddCategoryRelation(): void
+    {
+        parent::modifyCategoryAndAddCategoryRelation();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryNAddCategoryRelation.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest()->withPageId(self::VALUE_PageId),
+            new InternalRequestContext()->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, new StructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B', 'Category C'));
+    }
+
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
