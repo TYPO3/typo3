@@ -42,7 +42,7 @@
     color: var(--modulemenu-color);
 
     > ul {
-        container-type: inline-size;
+        container: modulemenu / inline-size;
         min-width: var(--modulemenu-action-min-width);
         display: grid;
         gap: var(--modulemenu-group-spacer);
@@ -218,7 +218,7 @@
     margin: 0;
 }
 
-@container (min-width: 80px) {
+@container modulemenu (min-width: 80px) {
     .modulemenu-group-container .modulemenu-group-container {
         padding-inline-start: var(--modulemenu-group-indent);
 
