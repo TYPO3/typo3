@@ -174,6 +174,8 @@ readonly class PreviewSimulator implements MiddlewareInterface
      * versions are protected by different groups.
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
      * logged in backend users and needs to be done before any page resolving starts.
+     * If the current frontend user is already member of all these groups, nothing needs to be simulated,
+     * and the real frontend user is kept.
      */
     protected function simulateUserGroup(ServerRequestInterface $request): bool
     {
@@ -183,6 +185,9 @@ readonly class PreviewSimulator implements MiddlewareInterface
         }
         $simulateUserGroups = $this->previewSimulatorCalculator->getUserGroupIds((string)$simulatedUserGroups);
         if ($simulateUserGroups === []) {
+            return false;
+        }
+        if (array_diff($simulateUserGroups, $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [])) === []) {
             return false;
         }
         $frontendUser = $request->getAttribute('frontend.user');
