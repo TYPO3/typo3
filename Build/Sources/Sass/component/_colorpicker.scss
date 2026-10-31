@@ -30,3 +30,40 @@
     --input-bc-hover: var(--typo3-input-hover-border-color);
     --swatches-bg: var(--typo3-component-bg);
 }
+
+//
+// Upstream exposes swatch labels only as a tooltip, render them next to the color.
+// See https://github.com/sefianecho/alwan/issues/25
+//
+.alwan__swatches {
+    display: block;
+    max-height: 200px;
+}
+
+.alwan__swatch {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 4px;
+    padding-inline-start: 30px;
+    color: var(--fg);
+    text-align: start;
+    background: none;
+
+    // Keep the transparency pattern behind the color only, not behind the label
+    &:before {
+        width: 22px;
+        background: linear-gradient(var(--color), var(--color)), var(--alwan-pattern);
+    }
+
+    &:after {
+        content: attr(title);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &:hover:not(:disabled) {
+        transform: none;
+    }
+}
