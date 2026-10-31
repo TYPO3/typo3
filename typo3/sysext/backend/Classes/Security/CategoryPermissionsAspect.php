@@ -72,9 +72,8 @@ final class CategoryPermissionsAspect
 
                 // Check the rootline against categoryMountPoints when tree was filtered
                 foreach ($dataProvider->getStartingPoints() as $startingPoint) {
-                    if (!in_array($startingPoint, $categoryMountPoints)) {
-                        $shallRepopulateTree = true;
-                        break;
+                    if (in_array($startingPoint, $categoryMountPoints)) {
+                        continue;
                     }
                     $uidsInRootline = $this->findUidsInRootline($startingPoint);
                     if (empty(array_intersect($categoryMountPoints, $uidsInRootline))) {
@@ -148,7 +147,7 @@ final class CategoryPermissionsAspect
             ->fetchAssociative();
 
         $parentUids = [];
-        if ($row['parent'] > 0) {
+        if (($row['parent'] ?? 0) > 0) {
             $parentUids = $this->findUidsInRootline($row['parent']);
             $parentUids[] = $row['parent'];
         }
