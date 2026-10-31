@@ -1213,7 +1213,7 @@ class RelationHandler
                 continue;
             }
             $schema = $this->tcaSchemaFactory->get($tableName);
-            if ($schema->isWorkspaceAware()) {
+            if (!$schema->isWorkspaceAware()) {
                 continue;
             }
 
