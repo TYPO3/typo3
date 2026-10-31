@@ -57,6 +57,16 @@ final class RecordFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function pagePermissionsAreAvailableFromRawRecord(): void
+    {
+        $dbRow = BackendUtility::getRecord('pages', 1);
+        $result = $this->get(RecordFactory::class)->createFromDatabaseRow('pages', $dbRow);
+        self::assertInstanceOf(Page::class, $result);
+        self::assertFalse($result->has('perms_everybody'));
+        self::assertSame(15, $result->getPermissions()->getEverybodyPermissions()->__toInt());
+    }
+
+    #[Test]
     public function typesAreResolvedProperlyForPageRecord(): void
     {
         $dbRow = BackendUtility::getRecord('pages', 1);

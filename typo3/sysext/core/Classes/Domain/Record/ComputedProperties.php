@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Domain\Page;
 
 /**
  * Contains all information about computed properties for the current context.
- *
- * @internal not part of public API, as this needs to be streamlined and proven
  */
 readonly class ComputedProperties
 {

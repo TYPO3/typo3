@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Domain\Record;
 
 /**
  * Contains all information about system-related properties for the current record.
- *
- * @internal not part of public API, as this needs to be streamlined and proven
  */
 readonly class SystemProperties
 {

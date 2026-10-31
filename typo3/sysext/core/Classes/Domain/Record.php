@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Domain\Record\VersionInfo;
 
 /**
  * Represents a record with all properties valid for this record type.
- *
- * @internal not part of public API, as this needs to be streamlined and proven
  */
 class Record implements RecordInterface
 {

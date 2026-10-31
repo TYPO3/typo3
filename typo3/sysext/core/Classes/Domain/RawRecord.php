@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 
 /**
  * Holds all properties of a raw database row with unfiltered and unprocessed values.
- *
- * @internal not part of public API, as this needs to be streamlined and proven
  */
 readonly class RawRecord implements RecordInterface
 {

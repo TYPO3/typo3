@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Core\Domain;
 
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Domain\Record\PagePermissions;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
 
 /**
- * @internal not part of public API, as this needs to be streamlined and proven
+ * Represents a page record, including the workspace and language overlay information
+ * of the context it was retrieved in.
  */
 class Page extends Record implements \ArrayAccess
 {
@@ -98,6 +100,14 @@ class Page extends Record implements \ArrayAccess
     public function getRequestedLanguage(): ?int
     {
         return $this->specialProperties['_REQUESTED_OVERLAY_LANGUAGE'] ?? null;
+    }
+
+    /**
+     * Returns null if the page was retrieved without its permission fields.
+     */
+    public function getPermissions(): ?PagePermissions
+    {
+        return PagePermissions::fromRecord($this->rawRecord->toArray());
     }
 
     public function toArray(bool $includeSystemProperties = false): array

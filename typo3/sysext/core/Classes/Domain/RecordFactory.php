@@ -51,8 +51,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * - a DateTime field.
  *
  * This means that the field value of a "Resolved Record" is expanded to the actual types (Date objects etc.)
- *
- * @internal not part of TYPO3 Core API yet.
  */
 #[Autoconfigure(public: true)]
 readonly class RecordFactory
