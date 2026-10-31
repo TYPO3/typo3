@@ -409,6 +409,7 @@ BE:
             items:
                 className:
                     type: dropdown
+                    description: 'Password hash mechanism used to hash the passwords of backend users.'
                     allowedValues:
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash': 'Good password hash mechanism. Used by default if available.'
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash': 'Good password hash mechanism.'
@@ -416,8 +417,10 @@ BE:
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash': 'Fallback hash mechanism if argon and bcrypt are not available.'
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash': 'Fallback hash mechanism if none of the above are available.'
                 options:
-                    type: array
-                    description: 'Special settings for specific hashes.'
+                    type: map
+                    arrayKey: Option
+                    arrayValue: Value
+                    description: 'Options of the selected password hash mechanism. Leave empty to use its defaults. Argon2i and Argon2id: <code>memory_cost</code> (at least 65536), <code>time_cost</code> (at least 4), <code>threads</code> (at least 1). Bcrypt: <code>cost</code> (10 to 31). PBKDF2: <code>hash_count</code> (1000 to 10000000). Phpass: <code>hash_count</code> (7 to 24). A value out of these ranges makes logins fail with an exception.'
 FE:
     type: container
     description: 'Frontend'
@@ -560,6 +563,7 @@ FE:
             items:
                 className:
                     type: dropdown
+                    description: 'Password hash mechanism used to hash the passwords of frontend users.'
                     allowedValues:
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash': 'Good password hash mechanism. Used by default if available.'
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash': 'Good password hash mechanism.'
@@ -567,8 +571,10 @@ FE:
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash': 'Fallback hash mechanism if argon and bcrypt are not available.'
                         'TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash': 'Fallback hash mechanism if none of the above are available.'
                 options:
-                    type: array
-                    description: 'Special settings for specific hashes.'
+                    type: map
+                    arrayKey: Option
+                    arrayValue: Value
+                    description: 'Options of the selected password hash mechanism. Leave empty to use its defaults. Argon2i and Argon2id: <code>memory_cost</code> (at least 65536), <code>time_cost</code> (at least 4), <code>threads</code> (at least 1). Bcrypt: <code>cost</code> (10 to 31). PBKDF2: <code>hash_count</code> (1000 to 10000000). Phpass: <code>hash_count</code> (7 to 24). A value out of these ranges makes logins fail with an exception.'
         exposeRedirectInformation:
           type: bool
           description: 'If set, redirects executed by TYPO3 publicly expose the page ID in the HTTP header. As this is an internal information about the TYPO3 system, it should only be enabled for debugging purposes.'
