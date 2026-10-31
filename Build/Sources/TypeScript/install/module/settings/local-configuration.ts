@@ -142,7 +142,7 @@ class LocalConfiguration extends AbstractInteractableModule {
         }
       }
 
-      const rowTemplate = (container.querySelector<HTMLTemplateElement>('#' + container.dataset.namespace)).content.cloneNode(true) as DocumentFragment;
+      const rowTemplate = (container.querySelector<HTMLTemplateElement>('#' + CSS.escape(container.dataset.namespace))).content.cloneNode(true) as DocumentFragment;
       container.querySelector('.configuration-map-item-collection').append(rowTemplate);
 
       const lastRow = querySelectorLast(Identifiers.configurationItem);

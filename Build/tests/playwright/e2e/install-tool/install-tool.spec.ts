@@ -327,6 +327,15 @@ test.describe('Install Tool', () => {
       await modal2.getByRole('button', { name: 'Write configuration' }).click();
       await installTool.closeModal();
     });
+
+    test('nested map option accepts a new item', async ({ installTool, page }) => {
+      const modal = await installTool.openModal('Configure options…');
+      await modal.locator('.panel-heading', { hasText: 'Backend' }).click();
+      const option = page.locator('[id="BE-passwordHashing/options"]');
+      await option.getByRole('button', { name: 'Add item' }).click();
+      await expect(option.locator('.t3js-localConfiguration-configuration-item')).toHaveCount(1);
+      await installTool.closeModal();
+    });
   });
 
   test.describe('Upgrade', () => {
