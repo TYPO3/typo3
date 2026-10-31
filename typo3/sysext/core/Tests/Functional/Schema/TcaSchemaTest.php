@@ -202,4 +202,12 @@ final class TcaSchemaTest extends FunctionalTestCase
             $schema->getSubSchema('shortcut')->getCapability(TcaSchemaCapability::Label)->getLabelFieldNamesOfAllRecordTypes()
         );
     }
+
+    #[Test]
+    public function everyPageTypeProvidesFieldToHideChildPagesInPageTree(): void
+    {
+        foreach ($this->get(TcaSchemaFactory::class)->get('pages')->getSubSchemata() as $pageType => $subSchema) {
+            self::assertTrue($subSchema->hasField('php_tree_stop'), 'Page type ' . $pageType);
+        }
+    }
 }
