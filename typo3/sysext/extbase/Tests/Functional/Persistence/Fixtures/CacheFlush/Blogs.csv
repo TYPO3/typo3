@@ -1,0 +1,10 @@
+"pages"
+,"uid","pid","sorting","title","doktype","deleted","TSconfig"
+,1,0,128,"Root",1,0,
+,2,1,128,"Storage",254,0,
+,3,1,256,"Storage with cache commands",254,0,"TCEMAIN.clearCacheCmd = 1, all"
+,4,1,512,"Other storage",254,0,
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","deleted","hidden"
+,1,2,"Blog on storage",0,0
+,2,3,"Blog on storage with cache commands",0,0

@@ -22,13 +22,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Response\ResponseData;
 
@@ -49,7 +50,7 @@ class Bootstrap
         protected readonly ContainerInterface $container,
         protected readonly ConfigurationManagerInterface $configurationManager,
         protected readonly PersistenceManagerInterface $persistenceManager,
-        protected readonly CacheService $cacheService,
+        protected readonly CacheFlusher $cacheFlusher,
         protected readonly Dispatcher $dispatcher,
         protected readonly RequestBuilder $extbaseRequestBuilder
     ) {}
@@ -189,7 +190,6 @@ class Bootstrap
         $body->rewind();
         $content = $body->getContents();
         $this->resetSingletons();
-        $this->cacheService->clearCachesOfRegisteredPageIds();
         return $content;
     }
 
@@ -213,7 +213,6 @@ class Bootstrap
         $extbaseRequest = $this->extbaseRequestBuilder->build($request);
         $response = $this->dispatcher->dispatch($extbaseRequest);
         $this->resetSingletons();
-        $this->cacheService->clearCachesOfRegisteredPageIds();
         return $response;
     }
 
@@ -226,7 +225,7 @@ class Bootstrap
         if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
             $pageId = $request->getAttribute('frontend.page.information')?->getId();
             if ($pageId !== null) {
-                $this->cacheService->clearPageCache([$pageId]);
+                $this->cacheFlusher->flush(CacheFlushDemand::forPageTagsByPageIds($pageId));
             }
         }
     }

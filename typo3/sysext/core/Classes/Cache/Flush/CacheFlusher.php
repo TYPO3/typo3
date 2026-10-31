@@ -142,6 +142,19 @@ readonly class CacheFlusher
                 $pageId = $this->pageResolver->getPageIdOfRecord($table, $uid);
                 $pageIds = $this->pageResolver->getAffectedPageIds($table, $pageId, $pageTsConfig);
                 $tags = [$table, $table . '_' . $uid];
+                if ($table !== 'pages') {
+                    $storagePageIds = array_unique([$pageId, (int)$originalPageId]);
+                    foreach ($storagePageIds as $storagePageId) {
+                        if ($storagePageId !== $pageId) {
+                            // A moved record is gone from its original page
+                            $pageIds = [...$pageIds, ...$this->pageResolver->getAffectedPageIds($table, $storagePageId, $pageTsConfig)];
+                        }
+                        if ($storagePageId > 0) {
+                            // Lists of records of a storage page, see the automatic cache tagging of Extbase repositories
+                            $tags[] = $table . '_pid_' . $storagePageId;
+                        }
+                    }
+                }
             }
             $commands = array_values(array_unique(GeneralUtility::trimExplode(',', (string)($pageTsConfig['clearCacheCmd'] ?? ''), true)));
 

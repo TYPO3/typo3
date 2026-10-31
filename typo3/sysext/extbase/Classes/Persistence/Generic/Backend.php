@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushingContext;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -69,6 +72,7 @@ class Backend implements BackendInterface
     protected ObjectStorage $deletedEntities;
     protected ObjectStorage $changedEntities;
     protected ObjectStorage $visitedDuringPersistence;
+    protected CacheFlushDemand $cacheFlushDemand;
 
     public function __construct(
         protected readonly ConfigurationManagerInterface $configurationManager,
@@ -80,10 +84,12 @@ class Backend implements BackendInterface
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly PersistenceCorrelationScope $correlationScope,
+        protected readonly CacheFlusher $cacheFlusher,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
         $this->changedEntities = new ObjectStorage();
+        $this->cacheFlushDemand = CacheFlushDemand::create();
     }
 
     public function setPersistenceManager(PersistenceManagerInterface $persistenceManager): void
@@ -231,6 +237,34 @@ class Backend implements BackendInterface
         $this->correlationScope->reset();
         $this->persistObjects();
         $this->processDeletedObjects();
+        $this->flushCachesOfPersistedRecords();
+    }
+
+    /**
+     * Flushes the caches of the pages the persisted records are located on,
+     * unless "persistence.enableAutomaticCacheClearing" is disabled. Cache
+     * commands of Page TSconfig may flush further pages and cache tags, but
+     * never the "pages" group or all caches.
+     */
+    protected function flushCachesOfPersistedRecords(): void
+    {
+        $demand = $this->cacheFlushDemand;
+        $this->cacheFlushDemand = CacheFlushDemand::create();
+        if ($demand->isEmpty() || !$this->isAutomaticCacheClearingEnabled()) {
+            return;
+        }
+        $this->cacheFlusher->flush($demand, new CacheFlushingContext(canFlushPagesGroup: false, canFlushAllCaches: false));
+    }
+
+    protected function isAutomaticCacheClearingEnabled(): bool
+    {
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        } catch (NoServerRequestGivenException) {
+            // Without a request, the persistence layer falls back to the default of the setting
+            return true;
+        }
+        return (bool)($frameworkConfiguration['persistence']['enableAutomaticCacheClearing'] ?? true);
     }
 
     /**
@@ -601,6 +635,7 @@ class Backend implements BackendInterface
         $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $uid);
         $object->setPid((int)$row['pid']);
         if ($uid >= 1) {
+            $this->cacheFlushDemand = $this->cacheFlushDemand->withRecord($dataMap->tableName, $uid);
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
         }
 
@@ -744,6 +779,14 @@ class Backend implements BackendInterface
             }
         }
         $this->storageBackend->updateRow($dataMap->tableName, $row);
+        $this->cacheFlushDemand = $this->cacheFlushDemand->withRecord($dataMap->tableName, (int)$row['uid']);
+        $previousPageId = $object->_getCleanProperty(AbstractDomainObject::PROPERTY_PID);
+        if (isset($row['pid']) && $previousPageId !== null && (int)$previousPageId !== (int)$row['pid']) {
+            // Page TSconfig of both pages applies, and both pages get flushed
+            $this->cacheFlushDemand = $this->cacheFlushDemand
+                ->withRecord($dataMap->tableName, (int)$row['uid'], (int)$previousPageId)
+                ->withRecord($dataMap->tableName, (int)$row['uid'], (int)$row['pid']);
+        }
         $this->eventDispatcher->dispatch(new EntityUpdatedInPersistenceEvent($object));
         $this->referenceIndex->updateRefIndexTable($dataMap->tableName, (int)$row['uid']);
     }
@@ -809,6 +852,7 @@ class Backend implements BackendInterface
         } else {
             $this->storageBackend->removeRow($dataMap->tableName, ['uid' => $object->getUid()]);
         }
+        $this->cacheFlushDemand = $this->cacheFlushDemand->withRecord($dataMap->tableName, (int)$object->getUid(), $object->getPid());
         $this->eventDispatcher->dispatch(new EntityRemovedFromPersistenceEvent($object));
 
         $this->removeRelatedObjects($object);

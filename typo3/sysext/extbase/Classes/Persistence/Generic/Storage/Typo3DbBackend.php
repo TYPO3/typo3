@@ -53,7 +53,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintExcepti
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 
 /**
@@ -64,7 +63,6 @@ use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 readonly class Typo3DbBackend implements BackendInterface
 {
     public function __construct(
-        protected CacheService $cacheService,
         protected ConnectionPool $connectionPool,
         protected ReflectionService $reflectionService,
         protected EventDispatcherInterface $eventDispatcher,
@@ -100,7 +98,6 @@ readonly class Typo3DbBackend implements BackendInterface
         if (!$isRelation) {
             // Relation tables have no auto_increment column, so no retrieval must be tried.
             $uid = (int)$connection->lastInsertId();
-            $this->cacheService->clearCacheForRecord($tableName, $uid);
         }
         return $uid;
     }
@@ -128,10 +125,6 @@ readonly class Typo3DbBackend implements BackendInterface
             $connection->update($tableName, $fieldValues, ['uid' => $uid], $this->getTypesForDataset($tableName, $fieldValues));
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getMessage(), 1470230767, $e);
-        }
-
-        if (!$isRelation) {
-            $this->cacheService->clearCacheForRecord($tableName, $uid);
         }
     }
 
@@ -193,10 +186,6 @@ readonly class Typo3DbBackend implements BackendInterface
             $this->connectionPool->getConnectionForTable($tableName)->delete($tableName, $where);
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getMessage(), 1470230769, $e);
-        }
-
-        if (!$isRelation && isset($where['uid'])) {
-            $this->cacheService->clearCacheForRecord($tableName, (int)$where['uid']);
         }
     }
 

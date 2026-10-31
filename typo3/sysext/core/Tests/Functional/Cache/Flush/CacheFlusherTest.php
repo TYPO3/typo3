@@ -72,7 +72,7 @@ final class CacheFlusherTest extends FunctionalTestCase
             'content element flushes its page' => [
                 'tt_content',
                 1,
-                ['pageId_3', 'tt_content', 'tt_content_1'],
+                ['pageId_3', 'tt_content', 'tt_content_1', 'tt_content_pid_3'],
             ],
             'page flushes itself, its siblings and its parent' => [
                 'pages',
@@ -87,7 +87,7 @@ final class CacheFlusherTest extends FunctionalTestCase
             'content element with clearCache_pageGrandParent flushes the parent of its page' => [
                 'tt_content',
                 5,
-                ['pageId_12', 'pageId_10', 'tt_content', 'tt_content_5'],
+                ['pageId_12', 'pageId_10', 'tt_content', 'tt_content_5', 'tt_content_pid_12'],
             ],
             'page with clearCache_pageSiblingChildren and clearCache_pageGrandParent' => [
                 'pages',
@@ -97,7 +97,7 @@ final class CacheFlusherTest extends FunctionalTestCase
             'content element with clearCacheCmd flushes the configured pages and tags' => [
                 'tt_content',
                 4,
-                ['pageId_8', 'tt_content', 'tt_content_4', 'pageId_6', 'news'],
+                ['pageId_8', 'tt_content', 'tt_content_4', 'tt_content_pid_8', 'pageId_6', 'news'],
             ],
             'record on root level flushes its tags' => [
                 'sys_category',
@@ -173,7 +173,7 @@ final class CacheFlusherTest extends FunctionalTestCase
             ],
             $plan->getRecords()
         );
-        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content', 'tt_content_1'], $plan->getTags());
+        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content', 'tt_content_1', 'tt_content_pid_3'], $plan->getTags());
     }
 
     public static function invalidRecordDataProvider(): array
@@ -200,7 +200,7 @@ final class CacheFlusherTest extends FunctionalTestCase
             ],
             $plan->getRecords()
         );
-        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content', 'tt_content_1'], $plan->getTags());
+        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content', 'tt_content_1', 'tt_content_pid_3'], $plan->getTags());
     }
 
     #[Test]
@@ -211,6 +211,18 @@ final class CacheFlusherTest extends FunctionalTestCase
         self::assertEquals(
             [new CacheFlushRecord('tt_content', 1, 0, CacheFlushSkipReason::DisabledByPageTsConfig)],
             $plan->getRecords()
+        );
+    }
+
+    #[Test]
+    public function movedRecordFlushesItsOriginalAndItsCurrentPage(): void
+    {
+        $plan = $this->get(CacheFlusher::class)->resolve(CacheFlushDemand::forRecord('tt_content', 1, 4));
+
+        self::assertEquals([new CacheFlushRecord('tt_content', 1, 3)], $plan->getRecords());
+        self::assertEqualsCanonicalizing(
+            ['pageId_3', 'pageId_4', 'tt_content', 'tt_content_1', 'tt_content_pid_3', 'tt_content_pid_4'],
+            $plan->getTags()
         );
     }
 
@@ -276,7 +288,7 @@ final class CacheFlusherTest extends FunctionalTestCase
         self::assertSame(3, $dispatchedEvents[0]->originalPageId);
         self::assertNull($dispatchedEvents[0]->skipReason);
         self::assertSame([42], $dispatchedEvents[0]->getPageIds());
-        self::assertEqualsCanonicalizing(['pageId_42', 'tt_content', 'tt_content_1', 'myTag', 'fromCommand'], $plan->getTags());
+        self::assertEqualsCanonicalizing(['pageId_42', 'tt_content', 'tt_content_1', 'tt_content_pid_3', 'myTag', 'fromCommand'], $plan->getTags());
     }
 
     #[Test]
@@ -317,7 +329,7 @@ final class CacheFlusherTest extends FunctionalTestCase
         );
 
         self::assertSame(1, $dispatchCount);
-        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content_1', 'pageId_12', 'pageId_10', 'tt_content_5', 'myTag'], $plan->getTags());
+        self::assertEqualsCanonicalizing(['pageId_3', 'tt_content_1', 'tt_content_pid_3', 'pageId_12', 'pageId_10', 'tt_content_5', 'tt_content_pid_12', 'myTag'], $plan->getTags());
     }
 
     #[Test]
