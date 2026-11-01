@@ -18,7 +18,8 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416747] 
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DataHandlerAuthenticationContext::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['authenticationContext'] = DataHandlerAuthenticationContext::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['authenticationContext'] = DataHandlerAuthenticationContext::class;
 
 // Giving the two hook registrations a unique name to allow unsetting this hook if it is not wanted.
 // ext:container does this to apply own logic.
