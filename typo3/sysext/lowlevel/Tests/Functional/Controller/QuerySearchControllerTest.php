@@ -679,4 +679,45 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         }
         return $settings;
     }
+    public static function storedQueriesDataProvider(): array
+    {
+        return [
+            'missing' => [[], []],
+            'null' => [['storeArray' => null, 'storeQueryConfigs' => null], []],
+            'empty strings' => [['storeArray' => '', 'storeQueryConfigs' => ''], []],
+            'serialized empty arrays' => [['storeArray' => serialize([]), 'storeQueryConfigs' => serialize([])], []],
+            'stored query' => [
+                ['storeArray' => serialize([1 => 'Stored query']), 'storeQueryConfigs' => serialize([1 => ['queryTable' => 'pages']])],
+                [1 => 'Stored query'],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('storedQueriesDataProvider')]
+    public function restoresStoredQueries(array $settings, array $expectedQueries): void
+    {
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_set('MOD_SETTINGS', $settings);
+        self::assertSame($expectedQueries, array_slice($subject->_call('initStoreArray'), 1, null, true));
+        self::assertNull($subject->_call('procesStoreControl', $this->createModuleRequest()));
+    }
+
+    #[Test]
+    public function savingAnotherQueryPreservesStoredQueryConfiguration(): void
+    {
+        $settings = [
+            'storeArray' => serialize([1 => 'Existing query']),
+            'storeQueryConfigs' => serialize([1 => ['queryTable' => 'pages']]),
+            'queryTable' => 'tt_content',
+        ];
+        $request = $this->createModuleRequest([], $settings, ['storeControl' => ['SAVE' => '1', 'title' => 'Another query']]);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $request);
+        $subject->_call('procesStoreControl', $request);
+        $storedSettings = $subject->_get('MOD_SETTINGS');
+        self::assertSame([1 => 'Existing query', 2 => 'Another query'], unserialize($storedSettings['storeArray'], ['allowed_classes' => false]));
+        self::assertSame(['queryTable' => 'pages'], unserialize($storedSettings['storeQueryConfigs'], ['allowed_classes' => false])[1]);
+    }
+
 }

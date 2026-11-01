@@ -1885,7 +1885,7 @@ class QuerySearchController
         $languageService = $this->getLanguageService();
         $flashMessage = null;
         $storeArray = $this->initStoreArray();
-        $storeQueryConfigs = (array)(unserialize($this->MOD_SETTINGS['storeQueryConfigs'] ?? '', ['allowed_classes' => false]));
+        $storeQueryConfigs = (array)(($this->MOD_SETTINGS['storeQueryConfigs'] ?? '') === '' ? false : unserialize($this->MOD_SETTINGS['storeQueryConfigs'], ['allowed_classes' => false]));
         $storeControl = $request->getParsedBody()['storeControl'] ?? [];
         $storeIndex = (int)($storeControl['STORE'] ?? 0);
         $saveStoreArray = 0;
@@ -1976,7 +1976,7 @@ class QuerySearchController
         $storeArray = [
             '0' => $languageService->translate('fullSearch.form.field.queryStore.storage.0', 'lowlevel.messages'),
         ];
-        $savedStoreArray = unserialize($this->MOD_SETTINGS['storeArray'] ?? '', ['allowed_classes' => false]);
+        $savedStoreArray = ($this->MOD_SETTINGS['storeArray'] ?? '') === '' ? false : unserialize($this->MOD_SETTINGS['storeArray'], ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
         }

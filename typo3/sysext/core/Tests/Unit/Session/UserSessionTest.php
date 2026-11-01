@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\CookieScope;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -96,4 +97,23 @@ final class UserSessionTest extends UnitTestCase
             $session->toArray()
         );
     }
+    public static function sessionDataDataProvider(): array
+    {
+        return [
+            'missing' => [[], []],
+            'null' => [['ses_data' => null], []],
+            'empty string' => [['ses_data' => ''], []],
+            'serialized empty array' => [['ses_data' => serialize([])], []],
+            'serialized false' => [['ses_data' => serialize(false)], []],
+            'serialized data' => [['ses_data' => serialize(['value' => 'preserved'])], ['value' => 'preserved']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('sessionDataDataProvider')]
+    public function createFromRecordRestoresSessionData(array $record, array $expectedData): void
+    {
+        self::assertSame($expectedData, UserSession::createFromRecord('session-id', $record)->getData());
+    }
+
 }
