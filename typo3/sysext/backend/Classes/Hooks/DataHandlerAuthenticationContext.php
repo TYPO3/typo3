@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Hooks;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Middleware\SudoModeInterceptor;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
@@ -44,6 +45,41 @@ final readonly class DataHandlerAuthenticationContext
         private EventDispatcherInterface $eventDispatcher,
     ) {}
 
+    /**
+     * Copying a record writes child records (e.g. file references) before the
+     * copied record itself is passed through the datamap. Verify the step-up
+     * authentication upfront, so nothing is written if it is still required.
+     *
+     * Only direct copy commands are checked; records copied as part of a page
+     * or as inline children are not.
+     */
+    public function processCmdmap_preProcess(
+        string $command,
+        string $tableName,
+        int $id,
+        mixed $value,
+        DataHandler $dataHandler,
+        mixed $pasteUpdate
+    ): void {
+        if ($command !== 'copy' || $dataHandler->isImporting || $dataHandler->bypassAccessCheckForRecords) {
+            return;
+        }
+        $request = $this->sudoModeInterceptor->currentRequest;
+        if ($request === null) {
+            // Not in a backend request where the sudoMode interceptor middleware was active
+            return;
+        }
+
+        $requiredSubjects = [];
+        foreach ($this->buildSubjects($tableName, 'NEW') as $subjectInfo) {
+            if (!$subjectInfo['hasGrant']) {
+                $subject = $subjectInfo['subject'];
+                $requiredSubjects[$subject->getIdentity()] = $subject;
+            }
+        }
+        $this->requireVerification($request, $requiredSubjects);
+    }
+
     public function processDatamap_postProcessFieldArray(
         string $mode,
         string $tableName,
@@ -60,28 +96,8 @@ final readonly class DataHandlerAuthenticationContext
             return;
         }
 
-        $schema = $this->tcaSchemaFactory->get($tableName);
-        $subjects = [];
         $id = (string)$id;
-        foreach ($schema->getFields() as $columnName => $fieldInformation) {
-            $authenticationContextConfig = $fieldInformation->getConfiguration()['authenticationContext'] ?? null;
-            if ($authenticationContextConfig === null) {
-                continue;
-            }
-            $subject = $this->factory->buildTableAccessSubject(
-                $tableName,
-                $columnName,
-                str_starts_with($id, 'NEW') ? 'NEW' : $id,
-                $authenticationContextConfig
-            );
-            $grants = $this->storage->findGrantsBySubject($subject);
-            $hasGrant = $grants !== [];
-            $subjects[$columnName] = [
-                'subject' => $subject,
-                'grants' => $grants,
-                'hasGrant' => $hasGrant,
-            ];
-        }
+        $subjects = $this->buildSubjects($tableName, str_starts_with($id, 'NEW') ? 'NEW' : $id);
 
         $requiredSubjects = [];
         foreach ($fieldArray as $identifier => $value) {
@@ -97,20 +113,52 @@ final readonly class DataHandlerAuthenticationContext
             $requiredSubjects[$subject->getIdentity()] = $subject;
         }
 
-        if ($requiredSubjects !== []) {
-            $claim = $this->factory->buildClaimForSubjectRequest($request, self::class, ...array_values($requiredSubjects));
-
-            $event = new SudoModeRequiredEvent($claim);
-            $this->eventDispatcher->dispatch($event);
-            if ($event->isVerificationRequired()) {
-                throw (new VerificationRequiredException(
-                    'Authentication Context Confirmation Required',
-                    1743597646
-                ))->withClaim($claim);
-            }
-        }
+        $this->requireVerification($request, $requiredSubjects);
 
         $this->consumeNonRepeatableGrants($subjects);
+    }
+
+    private function buildSubjects(string $tableName, string $id): array
+    {
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        $subjects = [];
+        foreach ($schema->getFields() as $columnName => $fieldInformation) {
+            $authenticationContextConfig = $fieldInformation->getConfiguration()['authenticationContext'] ?? null;
+            if ($authenticationContextConfig === null) {
+                continue;
+            }
+            $subject = $this->factory->buildTableAccessSubject(
+                $tableName,
+                $columnName,
+                $id,
+                $authenticationContextConfig
+            );
+            $grants = $this->storage->findGrantsBySubject($subject);
+            $hasGrant = $grants !== [];
+            $subjects[$columnName] = [
+                'subject' => $subject,
+                'grants' => $grants,
+                'hasGrant' => $hasGrant,
+            ];
+        }
+        return $subjects;
+    }
+
+    private function requireVerification(ServerRequestInterface $request, array $requiredSubjects): void
+    {
+        if ($requiredSubjects === []) {
+            return;
+        }
+        $claim = $this->factory->buildClaimForSubjectRequest($request, self::class, ...array_values($requiredSubjects));
+
+        $event = new SudoModeRequiredEvent($claim);
+        $this->eventDispatcher->dispatch($event);
+        if ($event->isVerificationRequired()) {
+            throw (new VerificationRequiredException(
+                'Authentication Context Confirmation Required',
+                1743597646
+            ))->withClaim($claim);
+        }
     }
 
     private function consumeNonRepeatableGrants(array $subjects): void
