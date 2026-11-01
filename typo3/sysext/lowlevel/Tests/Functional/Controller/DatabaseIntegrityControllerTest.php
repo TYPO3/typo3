@@ -394,4 +394,70 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         }
         return $settings;
     }
+
+    private function getConstructorArguments(): array
+    {
+        return [
+            $this->get(IconFactory::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class),
+            $this->get(TcaSchemaFactory::class),
+            $this->get(FlashMessageRendererResolver::class),
+            $this->get(PageDoktypeRegistry::class),
+        ];
+    }
+
+    private function createModuleRequest(array $changedSettings = [], array $persistedSettings = [], array $parsedBody = []): ServerRequest
+    {
+        if ($persistedSettings !== []) {
+            $GLOBALS['BE_USER']->pushModuleData('system_dbint', $persistedSettings);
+        }
+        if ($changedSettings !== []) {
+            $parsedBody['SET'] = $changedSettings;
+        }
+        return (new ServerRequest('https://example.com/typo3/module/system/dbint', 'POST'))
+            ->withParsedBody($parsedBody);
+    }
+
+    public static function storedQueriesDataProvider(): array
+    {
+        return [
+            'missing' => [[], []],
+            'null' => [['storeArray' => null, 'storeQueryConfigs' => null], []],
+            'empty strings' => [['storeArray' => '', 'storeQueryConfigs' => ''], []],
+            'serialized empty arrays' => [['storeArray' => serialize([]), 'storeQueryConfigs' => serialize([])], []],
+            'stored query' => [
+                ['storeArray' => serialize([1 => 'Stored query']), 'storeQueryConfigs' => serialize([1 => ['queryTable' => 'pages']])],
+                [1 => 'Stored query'],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('storedQueriesDataProvider')]
+    public function restoresStoredQueries(array $settings, array $expectedQueries): void
+    {
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, $this->getConstructorArguments());
+        $subject->_set('MOD_SETTINGS', $settings);
+        self::assertSame($expectedQueries, array_slice($subject->_call('initStoreArray'), 1, null, true));
+        self::assertSame('', $subject->_call('procesStoreControl', $this->createModuleRequest()));
+    }
+
+    #[Test]
+    public function savingAnotherQueryPreservesStoredQueryConfiguration(): void
+    {
+        $settings = [
+            'storeArray' => serialize([1 => 'Existing query']),
+            'storeQueryConfigs' => serialize([1 => ['queryTable' => 'pages']]),
+            'queryTable' => 'tt_content',
+        ];
+        $request = $this->createModuleRequest([], $settings, ['storeControl' => ['SAVE' => '1', 'title' => 'Another query']]);
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, $this->getConstructorArguments());
+        $subject->_call('menuConfig', $request);
+        $subject->_call('procesStoreControl', $request);
+        $storedSettings = $subject->_get('MOD_SETTINGS');
+        self::assertSame([1 => 'Existing query', 2 => 'Another query'], unserialize($storedSettings['storeArray'], ['allowed_classes' => false]));
+        self::assertSame(['queryTable' => 'pages'], unserialize($storedSettings['storeQueryConfigs'], ['allowed_classes' => false])[1]);
+    }
+
 }

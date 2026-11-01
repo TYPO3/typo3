@@ -157,4 +157,18 @@ final class ExtensionTest extends UnitTestCase
             $extension->getDistributionWelcomeImage()
         );
     }
+    #[Test]
+    public function getDependenciesReturnsEmptyStorageWithoutSerializedDependencies(): void
+    {
+        $extension = new Extension();
+        self::assertCount(0, $extension->getDependencies());
+    }
+
+    #[Test]
+    public function createFromExtensionArrayAcceptsEmptyConstraints(): void
+    {
+        $extension = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => '']);
+        self::assertCount(0, $extension->getDependencies());
+    }
+
 }
