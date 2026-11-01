@@ -48,10 +48,16 @@ final class DataHandlerCacheFlushTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        // The clear cache queue of DataHandler is static: drain what earlier test classes left behind.
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->process_datamap();
+
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
 
         /** @var Container $container */
         $container = $this->get('service_container');
