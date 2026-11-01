@@ -25,15 +25,18 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
@@ -625,6 +628,9 @@ abstract class AbstractMenuContentObject
                 }
                 $id = $mount_info['mount_pid'];
             }
+            if (!$this->isRootLineAccessible((int)$id)) {
+                continue;
+            }
             $subPages = $this->sys_page->getMenu($id, '*', $sortingField, '', true, $this->disableGroupAccessCheck);
             foreach ($subPages as $row) {
                 // Add external MP params
@@ -636,6 +642,30 @@ abstract class AbstractMenuContentObject
         }
 
         return $menuItems;
+    }
+
+    /**
+     * Checks whether a page in the rootline blocks the given page through extendToSubpages,
+     * which is what denies the request of a page in the frontend as well.
+     */
+    protected function isRootLineAccessible(int $pageId): bool
+    {
+        try {
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        } catch (PageNotFoundException) {
+            return true;
+        }
+        $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
+        $context = GeneralUtility::makeInstance(Context::class);
+        foreach ($rootLine as $page) {
+            if ($this->disableGroupAccessCheck) {
+                unset($page['fe_group']);
+            }
+            if (!$accessVoter->accessGrantedForPageInRootLine($page, $context)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

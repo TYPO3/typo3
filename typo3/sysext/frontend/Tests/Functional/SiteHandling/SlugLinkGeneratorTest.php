@@ -1262,6 +1262,84 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
+    public static function directoryMenuRespectsExtendToSubpagesDataProvider(): array
+    {
+        return [
+            'Parent requires any login, anonymous visitor' => [1510, 0, []],
+            'Parent requires group, anonymous visitor' => [1520, 0, []],
+            'Grandparent requires group, anonymous visitor' => [1521, 0, []],
+            'Parent requires group, member' => [
+                1520,
+                2,
+                [
+                    ['title' => 'Current Year', 'link' => '/my-acme/forecasts/current-year'],
+                    ['title' => 'Next Year', 'link' => '/my-acme/forecasts/next-year'],
+                ],
+            ],
+            'Grandparent requires group, member' => [
+                1521,
+                2,
+                [
+                    ['title' => 'Five Years', 'link' => '/my-acme/forecasts/five-years'],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('directoryMenuRespectsExtendToSubpagesDataProvider')]
+    #[Test]
+    public function directoryMenuRespectsExtendToSubpages(int $directoryMenuParentPage, int $frontendUserId, array $expectation): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['pid' => 1521], ['uid' => 1523]);
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest('https://acme.us/'))
+                ->withPageId(1100)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'special' => 'directory',
+                        'special.' => [
+                            'value' => $directoryMenuParentPage,
+                        ],
+                        'levels' => 1,
+                    ]),
+                ]),
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json ?? []);
+
+        self::assertSame($expectation, $json);
+    }
+
+    #[Test]
+    public function directoryMenuToAccessRestrictedPagesRespectsHiddenParentWithExtendToSubpages(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')->update('pages', ['hidden' => 1], ['uid' => 1520]);
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest('https://acme.us/'))
+                ->withPageId(1100)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'special' => 'directory',
+                        'special.' => [
+                            'value' => 1520,
+                        ],
+                        'levels' => 1,
+                        'showAccessRestrictedPages' => 1100,
+                    ]),
+                ])
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        $json = json_decode((string)$response->getBody(), true);
+
+        self::assertSame([], $this->filterMenu($json ?? []));
+    }
+
     public static function listMenuIsGeneratedDataProvider(): array
     {
         return [
