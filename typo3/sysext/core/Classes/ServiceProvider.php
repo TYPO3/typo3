@@ -166,6 +166,7 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcherInterface::class => self::provideFallbackEventDispatcher(...),
             Database\ConnectionPool::class => self::provideFallbackConnectionPool(...),
             EventDispatcher\ListenerProvider::class => self::extendEventListenerProvider(...),
+            Mail\MailerInterface::class => self::provideFallbackMailer(...),
             SystemResource\SystemResourceFactory::class => self::provideFallbackSystemResourceFactory(...),
             SystemResource\Publishing\SystemResourcePublisherInterface::class => self::provideFallbackSystemResourcePublisher(...),
             SystemResource\Identifier\SystemResourceIdentifierFactory::class => self::provideFallbackSystemResourceIdentifierFactory(...),
@@ -874,6 +875,14 @@ class ServiceProvider extends AbstractServiceProvider
         return $eventDispatcher ?? new EventDispatcher\EventDispatcher(
             new EventDispatcher\ListenerProvider($container)
         );
+    }
+
+    public static function provideFallbackMailer(
+        ContainerInterface $container,
+        ?Mail\MailerInterface $mailer = null
+    ): Mail\MailerInterface {
+        // Provide the core mailer for the install tool when $mailer is null (that means when we run without symfony DI)
+        return $mailer ?? $container->get(Mail\Mailer::class);
     }
 
     public static function provideFallbackSystemResourceIdentifierFactory(
