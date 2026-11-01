@@ -46,6 +46,16 @@ final class RedisSessionHandler implements \SessionHandlerInterface
         $this->redis->select($this->database);
     }
 
+    public function create_sid(): string
+    {
+        return bin2hex(random_bytes(32));
+    }
+
+    public function validateId(string $id): bool
+    {
+        return $id !== '' && $this->redis->exists($this->getSessionHash($id)) > 0;
+    }
+
     public function close(): bool
     {
         return true;

@@ -99,6 +99,16 @@ class FileSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    public function create_sid(): string
+    {
+        return bin2hex(random_bytes(32));
+    }
+
+    public function validateId(string $id): bool
+    {
+        return $id !== '' && is_file($this->getSessionFile($id));
+    }
+
     /**
      * Read session data. See @session_set_save_handler
      */
