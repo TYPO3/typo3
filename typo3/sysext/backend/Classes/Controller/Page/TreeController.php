@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -117,6 +118,7 @@ class TreeController
         protected readonly SiteFinder $siteFinder,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
         protected readonly FormDataCompiler $formDataCompiler,
+        protected readonly PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     protected function initializeConfiguration(ServerRequestInterface $request)
@@ -632,13 +634,12 @@ class TreeController
         if ($uid <= 0) {
             return '';
         }
-        $rootline = array_reverse(BackendUtility::BEgetRootLine($uid, '', true, ['nav_title']));
-        array_shift($rootline);
         $path = [];
-        foreach ($rootline as $record) {
-            $text = $record['title'] ?? '';
-            if ($this->useNavTitle && trim($record['nav_title'] ?? '') !== '') {
-                $text = $record['nav_title'];
+        foreach ($this->pageAncestryResolver->resolve($uid, (int)$this->getBackendUser()->workspace)->getPagesFromRootLevel() as $page) {
+            $text = $page->has('title') ? (string)$page->get('title') : '';
+            $navTitle = $page->has('nav_title') ? trim((string)$page->get('nav_title')) : '';
+            if ($this->useNavTitle && $navTitle !== '') {
+                $text = $navTitle;
             }
             $path[] = htmlspecialchars($text);
         }

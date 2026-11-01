@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -717,12 +718,9 @@ class PageTreeRepository
     protected function filterPagesOnMountPoints(array $pages, array $mountPoints): array
     {
         foreach ($pages as $key => $pageRecord) {
-            $rootline = BackendUtility::BEgetRootLine(
-                $pageRecord['uid'],
-                '',
-                $this->currentWorkspace !== 0,
-                $this->fields
-            );
+            $rootline = GeneralUtility::makeInstance(PageAncestryResolver::class)
+                ->resolve((int)$pageRecord['uid'], $this->currentWorkspace)
+                ->toLegacyRootLine();
             $rootline = array_reverse($rootline);
             if (!in_array(0, $mountPoints, true)) {
                 $isInsideMountPoints = false;

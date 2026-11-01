@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -53,6 +54,7 @@ final readonly class PageTsConfigIncludesController
         private TsConfigTreeBuilder $tsConfigTreeBuilder,
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
@@ -91,7 +93,7 @@ final readonly class PageTsConfigIncludesController
         }
 
         // Base page TSconfig tree
-        $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+        $rootLine = $this->pageAncestryResolver->resolve($pageUid, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
         ksort($rootLine);
         $pageTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
@@ -178,7 +180,7 @@ final readonly class PageTsConfigIncludesController
             }
         } else {
             // Base page TSconfig tree
-            $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+            $rootLine = $this->pageAncestryResolver->resolve($pageUid, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
             ksort($rootLine);
             $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 
@@ -249,7 +251,7 @@ final readonly class PageTsConfigIncludesController
             }
         } else {
             // Base page TSconfig tree
-            $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+            $rootLine = $this->pageAncestryResolver->resolve($pageUid, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
             ksort($rootLine);
             $includeTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 

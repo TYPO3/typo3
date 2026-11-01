@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -101,6 +102,7 @@ readonly class SiteConfigurationController
         private TcaSchemaBuilder $tcaSchemaBuilder,
         private EnvPlaceholderProcessor $envPlaceholderProcessor,
         private SiteTcaConfiguration $siteTcaConfiguration,
+        protected PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -1026,7 +1028,7 @@ readonly class SiteConfigurationController
 
         $pages = [];
         while ($row = $statement->fetchAssociative()) {
-            $row['rootline'] = BackendUtility::BEgetRootLine((int)$row['uid']);
+            $row['rootline'] = $this->pageAncestryResolver->resolve((int)$row['uid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
             array_pop($row['rootline']);
             $row['rootline'] = array_reverse($row['rootline']);
             $pages[(int)$row['uid']] = $row;

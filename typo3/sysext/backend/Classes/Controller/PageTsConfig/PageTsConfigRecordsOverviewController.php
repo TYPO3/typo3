@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -49,6 +50,7 @@ final readonly class PageTsConfigRecordsOverviewController
         private UriBuilder $uriBuilder,
         private ModuleTemplateFactory $moduleTemplateFactory,
         private ConnectionPool $connectionPool,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -129,7 +131,7 @@ final readonly class PageTsConfigRecordsOverviewController
         $pageArray = [];
 
         while ($row = $res->fetchAssociative()) {
-            $pageArray = $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1', false, ['sorting']), $row);
+            $pageArray = $this->setInPageArray($pageArray, $this->pageAncestryResolver->resolve((int)$row['uid'], 0)->toLegacyRootLine(), $row);
         }
         return $this->getList($currentModule, $pageArray);
     }

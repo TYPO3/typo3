@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -144,7 +145,7 @@ abstract class AbstractTemplateModuleController
         if ($previewUriBuilder->isPreviewable()) {
             $view->addButtonToButtonBar($this->componentFactory->createViewButton(
                 $previewUriBuilder
-                    ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
+                    ->withRootLine(GeneralUtility::makeInstance(PageAncestryResolver::class)->resolve((int)$pageRecord['uid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine())
                     ->buildDispatcherDataAttributes() ?? []
             ), ButtonBar::BUTTON_POSITION_LEFT, 99);
         }
@@ -170,7 +171,9 @@ abstract class AbstractTemplateModuleController
      */
     protected function getClosestAncestorPageWithTemplateRecord(int $pageId): array
     {
-        $rootLine = BackendUtility::BEgetRootLine($pageId);
+        $rootLine = GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pageId, (int)$this->getBackendUser()->workspace)
+            ->toLegacyRootLine();
         foreach ($rootLine as $rootlineNode) {
             if ($this->getFirstTemplateRecordOnPage((int)$rootlineNode['uid'])) {
                 return $rootlineNode;

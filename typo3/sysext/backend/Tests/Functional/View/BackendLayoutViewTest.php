@@ -19,37 +19,40 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Page;
+use TYPO3\CMS\Core\Domain\PageAncestry;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendLayoutViewTest extends FunctionalTestCase
 {
-    private const string RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
-
     protected bool $initializeDatabase = false;
 
-    private FrontendInterface $runtimeCache;
-
-    protected function setUp(): void
+    private function createSubject(int $pageId, array $rootLine): BackendLayoutView
     {
-        parent::setUp();
-        $this->runtimeCache = $this->get(CacheManager::class)->getCache('runtime');
-    }
-
-    protected function tearDown(): void
-    {
-        $this->runtimeCache->flush();
-        parent::tearDown();
-    }
-
-    private function mockRootLine(int $pageId, array $rootLine): void
-    {
-        $this->runtimeCache->set(self::RUNTIME_CACHE_ENTRY, [
-            $pageId . '--' => $rootLine, // plain, no overlay
-            $pageId . '--1' => $rootLine, // workspace overlay
-        ]);
+        $records = array_values(array_filter($rootLine, static fn(array $record): bool => $record['uid'] > 0));
+        $pageAncestryResolver = self::createStub(PageAncestryResolver::class);
+        $pageAncestryResolver->method('resolve')->willReturn(
+            new PageAncestry($pageId, $records, [], static fn(array $record): Page => new Page($record))
+        );
+        return new BackendLayoutView(
+            $this->get(EventDispatcherInterface::class),
+            $this->get(CacheManager::class)->getCache('runtime'),
+            $this->get(DataProviderCollection::class),
+            $this->get(TypoScriptStringFactory::class),
+            $this->get(PageLayoutResolver::class),
+            $this->get(ConnectionPool::class),
+            $pageAncestryResolver,
+            $this->get(Context::class),
+        );
     }
 
     public static function selectedCombinedIdentifierIsDeterminedDataProvider(): array
@@ -196,10 +199,7 @@ final class BackendLayoutViewTest extends FunctionalTestCase
     public function selectedCombinedIdentifierIsDetermined(false|string $expected, array $page, array $rootLine): void
     {
         $pageId = $page['uid'];
-        if ($pageId !== false) {
-            $this->mockRootLine((int)$pageId, $rootLine);
-        }
-        $subject = $this->get(BackendLayoutView::class);
+        $subject = $this->createSubject((int)$pageId, $rootLine);
         $getSelectedCombinedIdentifierMethod = (new \ReflectionMethod($subject, 'getSelectedCombinedIdentifier'));
         $result = $getSelectedCombinedIdentifierMethod->invoke($subject, $pageId);
         self::assertEquals($expected, $result);

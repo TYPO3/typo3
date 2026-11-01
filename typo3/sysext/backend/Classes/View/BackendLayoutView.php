@@ -27,8 +27,10 @@ use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\Event\ManipulateBackendLayoutColPosConfigurationForPageEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -53,6 +55,8 @@ readonly class BackendLayoutView
         private TypoScriptStringFactory $typoScriptStringFactory,
         private PageLayoutResolver $pageLayoutResolver,
         private ConnectionPool $connectionPool,
+        private PageAncestryResolver $pageAncestryResolver,
+        private Context $context,
     ) {}
 
     /**
@@ -329,7 +333,9 @@ readonly class BackendLayoutView
         }
         // If it not set check the rootline for a layout on next level and use this: Rootline
         // starts with current page and has page "0" at the end.
-        $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+        $rootLine = $this->pageAncestryResolver
+            ->resolve($pageId, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0))
+            ->toLegacyRootLine();
         if ($rootLine === []) {
             // Return for invalid rootline
             return false;

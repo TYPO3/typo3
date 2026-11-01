@@ -1626,8 +1626,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
             $entryPointRootLineUids = [];
             foreach ($webMountsOfUser as $webMountPageId) {
-                $rootLine = BackendUtility::BEgetRootLine($webMountPageId, '', true);
-                $entryPointRootLineUids[$webMountPageId] = array_map(intval(...), array_column($rootLine, 'uid'));
+                $ancestry = GeneralUtility::makeInstance(PageAncestryResolver::class)->resolve($webMountPageId, (int)$this->workspace);
+                $entryPointRootLineUids[$webMountPageId] = $ancestry->isComplete() ? [...$ancestry->getPageIds(), 0] : $ancestry->getPageIds();
             }
             foreach ($entryPointRootLineUids as $webMountOfUser => $uidsOfRootLine) {
                 // Remove the Page Tree Entry Point of the user if the Page Tree Entry Point is not in the list of

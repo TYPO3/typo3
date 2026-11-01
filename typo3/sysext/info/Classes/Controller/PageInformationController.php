@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -63,6 +64,7 @@ readonly class PageInformationController
         protected BackendLayoutView $backendLayoutView,
         protected ConnectionPool $connectionPool,
         protected LocalizationRepository $localizationRepository,
+        protected PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -112,7 +114,7 @@ readonly class PageInformationController
             if ($previewUriBuilder->isPreviewable()) {
                 // View page
                 $previewDataAttributes = $previewUriBuilder
-                    ->withRootLine(BackendUtility::BEgetRootLine($pageinfo['uid']))
+                    ->withRootLine($this->pageAncestryResolver->resolve((int)$pageinfo['uid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine())
                     ->buildDispatcherDataAttributes();
                 $viewButton = $this->componentFactory->createLinkButton()
                     ->setHref('#')
@@ -554,7 +556,7 @@ readonly class PageInformationController
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $previewDataAttributes = PreviewUriBuilder::create($row)
-                            ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
+                            ->withRootLine($this->pageAncestryResolver->resolve((int)$row['uid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine())
                             ->serializeDispatcherAttributes();
                         $viewButton
                             = '<button ' . ($previewDataAttributes ?? 'disabled="true"') . ' class="btn btn-default" title="'

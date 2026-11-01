@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -60,6 +61,7 @@ final readonly class PreviewController
         private BackendViewFactory $backendViewFactory,
         private ExtensionConfiguration $extensionConfiguration,
         private LanguageServiceFactory $languageServiceFactory,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -136,7 +138,7 @@ final readonly class PreviewController
 
             // Build URL for draft version of page
             $page = BackendUtility::getRecordWSOL('pages', $pageUid);
-            $rootline = BackendUtility::BEgetRootLine($pageUid, '', true);
+            $rootline = $this->pageAncestryResolver->resolve($pageUid, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
             $queryParametersDraft = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
                 $page,
                 clone $this->context,

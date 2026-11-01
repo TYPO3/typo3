@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,6 +38,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 {
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -66,8 +68,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
                 continue;
             }
             $rootPageId = $site->getRootPageId();
-            $additionalFieldsForRootline = ['sorting', 'shortcut'];
-            $rootline = array_reverse(BackendUtility::BEgetRootLine($rootPageId, '', true, $additionalFieldsForRootline));
+            $rootline = array_reverse($this->pageAncestryResolver->resolve($rootPageId, (int)$this->getBackendUser()->workspace)->toLegacyRootLine());
             if ($rootline !== []) {
                 $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, [
                     'type' => 'site',
@@ -94,8 +95,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
             ->addOrderBy('sys_template.sorting')
             ->executeQuery();
         while ($record = $result->fetchAssociative()) {
-            $additionalFieldsForRootline = ['sorting', 'shortcut'];
-            $rootline = array_reverse(BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline));
+            $rootline = array_reverse($this->pageAncestryResolver->resolve((int)$record['pid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine());
             if ($rootline !== []) {
                 $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, [...$record, 'type' => 'sys_template']);
             }

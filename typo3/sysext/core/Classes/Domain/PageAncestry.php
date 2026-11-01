@@ -84,6 +84,14 @@ final class PageAncestry implements \IteratorAggregate, \Countable
     }
 
     /**
+     * @return list<Page> Pages, ordered from the root level to the page
+     */
+    public function getPagesFromRootLevel(): array
+    {
+        return array_reverse(iterator_to_array($this, false));
+    }
+
+    /**
      * @return list<int> Page uids, ordered from the page to the root level
      */
     public function getPageIds(): array

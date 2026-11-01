@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -57,6 +58,7 @@ final readonly class PageTsConfigActiveController
         private UriBuilder $uriBuilder,
         private ModuleTemplateFactory $moduleTemplateFactory,
         private TsConfigTreeBuilder $tsConfigTreeBuilder,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -124,7 +126,7 @@ final readonly class PageTsConfigActiveController
         }
 
         // Base page TSconfig tree
-        $rootLine = BackendUtility::BEgetRootLine($pageUid, '', true);
+        $rootLine = $this->pageAncestryResolver->resolve($pageUid, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
         ksort($rootLine);
         $pagesTsConfigTree = $this->tsConfigTreeBuilder->getPagesTsConfigTree($rootLine, new LosslessTokenizer());
 

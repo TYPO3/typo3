@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
@@ -65,6 +66,7 @@ readonly class TranslationStatusController
         private TcaSchemaFactory $tcaSchemaFactory,
         private ComponentFactory $componentFactory,
         private ConnectionPool $connectionPool,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -109,7 +111,7 @@ readonly class TranslationStatusController
             $previewUriBuilder = PreviewUriBuilder::create($pageinfo);
             if ($previewUriBuilder->isPreviewable()) {
                 $previewDataAttributes = $previewUriBuilder
-                    ->withRootLine(BackendUtility::BEgetRootLine($pageinfo['uid']))
+                    ->withRootLine($this->pageAncestryResolver->resolve((int)$pageinfo['uid'], (int)$this->getBackendUser()->workspace)->toLegacyRootLine())
                     ->buildDispatcherDataAttributes();
                 $viewButton = $this->componentFactory->createLinkButton()
                     ->setHref('#')
