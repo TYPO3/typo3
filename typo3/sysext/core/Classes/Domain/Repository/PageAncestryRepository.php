@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\TrimMode;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
@@ -58,6 +59,10 @@ readonly class PageAncestryRepository
      * records keep the live uid, with `_ORIG_uid` pointing to the version record and `_ORIG_pid`
      * holding the live pid of a moved page. Both are only set if they carry a value.
      *
+     * Deleted pages end the ancestry, unless $includeDeleted is set. Pages deleted in the
+     * given workspace end the ancestry as well, unless $includeWorkspaceDeletedPages is set,
+     * which yields them with their delete placeholder version.
+     *
      * Rows are yielded one by one, so a consumer stopping early (for example on a mounted page)
      * never sees exceptions caused by records further up.
      *
@@ -89,7 +94,7 @@ readonly class PageAncestryRepository
      * @throws CircularRootLineException
      * @throws DoctrineException
      */
-    public function findAncestry(int $pageId, int $workspaceId): \Generator
+    public function findAncestry(int $pageId, int $workspaceId, bool $includeDeleted = false, bool $includeWorkspaceDeletedPages = false): \Generator
     {
         if ($pageId === 0) {
             return;
@@ -116,8 +121,8 @@ readonly class PageAncestryRepository
                 // due to having level based data in the traversal part they would be distinct anyway. Duplicates are
                 // sorted out by the implemented ancestor guard - see self::createTraversalQueryBuilder().
                 false,
-                $this->createInitialQueryBuilder($cte, $pageId, $workspaceId),
-                $this->createTraversalQueryBuilder($cte, $workspaceId),
+                $this->createInitialQueryBuilder($cte, $pageId, $workspaceId, $includeDeleted, $includeWorkspaceDeletedPages),
+                $this->createTraversalQueryBuilder($cte, $workspaceId, $includeDeleted, $includeWorkspaceDeletedPages),
                 [
                     // data fields
                     $cte->quoteIdentifier('uid'),
@@ -212,11 +217,14 @@ readonly class PageAncestryRepository
      *
      * Not to be used standalone. {@see self::findAncestry()} method docblock for overall CTE information.
      */
-    private function createInitialQueryBuilder(QueryBuilder $cte, int $pageId, int $workspaceId): QueryBuilder
+    private function createInitialQueryBuilder(QueryBuilder $cte, int $pageId, int $workspaceId, bool $includeDeleted, bool $includeWorkspaceDeletedPages): QueryBuilder
     {
         $expr = $cte->expr();
         $initial = $this->createQueryBuilder('pages');
-        $initial->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $initial->getRestrictions()->removeAll();
+        if (!$includeDeleted) {
+            $initial->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
         if ($workspaceId === 0) {
             // Return simplified initial expression for live workspace resolving only.
             return $initial
@@ -364,18 +372,7 @@ readonly class PageAncestryRepository
             ->where(...[
                 $expr->eq('source.uid', $cte->createNamedParameter($pageId, Connection::PARAM_INT)),
                 $expr->in('source.t3ver_wsid', $cte->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
-                $expr->or(
-                    // retrieve live workspace if no overlays exists
-                    $expr->isNull('workspace.uid'),
-                    // discard(omit) record if it turned out to be deleted in workspace
-                    $expr->and(
-                        $expr->isNotNull('workspace.uid'),
-                        $expr->neq(
-                            'workspace.t3ver_state',
-                            $cte->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
-                        ),
-                    ),
-                ),
+                $this->createWorkspaceDeletedPagesConstraint($cte, 'workspace', $includeWorkspaceDeletedPages),
             ]);
 
         return $initial;
@@ -386,11 +383,14 @@ readonly class PageAncestryRepository
      *
      * Not to be used standalone. {@see self::findAncestry()} method docblock for overall CTE information.
      */
-    private function createTraversalQueryBuilder(QueryBuilder $cte, int $workspaceId): QueryBuilder
+    private function createTraversalQueryBuilder(QueryBuilder $cte, int $workspaceId, bool $includeDeleted, bool $includeWorkspaceDeletedPages): QueryBuilder
     {
         $expr = $cte->expr();
         $traversal = $this->createQueryBuilder('pages');
-        $traversal->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $traversal->getRestrictions()->removeAll();
+        if (!$includeDeleted) {
+            $traversal->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
         if ($workspaceId === 0) {
             $traversal
                 ->selectLiteral(...[
@@ -613,20 +613,31 @@ readonly class PageAncestryRepository
                 // place a maximal traversal level guard against invalid cycling rootlines to mitigate endless recursion
                 $expr->lt('traversal_c.__CTE_LEVEL__', $cte->createNamedParameter(self::MAX_TRAVERSAL_LEVELS, Connection::PARAM_INT)),
                 // workspace handling
-                $expr->or(
-                    // retrieve live workspace if no overlays exists
-                    $expr->isNull('traversal_workspace.uid'),
-                    // discard(omit) record if it turned out to be deleted in workspace
-                    $expr->and(
-                        $expr->isNotNull('traversal_workspace.uid'),
-                        $expr->neq(
-                            'traversal_workspace.t3ver_state',
-                            $cte->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
-                        ),
-                    ),
-                ),
+                $this->createWorkspaceDeletedPagesConstraint($cte, 'traversal_workspace', $includeWorkspaceDeletedPages),
             ]);
 
         return $traversal;
+    }
+    /**
+     * Pages deleted in the workspace end the ancestry, unless they are explicitly included.
+     */
+    private function createWorkspaceDeletedPagesConstraint(QueryBuilder $cte, string $workspaceAlias, bool $includeWorkspaceDeletedPages): CompositeExpression|string
+    {
+        $expr = $cte->expr();
+        if ($includeWorkspaceDeletedPages) {
+            return '1 = 1';
+        }
+        return $expr->or(
+            // retrieve live workspace if no overlays exists
+            $expr->isNull($workspaceAlias . '.uid'),
+            // discard(omit) record if it turned out to be deleted in workspace
+            $expr->and(
+                $expr->isNotNull($workspaceAlias . '.uid'),
+                $expr->neq(
+                    $workspaceAlias . '.t3ver_state',
+                    $cte->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
+                ),
+            ),
+        );
     }
 }

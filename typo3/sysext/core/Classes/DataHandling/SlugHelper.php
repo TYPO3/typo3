@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordState;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -579,7 +580,9 @@ class SlugHelper
      */
     protected function resolveParentPageRecord(int $pid, int $languageId): ?array
     {
-        $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
+        $rootLine = GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pid, $this->workspaceId)
+            ->toLegacyRootLine();
         $excludeDokTypes = [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_SYSFOLDER,

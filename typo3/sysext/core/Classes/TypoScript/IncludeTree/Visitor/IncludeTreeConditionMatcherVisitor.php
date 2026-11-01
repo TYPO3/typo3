@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
@@ -50,6 +50,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
 
     public function __construct(
         private readonly Context $context,
+        private readonly PageAncestryResolver $pageAncestryResolver,
         private readonly PageLayoutResolver $pageLayoutResolver,
         private readonly LoggerInterface $logger,
     ) {}
@@ -107,7 +108,9 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         // If rootLine is given, create an object that contains some prepared values.
         $fullRootLine = $variables['fullRootLine'] ?? null;
         if ($fullRootLine === null && $pageId > 0) {
-            $fullRootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+            $fullRootLine = $this->pageAncestryResolver
+                ->resolve((int)$pageId, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0))
+                ->toLegacyRootLine();
             ksort($fullRootLine);
         }
         // 'tree' is always exposed to the expression language, even when no rootline could be

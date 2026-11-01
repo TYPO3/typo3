@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","title","deleted","t3ver_oid","t3ver_wsid","t3ver_state","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,"Root",0,0,0,0,1,0,31,0,1
+,2,1,"Sub",0,0,0,0,1,0,31,0,1
+,3,2,"SubSub",0,0,0,0,1,0,31,0,1
+,4,1,"Deleted",1,0,0,0,1,0,31,0,1
+,5,4,"Below deleted",0,0,0,0,1,0,31,0,1
+,6,1,"Restricted",0,0,0,0,1,0,31,0,0
+,7,6,"Below restricted",0,0,0,0,1,0,31,0,1
+,9,2,"Below workspace-deleted",0,0,0,0,1,0,31,0,1
+,10,6,"SubSub moved below Restricted",0,3,1,4,1,0,31,0,1
+,11,1,"Sub deleted",0,2,1,2,1,0,31,0,1
+,12,3,"New in workspace",0,0,1,1,1,0,31,0,1
+,13,1,"Restricted readable in workspace",0,6,1,0,1,0,31,0,1
+,20,21,"Cycle A",0,0,0,0,1,0,31,0,1
+,21,20,"Cycle B",0,0,0,0,1,0,31,0,1
+"be_users"
+,"uid","pid","username","deleted","admin","workspace_perms"
+,1,0,"admin",0,1,1
+"sys_workspace"
+,"uid","pid","title"
+,1,0,"Workspace"

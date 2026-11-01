@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -617,7 +618,9 @@ class BackendUtility
         }
 
         $pageUid = (int)$pageUid;
-        $fullRootLine = self::BEgetRootLine($pageUid, '', true);
+        $fullRootLine = GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pageUid, (int)(static::getBackendUserAuthentication()->workspace ?? 0))
+            ->toLegacyRootLine();
         // Order correctly
         ksort($fullRootLine);
 

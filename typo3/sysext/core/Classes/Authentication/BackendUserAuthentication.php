@@ -35,6 +35,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Domain\Record\PagePermissions;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -387,6 +389,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ((int)($checkRec[$languageFieldName]) !== 0 && (int)($checkRec[$transOrigPointerFieldName]) !== 0) {
             $id = (int)$checkRec[$transOrigPointerFieldName];
         }
+        if ($id > 0 && !$readPerms && empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
+            $webMounts = $this->getWebmounts();
+            $ancestry = GeneralUtility::makeInstance(PageAncestryResolver::class)->resolve($id, (int)$this->workspace, !$useDeleteClause);
+            foreach ($ancestry->getPageIds() as $pageId) {
+                if (!$this->isGrantedBySettings($ancestry->getPermissions($pageId), Permission::PAGE_SHOW)) {
+                    return null;
+                }
+                if (in_array($pageId, $webMounts)) {
+                    return $pageId;
+                }
+            }
+            return null;
+        }
         if (!$readPerms) {
             $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
         }
@@ -520,6 +535,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return $constraint;
         }
         return ' 1=0';
+    }
+
+    /**
+     * Evaluates page permission settings the same way as the clause of getPagePermsClause(),
+     * without the getPagePermsClause hook.
+     */
+    private function isGrantedBySettings(?PagePermissions $settings, int $perms): bool
+    {
+        if (!is_array($this->user) || $settings === null) {
+            return false;
+        }
+        if ($this->isAdmin()) {
+            return true;
+        }
+        return $settings->getEverybodyPermissions()->isGranted($perms)
+            || ($settings->getOwnerUserId() === (int)$this->user['uid'] && $settings->getOwnerPermissions()->isGranted($perms))
+            || (in_array($settings->getOwnerGroupId(), $this->userGroupsUID) && $settings->getGroupPermissions()->isGranted($perms));
     }
 
     /**

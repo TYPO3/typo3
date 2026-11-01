@@ -16,13 +16,17 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 
 /**
  * Set rootline
  */
 class DatabasePageRootline implements FormDataProviderInterface
 {
+    public function __construct(
+        private readonly PageAncestryResolver $pageAncestryResolver,
+    ) {}
+
     /**
      * Fetch rootline
      *
@@ -30,7 +34,9 @@ class DatabasePageRootline implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
-        $result['rootline'] = BackendUtility::BEgetRootLine($result['effectivePid'], '', true);
+        $result['rootline'] = $this->pageAncestryResolver
+            ->resolve((int)$result['effectivePid'], (int)($GLOBALS['BE_USER']->workspace ?? 0))
+            ->toLegacyRootLine();
         return $result;
     }
 }
