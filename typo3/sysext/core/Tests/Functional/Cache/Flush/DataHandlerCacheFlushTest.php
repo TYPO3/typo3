@@ -48,16 +48,10 @@ final class DataHandlerCacheFlushTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-
-        // The clear cache queue of DataHandler is static: drain what earlier test classes left behind.
-        $dataHandler = $this->get(DataHandler::class);
-        $dataHandler->start([], []);
-        $dataHandler->process_datamap();
-
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
 
         /** @var Container $container */
         $container = $this->get('service_container');
@@ -95,6 +89,24 @@ final class DataHandlerCacheFlushTest extends FunctionalTestCase
         );
         self::assertSame(['6', 'cacheTag:news', 'pages'], $result->commands);
         self::assertSame(['pages'], $result->groups);
+    }
+
+    #[Test]
+    public function recordsOfDirectlyCalledActionsDoNotLeakIntoTheNextDataHandlerRun(): void
+    {
+        $directlyCalledDataHandler = $this->get(DataHandler::class);
+        $directlyCalledDataHandler->start([], []);
+        $directlyCalledDataHandler->deleteAction('tt_content', 5);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['tt_content' => [1 => ['header' => 'Changed content']]], []);
+        $dataHandler->process_datamap();
+
+        self::assertCount(1, $this->afterCacheFlushedEvents);
+        self::assertEquals(
+            [new CacheFlushRecord('tt_content', 1, 3)],
+            $this->afterCacheFlushedEvents[0]->result->records
+        );
     }
 
     #[Test]

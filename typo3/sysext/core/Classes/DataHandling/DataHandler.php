@@ -383,15 +383,16 @@ class DataHandler
     protected ?self $outerMostInstance = null;
 
     /**
-     * Internal cache for collecting records that should trigger cache clearing
+     * Records whose caches are flushed when the outermost instance has finished,
+     * collected on the outermost instance only
      */
-    protected static array $recordsToClearCacheFor = [];
+    protected array $recordsToClearCacheFor = [];
 
     /**
-     * Internal cache for pids of records which were deleted. It's not possible
+     * Pids of records which were moved or deleted. It's not possible
      * to retrieve the parent folder/page at a later stage
      */
-    protected static array $recordPidsForDeletedRecords = [];
+    protected array $recordPidsForDeletedRecords = [];
 
     /**
      * Remove fields that should not be processed during record copying.
@@ -8839,15 +8840,10 @@ class DataHandler
      */
     public function registerRecordIdForPageCacheClearing($table, $uid, $pid = null): void
     {
-        if (!is_array(static::$recordsToClearCacheFor[$table] ?? false)) {
-            static::$recordsToClearCacheFor[$table] = [];
-        }
-        static::$recordsToClearCacheFor[$table][] = (int)$uid;
+        $outerMostInstance = $this->getOuterMostInstance();
+        $outerMostInstance->recordsToClearCacheFor[$table][] = (int)$uid;
         if ($pid !== null) {
-            if (!isset(static::$recordPidsForDeletedRecords[$table]) || !is_array(static::$recordPidsForDeletedRecords[$table])) {
-                static::$recordPidsForDeletedRecords[$table] = [];
-            }
-            static::$recordPidsForDeletedRecords[$table][$uid][] = (int)$pid;
+            $outerMostInstance->recordPidsForDeletedRecords[$table][$uid][] = (int)$pid;
         }
     }
 
@@ -8857,16 +8853,16 @@ class DataHandler
     protected function processClearCacheQueue(): void
     {
         $demand = CacheFlushDemand::create();
-        foreach (static::$recordsToClearCacheFor as $table => $uids) {
+        foreach ($this->recordsToClearCacheFor as $table => $uids) {
             foreach (array_unique($uids) as $uid) {
-                $originalPageIds = static::$recordPidsForDeletedRecords[$table][$uid] ?? [null];
+                $originalPageIds = $this->recordPidsForDeletedRecords[$table][$uid] ?? [null];
                 foreach ($originalPageIds as $originalPageId) {
                     $demand = $demand->withRecord($table, $uid, $originalPageId);
                 }
             }
         }
-        static::$recordsToClearCacheFor = [];
-        static::$recordPidsForDeletedRecords = [];
+        $this->recordsToClearCacheFor = [];
+        $this->recordPidsForDeletedRecords = [];
         if ($demand->isEmpty()) {
             return;
         }
