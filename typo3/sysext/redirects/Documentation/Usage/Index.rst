@@ -137,8 +137,58 @@ General tab
 
     :Field: respect_query_parameters
 
-    If on, matching is also performed on query parameters. If off, matching is
-    only performed on the path.
+    Defines whether the query string of a request is taken into account. The
+    effect depends on *Is regular expression?*:
+
+    *   Without a regular expression, the setting must fit the Source Path.
+        Enable it if the Source Path contains a query string, and disable it
+        otherwise. Any other combination is saved, but the redirect never
+        matches. The query string has to match exactly, a trailing slash of the
+        path is ignored.
+    *   With a regular expression, the pattern is matched against the path and
+        the query string if enabled. If disabled, it is additionally matched
+        against the path alone.
+
+    The following table shows which requests a redirect matches:
+
+    ..  list-table::
+        :header-rows: 1
+
+        *   -   Source Path
+            -   Respect GET Parameters
+            -   `/path`
+            -   `/path?foo=bar`
+            -   `/path?other=1`
+        *   -   `/path`
+            -   off
+            -   yes
+            -   yes
+            -   yes
+        *   -   `/path`
+            -   on
+            -   no
+            -   no
+            -   no
+        *   -   `/path?foo=bar`
+            -   off
+            -   no
+            -   no
+            -   no
+        *   -   `/path?foo=bar`
+            -   on
+            -   no
+            -   yes
+            -   no
+        *   -   `#^/path/?$#` (regular expression)
+            -   off
+            -   yes
+            -   yes
+            -   yes
+        *   -   `#^/path/?$#` (regular expression)
+            -   on
+            -   yes
+            -   no
+            -   no
 
 .. confval:: Is regular expression?
 
