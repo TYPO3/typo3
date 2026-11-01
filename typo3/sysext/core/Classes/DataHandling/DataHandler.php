@@ -5197,6 +5197,7 @@ class DataHandler
             $tce->enableLogging = $this->enableLogging;
             $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
             $tce->process_cmdmap();
+            $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
             unset($tce);
         }
         $updateFields = [];
