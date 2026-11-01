@@ -118,7 +118,10 @@ class ProcessedFile extends AbstractFile
     protected function reconstituteFromDatabaseRecord(array $databaseRow): void
     {
         $this->taskType = $this->taskType ?: $databaseRow['task_type'];
-        $this->processingConfiguration = $this->processingConfiguration ?: (array)unserialize($databaseRow['configuration'] ?? '', ['allowed_classes' => [Area::class]]);
+        if (!$this->processingConfiguration) {
+            $configuration = $databaseRow['configuration'] ?? '';
+            $this->processingConfiguration = (array)($configuration === '' ? false : unserialize($configuration, ['allowed_classes' => [Area::class]]));
+        }
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
         $this->identifier = (string)$databaseRow['identifier'];

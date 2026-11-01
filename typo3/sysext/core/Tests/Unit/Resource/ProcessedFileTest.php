@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -104,5 +105,29 @@ final class ProcessedFileTest extends UnitTestCase
         $processedDatabaseRow['identifier'] = null;
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
         $processedFile->delete(true);
+    }
+
+    public static function processingConfigurationDataProvider(): array
+    {
+        return [
+            'missing' => [[], [], [false]],
+            'null' => [['configuration' => null], [], [false]],
+            'empty string' => [['configuration' => ''], [], [false]],
+            'serialized empty array' => [['configuration' => serialize([])], [], []],
+            'serialized false' => [['configuration' => serialize(false)], [], [false]],
+            'serialized configuration' => [['configuration' => serialize(['width' => 100])], [], ['width' => 100]],
+            'constructor configuration with empty storage' => [['configuration' => ''], ['width' => 200], ['width' => 200]],
+            'constructor configuration overrides storage' => [['configuration' => serialize(['width' => 100])], ['width' => 200], ['width' => 200]],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('processingConfigurationDataProvider')]
+    public function restoresProcessingConfiguration(array $storedConfiguration, array $configuration, array $expectedConfiguration): void
+    {
+        $databaseRow = $this->databaseRow;
+        unset($databaseRow['configuration']);
+        $processedFile = new ProcessedFile($this->getFileFixture(), 'dummy', $configuration, array_replace($databaseRow, $storedConfiguration));
+        self::assertSame($expectedConfiguration, $processedFile->getProcessingConfiguration());
     }
 }

@@ -170,6 +170,9 @@ class Extension
     protected function convertDependenciesToObjects(string $dependencies): \SplObjectStorage
     {
         $dependenciesObject = new \SplObjectStorage();
+        if ($dependencies === '') {
+            return $dependenciesObject;
+        }
         $unserializedDependencies = unserialize($dependencies, ['allowed_classes' => false]);
         if (!is_array($unserializedDependencies)) {
             return $dependenciesObject;

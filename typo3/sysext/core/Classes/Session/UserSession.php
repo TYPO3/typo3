@@ -227,7 +227,7 @@ class UserSession
             $id,
             (int)($record['ses_userid'] ?? 0),
             (int)($record['ses_tstamp'] ?? 0),
-            unserialize($record['ses_data'] ?? '', ['allowed_classes' => false]) ?: []
+            ($record['ses_data'] ?? '') === '' ? [] : (unserialize($record['ses_data'], ['allowed_classes' => false]) ?: [])
         );
         $userSession->ipLock = $record['ses_iplock'] ?? '';
         $userSession->isNew = $markAsNew;
