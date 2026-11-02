@@ -9389,6 +9389,17 @@ class DataHandler
     }
 
     /**
+     * Code that starts another DataHandler while this one is running, for example in a hook,
+     * passes it to start(), so the reference index is updated when this run has finished.
+     *
+     * @internal
+     */
+    public function getReferenceIndexUpdater(): ReferenceIndexUpdater
+    {
+        return $this->referenceIndexUpdater;
+    }
+
+    /**
      * Entry point to post process a database insert. Currently bails early unless a UID has been forced
      * and the database platform is not MySQL.
      */
