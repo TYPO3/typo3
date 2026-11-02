@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -266,6 +267,25 @@ final class SlugServiceTest extends FunctionalTestCase
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    /**
+     * Changing a slug via DataHandler creates redirects and updates sub page slugs in separate
+     * DataHandler runs. Their reference index rows must be written as well.
+     */
+    #[Test]
+    public function changingSlugViaDataHandlerUpdatesReferenceIndexOfCreatedRedirectsAndSubPages(): void
+    {
+        $this->buildBaseSite();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => [2 => ['slug' => '/test-new']]], []);
+        $dataHandler->process_datamap();
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame([], $this->get(ReferenceIndex::class)->updateIndex(true)['errors']);
     }
 
     /**
