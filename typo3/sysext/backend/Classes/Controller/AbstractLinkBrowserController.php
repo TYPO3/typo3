@@ -281,11 +281,16 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * Prefill target and class with the defaults of the displayed link handler,
-     * unless the request or the current link already carries a value
+     * Prefill target and class of a new link with the defaults of the displayed
+     * link handler, unless the request already carries a value. An existing link
+     * keeps its attributes, including the ones it does not carry, because the
+     * RTE passes only the attributes a link has.
      */
     protected function initLinkAttributeDefaults(): void
     {
+        if ($this->currentLinkParts !== []) {
+            return;
+        }
         $pageTsConfig = BackendUtility::getPagesTSconfig((int)($this->parameters['pid'] ?? 0));
         $linkHandlerTsConfig = $pageTsConfig['TCEMAIN.']['linkHandler.'] ?? [];
         $defaults = [
@@ -297,7 +302,7 @@ abstract class AbstractLinkBrowserController
                 ?? '',
         ];
         foreach ($defaults as $attribute => $default) {
-            if (!empty($default) && empty($this->linkAttributeValues[$attribute]) && !isset($this->currentLinkParts[$attribute])) {
+            if (!empty($default) && empty($this->linkAttributeValues[$attribute])) {
                 $this->linkAttributeValues[$attribute] = $default;
             }
         }
