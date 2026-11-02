@@ -1,5 +1,5 @@
 files:
-  - source: /typo3/sysext/*/Configuration/Sets/
+  - source: /typo3/sysext/*/Configuration/Sets/**/*.xlf
     translation: '%original_path%/%two_letters_code%.%original_file_name%'
   - source: /typo3/sysext/*/Resources/Private/Language/
     translation: '%original_path%/%two_letters_code%.%original_file_name%'
