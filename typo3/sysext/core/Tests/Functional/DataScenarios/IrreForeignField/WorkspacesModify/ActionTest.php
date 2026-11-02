@@ -109,6 +109,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     {
         parent::copyParentContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContent.csv');
+        self::assertTrue($this->actionService->getDataHandler()->pagetreeNeedsRefresh);
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest()->withPageId(self::VALUE_PageId),
@@ -125,6 +126,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     {
         parent::copyParentContentToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
+        self::assertTrue($this->actionService->getDataHandler()->pagetreeNeedsRefresh);
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest()->withPageId(self::VALUE_PageIdTarget),
@@ -153,6 +155,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentWithAllChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
+        self::assertTrue($this->actionService->getDataHandler()->pagetreeNeedsRefresh);
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest()->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),

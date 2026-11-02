@@ -431,6 +431,28 @@ final class RecordListControllerTest extends FunctionalTestCase
             ->withParsedBody(['table' => 'tt_content', 'uid' => $uid, 'action' => $action]);
     }
 
+    public static function toggleRecordVisibilityOfPageDataProvider(): \Generator
+    {
+        yield 'live workspace' => [0];
+        yield 'draft workspace' => [1];
+    }
+
+    #[Test]
+    #[DataProvider('toggleRecordVisibilityOfPageDataProvider')]
+    public function toggleRecordVisibilityReportsPageTreeRefreshForPage(int $workspaceId): void
+    {
+        $this->backendUser->setWorkspace($workspaceId);
+
+        $request = new ServerRequest('https://example.com/typo3/ajax/record/toggle-visibility', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['table' => 'pages', 'uid' => 1200, 'action' => 'hide']);
+        $response = $this->get(RecordListController::class)->toggleRecordVisibilityAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+
+        self::assertFalse($data['hasErrors'], json_encode($data['messages']));
+        self::assertTrue($data['pageTreeNeedsRefresh'] ?? false);
+    }
+
     private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest
     {
         $queryParams = array_merge(['id' => $pageId], $additionalParams);

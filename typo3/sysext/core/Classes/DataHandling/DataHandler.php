@@ -3358,6 +3358,7 @@ class DataHandler
         $copyTCE->start($pasteDatamap, [], $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $copyTCE->process_datamap();
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+        $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $copyTCE->pagetreeNeedsRefresh;
         unset($copyTCE);
 
         // Finally, before exit, check if there are ID references to remap.
@@ -3528,6 +3529,7 @@ class DataHandler
             }
         }
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+        $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $copyTCE->pagetreeNeedsRefresh;
         if (!$ignoreLocalization && $recordLanguage === LanguageMarker::DEFAULT_LANGUAGE && $schema->isLanguageAware()) {
             // repointing the new translation records to the parent record we just created
             /** @var LanguageAwareSchemaCapability $languageCapability */
@@ -4999,6 +5001,7 @@ class DataHandler
             }
         }
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+        $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $copyTCE->pagetreeNeedsRefresh;
 
         return $theNewSQLID;
     }
@@ -5050,6 +5053,7 @@ class DataHandler
             }
         }
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+        $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $copyTCE->pagetreeNeedsRefresh;
         return $theNewSQLID;
     }
 
@@ -5199,6 +5203,7 @@ class DataHandler
             $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
             $tce->process_cmdmap();
             $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
+            $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $tce->pagetreeNeedsRefresh;
             unset($tce);
         }
         $updateFields = [];
@@ -9645,6 +9650,7 @@ class DataHandler
         );
         $localDataHandler->process_cmdmap();
         $this->errorLog = array_merge($this->errorLog, $localDataHandler->errorLog);
+        $this->pagetreeNeedsRefresh = $this->pagetreeNeedsRefresh || $localDataHandler->pagetreeNeedsRefresh;
         $versionId = (int)($localDataHandler->copyMappingArray[$table][$id] ?? 0);
         return $versionId > 0 ? BackendUtility::getRecord($table, $versionId, $fields) : null;
     }

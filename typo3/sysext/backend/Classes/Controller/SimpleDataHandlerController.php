@@ -228,8 +228,7 @@ class SimpleDataHandlerController
             $this->cacheFlushLogger->logCommands($this->getBackendUser(), $demand->commands);
             $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($this->getBackendUser()));
         }
-        // Update page tree?
-        if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
+        if ($this->tce->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
     }

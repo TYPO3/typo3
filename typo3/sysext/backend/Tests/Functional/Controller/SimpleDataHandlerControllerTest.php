@@ -17,16 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\SimpleDataHandlerController;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SimpleDataHandlerControllerTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['workspaces'];
+
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
@@ -76,6 +81,42 @@ final class SimpleDataHandlerControllerTest extends FunctionalTestCase
         $pageCache = $this->get(CacheManager::class)->getCache('pages');
         self::assertTrue($pageCache->has('root'));
         self::assertTrue($pageCache->has('page'));
+    }
+
+    public static function pageTreeRefreshDataProvider(): \Generator
+    {
+        yield 'page title changed' => [0, ['pages' => [2 => ['title' => 'Changed page']]], true];
+        yield 'page field without effect on the page tree changed' => [0, ['pages' => [2 => ['description' => 'Changed description']]], false];
+        yield 'content created in live' => [0, ['tt_content' => ['NEW1' => ['pid' => 2, 'header' => 'Content']]], false];
+        yield 'content created in a workspace' => [1, ['tt_content' => ['NEW1' => ['pid' => 2, 'header' => 'Content']]], true];
+    }
+
+    #[Test]
+    #[DataProvider('pageTreeRefreshDataProvider')]
+    public function pageTreeIsRefreshedWhenDataHandlerReportsIt(int $workspaceId, array $data, bool $expected): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('sys_workspace')->insert('sys_workspace', ['uid' => 1, 'title' => 'Workspace']);
+        $this->setUpBackendUserWithLanguage(1);
+        $GLOBALS['BE_USER']->setWorkspace($workspaceId);
+        // BackendUtility::setUpdateSignal() is a no-op in CLI context
+        Environment::initialize(
+            Environment::getContext(),
+            false,
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+
+        $this->get(SimpleDataHandlerController::class)->processAjaxRequest(
+            new ServerRequest()->withParsedBody(['data' => $data])
+        );
+
+        $updateSignals = $GLOBALS['BE_USER']->getModuleData(BackendUtility::class . '::getUpdateSignal', 'ses') ?? [];
+        self::assertSame($expected, isset($updateSignals['updatePageTree']));
     }
 
     private function setUpBackendUserWithLanguage(int $uid): void
