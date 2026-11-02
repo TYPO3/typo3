@@ -163,10 +163,11 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
             $context = GeneralUtility::makeInstance(Context::class);
             $savedWorkspaceContext = $context->getAspect('workspace');
             $context->setAspect('workspace', new WorkspaceAspect($workspaceUid));
-            // Discarding is part of deleting the workspace, so it continues the correlation id
+            // Discarding is part of deleting the workspace, so it continues the correlation id and
+            // the reference index updater, which updates the index when deleting has finished
             /** @var DataHandler $discardDataHandler */
             $discardDataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $discardDataHandler->start([], $command, $backendUser, null, $dataHandler->getCorrelationId());
+            $discardDataHandler->start([], $command, $backendUser, $dataHandler->getReferenceIndexUpdater(), $dataHandler->getCorrelationId());
             $discardDataHandler->process_cmdmap();
             $backendUser->workspace = $savedWorkspace;
             $context->setAspect('workspace', $savedWorkspaceContext);

@@ -99,6 +99,35 @@ final class DataHandlerHookTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function deletingSysWorkspaceRemovesReferenceIndexOfDiscardedRecords(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $actionService = new ActionService();
+        $map = $actionService->createNewRecords(89, [
+            'tt_content' => ['header' => 'Live parent', 'tx_testirrecsv_hotels' => '__nextUid'],
+            'tx_testirrecsv_hotel' => ['title' => 'Live hotel'],
+        ]);
+        $backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        // Creates workspace versions of the content element and its inline hotel, with reference index rows
+        $actionService->modifyRecords(89, [
+            'tt_content' => ['uid' => (int)$map['tt_content'][0], 'header' => 'Changed parent'],
+            'tx_testirrecsv_hotel' => ['uid' => (int)$map['tx_testirrecsv_hotel'][0], 'title' => 'Changed hotel'],
+        ]);
+
+        $backendUser->workspace = 0;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(0));
+        $actionService->deleteRecord('sys_workspace', 1);
+
+        self::assertSame([], $this->get(ReferenceIndex::class)->updateIndex(true)['errors']);
+    }
+
+    #[Test]
     public function flushByTagEventIsTriggered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
