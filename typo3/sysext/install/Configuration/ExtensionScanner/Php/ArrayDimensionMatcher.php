@@ -1405,4 +1405,16 @@ return [
             'Feature-111263-FlushCachesWithoutDataHandler.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'getPagePermsClause\']' => [
+        'restFiles' => [
+            'Deprecation-111328-PagePermissionHooks.rst',
+            'Feature-111328-PSR14EventsForPagePermissions.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_userauthgroup.php\'][\'calcPerms\']' => [
+        'restFiles' => [
+            'Deprecation-111328-PagePermissionHooks.rst',
+            'Feature-111328-PSR14EventsForPagePermissions.rst',
+        ],
+    ],
 ];

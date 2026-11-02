@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -41,6 +43,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\Authorization\Page\PagePermissionEvaluator;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
@@ -503,9 +507,9 @@ final class BackendUserAuthenticationTest extends UnitTestCase
             new ExpressionBuilder($connectionMock, $containerStub)
         );
 
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->expects($this->atMost(PHP_INT_MAX))->method('getQueryBuilderForTable')->with('pages')->willReturn($queryBuilderMock);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
+        $connectionPoolStub->method('getQueryBuilderForTable')->willReturn($queryBuilderMock);
+        $this->addPagePermissionEvaluator($connectionPoolStub);
 
         $subject = new BackendUserAuthentication();
         $subject->setLogger(new NullLogger());
@@ -540,12 +544,35 @@ final class BackendUserAuthenticationTest extends UnitTestCase
     #[Test]
     public function getPagePermissionsClauseWithValidAdminUser(int $perms, array $groups, string $expected): void
     {
+        $this->addPagePermissionEvaluator(self::createStub(ConnectionPool::class));
         $subject = new BackendUserAuthentication();
         $subject->setLogger(new NullLogger());
         $subject->user = ['uid' => 123, 'admin' => 1];
         $subject->userGroupsUID = $groups;
 
         self::assertEquals($expected, $subject->getPagePermsClause($perms));
+    }
+
+    #[Test]
+    public function getPagePermissionsClauseWithoutUserSelectsNoPages(): void
+    {
+        $this->addPagePermissionEvaluator(self::createStub(ConnectionPool::class));
+        $subject = new BackendUserAuthentication();
+        $subject->setLogger(new NullLogger());
+
+        self::assertSame(' 1=0', $subject->getPagePermsClause(1));
+    }
+
+    private function addPagePermissionEvaluator(ConnectionPool $connectionPool): void
+    {
+        GeneralUtility::addInstance(PagePermissionEvaluator::class, new PagePermissionEvaluator(
+            $connectionPool,
+            self::createStub(TcaSchemaFactory::class),
+            self::createStub(PageAncestryResolver::class),
+            self::createStub(EventDispatcherInterface::class),
+            new ListenerProvider(self::createStub(ContainerInterface::class)),
+            new VariableFrontend('runtime', new TransientMemoryBackend()),
+        ));
     }
 
     public static function checksWithoutSecurityVotersDataProvider(): \Generator

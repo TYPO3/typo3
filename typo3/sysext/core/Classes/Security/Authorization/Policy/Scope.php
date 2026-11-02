@@ -33,13 +33,47 @@ final class Scope
 
     /**
      * Any change of a resource: creating, updating or deleting it. Grants
-     * do not tell these changes apart, so TYPO3 Core asks for this scope
-     * only and a voter restricting changes decides on it.
+     * of tables, fields and languages do not tell these changes apart, so
+     * TYPO3 Core asks for this scope only and a voter restricting changes
+     * decides on it.
      *
      * @internal not part of TYPO3 Core API yet, still experimental as part of the
      *           authentication modernization groundwork
      */
     public const string WRITE = 'write';
+
+    /**
+     * Creating a resource, e.g. a subpage. Only for resources whose grants
+     * tell creating, updating and deleting apart, as page permissions do.
+     *
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string CREATE = 'create';
+
+    /**
+     * Updating a resource, e.g. the properties of a page, see CREATE
+     *
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string UPDATE = 'update';
+
+    /**
+     * Deleting a resource, e.g. a page, see CREATE
+     *
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string DELETE = 'delete';
+
+    /**
+     * Creating, changing and deleting the content of a page
+     *
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string UPDATE_CONTENT = 'update_content';
 
     /**
      * Accessing a resource, e.g. a backend module

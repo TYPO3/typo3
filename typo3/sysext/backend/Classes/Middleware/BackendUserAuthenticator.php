@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Security\Authorization\BackendMountContext;
 use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -148,7 +149,12 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // The authorization checker decides for the principal of this request,
         // the token of an enclosing request is restored afterwards
         $previousToken = $this->tokenStorage->getToken();
-        $this->tokenStorage->setToken($principal !== null ? new PrincipalToken($principal) : null);
+        $token = null;
+        if ($principal !== null) {
+            $token = new PrincipalToken($principal);
+            $token->setAttribute(BackendMountContext::TOKEN_ATTRIBUTE, BackendMountContext::fromBackendUser($backendUser));
+        }
+        $this->tokenStorage->setToken($token);
         try {
             $response = $handler->handle($request);
         } finally {

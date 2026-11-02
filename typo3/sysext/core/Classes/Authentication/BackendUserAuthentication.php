@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -39,7 +38,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
-use TYPO3\CMS\Core\Domain\Record\PagePermissions;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -53,6 +51,8 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\Authorization\Page\PageAccessContext;
+use TYPO3\CMS\Core\Security\Authorization\Page\PagePermissionEvaluator;
 use TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier;
 use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
 use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
@@ -168,6 +168,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Whether the security voters are deciding, see isGrantedByVoters()
      */
     private bool $isDecidingByVoters = false;
+
+    /**
+     * The context of getPageAccessContext(), kept while the user, its groups,
+     * its workspace and its webmounts are unchanged
+     */
+    private ?PageAccessContext $pageAccessContext = null;
+    private string $pageAccessContextIdentifier = '';
 
     /**
      * True if the user TSconfig was parsed and needs to be cached.
@@ -361,7 +368,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * 8  - New pages:        Create new pages under the page.
      * 16 - Edit pagecontent: Change/Add/Delete/Move pagecontent.
      *
-     * @param array $row Is the pagerow for which the permissions is checked
+     * @param array|false|null $row Is the pagerow for which the permissions is checked, no permissions without one
      * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
      * @param bool $useDeleteClause Use the delete clause to check if a record is deleted
      * @return bool
@@ -389,75 +396,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function isInWebMount($idOrRow, $readPerms = '', bool $useDeleteClause = true)
     {
-        if ($this->isAdmin()) {
-            return 1;
-        }
-        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
-        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-        $languageFieldName = $languageCapability->getLanguageField()->getName();
-        $transOrigPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        $checkRec = [];
-        $fetchPageFromDatabase = true;
-        if (is_array($idOrRow)) {
-            if (!isset($idOrRow['uid'])) {
-                throw new InvalidPageRecordException('The given page record is invalid. Missing uid.', 1578950324);
-            }
-            $checkRec = $idOrRow;
-            $id = (int)$idOrRow['uid'];
-            // ensure the required fields are present on the record
-            if (isset($checkRec['t3ver_oid'], $checkRec[$languageFieldName], $checkRec[$transOrigPointerFieldName])) {
-                $fetchPageFromDatabase = false;
-            }
-        } else {
-            $id = (int)$idOrRow;
-        }
-        if ($fetchPageFromDatabase) {
-            // Check if input id is an offline version page in which case we will map id to the online version:
-            $checkRec = BackendUtility::getRecord(
-                'pages',
-                $id,
-                't3ver_oid,' . $transOrigPointerFieldName . ',' . $languageFieldName,
-                '',
-                $useDeleteClause,
-            );
-        }
-        if (!is_array($checkRec)) {
-            return null;
-        }
-        if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
-            $id = (int)$checkRec['t3ver_oid'];
-        }
-        // if current rec is a translation then get uid from l10n_parent instead
-        // because web mounts point to pages in default language and rootline returns uids of default languages
-        if ((int)($checkRec[$languageFieldName]) !== LanguageMarker::DEFAULT_LANGUAGE && (int)($checkRec[$transOrigPointerFieldName]) !== 0) {
-            $id = (int)$checkRec[$transOrigPointerFieldName];
-        }
-        if ($id > 0 && !$readPerms && empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
-            $webMounts = $this->getWebmounts();
-            $ancestry = GeneralUtility::makeInstance(PageAncestryResolver::class)->resolve($id, (int)$this->workspace, !$useDeleteClause);
-            foreach ($ancestry->getPageIds() as $pageId) {
-                if (!$this->isGrantedBySettings($ancestry->getPermissions($pageId), Permission::PAGE_SHOW)) {
-                    return null;
-                }
-                if (in_array($pageId, $webMounts)) {
-                    return $pageId;
-                }
-            }
-            return null;
-        }
-        if (!$readPerms) {
-            $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
-        }
-        if ($id > 0) {
-            $wM = $this->getWebmounts();
-            $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true, [], $useDeleteClause);
-            foreach ($rL as $v) {
-                if ($v['uid'] && in_array($v['uid'], $wM)) {
-                    return $v['uid'];
-                }
-            }
-        }
-        return null;
+        return $this->getPagePermissionEvaluator()->findWebmount(
+            $this->getPageAccessContext(),
+            is_array($idOrRow) ? $idOrRow : (int)$idOrRow,
+            $readPerms ? (string)$readPerms : null,
+            $useDeleteClause
+        );
     }
 
     /**
@@ -522,79 +466,33 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function getPagePermsClause($perms)
     {
-        if (is_array($this->user)) {
-            if ($this->isAdmin()) {
-                return ' 1=1';
-            }
-            // Make sure it's integer.
-            $perms = (int)$perms;
-            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages')
-                ->expr();
-
-            // User
-            $constraint = $expressionBuilder->or(
-                $expressionBuilder->comparison(
-                    $expressionBuilder->bitAnd('pages.perms_everybody', $perms),
-                    ExpressionBuilder::EQ,
-                    $perms
-                ),
-                $expressionBuilder->and(
-                    $expressionBuilder->eq('pages.perms_userid', (int)$this->user['uid']),
-                    $expressionBuilder->comparison(
-                        $expressionBuilder->bitAnd('pages.perms_user', $perms),
-                        ExpressionBuilder::EQ,
-                        $perms
-                    )
-                )
-            );
-
-            // Group (if any is set)
-            if (!empty($this->userGroupsUID)) {
-                $constraint = $constraint->with(
-                    $expressionBuilder->and(
-                        $expressionBuilder->in(
-                            'pages.perms_groupid',
-                            $this->userGroupsUID
-                        ),
-                        $expressionBuilder->comparison(
-                            $expressionBuilder->bitAnd('pages.perms_group', $perms),
-                            ExpressionBuilder::EQ,
-                            $perms
-                        )
-                    )
-                );
-            }
-
-            $constraint = ' (' . (string)$constraint . ')';
-
-            // ****************
-            // getPagePermsClause-HOOK
-            // ****************
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] ?? [] as $_funcRef) {
-                $_params = ['currentClause' => $constraint, 'perms' => $perms];
-                $constraint = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            }
-            return $constraint;
-        }
-        return ' 1=0';
+        return $this->getPagePermissionEvaluator()->getClause($this->getPageAccessContext(), (int)$perms);
     }
 
     /**
-     * Evaluates page permission settings the same way as the clause of getPagePermsClause(),
-     * without the getPagePermsClause hook.
+     * The mounts and permissions page permissions of this user are decided on.
+     *
+     * @internal should only be used from within TYPO3 Core
      */
-    private function isGrantedBySettings(?PagePermissions $settings, int $perms): bool
+    public function getPageAccessContext(): PageAccessContext
     {
-        if (!is_array($this->user) || $settings === null) {
-            return false;
+        $identifier = implode('|', [
+            is_array($this->user) ? (int)($this->user['uid'] ?? 0) : 0,
+            (int)$this->isAdmin(),
+            implode(',', $this->userGroupsUID),
+            (int)$this->workspace,
+            (string)($this->groupData['webmounts'] ?? ''),
+        ]);
+        if ($this->pageAccessContext === null || $this->pageAccessContextIdentifier !== $identifier) {
+            $this->pageAccessContext = PageAccessContext::fromBackendUser($this);
+            $this->pageAccessContextIdentifier = $identifier;
         }
-        if ($this->isAdmin()) {
-            return true;
-        }
-        return $settings->getEverybodyPermissions()->isGranted($perms)
-            || ($settings->getOwnerUserId() === (int)$this->user['uid'] && $settings->getOwnerPermissions()->isGranted($perms))
-            || (in_array($settings->getOwnerGroupId(), $this->userGroupsUID) && $settings->getGroupPermissions()->isGranted($perms));
+        return $this->pageAccessContext;
+    }
+
+    private function getPagePermissionEvaluator(): PagePermissionEvaluator
+    {
+        return GeneralUtility::makeInstance(PagePermissionEvaluator::class);
     }
 
     /**
@@ -603,44 +501,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * and for the groups that the user is a member of the group.
      * If the user is admin, 31 is returned	(full permissions for all five flags)
      *
-     * @param array $row Input page row with all perms_* fields available.
+     * @param array|false|null $row Input page row with all perms_* fields available, no permissions without one
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return int Bitwise representation of the users permissions in relation to input page row, $row
      */
     public function calcPerms($row, bool $useDeleteClause = true)
     {
-        // Return 31 for admin users.
-        if ($this->isAdmin()) {
-            return Permission::ALL;
+        // Without a page record, e.g. null for the root page or false from readPageAccess(),
+        // admins hold all permissions and users none
+        if (!is_array($row)) {
+            return $this->isAdmin() ? Permission::ALL : Permission::NOTHING;
         }
-        // Return 0 if page is not within the allowed web mount
-        if (!$this->isInWebMount($row, '', $useDeleteClause)) {
-            return Permission::NOTHING;
-        }
-        $out = Permission::NOTHING;
-        if (
-            isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid'])
-            && isset($row['perms_group']) && isset($row['perms_everybody']) && !empty($this->userGroupsUID)
-        ) {
-            if ($this->user['uid'] == $row['perms_userid']) {
-                $out |= $row['perms_user'];
-            }
-            if ($this->isMemberOfGroup((int)$row['perms_groupid'])) {
-                $out |= $row['perms_group'];
-            }
-            $out |= $row['perms_everybody'];
-        }
-        // ****************
-        // CALCPERMS hook
-        // ****************
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] ?? [] as $_funcRef) {
-            $_params = [
-                'row' => $row,
-                'outputPermissions' => $out,
-            ];
-            $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        return $out;
+        return $this->getPagePermissionEvaluator()->calculate($this->getPageAccessContext(), $row, $useDeleteClause);
     }
 
     /**
