@@ -173,9 +173,13 @@ readonly class FileDumpController
 
     protected function isTokenValid(array $parameters, ServerRequestInterface $request): bool
     {
+        $token = $request->getQueryParams()['token'] ?? '';
+        if (!is_string($token)) {
+            return false;
+        }
         return hash_equals(
             $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile', HashAlgo::SHA3_256),
-            $request->getQueryParams()['token'] ?? ''
+            $token
         );
     }
 
