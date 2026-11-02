@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
@@ -54,9 +55,9 @@ final readonly class LanguageSelectorBuilder
         $selectorIcon = null;
         $selectedExistingLanguages = array_intersect($selectedLanguages, $languageInfo->getAllExistingLanguageIds());
 
-        if (count($selectedExistingLanguages) === 1 && reset($selectedExistingLanguages) === 0) {
+        if (count($selectedExistingLanguages) === 1 && reset($selectedExistingLanguages) === LanguageMarker::DEFAULT_LANGUAGE) {
             // Only default language exists/selected - show the language title and flag
-            $defaultLanguage = $availableLanguages[0] ?? null;
+            $defaultLanguage = $availableLanguages[LanguageMarker::DEFAULT_LANGUAGE] ?? null;
             if ($defaultLanguage) {
                 $selectorLabel = $defaultLanguage->getTitle();
                 $selectorIcon = $this->iconFactory->getIcon($defaultLanguage->getFlagIdentifier());
@@ -68,7 +69,7 @@ final readonly class LanguageSelectorBuilder
             $displayedLanguageCount = count($selectedExistingLanguages);
             // In comparison mode, default language (0) is always shown
             // If it's not in the selected list, it was auto-added, so increment the count
-            if (!in_array(0, $selectedExistingLanguages, true)) {
+            if (!in_array(LanguageMarker::DEFAULT_LANGUAGE, $selectedExistingLanguages, true)) {
                 $displayedLanguageCount++;
             }
             $selectorLabel = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.languages') . ' (' . $displayedLanguageCount . ')';
@@ -116,7 +117,7 @@ final readonly class LanguageSelectorBuilder
                 // Language exists - build selection item
                 if ($mode === LanguageSelectorMode::MULTI_SELECT) {
                     // Multi-select mode: Use toggles/checkboxes
-                    if ($languageItem->getLanguageId() === 0) {
+                    if ($languageItem->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE) {
                         // Default language is always selected and disabled in multi-select
                         // Store separately to add divider after it
                         // Add accessibility attributes to explain why it's disabled
@@ -141,8 +142,8 @@ final readonly class LanguageSelectorBuilder
                         // Deselect this language
                         $newSelectedLanguages = array_values(array_diff($newSelectedLanguages, [$languageItem->getLanguageId()]));
                         // Ensure default language (0) is always present
-                        if (!in_array(0, $newSelectedLanguages, true)) {
-                            array_unshift($newSelectedLanguages, 0);
+                        if (!in_array(LanguageMarker::DEFAULT_LANGUAGE, $newSelectedLanguages, true)) {
+                            array_unshift($newSelectedLanguages, LanguageMarker::DEFAULT_LANGUAGE);
                         }
                     } else {
                         // Select this language
@@ -184,8 +185,8 @@ final readonly class LanguageSelectorBuilder
         if ($mode === LanguageSelectorMode::MULTI_SELECT && $showToggleAll && !empty($languageInfo->existingTranslations)) {
             $languageDropDownButton->addItem($this->componentFactory->createDropDownDivider());
 
-            $areAllSelected = empty(array_diff(array_keys($languageInfo->existingTranslations), array_diff($selectedLanguages, [0])));
-            $toggleUrl = $urlBuilder($areAllSelected ? [0] : $languageInfo->getAllExistingLanguageIds());
+            $areAllSelected = empty(array_diff(array_keys($languageInfo->existingTranslations), array_diff($selectedLanguages, [LanguageMarker::DEFAULT_LANGUAGE])));
+            $toggleUrl = $urlBuilder($areAllSelected ? [LanguageMarker::DEFAULT_LANGUAGE] : $languageInfo->getAllExistingLanguageIds());
 
             // Count how many languages can be toggled (excluding default)
             $toggleableCount = count($languageInfo->existingTranslations);

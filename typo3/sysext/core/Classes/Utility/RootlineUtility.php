@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\MountPointsDisabledException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\PagePropertyRelationNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -50,7 +51,7 @@ class RootlineUtility
     /** @var int[] */
     protected array $parsedMountPointParameters = [];
 
-    protected int $languageUid = 0;
+    protected int $languageUid = LanguageMarker::DEFAULT_LANGUAGE;
 
     protected int $workspaceUid = 0;
 
@@ -70,7 +71,7 @@ class RootlineUtility
         $this->mountPointParameter = $this->sanitizeMountPointParameter($mountPointParameter);
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
+        $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE);
         $this->workspaceUid = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
             if (!($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ?? false)) {

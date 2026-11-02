@@ -784,7 +784,7 @@ class Typo3DbQueryParser
             ->from($tableName, $defLangTableAlias)
             ->where(
                 $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0),
-                $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0),
+                $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, LanguageMarker::DEFAULT_LANGUAGE),
                 $this->getVisibilityConstraintStatement($querySettings, $tableName, $defLangTableAlias)
             );
 
@@ -827,7 +827,7 @@ class Typo3DbQueryParser
                 );
             // records in default language, which do not have a translation
             $andConditions[] = $this->queryBuilder->expr()->and(
-                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
+                $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, LanguageMarker::DEFAULT_LANGUAGE),
                 $this->queryBuilder->expr()->notIn(
                     $tableAlias . '.uid',
                     $queryBuilderForSubselect->getSQL()

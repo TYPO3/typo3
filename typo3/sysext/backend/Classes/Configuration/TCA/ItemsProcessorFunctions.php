@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Configuration\TCA;
 use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,12 +55,12 @@ class ItemsProcessorFunctions
             }
         }
 
-        if (!isset($fieldDefinition['items'][0])) {
+        if (!isset($fieldDefinition['items'][LanguageMarker::DEFAULT_LANGUAGE])) {
             // Since TcaSiteLanguage has a special behaviour, enforcing the
             // default language ("0") to be always added to the site configuration,
             // we have to add it to the available items, in case it is not already
             // present. This only happens for the first ever created site configuration.
-            $fieldDefinition['items'][] = ['label' => 'Default', 'value' => 0, 'icon' => '', 'tempTitles' => []];
+            $fieldDefinition['items'][] = ['label' => 'Default', 'value' => LanguageMarker::DEFAULT_LANGUAGE, 'icon' => '', 'tempTitles' => []];
         }
 
         ksort($fieldDefinition['items']);

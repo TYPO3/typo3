@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -204,7 +205,7 @@ readonly class SiteMatcher implements SingletonInterface
         if (!MathUtility::canBeInterpretedAsInteger($languageId)) {
             return null;
         }
-        return (int)$languageId < 0 ? null : (int)$languageId;
+        return (int)$languageId < LanguageMarker::DEFAULT_LANGUAGE ? null : (int)$languageId;
     }
 
     /**

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
@@ -53,7 +54,7 @@ readonly class DatabaseSystemLanguageRows implements FormDataProviderInterface
         $languageRows = [];
         foreach ($languages as $language) {
             $languageId = $language->getLanguageId();
-            if ($languageId > 0) {
+            if ($languageId > LanguageMarker::DEFAULT_LANGUAGE) {
                 $iso = $language->getLocale()->getLanguageCode();
             } else {
                 $iso = 'DEF';

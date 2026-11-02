@@ -48,8 +48,8 @@ class NullSite implements SiteInterface
     {
         if (empty($languages)) {
             // Create the default language if no language configuration is given
-            $this->languages[0] = new SiteLanguage(
-                0,
+            $this->languages[LanguageMarker::DEFAULT_LANGUAGE] = new SiteLanguage(
+                LanguageMarker::DEFAULT_LANGUAGE,
                 '',
                 new Uri('/'),
                 ['enabled' => true]
@@ -145,7 +145,7 @@ class NullSite implements SiteInterface
         // Do not add the ones that are not allowed by the user
         foreach ($this->languages as $language) {
             if ($user->checkLanguageAccess($language) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {
-                if ($language->getLanguageId() === 0) {
+                if ($language->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE) {
                     // 0: "Default" language
                     $defaultLanguageLabel = 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage';
                     $defaultLanguageLabel = $this->getLanguageService()->sL($defaultLanguageLabel);
@@ -156,7 +156,7 @@ class NullSite implements SiteInterface
                     if (isset($pageTs['defaultLanguageFlag'])) {
                         $defaultLanguageFlag = 'flags-' . $pageTs['defaultLanguageFlag'];
                     }
-                    $language = new SiteLanguage(0, '', $language->getBase(), [
+                    $language = new SiteLanguage(LanguageMarker::DEFAULT_LANGUAGE, '', $language->getBase(), [
                         'title' => $defaultLanguageLabel,
                         'flag' => $defaultLanguageFlag,
                     ]);

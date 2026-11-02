@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
@@ -306,7 +307,7 @@ final readonly class BackendConfigurationManager
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0),
+                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                     $permsClause
                 )
                 ->orderBy('uid')

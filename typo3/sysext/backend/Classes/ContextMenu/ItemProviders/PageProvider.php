@@ -264,11 +264,11 @@ class PageProvider extends RecordProvider
      */
     protected function canBeCreated(): bool
     {
-        if (!$this->backendUser->checkLanguageAccess(0)) {
+        if (!$this->backendUser->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }
@@ -321,7 +321,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }
@@ -342,7 +342,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if ($this->getLanguageField() !== ''
-            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, LanguageMarker::ALL_LANGUAGES])
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES])
         ) {
             return false;
         }
@@ -504,7 +504,7 @@ class PageProvider extends RecordProvider
 
     protected function getPreviewPid(): int
     {
-        return (int)($this->record[$this->getLanguageField()] ?? 0) === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
+        return (int)($this->record[$this->getLanguageField()] ?? LanguageMarker::DEFAULT_LANGUAGE) === LanguageMarker::DEFAULT_LANGUAGE ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
     }
 
     /**

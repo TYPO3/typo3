@@ -268,7 +268,7 @@ class DataMapProcessor
                     continue;
                 }
                 // must be any kind of localization and in connected mode
-                if ($item->getLanguage() > 0 && empty($item->getParent())) {
+                if ($item->getLanguage() > LanguageMarker::DEFAULT_LANGUAGE && empty($item->getParent())) {
                     unset($item);
                     continue;
                 }
@@ -756,7 +756,7 @@ class DataMapProcessor
             ->from($foreignTableName)
             ->where(
                 $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)),
-                $queryBuilder->expr()->gt($foreignLanguageFieldName, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gt($foreignLanguageFieldName, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
                 $queryBuilder->expr()->neq($foreignLanguageFieldName, $queryBuilder->createNamedParameter((int)$fromRecord[$languageFieldName], Connection::PARAM_INT))
             )
             ->executeQuery()

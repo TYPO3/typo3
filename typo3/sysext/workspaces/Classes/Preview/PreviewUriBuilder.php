@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -68,7 +69,7 @@ readonly class PreviewUriBuilder
      * @param int $languageId the language to link to
      * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
      */
-    public function buildUriForPage(int $uid, int $languageId = 0): string
+    public function buildUriForPage(int $uid, int $languageId = LanguageMarker::DEFAULT_LANGUAGE): string
     {
         $previewKeyword = $this->compilePreviewKeyword();
         try {
@@ -148,7 +149,7 @@ readonly class PreviewUriBuilder
      * @param int $uid Uid of the version(!) record
      * @param int $languageId The language ID for the preview
      */
-    public function buildUriForElementWithToken(string $table, int $uid, int $languageId = 0, ?array $liveRecord = null, ?array $versionRecord = null): string
+    public function buildUriForElementWithToken(string $table, int $uid, int $languageId = LanguageMarker::DEFAULT_LANGUAGE, ?array $liveRecord = null, ?array $versionRecord = null): string
     {
         if ($liveRecord === null) {
             $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
@@ -277,7 +278,7 @@ readonly class PreviewUriBuilder
         $schema = $this->tcaSchemaFactory->get($table);
         if ($schema->isLanguageAware()) {
             $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            if ($versionRecord[$languageField] > 0) {
+            if ($versionRecord[$languageField] > LanguageMarker::DEFAULT_LANGUAGE) {
                 $linkParameters['_language'] = $versionRecord[$languageField];
             }
         }
@@ -404,9 +405,9 @@ readonly class PreviewUriBuilder
         $languageOptions = [];
         $systemLanguages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
 
-        if ($this->getBackendUser()->checkLanguageAccess(0)) {
+        if ($this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
             // Use configured label for default language
-            $languageOptions[0] = $systemLanguages[0]['title'];
+            $languageOptions[LanguageMarker::DEFAULT_LANGUAGE] = $systemLanguages[LanguageMarker::DEFAULT_LANGUAGE]['title'];
         }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');

@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 defined('TYPO3') or die();
 
 if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('seo')) {
@@ -21,4 +23,4 @@ unset($GLOBALS['TCA']['pages']['columns']['sys_language_uid']['exclude']);
 
 // transOrigPointerField needs an adaptions on pages table, deviating from default:
 // sys_language_uid = -1 is not allowed.
-$GLOBALS['TCA']['pages']['columns']['l10n_parent']['config']['foreign_table_where'] = 'AND {#pages}.{#uid}=###CURRENT_PID### AND {#pages}.{#sys_language_uid} = 0';
+$GLOBALS['TCA']['pages']['columns']['l10n_parent']['config']['foreign_table_where'] = 'AND {#pages}.{#uid}=###CURRENT_PID### AND {#pages}.{#sys_language_uid} = ' . LanguageMarker::DEFAULT_LANGUAGE;

@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -96,7 +97,7 @@ readonly class PageInformationController
         }
         $selectedDepth = (int)($moduleData->get('depth') ?? 0);
         $selectedGroup = (string)($moduleData->get('pages') ?? '0'); // field or table list to render
-        $selectedLanguage = (int)($moduleData->get('lang') ?? 0);
+        $selectedLanguage = (int)($moduleData->get('lang') ?? LanguageMarker::DEFAULT_LANGUAGE);
 
         $mainContent = $this->renderMainTable($pageId, $selectedDepth, $selectedLanguage, $siteLanguages, $request, $fieldConfiguration[$selectedGroup]['fields'] ?? []);
 
@@ -231,7 +232,7 @@ readonly class PageInformationController
             ->executeQuery()
             ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
-        if ($language > 0) {
+        if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
             $localizedPageRecord = $this->localizationRepository->getPageTranslations($row['uid'], [$language], $this->getBackendUser()->workspace);
             if ($localizedPageRecord !== []) {
                 $row = reset($localizedPageRecord)->toArray();
@@ -362,7 +363,7 @@ readonly class PageInformationController
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
 
-        if ($language > 0) {
+        if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
             return $queryBuilder
                 ->select('*')
                 ->from('pages')
@@ -415,7 +416,7 @@ readonly class PageInformationController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq($languageFieldName, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq($languageFieldName, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
                 $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
             );
 
@@ -433,7 +434,7 @@ readonly class PageInformationController
                 BackendUtility::workspaceOL('pages', $row);
                 $uid = (int)$row['uid'];
                 if (is_array($row)) {
-                    if ($language > 0) {
+                    if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
                         $localizedPageRecord = $this->localizationRepository->getPageTranslations($uid, [$language], $this->getBackendUser()->workspace);
                         if ($localizedPageRecord === []) {
                             continue;

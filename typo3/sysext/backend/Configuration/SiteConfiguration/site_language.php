@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 return [
     'ctrl' => [
         'label' => 'languageId',
@@ -120,7 +122,7 @@ return [
         ],
         'fallbackType' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.fallbackType',
-            'displayCond' => 'FIELD:languageId:>:0',
+            'displayCond' => 'FIELD:languageId:>:' . LanguageMarker::DEFAULT_LANGUAGE,
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -133,7 +135,7 @@ return [
         ],
         'fallbacks' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.fallbacks',
-            'displayCond' => 'FIELD:languageId:>:0',
+            'displayCond' => 'FIELD:languageId:>:' . LanguageMarker::DEFAULT_LANGUAGE,
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',

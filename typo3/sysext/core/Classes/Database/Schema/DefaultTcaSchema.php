@@ -48,6 +48,7 @@ use TYPO3\CMS\Core\Schema\Field\SlugFieldType;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\Field\TextFieldType;
 use TYPO3\CMS\Core\Schema\Field\UuidFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -309,7 +310,7 @@ readonly class DefaultTcaSchema
                     $this->quote($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()),
                     Types::INTEGER,
                     [
-                        'default' => 0,
+                        'default' => LanguageMarker::DEFAULT_LANGUAGE,
                         'notnull' => true,
                         'unsigned' => false,
                     ]

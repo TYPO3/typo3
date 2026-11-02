@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -437,7 +438,7 @@ final class PageRecordProvider implements SearchProviderInterface
         $showLink = '';
         if ($this->hasPagesAccess($row)) {
             $parameter = [
-                'id' => $row['sys_language_uid'] === 0 ? $row['uid'] : $row['l10n_parent'],
+                'id' => $row['sys_language_uid'] === LanguageMarker::DEFAULT_LANGUAGE ? $row['uid'] : $row['l10n_parent'],
                 'languages' => [$row['sys_language_uid']],
             ];
             $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_layout', $parameter);
@@ -456,7 +457,7 @@ final class PageRecordProvider implements SearchProviderInterface
         $showLink = '';
         if ($this->hasPagesAccess($row)) {
             $parameter = [
-                'id' => $row['sys_language_uid'] === 0 ? $row['uid'] : $row['l10n_parent'],
+                'id' => $row['sys_language_uid'] === LanguageMarker::DEFAULT_LANGUAGE ? $row['uid'] : $row['l10n_parent'],
                 'languages' => [$row['sys_language_uid']],
             ];
             $showLink = ((string)$this->uriBuilder->buildUriFromRoute('records', $parameter)) . '#t3-table-pages';

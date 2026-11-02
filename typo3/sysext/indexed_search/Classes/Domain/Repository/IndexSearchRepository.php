@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -65,7 +66,7 @@ class IndexSearchRepository
      * Language uid
      * formerly known as $this->piVars['lang']
      */
-    protected int $languageUid = 0;
+    protected int $languageUid = LanguageMarker::DEFAULT_LANGUAGE;
 
     /**
      * Media type
@@ -157,7 +158,7 @@ class IndexSearchRepository
         }
         $this->sections = (string)($searchData['sections'] ?? '');
         $this->searchType = SearchType::tryFrom((int)($searchData['searchType'] ?? 0)) ?? SearchType::DISTINCT;
-        $this->languageUid = (int)($searchData['languageUid'] ?? 0);
+        $this->languageUid = (int)($searchData['languageUid'] ?? LanguageMarker::DEFAULT_LANGUAGE);
 
         // 'mediaType' can either be an INT in range (-1|-2|0), but also be a file extension string ('ppt').
         // Only when it's an integer, it can be mapped to the ENUM. Otherwise, the input 'mediaType' needs to be mapped here.
@@ -795,7 +796,7 @@ class IndexSearchRepository
     protected function languageWhere(): string
     {
         // -1 is the same as ALL language.
-        if ($this->languageUid < 0) {
+        if ($this->languageUid < LanguageMarker::DEFAULT_LANGUAGE) {
             return '';
         }
 

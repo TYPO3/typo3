@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,10 +38,10 @@ class TcaSlug implements FormDataProviderInterface
         $table = $result['tableName'];
         $site = $result['site'];
         $row = $result['databaseRow'];
-        $languageId = 0;
+        $languageId = LanguageMarker::DEFAULT_LANGUAGE;
 
         if (($languageField = $result['processedTca']['ctrl']['languageField'] ?? '') !== '' && isset($row[$languageField])) {
-            $languageId = (int)(is_array($row[$languageField]) ? ($row[$languageField][0] ?? 0) : $row[$languageField]);
+            $languageId = (int)(is_array($row[$languageField]) ? ($row[$languageField][0] ?? LanguageMarker::DEFAULT_LANGUAGE) : $row[$languageField]);
         }
 
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
@@ -81,7 +82,7 @@ class TcaSlug implements FormDataProviderInterface
     protected function getPrefixForSite(SiteInterface $site, int $languageId): string
     {
         try {
-            $language = ($languageId < 0) ? $site->getDefaultLanguage() : $site->getLanguageById($languageId);
+            $language = ($languageId < LanguageMarker::DEFAULT_LANGUAGE) ? $site->getDefaultLanguage() : $site->getLanguageById($languageId);
             $base = $language->getBase();
             $prefix = rtrim((string)$base, '/');
             if ($prefix !== '' && empty($base->getScheme()) && $base->getHost() !== '') {

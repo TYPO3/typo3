@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\Model;
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -135,7 +136,7 @@ class RecordState
     public function resolveNodeIdentifier(): string
     {
         if ($this->subject->isNode()
-            && $this->context->getLanguageId() > 0
+            && $this->context->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE
             && $this->languageLink !== null
         ) {
             return $this->languageLink->getHead()->getSubject()->getIdentifier();
@@ -158,7 +159,7 @@ class RecordState
     public function resolveNodeAggregateIdentifier(): string
     {
         if ($this->subject->isNode()
-            && $this->context->getLanguageId() > 0
+            && $this->context->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE
             && $this->languageLink !== null
         ) {
             return $this->languageLink->getHead()->getSubject()->getIdentifier();

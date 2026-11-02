@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
@@ -104,7 +105,7 @@ final readonly class RecordIndexer
         $indexer->init([
             'id' => $configuration->getPid(),
             'type' => 0,
-            'sys_language_uid' => $record->getLanguageId() ?? 0,
+            'sys_language_uid' => $record->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE,
             'MP' => '',
             'gr_list' => '0,-1',
             'staticPageArguments' => $queryArguments,

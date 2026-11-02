@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -561,7 +562,7 @@ readonly class Typo3DbBackend implements BackendInterface
         $languageAspect = $querySettings->getLanguageAspect();
         $languageUid = $languageAspect->getContentId();
         $schema = $this->tcaSchemaFactory->get($tableName);
-        $languageOfCurrentRecord = 0;
+        $languageOfCurrentRecord = LanguageMarker::DEFAULT_LANGUAGE;
         $languageField = null;
         $translationParentPointerField = null;
         // If current row is a translation select its parent
@@ -580,7 +581,7 @@ readonly class Typo3DbBackend implements BackendInterface
         $fetchLocalizedRecord = $languageAspect->getOverlayType() !== LanguageAspect::OVERLAYS_OFF;
         // We have a translated record from the DB, but we do overlays, so let's take the default language record
         // and do overlays again later-on
-        if ($languageOfCurrentRecord > 0
+        if ($languageOfCurrentRecord > LanguageMarker::DEFAULT_LANGUAGE
             && $fetchLocalizedRecord
             && ($row[$translationParentPointerField] ?? 0) > 0
         ) {
@@ -598,7 +599,7 @@ readonly class Typo3DbBackend implements BackendInterface
                 $row = $pageRepository->getLanguageOverlay($tableName, $row);
             } else {
                 if (!$querySettings->getRespectSysLanguage()
-                    && $languageOfCurrentRecord > 0
+                    && $languageOfCurrentRecord > LanguageMarker::DEFAULT_LANGUAGE
                     && (!$query instanceof Query || !$query->getParentQuery())
                 ) {
                     // No parent query means we're processing the aggregate root.
@@ -609,11 +610,11 @@ readonly class Typo3DbBackend implements BackendInterface
                 }
                 if ($translationParentPointerField
                     && ($row[$translationParentPointerField] ?? 0) > 0
-                    && $languageOfCurrentRecord > 0
+                    && $languageOfCurrentRecord > LanguageMarker::DEFAULT_LANGUAGE
                 ) {
                     // Force overlay by faking default language record, as getRecordOverlay can only handle default language records
                     $row['uid'] = $row[$translationParentPointerField];
-                    $row[$languageField] = 0;
+                    $row[$languageField] = LanguageMarker::DEFAULT_LANGUAGE;
                 }
                 // The overlay type (and fallback chain) of the language aspect is respected, so translation
                 // behavior is consistent with the regular page / content rendering. The content language
@@ -632,7 +633,7 @@ readonly class Typo3DbBackend implements BackendInterface
             // as the record is re-fetched in the DataMapper
             if ($translationParentPointerField
                 && ($row[$translationParentPointerField] ?? 0) > 0
-                && $languageOfCurrentRecord > 0
+                && $languageOfCurrentRecord > LanguageMarker::DEFAULT_LANGUAGE
             ) {
                 $row['_LOCALIZED_UID'] = (int)$row['uid'];
                 $row['uid'] = $row[$translationParentPointerField];

@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -275,7 +276,7 @@ class FileList
         $view->assignMultiple([
             'displayThumbs' => $this->thumbs,
             'displayCheckbox' => (bool)$this->resourceSelectableMatcher,
-            'defaultLanguageAccess' => $this->getBackendUser()->checkLanguageAccess(0),
+            'defaultLanguageAccess' => $this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE),
             'resources' => $resourceViews,
         ]);
 
@@ -552,7 +553,7 @@ class FileList
                 'data-multi-record-selection-element' => 'true',
                 'draggable' => $resourceView->canMove() ? 'true' : 'false',
             ];
-            if ($this->getBackendUser()->checkLanguageAccess(0)) {
+            if ($this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
                 $attributes['data-default-language-access'] = 'true';
             }
             foreach ($this->fieldArray as $field) {
@@ -632,7 +633,7 @@ class FileList
                 ),
                 $queryBuilder->expr()->gt(
                     $languageCapability->getLanguageField()->getName(),
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -1076,7 +1077,7 @@ class FileList
 
     protected function createControlEditMetaData(ResourceView $resourceView): ?ButtonInterface
     {
-        if (!$resourceView->getMetaDataUid() || !$this->getBackendUser()->checkLanguageAccess(0)) {
+        if (!$resourceView->getMetaDataUid() || !$this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
             return null;
         }
 
@@ -1231,7 +1232,7 @@ class FileList
         // Fetch all system languages except "default (0)" and "all languages (-1)"
         $systemLanguages = array_filter(
             $this->translateTools->getSystemLanguages(),
-            static fn(array $languageRecord): bool => $languageRecord['uid'] > 0 && $backendUser->checkLanguageAccess($languageRecord['uid'])
+            static fn(array $languageRecord): bool => $languageRecord['uid'] > LanguageMarker::DEFAULT_LANGUAGE && $backendUser->checkLanguageAccess($languageRecord['uid'])
         );
 
         if ($systemLanguages === []
@@ -1388,7 +1389,7 @@ class FileList
     {
         if (!($resourceView->resource instanceof File)
             || !$resourceView->canEditMetadata()
-            || !$this->getBackendUser()->checkLanguageAccess(0)
+            || !$this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)
             || !$this->onlineMediaHelperRegistry->hasOnlineMediaHelper($resourceView->resource->getExtension())
         ) {
             return null;

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -127,7 +128,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
 
         $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
             = is_array($result['databaseRow'][$parentLanguageFieldName])
-                ? (int)($result['databaseRow'][$parentLanguageFieldName][0] ?? 0)
+                ? (int)($result['databaseRow'][$parentLanguageFieldName][0] ?? LanguageMarker::DEFAULT_LANGUAGE)
                 : (int)$result['databaseRow'][$parentLanguageFieldName];
 
         return $result;

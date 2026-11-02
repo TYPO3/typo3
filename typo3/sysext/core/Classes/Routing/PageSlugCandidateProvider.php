@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\Enhancer\DecoratingEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\EnhancerFactory;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -219,7 +220,7 @@ class PageSlugCandidateProvider
 
         while ($row = $statement->fetchAssociative()) {
             $mountPageInformation = null;
-            $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : ($row['t3ver_oid'] ?: $row['uid']));
+            $pageIdInDefaultLanguage = (int)($languageId > LanguageMarker::DEFAULT_LANGUAGE ? $row['l10n_parent'] : ($row['t3ver_oid'] ?: $row['uid']));
             // When this page was added before via recursion, this page should be skipped
             if (in_array($pageIdInDefaultLanguage, $excludeUids, true)) {
                 continue;
@@ -373,7 +374,7 @@ class PageSlugCandidateProvider
         );
         // The rootline is built with page IDs of the default language, so the mount point page ID
         // of the default language must be used for the connection check below
-        $mountPointPageIdInDefaultLanguage = (int)($languageId > 0 ? $mountPointPage['l10n_parent'] : ($mountPointPage['t3ver_oid'] ?: $mountPointPage['uid']));
+        $mountPointPageIdInDefaultLanguage = (int)($languageId > LanguageMarker::DEFAULT_LANGUAGE ? $mountPointPage['l10n_parent'] : ($mountPointPage['t3ver_oid'] ?: $mountPointPage['uid']));
         // Depending on the "mount_pid_ol" parameter, the mountedPage or the mounted page is in the rootline
         $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPageIdInDefaultLanguage);
         foreach ($pageCandidates as $pageCandidate) {

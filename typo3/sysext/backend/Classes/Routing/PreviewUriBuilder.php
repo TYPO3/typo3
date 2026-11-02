@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -60,7 +61,7 @@ class PreviewUriBuilder
     protected array $record = [];
     protected string $table = 'pages';
     protected int $pageId;
-    protected int $languageId = 0;
+    protected int $languageId = LanguageMarker::DEFAULT_LANGUAGE;
     protected array $rootLine = [];
     protected string $section = '';
     protected array $additionalQueryParameters = [];
@@ -98,7 +99,7 @@ class PreviewUriBuilder
         $obj = new self($pageId);
         $obj->pageId = $pageId;
         $obj->record = $page;
-        $obj->languageId = (int)($page[$laguageFieldName] ?? 0);
+        $obj->languageId = (int)($page[$laguageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE);
         return $obj;
     }
 
@@ -279,7 +280,7 @@ class PreviewUriBuilder
                     $previewRouteParameters = $event->getAdditionalQueryParameters();
                     // Reassemble encapsulated language id into route parameters to get proper localized page preview
                     // uri for non-default languages.
-                    if ($event->getLanguageId() > 0) {
+                    if ($event->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE) {
                         $previewRouteParameters['_language'] = $site->getLanguageById($event->getLanguageId());
                     }
                     $event->setPreviewUri(
@@ -611,7 +612,7 @@ class PreviewUriBuilder
                 $recordId = (int)$record['uid'];
             }
             $language = $record[$languageField];
-            if ($language > 0) {
+            if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
                 $linkParameters['_language'] = $language;
             }
         }

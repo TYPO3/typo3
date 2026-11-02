@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -103,7 +104,7 @@ class LinkAnalyzerResult
             $languageIds
         );
 
-        if ($languageIds === [] || in_array(0, $languageIds, true)) {
+        if ($languageIds === [] || in_array(LanguageMarker::DEFAULT_LANGUAGE, $languageIds, true)) {
             $pageIds = array_merge($pageIds, $pageTranslations);
         } else {
             $pageIds = $pageTranslations;
@@ -211,7 +212,7 @@ class LinkAnalyzerResult
                 $brokenLink['record_title'] = BackendUtility::getRecordTitle($tableName, $fullRecord);
             }
 
-            $brokenLink['real_pid'] = ((int)($brokenLink['language'] ?? 0) > 0 && $tableName !== 'pages')
+            $brokenLink['real_pid'] = ((int)($brokenLink['language'] ?? LanguageMarker::DEFAULT_LANGUAGE) > LanguageMarker::DEFAULT_LANGUAGE && $tableName !== 'pages')
                 ? $this->getLocalizedPageId((int)$brokenLink['record_pid'], (int)$brokenLink['language'])
                 : $brokenLink['record_pid'];
             $pageRecord = BackendUtility::getRecord('pages', $brokenLink['real_pid']);

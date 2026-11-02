@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,7 +39,7 @@ abstract class AbstractContentPagePositionMap
     /**
      * Can be set to the language id to select content elements for.
      */
-    public int $cur_sys_language = 0;
+    public int $cur_sys_language = LanguageMarker::DEFAULT_LANGUAGE;
 
     protected BackendLayoutView $backendLayoutView;
 

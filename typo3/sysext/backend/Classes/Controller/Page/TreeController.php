@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -142,7 +143,7 @@ class TreeController
         $this->addDomainName = (bool)($userTsConfig['options.']['pageTree.']['showDomainNameWithTitle'] ?? false);
         $this->useNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
         $this->showMountPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
-        $this->userHasAccessToModifyPagesAndToDefaultLanguage = $this->getBackendUser()->check('tables_modify', 'pages') && $this->getBackendUser()->checkLanguageAccess(0);
+        $this->userHasAccessToModifyPagesAndToDefaultLanguage = $this->getBackendUser()->check('tables_modify', 'pages') && $this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE);
     }
 
     /**
@@ -651,7 +652,7 @@ class TreeController
     {
         $backendUser = $this->getBackendUser();
         return $backendUser->isAdmin()
-            || ($backendUser->check('tables_modify', 'pages') && $backendUser->checkLanguageAccess(0));
+            || ($backendUser->check('tables_modify', 'pages') && $backendUser->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE));
     }
 
     /**

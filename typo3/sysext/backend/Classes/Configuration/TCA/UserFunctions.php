@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Configuration\TCA;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 
 /**
  * This class provides user functions for the usage in TCA definition
@@ -32,7 +33,7 @@ class UserFunctions
     public function getSiteLanguageTitle(array &$parameters): void
     {
         $record = $parameters['row'];
-        $languageId = (int)($record['languageId'][0] ?? 0);
+        $languageId = (int)($record['languageId'][0] ?? LanguageMarker::DEFAULT_LANGUAGE);
 
         if ($languageId === PHP_INT_MAX && str_starts_with((string)($record['uid'] ?? ''), 'NEW')) {
             // If we deal with a new record, created via "Create new" (indicated by the PHP_INT_MAX placeholder),

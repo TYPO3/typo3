@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -1098,14 +1099,14 @@ abstract class AbstractMenuContentObject
         }
         $languageAspect = $this->getCurrentLanguageAspect();
         // Checking if the link should point to the default language so links to non-accessible pages will not happen
-        if ($languageAspect->getId() > 0 && !empty($this->conf['protectLvar'])) {
+        if ($languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE && !empty($this->conf['protectLvar'])) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
             if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                 $olRec = $this->sys_page->getPageOverlay((int)($data['uid'] ?? 0), $languageAspect);
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
                     // the language pointed to, therefore we protect the link by linking to the default language
-                    $data['_REQUESTED_OVERLAY_LANGUAGE'] = '0';
+                    $data['_REQUESTED_OVERLAY_LANGUAGE'] = (string)LanguageMarker::DEFAULT_LANGUAGE;
                 }
             }
         }
@@ -1461,7 +1462,7 @@ abstract class AbstractMenuContentObject
             }
             // No valid subpage if the alternative language should be shown and the page settings
             // are requiring a valid overlay, but it doesn't exist
-            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !isset($theRec['_LOCALIZED_UID'])) {
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > LanguageMarker::DEFAULT_LANGUAGE && !isset($theRec['_LOCALIZED_UID'])) {
                 continue;
             }
             // No valid subpage if the subpage is banned by excludeUidList (check for default language pages as well)
@@ -1711,7 +1712,7 @@ abstract class AbstractMenuContentObject
         $result = [];
         while ($row = $statement->fetchAssociative()) {
             $this->sys_page->versionOL('tt_content', $row);
-            if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['sys_language_uid'] > 0) {
+            if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE) {
                 $languageAspect = new LanguageAspect($basePageRow['sys_language_uid'], $basePageRow['sys_language_uid'], $this->getCurrentLanguageAspect()->getOverlayType());
                 $row = $this->sys_page->getLanguageOverlay(
                     'tt_content',

@@ -122,7 +122,7 @@ class Site implements SiteInterface
         $this->configuration = $configuration;
         $configuration['languages'] = !empty($configuration['languages']) ? $configuration['languages'] : [
             0 => [
-                'languageId' => 0,
+                'languageId' => LanguageMarker::DEFAULT_LANGUAGE,
                 'title' => 'Default',
                 'navigationTitle' => '',
                 'flag' => 'us',
@@ -325,7 +325,7 @@ class Site implements SiteInterface
 
     public function getDefaultLanguage(): SiteLanguage
     {
-        return $this->languages[0] ?? reset($this->languages);
+        return $this->languages[LanguageMarker::DEFAULT_LANGUAGE] ?? reset($this->languages);
     }
 
     /**

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -567,8 +568,8 @@ class Backend implements BackendInterface
         }
         $this->addCommonFieldsToRow($object, $row);
         if ($dataMap->languageIdColumnName !== null && $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
-            $row[$dataMap->languageIdColumnName] = 0;
-            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 0);
+            $row[$dataMap->languageIdColumnName] = LanguageMarker::DEFAULT_LANGUAGE;
+            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, LanguageMarker::DEFAULT_LANGUAGE);
         }
         if ($dataMap->translationOriginColumnName !== null) {
             $row[$dataMap->translationOriginColumnName] = 0;

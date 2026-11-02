@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Redirects\Event\AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent;
@@ -93,7 +94,7 @@ final readonly class AddUrlsForSubPagesForIntegrityCheck
             $pageUrls[] = [rtrim((string)$siteLanguage->getBase(), '/') . '/' . $slug];
 
             // only traverse for pages of default language (as even translated pages contain pid of parent in default language)
-            if ($languageId === 0) {
+            if ($languageId === LanguageMarker::DEFAULT_LANGUAGE) {
                 $pageUrls[] = $this->getSlugsOfSubPages((int)$row['uid'], $site);
             }
         }

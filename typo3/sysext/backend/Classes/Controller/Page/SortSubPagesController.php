@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -182,7 +183,7 @@ readonly class SortSubPagesController
         return $queryBuilder->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter($parentPageUid, Connection::PARAM_INT)

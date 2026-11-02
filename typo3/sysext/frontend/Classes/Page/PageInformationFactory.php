@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -339,10 +340,10 @@ final readonly class PageInformationFactory
         $pageRecord = $pageInformation->getPageRecord();
 
         $pageTranslationVisibility = new PageTranslationVisibility((int)($pageRecord['l18n_cfg'] ?? 0));
-        if ($languageAspect->getId() > 0) {
+        if ($languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
             // If the incoming language is set to another language than default
             $olRec = $this->pageRepository->getPageOverlay($pageRecord, $languageAspect);
-            $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? 0);
+            $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE);
             if ($overlaidLanguageId !== $languageAspect->getId()) {
                 // If requested translation is not available
                 if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
@@ -365,7 +366,7 @@ final readonly class PageInformationFactory
                         // Setting content uid (but leaving the sys_language_uid) when a content_fallback value was found.
                         foreach ($languageAspect->getFallbackChain() as $orderValue) {
                             if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
-                                $languageContentId = 0;
+                                $languageContentId = LanguageMarker::DEFAULT_LANGUAGE;
                                 break;
                             }
                             if (MathUtility::canBeInterpretedAsInteger($orderValue) && $overlaidLanguageId === (int)$orderValue) {
@@ -386,7 +387,7 @@ final readonly class PageInformationFactory
                         break;
                     default:
                         // Default is that everything defaults to the default language.
-                        $languageId = ($languageContentId = 0);
+                        $languageId = ($languageContentId = LanguageMarker::DEFAULT_LANGUAGE);
                 }
             }
 
@@ -418,7 +419,7 @@ final readonly class PageInformationFactory
             throw new PageInformationCreationFailedException($response, 1533931423);
         }
 
-        if ($languageAspect->getId() > 0) {
+        if ($languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
             // Updating rootLine with translations if the language key is set.
             $pageInformation->setRootLine(
                 $this->getRootlineOrThrow($request, $pageInformation->getId(), $pageInformation->getMountPoint())

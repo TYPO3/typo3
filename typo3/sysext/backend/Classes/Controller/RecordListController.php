@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -119,8 +120,8 @@ class RecordListController
         // RecordList always requires default language (0) for proper record display
         // Similar to PageLayoutController's comparison mode behavior
         $languagesToDisplay = $this->pageContext->selectedLanguageIds;
-        if (!in_array(0, $languagesToDisplay, true)) {
-            $languagesToDisplay = array_merge([0], $languagesToDisplay);
+        if (!in_array(LanguageMarker::DEFAULT_LANGUAGE, $languagesToDisplay, true)) {
+            $languagesToDisplay = array_merge([LanguageMarker::DEFAULT_LANGUAGE], $languagesToDisplay);
             // Create updated PageContext with modified languages and update request
             $this->pageContext = $this->pageContextFactory->createWithLanguages(
                 $request,
@@ -723,7 +724,7 @@ class RecordListController
         return !empty($this->pageContext->pageRecord)
             && $this->editLockPermissions()
             && $this->pageContext->pagePermissions->editPagePermissionIsGranted()
-            && $backendUser->checkLanguageAccess(0)
+            && $backendUser->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)
             && $backendUser->check('tables_modify', 'pages');
     }
 

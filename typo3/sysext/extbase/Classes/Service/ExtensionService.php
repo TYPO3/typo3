@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Exception;
@@ -159,7 +160,7 @@ class ExtensionService
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
             // The looked up plugin is language specific, so the language has to be part of the cache identifier
-            $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+            $languageId = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE);
             $cacheIdentifier = 'extbase-extension-service-target-pid-' . $pluginSignature . '-' . $languageId;
             if (!$this->runtimeCache->has($cacheIdentifier)) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

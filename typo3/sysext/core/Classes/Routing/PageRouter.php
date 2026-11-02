@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Event\AfterPageUriGeneratedEvent;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -666,13 +667,13 @@ class PageRouter implements RouterInterface
             return true;
         }
         $languageIdField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-        $languageId = (int)($page[$languageIdField] ?? 0);
-        if ($siteLanguage->getLanguageId() === 0 || $siteLanguage->getLanguageId() === $languageId) {
+        $languageId = (int)($page[$languageIdField] ?? LanguageMarker::DEFAULT_LANGUAGE);
+        if ($siteLanguage->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE || $siteLanguage->getLanguageId() === $languageId) {
             // default language site request or if page record is same language then siteLanguage, page record
             // is valid to use as page resolving candidate and need no further overlay checks.
             return true;
         }
-        $pageIdInDefaultLanguage = (int)($languageId > 0 ? $page['l10n_parent'] : $page['uid']);
+        $pageIdInDefaultLanguage = (int)($languageId > LanguageMarker::DEFAULT_LANGUAGE ? $page['l10n_parent'] : $page['uid']);
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $localizedPage = $pageRepository->getPageOverlay($pageIdInDefaultLanguage, $siteLanguage->getLanguageId());
         if (!$localizedPage) {

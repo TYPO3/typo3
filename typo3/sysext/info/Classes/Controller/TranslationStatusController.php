@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -151,7 +152,7 @@ readonly class TranslationStatusController
             'lang' => [],
         ];
         foreach ($siteLanguages as $language) {
-            if ($language->getLanguageId() === 0) {
+            if ($language->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE) {
                 $menuArray['lang'][0] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages');
             } else {
                 $menuArray['lang'][$language->getLanguageId()] = $language->getTitle();
@@ -194,11 +195,11 @@ readonly class TranslationStatusController
 
         foreach ($tree->tree as $data) {
             $tCells = [];
-            $langRecUids[0][] = $data['row']['uid'];
+            $langRecUids[LanguageMarker::DEFAULT_LANGUAGE][] = $data['row']['uid'];
             $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . $data['row']['title'];
             // Page icons / titles etc.
             if ($pageModuleAccess) {
-                $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'languages' => [0], 'viewMode' => PageViewMode::LayoutView->value]);
+                $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'languages' => [LanguageMarker::DEFAULT_LANGUAGE], 'viewMode' => PageViewMode::LayoutView->value]);
                 $pageModuleLink = '<a href="' . htmlspecialchars($pageModuleLink) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' . htmlspecialchars($pageTitle) . '</a>';
             } else {
                 $pageModuleLink = htmlspecialchars($pageTitle);
@@ -256,7 +257,7 @@ readonly class TranslationStatusController
             // Traverse system languages:
             foreach ($siteLanguages as $siteLanguage) {
                 $languageId = $siteLanguage->getLanguageId();
-                if ($languageId === 0) {
+                if ($languageId === LanguageMarker::DEFAULT_LANGUAGE) {
                     continue;
                 }
                 if ($selectedLanguage === 0 || $selectedLanguage === $languageId) {
@@ -343,7 +344,7 @@ readonly class TranslationStatusController
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
-                        implode(',', $langRecUids[0]) => 'edit',
+                        implode(',', $langRecUids[LanguageMarker::DEFAULT_LANGUAGE]) => 'edit',
                     ],
                 ],
                 'columnsOnly' => [
@@ -359,15 +360,15 @@ readonly class TranslationStatusController
         } else {
             $editIco = '';
         }
-        if (isset($siteLanguages[0])) {
-            $defaultLanguageLabel = $siteLanguages[0]->getTitle();
+        if (isset($siteLanguages[LanguageMarker::DEFAULT_LANGUAGE])) {
+            $defaultLanguageLabel = $siteLanguages[LanguageMarker::DEFAULT_LANGUAGE]->getTitle();
         } else {
             $defaultLanguageLabel = $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default');
         }
         $headerCells[] = '<th class="col-border-left" colspan="2">' . htmlspecialchars($defaultLanguageLabel) . '&nbsp;' . $editIco . '</th>';
         foreach ($siteLanguages as $siteLanguage) {
             $languageId = $siteLanguage->getLanguageId();
-            if ($languageId === 0) {
+            if ($languageId === LanguageMarker::DEFAULT_LANGUAGE) {
                 continue;
             }
             if ($selectedLanguage === 0 || $selectedLanguage === $languageId) {

@@ -270,7 +270,7 @@ readonly class LocalizationController
         $availableLanguages = [];
         foreach ($systemLanguages as $languageUid => $language) {
             // Exclude "All languages" (-1) and default language (0) for target language selection
-            if ($languageUid !== LanguageMarker::ALL_LANGUAGES && $languageUid !== 0) {
+            if ($languageUid !== LanguageMarker::ALL_LANGUAGES && $languageUid !== LanguageMarker::DEFAULT_LANGUAGE) {
                 $availableLanguages[] = $language;
             }
         }
@@ -315,11 +315,11 @@ readonly class LocalizationController
         // Find all existing translations of the record
         $record = BackendUtility::getRecord($recordType, $recordUid);
         if ($record) {
-            $existingLanguageUids = [0]; // Always include default language
+            $existingLanguageUids = [LanguageMarker::DEFAULT_LANGUAGE]; // Always include default language
 
             // Check each system language to see if a translation exists
             foreach (array_keys($systemLanguages) as $languageUid) {
-                if ($languageUid > 0) { // Skip default language (0) and "All languages" (-1)
+                if ($languageUid > LanguageMarker::DEFAULT_LANGUAGE) { // Skip default language (0) and "All languages" (-1)
                     $translation = $this->localizationRepository->getRecordTranslation($recordType, $record, (int)$languageUid);
                     if ($translation !== null) {
                         $existingLanguageUids[] = $languageUid;

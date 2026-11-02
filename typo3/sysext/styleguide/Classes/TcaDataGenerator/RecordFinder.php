@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -92,7 +93,7 @@ final readonly class RecordFinder
                 // only default language pages needed
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                 )
             )
             ->orderBy('pid', 'DESC')
@@ -124,7 +125,7 @@ final readonly class RecordFinder
 
         $result = [];
         foreach ($site->getAllLanguages() as $language) {
-            if ($language->getLanguageId() === 0) {
+            if ($language->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE) {
                 continue;
             }
             $result[] = $language->getLanguageId();
@@ -137,7 +138,7 @@ final readonly class RecordFinder
      */
     public function findHighestLanguageId(): int
     {
-        $lastLanguageId = 0;
+        $lastLanguageId = LanguageMarker::DEFAULT_LANGUAGE;
         foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($language->getLanguageId() > $lastLanguageId) {

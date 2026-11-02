@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\Localization;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -45,7 +46,7 @@ class DataMapItem
     protected bool $new;
     protected ?string $type = null;
     protected ?State $state = null;
-    protected string|int $language = 0;
+    protected string|int $language = LanguageMarker::DEFAULT_LANGUAGE;
     protected string|int $parent = '';
     protected string|int|null $source = null;
     /** @var DataMapItem[][] */
@@ -72,7 +73,7 @@ class DataMapItem
         );
 
         // assign language specific settings of item
-        $item->language = (int)($suggestedValues[$item->getLanguageFieldName()] ?? $persistedValues[$item->getLanguageFieldName()] ?? 0);
+        $item->language = (int)($suggestedValues[$item->getLanguageFieldName()] ?? $persistedValues[$item->getLanguageFieldName()] ?? LanguageMarker::DEFAULT_LANGUAGE);
         $item->setParent($suggestedValues[$item->getParentFieldName()] ?? $persistedValues[$item->getParentFieldName()] ?? '');
         if ($item->getSourceFieldName() !== null) {
             $item->setSource($suggestedValues[$item->getSourceFieldName()] ?? $persistedValues[$item->getSourceFieldName()] ?? '');
@@ -176,7 +177,7 @@ class DataMapItem
     {
         if ($this->type === null) {
             // implicit: default language, it's a parent
-            if ($this->language === 0) {
+            if ($this->language === LanguageMarker::DEFAULT_LANGUAGE) {
                 $this->type = static::TYPE_PARENT;
             } elseif (
                 // implicit: having source value different to parent value, it's a 2nd or higher level translation

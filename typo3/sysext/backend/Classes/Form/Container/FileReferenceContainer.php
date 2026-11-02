@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -362,8 +363,8 @@ class FileReferenceContainer extends AbstractContainer
                 && $event->isControlEnabled('edit')
             ) {
                 $languageId = (int)(is_array($databaseRow[$languageField] ?? null)
-                    ? ($databaseRow[$languageField][0] ?? 0)
-                    : ($databaseRow[$languageField] ?? 0));
+                    ? ($databaseRow[$languageField][0] ?? LanguageMarker::DEFAULT_LANGUAGE)
+                    : ($databaseRow[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE));
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_metadata');
                 $metadataRecord = $queryBuilder
                     ->select('uid')

@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\User\SharedUserPreferences;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -95,7 +96,7 @@ final readonly class PageContextFactory
                 site: $site,
                 rootLine: [],
                 pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
-                selectedLanguageIds: [0],
+                selectedLanguageIds: [LanguageMarker::DEFAULT_LANGUAGE],
                 languageInformation: $this->languageService->getLanguageInformationForPage(0, $site, $backendUser),
                 pagePermissions: new Permission($backendUser->calcPerms($pageRecord ?: ['uid' => 0])),
             );
@@ -137,7 +138,7 @@ final readonly class PageContextFactory
 
         // Ensure at least default language if none are valid
         if (empty($validLanguages)) {
-            $validLanguages = [0];
+            $validLanguages = [LanguageMarker::DEFAULT_LANGUAGE];
         }
 
         $validLanguages = array_values($validLanguages);

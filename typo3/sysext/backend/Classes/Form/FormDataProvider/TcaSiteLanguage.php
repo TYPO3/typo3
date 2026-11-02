@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -207,7 +208,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
             // If edit, find out if a default language ("0") exists, else add it on top
             $defaultSysSiteLanguageChildFound = false;
             foreach ($result['processedTca']['columns'][$fieldName]['children'] as $child) {
-                if (isset($child['databaseRow']['languageId'][0]) && (int)$child['databaseRow']['languageId'][0] === 0) {
+                if (isset($child['databaseRow']['languageId'][0]) && (int)$child['databaseRow']['languageId'][0] === LanguageMarker::DEFAULT_LANGUAGE) {
                     $defaultSysSiteLanguageChildFound = true;
                 }
             }
@@ -332,7 +333,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
 
         foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
-                if ($language->getLanguageId() === 0) {
+                if ($language->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE) {
                     $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();
                     if ($language->getTitle() !== '') {
                         $defaultDatabaseRow['title'] = $language->getTitle();

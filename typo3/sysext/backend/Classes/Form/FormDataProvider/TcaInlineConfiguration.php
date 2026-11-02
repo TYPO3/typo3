@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -169,10 +170,10 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         ) {
             if (is_array($result['databaseRow'][$parentLanguageField])) {
                 $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
-                    = (int)($result['databaseRow'][$parentLanguageField][0] ?? 0);
+                    = (int)($result['databaseRow'][$parentLanguageField][0] ?? LanguageMarker::DEFAULT_LANGUAGE);
             } else {
                 $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
-                    = (int)($result['databaseRow'][$parentLanguageField] ?? 0);
+                    = (int)($result['databaseRow'][$parentLanguageField] ?? LanguageMarker::DEFAULT_LANGUAGE);
             }
         }
 

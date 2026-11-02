@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -180,7 +181,7 @@ final class Generator extends AbstractGenerator
         $this->executeDataHandler($data);
 
         $pageUids = $this->connectionPool->getConnectionForTable('pages')
-            ->select(['uid'], 'pages', ['pid' => $pid, 'sys_language_uid' => 0, 'deleted' => 0], [], ['title' => 'ASC'])
+            ->select(['uid'], 'pages', ['pid' => $pid, 'sys_language_uid' => LanguageMarker::DEFAULT_LANGUAGE, 'deleted' => 0], [], ['title' => 'ASC'])
             ->fetchFirstColumn();
         $categoryUids = $this->connectionPool->getConnectionForTable('sys_category')
             ->select(['uid'], 'sys_category', ['pid' => $pid, 'parent' => 0, 'deleted' => 0], [], ['title' => 'ASC'])

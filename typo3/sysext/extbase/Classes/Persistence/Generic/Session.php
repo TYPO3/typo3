@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -190,7 +191,7 @@ class Session
             $baseIdentifier = $identifier;
         }
         // Use default language context for newly inserted objects
-        $languageAspect ??= new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, []);
+        $languageAspect ??= new LanguageAspect(LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::DEFAULT_LANGUAGE, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, []);
         return $baseIdentifier . '@' . $this->getContentIdentifier($languageAspect);
     }
 

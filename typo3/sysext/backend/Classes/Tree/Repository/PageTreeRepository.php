@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -264,7 +265,7 @@ class PageTreeRepository
         $queryBuilder
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', 0)
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
             )
             // ensure deterministic sorting
             ->orderBy('sorting', 'ASC')
@@ -405,7 +406,7 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $queryBuilder->expr()->eq('sys_language_uid', 0)
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
             );
 
         if (!empty($this->additionalWhereClause)) {
@@ -576,7 +577,7 @@ class PageTreeRepository
             ->from('pages')
             ->where(
                 // Only show records in default language
-                $expressionBuilder->eq('sys_language_uid', 0),
+                $expressionBuilder->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                 $workspaceIdExpression,
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );

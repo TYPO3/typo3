@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
@@ -96,7 +97,7 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                         $languageIdOfRecord = $record[$languageField];
                         // If a record is already in a localized version OR if the record is set to "All Languages"
                         // we allow the generation of the link
-                        if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
+                        if ($languageIdOfRecord === LanguageMarker::DEFAULT_LANGUAGE && $languageAspect->doOverlays()) {
                             $overlay = $this->pageRepository->getLanguageOverlay(
                                 $databaseTable,
                                 $record,

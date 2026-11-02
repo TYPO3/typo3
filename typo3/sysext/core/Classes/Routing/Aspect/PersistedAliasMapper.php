@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
@@ -273,7 +274,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     protected function resolveOverlay(?array $record): ?array
     {
         $languageId = $this->siteLanguage->getLanguageId();
-        if ($record === null || $languageId === 0) {
+        if ($record === null || $languageId === LanguageMarker::DEFAULT_LANGUAGE) {
             return $record;
         }
 

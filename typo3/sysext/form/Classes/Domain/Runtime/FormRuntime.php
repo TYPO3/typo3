@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -983,7 +984,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if ($this->request->getAttribute('language') instanceof SiteLanguage) {
             $this->currentSiteLanguage = $this->request->getAttribute('language');
         } else {
-            $languageId = (int)$this->context->getPropertyFromAspect('language', 'id', 0);
+            $languageId = (int)$this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE);
             $pageId = $this->request->getAttribute('frontend.page.information')?->getId() ?? 0;
             $fakeSiteConfiguration = [
                 'languages' => [

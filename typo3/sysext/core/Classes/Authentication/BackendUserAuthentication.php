@@ -386,7 +386,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // if current rec is a translation then get uid from l10n_parent instead
         // because web mounts point to pages in default language and rootline returns uids of default languages
-        if ((int)($checkRec[$languageFieldName]) !== 0 && (int)($checkRec[$transOrigPointerFieldName]) !== 0) {
+        if ((int)($checkRec[$languageFieldName]) !== LanguageMarker::DEFAULT_LANGUAGE && (int)($checkRec[$transOrigPointerFieldName]) !== 0) {
             $id = (int)$checkRec[$transOrigPointerFieldName];
         }
         if ($id > 0 && !$readPerms && empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
@@ -683,7 +683,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function checkFullLanguagesAccess(string|TcaSchema $table, array $record): bool
     {
-        if (!$this->checkLanguageAccess(0)) {
+        if (!$this->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
             return false;
         }
         if ($table instanceof TcaSchema) {
@@ -771,7 +771,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     return new AccessCheckResult(false, 'ERROR: Language was not allowed.');
                 }
                 if (
-                    $checkFullLanguageAccess && $row[$languageField] == 0
+                    $checkFullLanguageAccess && $row[$languageField] == LanguageMarker::DEFAULT_LANGUAGE
                     && !$this->checkFullLanguagesAccess($table, $row)
                 ) {
                     return new AccessCheckResult(false, 'ERROR: Related/affected language was not allowed.');

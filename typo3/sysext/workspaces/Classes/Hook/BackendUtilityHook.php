@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -62,7 +63,7 @@ readonly class BackendUtilityHook
             $queryString .= http_build_query($event->getAdditionalQueryParameters(), '', '&', PHP_QUERY_RFC3986);
         }
         // Reassemble encapsulated language id as query parameter, to open workspace preview in correct non-default language
-        if ($event->getLanguageId() > 0) {
+        if ($event->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE) {
             $queryString .= '&_language=' . $event->getLanguageId();
         }
         if ($queryString) {

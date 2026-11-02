@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -540,7 +541,7 @@ class QuerySearchController
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0)
+                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
                 )
                 ->orderBy('uid');
             if ($permsClause !== '') {

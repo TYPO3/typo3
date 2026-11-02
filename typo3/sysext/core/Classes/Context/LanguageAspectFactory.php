@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Context;
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
@@ -53,7 +54,7 @@ final readonly class LanguageAspectFactory
 
                 // Ignore, fallback to default language
             default:
-                $fallbackOrder = [0];
+                $fallbackOrder = [LanguageMarker::DEFAULT_LANGUAGE];
                 $overlayType = LanguageAspect::OVERLAYS_OFF;
         }
         return new LanguageAspect($languageId, $languageId, $overlayType, $fallbackOrder);

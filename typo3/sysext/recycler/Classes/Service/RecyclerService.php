@@ -236,7 +236,7 @@ final readonly class RecyclerService
             return ['title' => '', 'icon' => ''];
         }
         $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-        $languageId = (int)($row[$languageField] ?? 0);
+        $languageId = (int)($row[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE);
         $pageId = (int)$row['pid'];
 
         $cacheId = 'recycler-language-' . $pageId . '-' . $languageId;
