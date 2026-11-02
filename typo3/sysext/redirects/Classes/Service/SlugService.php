@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
+use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -59,6 +60,7 @@ class SlugService
     protected ?CorrelationId $correlationIdRedirectCreation = null;
     protected ?CorrelationId $correlationIdSlugUpdate = null;
     protected ?CorrelationId $correlationIdPageUpdate = null;
+    protected ?ReferenceIndexUpdater $referenceIndexUpdater = null;
     protected bool $autoUpdateSlugs = false;
     protected bool $autoCreateRedirects = false;
     protected int $redirectTTL = 0;
@@ -84,8 +86,13 @@ class SlugService
         private readonly LoggerInterface $logger,
     ) {}
 
-    public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
+    /**
+     * @param ReferenceIndexUpdater|null $referenceIndexUpdater The one of the DataHandler changing the slug, which updates the
+     *                                                          reference index of created redirects and sub pages when it has finished
+     */
+    public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId, ?ReferenceIndexUpdater $referenceIndexUpdater = null): void
     {
+        $this->referenceIndexUpdater = $referenceIndexUpdater;
         $this->initializeSettings($changeItem->getSite());
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $sourceHosts = [];
@@ -185,7 +192,7 @@ class SlugService
                     $redirectNewId => $record,
                 ],
             ];
-            $dataHandler->start($data, [], null, null, $this->correlationIdRedirectCreation);
+            $dataHandler->start($data, [], null, $this->referenceIndexUpdater, $this->correlationIdRedirectCreation);
             $dataHandler->process_datamap();
             if ($addedTableModify) {
                 // Revert temporary permissions
@@ -341,7 +348,7 @@ class SlugService
         $data = [];
         $data['pages'][$uid]['slug'] = $newSlug;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, [], null, null, $this->correlationIdSlugUpdate);
+        $dataHandler->start($data, [], null, $this->referenceIndexUpdater, $this->correlationIdSlugUpdate);
         $dataHandler->process_datamap();
         $this->enabledHook();
     }

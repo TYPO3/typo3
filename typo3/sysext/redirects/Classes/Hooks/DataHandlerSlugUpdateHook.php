@@ -93,7 +93,7 @@ class DataHandlerSlugUpdateHook
         }
         // We merge the fieldArray dataset into with the original record to spare a database query here.
         $persistedChangedItem = $persistedChangedItem->withChanged(array_merge($persistedChangedItem->getOriginal(), $fieldArray));
-        $this->slugService->rebuildSlugsForSlugChange($id, $persistedChangedItem, $dataHandler->getCorrelationId());
+        $this->slugService->rebuildSlugsForSlugChange($id, $persistedChangedItem, $dataHandler->getCorrelationId(), $dataHandler->getReferenceIndexUpdater());
     }
 
     /**
