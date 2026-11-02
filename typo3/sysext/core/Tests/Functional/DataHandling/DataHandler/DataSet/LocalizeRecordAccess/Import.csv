@@ -1,0 +1,27 @@
+"pages",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","title","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,256,0,0,0,"Root",1,9,31,31,0
+,2,0,256,0,1,1,"Root DA",1,9,31,31,0
+,3,1,256,0,0,0,"Storage",1,9,31,31,0
+"sys_file",,,,,,,,,,,,
+,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","identifier_hash","folder_hash"
+,1,0,2,1,"/image.jpg","jpg","image/jpeg","image.jpg","b841902021bbe23bd71e4a5b5b97626da7734b90",1,"2a4941658e4bd943048a234a5e1f305a1f736b10","f6e391567e01bdb14eac504413794a3bc1300abd"
+"sys_file_reference",,,,,,,,,,,,
+,"uid","pid","deleted","sys_language_uid","l10n_parent","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
+,10,1,0,0,0,1,100,"tt_content","assets",1,"Image"
+"tt_content",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","CType","header","assets","tx_testirreforeignfield_hotels"
+,100,1,256,0,0,0,"textmedia","Content with image",1,0
+,110,1,512,0,0,0,"text","Content with hotel",0,1
+"tx_testirreforeignfield_hotel",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","title","parentid","parenttable","parentidentifier","offers"
+,1,1,1,0,0,0,"Hotel",110,"tt_content","1nff.hotels",1
+"tx_testirreforeignfield_offer",,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","title","parentid","parenttable","parentidentifier","prices"
+,1,1,1,0,0,0,"Offer",1,"tx_testirreforeignfield_hotel","",0
+"be_groups",,,,,,,,,,,,
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","non_exclude_fields","explicit_allowdeny","allowed_languages"
+,9,0,"editors",0,1,"pages,tt_content,sys_file_reference,sys_file,tx_testirreforeignfield_hotel,tx_testirreforeignfield_offer","pages,tt_content,sys_file_reference,tx_testirreforeignfield_offer","tt_content:CType,tt_content:header,tt_content:assets,tt_content:sys_language_uid,tt_content:l18n_parent,tt_content:tx_testirreforeignfield_hotels,sys_file_reference:title,tx_testirreforeignfield_hotel:title,tx_testirreforeignfield_hotel:offers,tx_testirreforeignfield_offer:title,tx_testirreforeignfield_offer:prices","tt_content:CType:text","0,1"
+"be_users",,,,,,,,,,,,
+,"uid","pid","username","usergroup","deleted","admin"
+,2,0,"editor","9",0,0

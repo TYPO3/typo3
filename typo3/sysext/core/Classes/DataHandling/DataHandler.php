@@ -4960,6 +4960,23 @@ class DataHandler
             : null;
 
         $row = $this->removeNonCopyableFields($table, $row, 'localizeRecord');
+
+        // Child records are written while the fields are processed, but the localized record itself is only
+        // access checked later in process_datamap(). Check it upfront, so an access rejection leaves no children behind.
+        if (!$this->checkModifyAccessList($table)) {
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record "{table}:{uid}" without permission to modify table "{table}"', null, ['table' => $table, 'uid' => $uid]);
+            return null;
+        }
+        if (!$this->hasPermissionToInsert($table, $tscPID, BackendUtility::getRecord('pages', $tscPID) ?? [])) {
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record "{table}:{uid}" on pages:{pid} where table "{table}" is not allowed', null, ['table' => $table, 'uid' => $uid, 'pid' => $tscPID]);
+            return null;
+        }
+        $accessResult = $this->BE_USER->checkRecordEditAccess($table, array_replace($row, $overrideValues, ['pid' => $destPid]), true);
+        if (!$accessResult->isAllowed) {
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record "{table}:{uid}" without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $uid, 'reason' => $accessResult->errorMessage]);
+            return null;
+        }
+
         $data = [];
 
         foreach ($row as $field => $value) {
