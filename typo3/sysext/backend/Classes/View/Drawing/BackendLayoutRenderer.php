@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -114,7 +115,7 @@ readonly class BackendLayoutRenderer
             $context = $pageLayoutContext;
             // Check if we have to use a localized context for grid creation
             $primaryLanguageId = $pageLayoutContext->getDrawingConfiguration()->getPrimaryLanguageId();
-            if ($primaryLanguageId > 0) {
+            if ($primaryLanguageId > LanguageMarker::DEFAULT_LANGUAGE) {
                 // In case a localization is selected, clone the context with this language
                 $localizedContext = $pageLayoutContext->cloneForLanguage(
                     $pageLayoutContext->getSiteLanguage($primaryLanguageId)
@@ -182,8 +183,8 @@ readonly class BackendLayoutRenderer
         // default language
         $translationInfo = $contentFetcher->getTranslationData(
             $context,
-            $contentFetcher->getFlatContentRecords($context, 0),
-            0
+            $contentFetcher->getFlatContentRecords($context, LanguageMarker::DEFAULT_LANGUAGE),
+            LanguageMarker::DEFAULT_LANGUAGE
         );
 
         $defaultLanguageColumnObject = GeneralUtility::makeInstance(
@@ -194,7 +195,7 @@ readonly class BackendLayoutRenderer
         );
         foreach ($context->getLanguagesToShow() as $siteLanguage) {
             $localizedLanguageId = $siteLanguage->getLanguageId();
-            if ($localizedLanguageId  <= 0) {
+            if ($localizedLanguageId  <= LanguageMarker::DEFAULT_LANGUAGE) {
                 continue;
             }
 

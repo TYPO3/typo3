@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,7 +87,7 @@ class DatabaseIntegrityCheck
         while ($row = $result->fetchAssociative()) {
             $newID = $row['uid'];
             // Register various data for this item:
-            if ($row['sys_language_uid'] === 0) {
+            if ($row['sys_language_uid'] === LanguageMarker::DEFAULT_LANGUAGE) {
                 $this->pageIdArray[$newID] = $row;
             } else {
                 $this->pageTranslatedPageIDArray[$newID] = $row;

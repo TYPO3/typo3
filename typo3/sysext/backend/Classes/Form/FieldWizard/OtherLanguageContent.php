@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -73,7 +74,7 @@ class OtherLanguageContent extends AbstractNode
             $defaultLanguageRow
         ) ?? '';
         if ($defaultLanguageValue !== '') {
-            $iconIdentifier = ($this->data['systemLanguageRows'][0]['flagIconIdentifier'] ?? false) ?: 'flags-multiple';
+            $iconIdentifier = ($this->data['systemLanguageRows'][LanguageMarker::DEFAULT_LANGUAGE]['flagIconIdentifier'] ?? false) ?: 'flags-multiple';
             $html[] = '<div class="t3-form-original-language">';
             $html[] =   $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render();
             $html[] =   $this->previewFieldValue($defaultLanguageValue);

@@ -90,7 +90,7 @@ readonly class ContentFetcher
                     // Record is set to "all languages", place it according to view mode.
                     if ($isLanguageComparisonMode) {
                         // Force the record to only be shown in default language in "Languages" view mode.
-                        $recordLanguage = 0;
+                        $recordLanguage = LanguageMarker::DEFAULT_LANGUAGE;
                     } else {
                         // Force the record to be shown in the currently active language in "Columns" view mode.
                         $recordLanguage = $languageId;
@@ -143,13 +143,13 @@ readonly class ContentFetcher
 
     public function getTranslationData(PageLayoutContext $pageLayoutContext, iterable $contentElements, int $language): array
     {
-        if ($language === 0) {
+        if ($language === LanguageMarker::DEFAULT_LANGUAGE) {
             return [];
         }
 
         $languageTranslationInfo = $this->runtimeCache->get('ContentFetcher_TranslationInfo_' . $language) ?: [];
         if (empty($languageTranslationInfo)) {
-            $contentRecordsInDefaultLanguage = $this->getContentRecordsPerColumn($pageLayoutContext, null, 0);
+            $contentRecordsInDefaultLanguage = $this->getContentRecordsPerColumn($pageLayoutContext, null, LanguageMarker::DEFAULT_LANGUAGE);
             if (!empty($contentRecordsInDefaultLanguage)) {
                 $contentRecordsInDefaultLanguage = array_merge(...$contentRecordsInDefaultLanguage);
             }
@@ -157,7 +157,7 @@ readonly class ContentFetcher
                 array_column(
                     // Eliminate records with "-1" as sys_language_uid since they can not be translated
                     array_filter($contentRecordsInDefaultLanguage, static function (array $record): bool {
-                        return (int)($record['sys_language_uid'] ?? 0) !== LanguageMarker::ALL_LANGUAGES;
+                        return (int)($record['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE) !== LanguageMarker::ALL_LANGUAGES;
                     }),
                     'uid'
                 )

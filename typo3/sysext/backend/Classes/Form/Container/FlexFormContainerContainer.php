@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -53,7 +54,7 @@ class FlexFormContainerContainer extends AbstractContainer
             . '[_ACTION]';
 
         $moveAndDeleteContent = [];
-        $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
+        $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE);
         if ($userHasAccessToDefaultLanguage) {
             $moveAndDeleteContent[] = ''
                 . '<button type="button" class="btn btn-default t3js-delete">'

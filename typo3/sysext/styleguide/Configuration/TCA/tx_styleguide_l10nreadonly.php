@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 return [
     'ctrl' => [
         'title' => 'Form engine - defaultAsReadonly',
@@ -425,7 +427,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'pages',
-                'foreign_table_where' => 'AND {#pages}.{#sys_language_uid} = 0 ORDER BY pages.sorting LIMIT 10',
+                'foreign_table_where' => 'AND {#pages}.{#sys_language_uid} = ' . LanguageMarker::DEFAULT_LANGUAGE . ' ORDER BY pages.sorting LIMIT 10',
                 'items' => [
                     ['label' => 'static from tca 4711', 'value' => 4711],
                     ['label' => 'static from tca 4712', 'value' => 4712],

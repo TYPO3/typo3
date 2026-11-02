@@ -787,7 +787,7 @@ class DataHandler
                         $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
                     }
                     if ($table === 'pages'
-                        && $languageField && isset($incomingFieldArray[$languageField]) && $incomingFieldArray[$languageField] > 0
+                        && $languageField && isset($incomingFieldArray[$languageField]) && $incomingFieldArray[$languageField] > LanguageMarker::DEFAULT_LANGUAGE
                         && $transOrigPointerField && isset($incomingFieldArray[$transOrigPointerField]) && $incomingFieldArray[$transOrigPointerField] > 0
                     ) {
                         $pageRecord = BackendUtility::getRecord('pages', $incomingFieldArray[$transOrigPointerField]) ?? [];
@@ -1121,7 +1121,7 @@ class DataHandler
             $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
             if ($languageCapability->hasDiffSourceField()) {
                 // Get original language record if available
-                if ((int)($currentRecord[$languageCapability->getLanguageField()->getName()] ?? 0) > 0
+                if ((int)($currentRecord[$languageCapability->getLanguageField()->getName()] ?? LanguageMarker::DEFAULT_LANGUAGE) > LanguageMarker::DEFAULT_LANGUAGE
                     && (int)($currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0) > 0
                 ) {
                     $originalLanguageRecord = BackendUtility::getRecord($table, $currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()], '*', '', false);
@@ -3315,7 +3315,7 @@ class DataHandler
                                 unset($value['update'][$languageField]);
                             }
                             // Reset language for a -1 element from original record if copied or moved into language 0
-                            if ($row[$languageField] === LanguageMarker::ALL_LANGUAGES && (int)$languageId === 0) {
+                            if ($row[$languageField] === LanguageMarker::ALL_LANGUAGES && (int)$languageId === LanguageMarker::DEFAULT_LANGUAGE) {
                                 $value['update'][$languageField] = $row[$languageField];
                             }
                         }
@@ -3537,9 +3537,9 @@ class DataHandler
         $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
         // Determine the record's own language for field processing
-        $recordLanguage = 0;
+        $recordLanguage = LanguageMarker::DEFAULT_LANGUAGE;
         if ($schema->isLanguageAware()) {
-            $recordLanguage = (int)($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0);
+            $recordLanguage = (int)($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? LanguageMarker::DEFAULT_LANGUAGE);
         }
 
         $data = [];
@@ -3605,7 +3605,7 @@ class DataHandler
             }
         }
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
-        if (!$ignoreLocalization && $recordLanguage === 0 && $schema->isLanguageAware()) {
+        if (!$ignoreLocalization && $recordLanguage === LanguageMarker::DEFAULT_LANGUAGE && $schema->isLanguageAware()) {
             // repointing the new translation records to the parent record we just created
             /** @var LanguageAwareSchemaCapability $languageCapability */
             $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
@@ -3771,7 +3771,7 @@ class DataHandler
                             // copyL10nOverlayRecords() on copying the default language record
                             $transOrigPointer = $row[$transOrigPointerField ?? ''] ?? 0;
                             if (!empty($languageField)
-                                && $row[$languageField] > 0
+                                && $row[$languageField] > LanguageMarker::DEFAULT_LANGUAGE
                                 && $transOrigPointer > 0
                                 && (isset($rows[$transOrigPointer]) || isset($movedLiveIds[$transOrigPointer]))
                             ) {
@@ -3781,7 +3781,7 @@ class DataHandler
                             $newUid = $this->copyRecord($table, $row['uid'], $theNewRootID, false, $overrideValues);
                             if ($translationSourceField) {
                                 $languageSourceMap[$row['uid']] = $newUid;
-                                if ($row[$languageField] > 0) {
+                                if ($row[$languageField] > LanguageMarker::DEFAULT_LANGUAGE) {
                                     $doRemap = true;
                                 }
                             }
@@ -3949,7 +3949,7 @@ class DataHandler
      * @internal
      * @see copyRecord()
      */
-    public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = [])
+    public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = LanguageMarker::DEFAULT_LANGUAGE, array $workspaceOptions = [])
     {
         $relationFieldType = $this->getRelationFieldType($conf);
         // Get the localization mode for the current (parent) record (keep|select):
@@ -4016,7 +4016,7 @@ class DataHandler
 
         // Check if referenced records of select or group fields should also be localized in general.
         // A further check is done in the loop below for each table name.
-        if ($language > 0 && $mmTable === '' && !empty($conf['localizeReferencesAtParentLocalization'])) {
+        if ($language > LanguageMarker::DEFAULT_LANGUAGE && $mmTable === '' && !empty($conf['localizeReferencesAtParentLocalization'])) {
             // Check whether allowed tables can be localized.
             $localizeTables = [];
             foreach ($allowedTablesArray as $allowedTable) {
@@ -4086,7 +4086,7 @@ class DataHandler
             $childTableIsWorkspaceAware = $this->tcaSchemaFactory->has($v['table']) && $this->tcaSchemaFactory->get($v['table'])->isWorkspaceAware();
             $childTableIsLanguageAware = $this->tcaSchemaFactory->has($v['table']) && $this->tcaSchemaFactory->get($v['table'])->isLanguageAware();
             // If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
-            if ($language > 0 && $schema->isLanguageAware() && $language != ($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0)) {
+            if ($language > LanguageMarker::DEFAULT_LANGUAGE && $schema->isLanguageAware() && $language != ($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? LanguageMarker::DEFAULT_LANGUAGE)) {
                 // Skip localization of children whose table is not language-aware, as they cannot be localized (e.g. monoglot IRRE children).
                 // Remove from itemArray to prevent writeForeignField from reassigning the original child to the localized parent.
                 // @see DataScenarios\IrreForeignField\AbstractActionTestCase->localizeParentContentWithMonoglotHotelChild()
@@ -4705,7 +4705,7 @@ class DataHandler
 
         $this->registerRecordIdForPageCacheClearing($table, $sourceUid, $table === 'pages' ? $workspaceRecord['uid'] ?? $liveRecord['uid'] : $workspaceRecord['pid'] ?? $liveRecord['pid']);
         $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $sourceUid]);
-        if ($tableLanguageFieldName && (int)($workspaceRecord[$tableLanguageFieldName] ?? $liveRecord[$tableLanguageFieldName]) === 0) {
+        if ($tableLanguageFieldName && (int)($workspaceRecord[$tableLanguageFieldName] ?? $liveRecord[$tableLanguageFieldName]) === LanguageMarker::DEFAULT_LANGUAGE) {
             $this->moveL10nOverlayRecords($table, $sourceUid, $updateFields['pid'], $destination);
         }
         if ($destination >= 0) {
@@ -4877,16 +4877,16 @@ class DataHandler
 
         // Make sure that records which are translated from another language than the default language have a correct
         // localization source set themselves, before translating them to another language.
-        if ((int)$row[$translationOriginPointerFieldName] !== 0 && $row[$languageFieldName] > 0) {
+        if ((int)$row[$translationOriginPointerFieldName] !== 0 && $row[$languageFieldName] > LanguageMarker::DEFAULT_LANGUAGE) {
             $localizationParentRecord = BackendUtility::getRecord($table, $row[$translationOriginPointerFieldName]);
-            if ((int)$localizationParentRecord[$languageFieldName] !== 0) {
+            if ((int)$localizationParentRecord[$languageFieldName] !== LanguageMarker::DEFAULT_LANGUAGE) {
                 $this->log($table, $localizationParentRecord['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{originalRecordId} contained a reference to an original record that is not a default record (which is strange)', null, ['table' => $table, 'originalRecordId' => $localizationParentRecord['uid']]);
                 return false;
             }
         }
 
         // Default language records must never have a localization parent as they are the origin of any translation.
-        if ((int)$row[$translationOriginPointerFieldName] !== 0 && (int)$row[$languageFieldName] === 0) {
+        if ((int)$row[$translationOriginPointerFieldName] !== 0 && (int)$row[$languageFieldName] === LanguageMarker::DEFAULT_LANGUAGE) {
             $this->log($table, $row['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{uid} contained a reference to an original default record but is a default record itself (which is strange)', null, ['table' => $table, 'uid' => (int)$row['uid']]);
             return false;
         }
@@ -4921,7 +4921,7 @@ class DataHandler
         // the original record (which is pointing to the correspondent default language record) to the new record.
         // In copy / free mode the TransOrigPointer field is always set to 0, as no connection to the localization parent is wanted in that case.
         // For pages, there is no "copy/free mode".
-        if (($this->useTransOrigPointerField || $table === 'pages') && (int)$row[$languageFieldName] === 0) {
+        if (($this->useTransOrigPointerField || $table === 'pages') && (int)$row[$languageFieldName] === LanguageMarker::DEFAULT_LANGUAGE) {
             $overrideValues[$translationOriginPointerFieldName] = $uid;
         } elseif (!$this->useTransOrigPointerField) {
             $overrideValues[$translationOriginPointerFieldName] = 0;
@@ -5150,13 +5150,13 @@ class DataHandler
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $field = $command['field'] ?? '';
-        $language = (int)($command['language'] ?? 0);
+        $language = (int)($command['language'] ?? LanguageMarker::DEFAULT_LANGUAGE);
         $action = $command['action'] ?? '';
         $ids = $command['ids'] ?? [];
         if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !$schema->hasField($field)) {
             return;
         }
-        if ($language <= 0) {
+        if ($language <= LanguageMarker::DEFAULT_LANGUAGE) {
             return;
         }
 
@@ -5495,7 +5495,7 @@ class DataHandler
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $languageField = $languageCapability->getLanguageField()->getName();
         $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        if ((int)($liveRecord[$languageField] ?? 0) !== 0 || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
+        if ((int)($liveRecord[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE) !== LanguageMarker::DEFAULT_LANGUAGE || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
             // Don't do anything if we're not deleting a live record in default language
             return;
         }
@@ -5506,7 +5506,7 @@ class DataHandler
                 // workspace elements
                 $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 // with sys_language_uid > 0
-                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
                 // in state 'new'
                 $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)),
                 // with "l10n_parent" set to uid of live record
@@ -5660,7 +5660,7 @@ class DataHandler
         $pageIdInDefaultLanguage = $uid;
         $isPageTranslation = false;
         $localizationParent = (int)($recordToDelete[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0);
-        $pageLanguageId = 0;
+        $pageLanguageId = LanguageMarker::DEFAULT_LANGUAGE;
         if ($localizationParent > 0) {
             // For translated pages, translated records in other tables (eg. tt_content) for the
             // to-delete translated page have their pid field set to the uid of the default language record,
@@ -5673,7 +5673,7 @@ class DataHandler
             $pageIdInDefaultLanguage = $localizationParent;
             $isPageTranslation = true;
             $pagesLanguageFieldName = $languageCapability->getLanguageField()->getName();
-            $pageLanguageId = $recordToDelete[$pagesLanguageFieldName] ?? 0;
+            $pageLanguageId = $recordToDelete[$pagesLanguageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE;
         }
         $otherLocalizationExists = false;
         if ($isPageTranslation && $forceHardDelete) {
@@ -6310,7 +6310,7 @@ class DataHandler
         $languageFieldName = $pageSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
         $sysLanguageId = (int)$page[$languageFieldName];
         $versionState = VersionState::tryFrom($page['t3ver_state'] ?? 0);
-        if ($sysLanguageId > 0) {
+        if ($sysLanguageId > LanguageMarker::DEFAULT_LANGUAGE) {
             // New or moved localized page.
             // Discard records on this page localization, but no sub pages.
             // Records of a translated page have the pid set to the default language page uid. Found in l10n_parent.
@@ -7556,10 +7556,10 @@ class DataHandler
      *
      * @param int $pid Integer PID
      */
-    protected function hasPermissionToInsert($table, $pid, array $pageRecord, int $language = 0): bool
+    protected function hasPermissionToInsert($table, $pid, array $pageRecord, int $language = LanguageMarker::DEFAULT_LANGUAGE): bool
     {
         $pid = (int)$pid;
-        if ($table === 'pages' && $language > 0) {
+        if ($table === 'pages' && $language > LanguageMarker::DEFAULT_LANGUAGE) {
             // Localizing a page is treated as "PAGE_EDIT": This is not about creating a new sub-page which
             // needs "PAGE_NEW". We want to be able to allow editors to create page localization of existing
             // pages, while at the same time disallow creating new sub-pages.
@@ -7634,7 +7634,7 @@ class DataHandler
                 // Sub pages of given pid
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($defaultLanguagePid, Connection::PARAM_INT)),
                 // Only default language pages
-                $queryBuilder->expr()->eq($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), 0),
+                $queryBuilder->expr()->eq($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), LanguageMarker::DEFAULT_LANGUAGE),
                 // We do want to handle "workspace new" and "workspace moved" subpages
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('t3ver_wsid', 0),
@@ -8438,7 +8438,7 @@ class DataHandler
         }
         // Without a configured default, the database default of the language field applies, which is 0
         $defaults = $this->applyDefaultsForFieldArray($table, $pageId, $prepopulatedFieldArray, $incomingFieldArray);
-        $incomingFieldArray[$languageFieldName] = $defaults[$languageFieldName] ?? 0;
+        $incomingFieldArray[$languageFieldName] = $defaults[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE;
         return $incomingFieldArray;
     }
 
@@ -8660,7 +8660,7 @@ class DataHandler
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
                 )
                 ->orderBy('sorting', 'DESC');
             if (!$this->BE_USER->isAdmin()) {
@@ -10001,7 +10001,7 @@ class DataHandler
                             }
                             $newData = [$foreignLanguageField => $language];
                             // A child in default language or "all languages" is no translation
-                            if ($language <= 0) {
+                            if ($language <= LanguageMarker::DEFAULT_LANGUAGE) {
                                 foreach ($foreignTranslationFields as $translationField) {
                                     if ((int)$child[$translationField] !== 0) {
                                         $newData[$translationField] = 0;

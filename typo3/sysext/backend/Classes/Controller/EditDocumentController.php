@@ -1033,7 +1033,7 @@ class EditDocumentController
 
                 if ($mainFormElement->command !== 'new') {
                     $languageCapability = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language) : null;
-                    $languageId = 0;
+                    $languageId = LanguageMarker::DEFAULT_LANGUAGE;
                     if (
                         $mainFormElement->isSavedRecord()
                         && $schema->isLanguageAware()
@@ -1060,7 +1060,7 @@ class EditDocumentController
                     if ($mainFormElement->table === 'tt_content') {
                         $canCreateNewOrDuplicate = $this->isInconsistentLanguageHandlingAllowed() || $this->isPageContentFreeTranslationMode($mainFormElement, $languageId);
                     } else {
-                        $canCreateNewOrDuplicate = $languageId === 0 || $l10nParent === 0;
+                        $canCreateNewOrDuplicate = $languageId === LanguageMarker::DEFAULT_LANGUAGE || $l10nParent === 0;
                     }
                     if ($canCreateNewOrDuplicate) {
                         $this->registerNewButtonToButtonBar($view, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -1593,7 +1593,7 @@ class EditDocumentController
         $disableDelete = false;
         if ($this->firstEl?->table === 'sys_file_metadata') {
             $row = $this->firstEl->record;
-            if ((int)($row['sys_language_uid'] ?? 0) === 0) {
+            if ((int)($row['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE) === LanguageMarker::DEFAULT_LANGUAGE) {
                 // Always disable for default language
                 $disableDelete = true;
             }
@@ -1664,8 +1664,8 @@ class EditDocumentController
         }
         // Remove default language, if user does not have access. This is necessary, since
         // the default language is always added when fetching the system languages (#88504).
-        if (isset($availableLanguages[0]) && !$this->getBackendUser()->checkLanguageAccess(0)) {
-            unset($availableLanguages[0]);
+        if (isset($availableLanguages[LanguageMarker::DEFAULT_LANGUAGE]) && !$this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
+            unset($availableLanguages[LanguageMarker::DEFAULT_LANGUAGE]);
         }
         // Page available in other languages than default language?
         if (count($availableLanguages) > 1) {
@@ -1681,13 +1681,13 @@ class EditDocumentController
             if ($currentLanguage > LanguageMarker::ALL_LANGUAGES) {
                 // Get record in default language if needed
                 if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
-                    $rowsByLang[0] = BackendUtility::getLiveVersionOfRecord(
+                    $rowsByLang[LanguageMarker::DEFAULT_LANGUAGE] = BackendUtility::getLiveVersionOfRecord(
                         $table,
                         $rowCurrent[$transOrigPointerField],
                         $fetchFields
                     );
-                    if (!is_array($rowsByLang[0])) {
-                        $rowsByLang[0] = BackendUtility::getRecord(
+                    if (!is_array($rowsByLang[LanguageMarker::DEFAULT_LANGUAGE])) {
+                        $rowsByLang[LanguageMarker::DEFAULT_LANGUAGE] = BackendUtility::getRecord(
                             $table,
                             $rowCurrent[$transOrigPointerField],
                             $fetchFields
@@ -1698,7 +1698,7 @@ class EditDocumentController
                 }
                 // List of language id's that should not be added to the selector
                 $noAddOption = [];
-                if ($rowCurrent[$transOrigPointerField] || $currentLanguage === 0) {
+                if ($rowCurrent[$transOrigPointerField] || $currentLanguage === LanguageMarker::DEFAULT_LANGUAGE) {
                     // Get record in other languages to see what's already available
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()
@@ -1714,11 +1714,11 @@ class EditDocumentController
                             ),
                             $queryBuilder->expr()->gt(
                                 $languageField,
-                                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 $transOrigPointerField,
-                                $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], Connection::PARAM_INT)
+                                $queryBuilder->createNamedParameter($rowsByLang[LanguageMarker::DEFAULT_LANGUAGE]['uid'], Connection::PARAM_INT)
                             )
                         )
                         ->executeQuery();
@@ -1760,7 +1760,7 @@ class EditDocumentController
                             // Don't add option since we are in a view with just a subset of fields, those views
                             // are specific editing fields only views and are not meant for translation handling.
                             $addOption = false;
-                        } elseif (!isset($rowsByLang[0]['uid'])) {
+                        } elseif (!isset($rowsByLang[LanguageMarker::DEFAULT_LANGUAGE]['uid'])) {
                             // Don't add option since no default row to localize from exists
                             // TODO: Actually tt_content is able to localize from another l10n_source then L=0.
                             //       This however is currently only possible via the translation wizard.
@@ -1790,7 +1790,7 @@ class EditDocumentController
                             $languageItem = $this->componentFactory->createDropDownItem()
                                 ->setTag('typo3-backend-localization-button')
                                 ->setAttribute('record-type', $table)
-                                ->setAttribute('record-uid', (string)$rowsByLang[0]['uid'])
+                                ->setAttribute('record-uid', (string)$rowsByLang[LanguageMarker::DEFAULT_LANGUAGE]['uid'])
                                 ->setAttribute('target-language', (string)$languageId)
                                 ->setLabel($selectorOptionLabel);
                             if (!empty($language['flagIcon'])) {
@@ -1867,9 +1867,9 @@ class EditDocumentController
         if ($table !== 'pages' && $id > 0) {
             $translatedPages = $this->localizationRepository->getPageTranslations($pageId, [], $this->getBackendUser()->workspace);
             $availableLanguages = [];
-            if ($allLanguages[0] ?? false) {
+            if ($allLanguages[LanguageMarker::DEFAULT_LANGUAGE] ?? false) {
                 $availableLanguages = [
-                    0 => $allLanguages[0],
+                    LanguageMarker::DEFAULT_LANGUAGE => $allLanguages[LanguageMarker::DEFAULT_LANGUAGE],
                 ];
             }
             foreach ($translatedPages as $translatedPage) {

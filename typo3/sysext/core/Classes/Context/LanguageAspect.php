@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Context;
 
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 
 /**
  * The Aspect is usually available as "language" property, and
@@ -61,7 +62,7 @@ final readonly class LanguageAspect implements AspectInterface
      * Create the default language
      */
     public function __construct(
-        private int $id = 0,
+        private int $id = LanguageMarker::DEFAULT_LANGUAGE,
         private ?int $contentId = null,
         private string $overlayType = self::OVERLAYS_ON_WITH_FLOATING,
         private array $fallbackChain = [],
@@ -104,7 +105,7 @@ final readonly class LanguageAspect implements AspectInterface
      */
     public function doOverlays(): bool
     {
-        return $this->getContentId() > 0 && $this->overlayType !== self::OVERLAYS_OFF;
+        return $this->getContentId() > LanguageMarker::DEFAULT_LANGUAGE && $this->overlayType !== self::OVERLAYS_OFF;
     }
 
     /**

@@ -51,6 +51,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -406,7 +407,7 @@ class FileListController implements LoggerAwareInterface
             ]);
 
             // Add edit metadata configuration, if user can edit default language
-            if ($this->getBackendUser()->checkLanguageAccess(0)) {
+            if ($this->getBackendUser()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE)) {
                 $this->view->assign(
                     'editActionConfiguration',
                     GeneralUtility::jsonEncodeForHtmlAttribute([

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
@@ -132,7 +133,7 @@ readonly class PreviewSimulator implements MiddlewareInterface
         $languageAspectFromRequest = LanguageAspectFactory::createFromSiteLanguage($request->getAttribute('language', $site->getDefaultLanguage()));
         $pageIsHidden = $pageRepository->checkIfPageIsHidden($pageId, $languageAspectFromRequest);
 
-        if ($languageAspectFromRequest->getId() > 0) {
+        if ($languageAspectFromRequest->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
             $pageIsHidden = $pageIsHidden || $pageRepository->checkIfPageIsHidden(
                 $pageId,
                 LanguageAspectFactory::createFromSiteLanguage($site->getDefaultLanguage())

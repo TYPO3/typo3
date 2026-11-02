@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -207,7 +208,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         // Enrich with language-specific fields
         $processedMenu = [];
         foreach ($menuItems as $key => $item) {
-            $languageId = (int)($item['data']['_REQUESTED_OVERLAY_LANGUAGE'] ?? 0);
+            $languageId = (int)($item['data']['_REQUESTED_OVERLAY_LANGUAGE'] ?? LanguageMarker::DEFAULT_LANGUAGE);
             try {
                 $languageObject = $site->getLanguageById($languageId);
             } catch (\InvalidArgumentException) {

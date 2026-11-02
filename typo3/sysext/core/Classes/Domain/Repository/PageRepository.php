@@ -241,7 +241,7 @@ class PageRepository implements LoggerAwareInterface
                     $uid,
                     $whereGroupAccess,
                     $enableFieldsConstraint,
-                    $this->context->getPropertyFromAspect('language', 'id', 0),
+                    $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE),
                 ]
             )
         );
@@ -287,7 +287,7 @@ class PageRepository implements LoggerAwareInterface
     public function getPage_noCheck(int $uid): array
     {
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_getPage_noCheck_' . $uid . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . (int)$this->context->getPropertyFromAspect('workspace', 'id');
+        $cacheIdentifier = 'PageRepository_getPage_noCheck_' . $uid . '_' . $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE) . '_' . (int)$this->context->getPropertyFromAspect('workspace', 'id');
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
             return $cacheEntry;
@@ -396,7 +396,7 @@ class PageRepository implements LoggerAwareInterface
             // For "pages": Pages are usually retrieved by fetching the page record in the default language.
             // However, the originalRow should still fetch the page in a specific language (with fallbacks).
             // The method "getPageOverlay" should still be called in order to get the page record in the correct language.
-            if ($table === 'pages' && $languageAspect->getId() > 0) {
+            if ($table === 'pages' && $languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
                 $attempted = true;
                 $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
             } elseif ($table === 'sys_file_metadata') {
@@ -451,7 +451,7 @@ class PageRepository implements LoggerAwareInterface
 
         $overlays = [];
         // If language UID is different from zero, do overlay:
-        if ($languageAspect->getId() > 0) {
+        if ($languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
             $pageIds = [];
             foreach ($pagesInput as $origPage) {
                 if (is_array($origPage)) {
@@ -509,13 +509,13 @@ class PageRepository implements LoggerAwareInterface
         ) {
             return false;
         }
-        if ($languageUid > 0 && $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
-            if (!isset($page['_LOCALIZED_UID']) || (int)($page['sys_language_uid'] ?? 0) !== $languageUid) {
+        if ($languageUid > LanguageMarker::DEFAULT_LANGUAGE && $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
+            if (!isset($page['_LOCALIZED_UID']) || (int)($page['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE) !== $languageUid) {
                 return false;
             }
-        } elseif ($languageUid > 0) {
+        } elseif ($languageUid > LanguageMarker::DEFAULT_LANGUAGE) {
             $languageUids = array_merge([$languageUid], $this->getLanguageFallbackChain($languageAspect));
-            return in_array((int)($page['sys_language_uid'] ?? 0), $languageUids, true);
+            return in_array((int)($page['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE), $languageUids, true);
         }
         return true;
     }
@@ -654,7 +654,7 @@ class PageRepository implements LoggerAwareInterface
         if (empty($transOrigPointerField)) {
             return $row;
         }
-        $incomingLanguageId = (int)($row[$languageField] ?? 0);
+        $incomingLanguageId = (int)($row[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE);
 
         // Return record for ALL languages untouched
         if ($incomingLanguageId === LanguageMarker::ALL_LANGUAGES) {
@@ -673,17 +673,17 @@ class PageRepository implements LoggerAwareInterface
         }
         // When default language is displayed, we never want to return a record carrying
         // another language.
-        if ($languageAspect->getContentId() === 0 && $incomingLanguageId > 0) {
+        if ($languageAspect->getContentId() === LanguageMarker::DEFAULT_LANGUAGE && $incomingLanguageId > LanguageMarker::DEFAULT_LANGUAGE) {
             return null;
         }
 
         // Will try to overlay a record only if the contentId value is larger than zero,
         // contentId is used for regular records, whereas getId() is used for "pages" only.
-        if ($languageAspect->getContentId() === 0) {
+        if ($languageAspect->getContentId() === LanguageMarker::DEFAULT_LANGUAGE) {
             return $row;
         }
         // Must be default language, otherwise no overlaying
-        if ($incomingLanguageId === 0) {
+        if ($incomingLanguageId === LanguageMarker::DEFAULT_LANGUAGE) {
             // Select overlay record:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($table);
@@ -897,7 +897,7 @@ class PageRepository implements LoggerAwareInterface
                 ),
                 $queryBuilder->expr()->eq(
                     $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                 ),
                 $this->getEnableFieldsConstraint(),
                 QueryHelper::stripLogicalOperatorPrefix($disableGroupAccessCheck ? '' : $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages')),
@@ -1148,7 +1148,7 @@ class PageRepository implements LoggerAwareInterface
         $shortcutMode = (int)($page['shortcut_mode'] ?? self::SHORTCUT_MODE_NONE);
         $shortcutTarget = (string)($page['shortcut'] ?? '');
 
-        $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . $page['sys_language_uid'];
+        $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE) . '_' . $page['sys_language_uid'];
         // Only use the runtime cache if we do not support the random subpages functionality
         $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
         if (is_array($cachedResult)) {
@@ -1197,7 +1197,7 @@ class PageRepository implements LoggerAwareInterface
             return $pageRecord;
         }
 
-        $cacheIdentifier = 'links_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $pageRecord['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', 0) . '_' . $pageRecord['sys_language_uid'];
+        $cacheIdentifier = 'links_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $pageRecord['uid'] . '_' . $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE) . '_' . $pageRecord['sys_language_uid'];
         // Only use the runtime cache if we do not support the random subpages functionality
         $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
         if (is_array($cachedResult)) {
@@ -1950,7 +1950,7 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 ),
                 // tree is only built by language=0 pages
-                $queryBuilder->expr()->eq('sys_language_uid', 0)
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
             )
             ->orderBy('sorting');
 
@@ -2076,7 +2076,7 @@ class PageRepository implements LoggerAwareInterface
 
         // $pageId always points to the ID of the default language page, so we check
         // the current site language to determine if we need to fetch a translation but consider fallbacks
-        if ($languageAspect->getId() > 0) {
+        if ($languageAspect->getId() > LanguageMarker::DEFAULT_LANGUAGE) {
             $languagesToCheck = [$languageAspect->getId()];
             // Remove fallback information like "pageNotFound"
             foreach ($languageAspect->getFallbackChain() as $languageToCheck) {
@@ -2090,13 +2090,13 @@ class PageRepository implements LoggerAwareInterface
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
             );
             // If the fallback language Ids also contains the default language, this needs to be considered
-            if (in_array(0, $languagesToCheck, true)) {
+            if (in_array(LanguageMarker::DEFAULT_LANGUAGE, $languagesToCheck, true)) {
                 $constraint = $queryBuilder->expr()->or(
                     $constraint,
                     // Ensure to also fetch the default record
                     $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
-                        $queryBuilder->expr()->eq('sys_language_uid', 0)
+                        $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
                     )
                 );
             }

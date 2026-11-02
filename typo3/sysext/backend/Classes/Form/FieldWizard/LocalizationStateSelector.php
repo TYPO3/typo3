@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -65,7 +66,7 @@ class LocalizationStateSelector extends AbstractNode
                 $languageField = $this->data['processedTca']['ctrl']['languageField'] ?? null;
                 if ($languageField
                     && isset($this->data['sourceLanguageRow'][$languageField])
-                    && $this->data['sourceLanguageRow'][$languageField] > 0
+                    && $this->data['sourceLanguageRow'][$languageField] > LanguageMarker::DEFAULT_LANGUAGE
                 ) {
                     $languageUidOfSourceRow = $this->data['sourceLanguageRow'][$languageField];
                     $sourceLanguageTitle = $this->data['systemLanguageRows'][$languageUidOfSourceRow]['title'] ?? '';

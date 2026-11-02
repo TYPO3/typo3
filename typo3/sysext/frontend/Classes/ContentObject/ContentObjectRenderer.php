@@ -4964,7 +4964,7 @@ class ContentObjectRenderer
         if ($languageAspect->doOverlays() && !empty($localizationParentField)) {
             // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
             // OVERLAY the records with localized versions!
-            $languageQuery = $expressionBuilder->in($languageField, [0, LanguageMarker::ALL_LANGUAGES]);
+            $languageQuery = $expressionBuilder->in($languageField, [LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES]);
             // Use this option to include records that don't have a default language counterpart ("free mode")
             // (originalpointerfield is 0 and the language field contains the requested language)
             if (isset($conf['includeRecordsWithoutDefaultTranslation']) || !empty($conf['includeRecordsWithoutDefaultTranslation.'])) {

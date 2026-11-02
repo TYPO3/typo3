@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
@@ -94,7 +95,7 @@ final class ViewModuleController
         $languageId = $this->pageContext->getPrimaryLanguageId();
         if (!isset($previewLanguages[$languageId])) {
             // Fall back to 0 in case currently selected language is not allowed
-            $languageId = 0;
+            $languageId = LanguageMarker::DEFAULT_LANGUAGE;
             $this->pageContext = $this->pageContextFactory->createWithLanguages(
                 $request,
                 $this->pageContext->pageId,

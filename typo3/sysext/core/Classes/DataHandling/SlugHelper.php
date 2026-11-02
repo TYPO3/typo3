@@ -147,7 +147,7 @@ class SlugHelper
             if ($schema->isLanguageAware()) {
                 $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             }
-            $languageId = (int)($recordData[$languageFieldName ?? ''] ?? 0);
+            $languageId = (int)($recordData[$languageFieldName ?? ''] ?? LanguageMarker::DEFAULT_LANGUAGE);
             $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);
             if (is_array($parentPageRecord)) {
                 // If the parent page has a slug, use that instead of "re-generating" the slug from the parents' page title
@@ -588,7 +588,7 @@ class SlugHelper
             $parentPageRecord = array_shift($rootLine);
             // exclude spacers, recyclers and folders
         } while (!empty($rootLine) && in_array((int)$parentPageRecord['doktype'], $excludeDokTypes, true));
-        if ($languageId > 0) {
+        if ($languageId > LanguageMarker::DEFAULT_LANGUAGE) {
             $languageIds = [$languageId];
             $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 

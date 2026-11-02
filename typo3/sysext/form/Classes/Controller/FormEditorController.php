@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -272,7 +273,7 @@ class FormEditorController extends ActionController
         }
 
         $form = $formDefinition->bind($this->request);
-        $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
+        $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, LanguageMarker::DEFAULT_LANGUAGE));
         $form->overrideCurrentPage($pageIndex);
         return $this->htmlResponse($form->render());
     }

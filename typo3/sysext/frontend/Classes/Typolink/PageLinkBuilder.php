@@ -51,6 +51,7 @@ use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -178,7 +179,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $pageRepository = $this->buildPageRepository($languageAspect);
 
         // Now overlay the page in the target language, in order to have valid title attributes etc.
-        if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
+        if ($siteLanguageOfTargetPage->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE) {
             $pageObject = $configuration['page'] ?? null;
             if ($pageObject instanceof Page
                 && $pageObject->getPageId() === (int)$resolvedPage['uid'] // No MP/Shortcut changes
@@ -186,7 +187,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                 && (
                     $pageObject->getLanguageId() === $languageAspect->getId()
                     || $pageObject->getRequestedLanguage() === $languageAspect->getId() // Page is suitable for that language
-                    || $pageObject->getLanguageId() === 0 // No translation found
+                    || $pageObject->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE // No translation found
                 )
             ) {
                 $resolvedPage = $pageObject->toArray(true);
@@ -210,14 +211,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         // Check if the target page can be access depending on l18n_cfg
         if (!$pageRepository->isPageSuitableForLanguage($resolvedPage, $languageAspect)) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($resolvedPage['l18n_cfg'] ?? 0));
-            if ($siteLanguageOfTargetPage->getLanguageId() === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
+            if ($siteLanguageOfTargetPage->getLanguageId() === LanguageMarker::DEFAULT_LANGUAGE && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
                 throw new UnableToLinkException('Default language of page  "' . ($linkDetails['typoLinkParameter'] ?? 'unknown') . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
             }
             // If the requested language is not the default language and the page has no overlay for this language
             // generating a link would cause a 404 error when using this like if one of those conditions apply:
             //  - The page is set to be hidden if it is not translated
             //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
-            if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($resolvedPage['_LOCALIZED_UID']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
+            if ($siteLanguageOfTargetPage->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE && !isset($resolvedPage['_LOCALIZED_UID']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
                 throw new UnableToLinkException('Fallback to default language of page "' . ($linkDetails['typoLinkParameter'] ?? 'unknown') . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
             }
         }
@@ -554,10 +555,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
         $languageField = $languageCapability->getLanguageField()->getName();
         $languageParentField = $languageCapability->getTranslationOriginPointerField()->getName();
-        $language = (int)($page[$languageField] ?? 0);
+        $language = (int)($page[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE);
 
         // The page that should be linked is actually a default-language page, nothing to do here.
-        if ($language === 0 || empty($page[$languageParentField])) {
+        if ($language === LanguageMarker::DEFAULT_LANGUAGE || empty($page[$languageParentField])) {
             return $page;
         }
 
@@ -607,7 +608,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $currentSiteLanguage = $this->getCurrentSiteLanguage() ?? $currentSite?->getDefaultLanguage();
 
         if ($targetLanguageId === 'current') {
-            $targetLanguageId = $currentSiteLanguage?->getLanguageId() ?? 0;
+            $targetLanguageId = $currentSiteLanguage?->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE;
         } else {
             $targetLanguageId = (int)$targetLanguageId;
         }

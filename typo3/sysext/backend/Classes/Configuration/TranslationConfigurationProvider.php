@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -84,8 +85,8 @@ readonly class TranslationConfigurationProvider
                 $site = new NullSite();
             }
             $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
-            if (!isset($siteLanguages[0])) {
-                $siteLanguages[0] = $site->getDefaultLanguage();
+            if (!isset($siteLanguages[LanguageMarker::DEFAULT_LANGUAGE])) {
+                $siteLanguages[LanguageMarker::DEFAULT_LANGUAGE] = $site->getDefaultLanguage();
             }
             $this->addSiteLanguagesToConsolidatedList($allSystemLanguages, $siteLanguages);
             $this->computeSystemLanguagesTitleAndFlag($allSystemLanguages);
@@ -113,7 +114,7 @@ readonly class TranslationConfigurationProvider
     {
         foreach ($allSystemLanguages as &$language) {
             $language['title'] = implode(', ', array_keys($language['titlesMap']));
-            if ($language['uid'] === 0 && count($language['titlesMap']) > 1) {
+            if ($language['uid'] === LanguageMarker::DEFAULT_LANGUAGE && count($language['titlesMap']) > 1) {
                 // "Default" label for language 0 with multiple titles.
                 $language['title'] = $this->getLanguageService()->translate('LGL.defaultLanguage', 'core.general');
             }
@@ -159,7 +160,7 @@ readonly class TranslationConfigurationProvider
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $languageFieldName = $languageCapability->getLanguageField()->getName();
         $translationOriginPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        if ($row[$languageFieldName] > 0) {
+        if ($row[$languageFieldName] > LanguageMarker::DEFAULT_LANGUAGE) {
             return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a language value "' . $row[$languageFieldName] . '", relation to record "' . $row[$translationOriginPointerFieldName] . '")';
         }
         if ($row[$translationOriginPointerFieldName] != 0) {
@@ -200,7 +201,7 @@ readonly class TranslationConfigurationProvider
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->gt(
                     $languageFieldName,
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                 )
             );
         } else {

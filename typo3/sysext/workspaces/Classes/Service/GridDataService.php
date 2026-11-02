@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -674,7 +675,7 @@ readonly class GridDataService
      */
     protected function getLanguageValue(TcaSchema $schema, array $record): int
     {
-        $languageValue = 0;
+        $languageValue = LanguageMarker::DEFAULT_LANGUAGE;
         if ($schema->isLanguageAware()) {
             $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             if (!empty($record[$languageField])) {

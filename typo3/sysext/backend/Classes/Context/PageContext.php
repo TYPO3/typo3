@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Context;
 
 use TYPO3\CMS\Backend\Domain\Model\Language\PageLanguageInformation;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
@@ -97,11 +98,11 @@ final readonly class PageContext
      */
     public function getPrimaryLanguageId(): int
     {
-        $nonDefaultLanguages = array_filter($this->selectedLanguageIds, static fn(int $id): bool => $id > 0);
+        $nonDefaultLanguages = array_filter($this->selectedLanguageIds, static fn(int $id): bool => $id > LanguageMarker::DEFAULT_LANGUAGE);
         if (count($nonDefaultLanguages) === 1) {
             return reset($nonDefaultLanguages);
         }
-        return 0;
+        return LanguageMarker::DEFAULT_LANGUAGE;
     }
 
     /**
@@ -121,7 +122,7 @@ final readonly class PageContext
 
     public function isDefaultLanguageSelected(): bool
     {
-        return $this->isLanguageSelected(0);
+        return $this->isLanguageSelected(LanguageMarker::DEFAULT_LANGUAGE);
     }
 
     /**
@@ -133,7 +134,7 @@ final readonly class PageContext
     {
         $languageId ??= $this->getPrimaryLanguageId();
 
-        if ($languageId === 0) {
+        if ($languageId === LanguageMarker::DEFAULT_LANGUAGE) {
             return $this->pageRecord['title'] ?? '';
         }
 

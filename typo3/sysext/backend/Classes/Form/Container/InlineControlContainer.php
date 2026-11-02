@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -88,10 +89,10 @@ class InlineControlContainer extends AbstractContainer
         $config = $parameterArray['fieldConf']['config'];
         $foreign_table = $config['foreign_table'];
         $isReadOnly = isset($config['readOnly']) && $config['readOnly'];
-        $language = 0;
+        $language = LanguageMarker::DEFAULT_LANGUAGE;
         if ($this->data['tcaSchemata']->has($table) && $this->data['tcaSchemata']->get($table)->hasCapability(TcaSchemaCapability::Language)) {
             $languageFieldName = $this->data['tcaSchemata']->get($table)->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)($row[$languageFieldName] ?? 0);
+            $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)($row[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE);
         }
 
         // Add the current inline job to the structure stack
@@ -220,7 +221,7 @@ class InlineControlContainer extends AbstractContainer
             $originPointerField = $this->data['tcaSchemata']->get($table)->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
             $uidOfDefaultRecord = $row[$originPointerField] ?? 0;
         }
-        $isLocalizedParent = $language > 0
+        $isLocalizedParent = $language > LanguageMarker::DEFAULT_LANGUAGE
             && ($uidOfDefaultRecord[0] ?? $uidOfDefaultRecord) > 0
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
         $numberOfFullLocalizedChildren = 0;

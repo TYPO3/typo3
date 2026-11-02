@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -169,7 +170,7 @@ final readonly class MovePageController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)),
-                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                 QueryHelper::stripLogicalOperatorPrefix(
                     $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                 )
@@ -193,7 +194,7 @@ final readonly class MovePageController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)),
-                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                 QueryHelper::stripLogicalOperatorPrefix(
                     $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                 )

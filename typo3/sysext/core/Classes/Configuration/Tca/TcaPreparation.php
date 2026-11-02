@@ -90,7 +90,7 @@ readonly class TcaPreparation
                 $fieldConfig['config']['foreign_table'] = 'sys_category';
                 // Initialize default column configuration and merge it with already defined
                 $fieldConfig['config']['size'] ??= 20;
-                $fieldConfig['config']['foreign_table_where'] ??= ' AND {#sys_category}.{#sys_language_uid} IN (' . LanguageMarker::ALL_LANGUAGES . ', 0)';
+                $fieldConfig['config']['foreign_table_where'] ??= ' AND {#sys_category}.{#sys_language_uid} IN (' . LanguageMarker::ALL_LANGUAGES . ', ' . LanguageMarker::DEFAULT_LANGUAGE . ')';
                 if (empty($fieldConfig['config']['relationship'])) {
                     // In case no relationship is given, set "manyToMany" for non flex form, but "oneToMany" with flex form.
                     $fieldConfig['config']['relationship'] = $isFlexForm ? 'oneToMany' : 'manyToMany';

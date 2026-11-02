@@ -104,7 +104,7 @@ readonly class MetaDataRepository
             ->from('sys_file_metadata')
             ->where(
                 $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY))
+                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY))
             )
             // assure deterministic sorting across all databases
             ->orderBy('uid', 'ASC')

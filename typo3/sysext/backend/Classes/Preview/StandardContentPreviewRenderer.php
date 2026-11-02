@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -311,10 +312,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     protected function translateShortcutRecord(Record $targetRecord, Record $shortcutRecord, string $tableName): RawRecord
     {
-        $targetLanguage = ($targetRecord->getLanguageId() ?? 0);
-        if ($targetLanguage === 0
+        $targetLanguage = ($targetRecord->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE);
+        if ($targetLanguage === LanguageMarker::DEFAULT_LANGUAGE
             || !$this->tcaSchemaFactory->get($tableName)->isLanguageAware()
-            || $targetLanguage === ($shortcutRecord->getLanguageId() ?? 0)
+            || $targetLanguage === ($shortcutRecord->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE)
         ) {
             return $shortcutRecord->getRawRecord();
         }

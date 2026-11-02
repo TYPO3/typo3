@@ -103,7 +103,7 @@ class PageLayoutContext
     {
         $this->siteLanguage = $siteLanguage;
         $languageId = $siteLanguage->getLanguageId();
-        if ($languageId > 0) {
+        if ($languageId > LanguageMarker::DEFAULT_LANGUAGE) {
             $pageLocalizationRecord = GeneralUtility::makeInstance(LocalizationRepository::class)
                 ->getPageTranslations($this->getPageId(), [$languageId], $this->getBackendUser()->workspace);
             if ($pageLocalizationRecord !== []) {
@@ -176,14 +176,14 @@ class PageLayoutContext
         $selectedLanguageIds = $this->drawingConfiguration->getSelectedLanguageIds();
 
         // If multiple languages are selected, show default language + all selected languages
-        if (count($selectedLanguageIds) > 1 || (count($selectedLanguageIds) === 1 && $selectedLanguageIds[0] > 0)) {
+        if (count($selectedLanguageIds) > 1 || (count($selectedLanguageIds) === 1 && $selectedLanguageIds[0] > LanguageMarker::DEFAULT_LANGUAGE)) {
             $languagesToShow = [];
             // Always include default language (0) first
             $languagesToShow[] = $site->getDefaultLanguage();
             // Add all selected languages, except default
             foreach ($selectedLanguageIds as $languageId) {
                 try {
-                    if ($languageId > 0) {
+                    if ($languageId > LanguageMarker::DEFAULT_LANGUAGE) {
                         $languagesToShow[] = $site->getLanguageById($languageId);
                     }
                 } catch (\InvalidArgumentException $e) {

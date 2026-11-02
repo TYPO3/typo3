@@ -837,7 +837,7 @@ class DatabaseRecordList
                             $translations = $translationsRaw['translations'] ?? [];
                             // Filter translations to only show those in selected languages
                             $translations = array_filter($translations, static function (array $translation) use ($languageFieldName, $filterLanguages): bool {
-                                return in_array((int)($translation[$languageFieldName] ?? 0), $filterLanguages, true);
+                                return in_array((int)($translation[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE), $filterLanguages, true);
                             });
                         }
                     }
@@ -1641,7 +1641,7 @@ class DatabaseRecordList
         $isL10nOverlay = $record->getRawRecord()?->has($transOrigPointerFieldName) && $record->getRawRecord()->get($transOrigPointerFieldName) > 0;
         $localCalcPerms = $this->getPagePermissionsForRecord($record);
         if ($table === 'pages') {
-            $permsEdit = $backendUser->checkLanguageAccess($record->getRawRecord()?->has($languageFieldName) ? $record->getRawRecord()->get($languageFieldName) : 0) && $localCalcPerms->editPagePermissionIsGranted();
+            $permsEdit = $backendUser->checkLanguageAccess($record->getRawRecord()?->has($languageFieldName) ? $record->getRawRecord()->get($languageFieldName) : LanguageMarker::DEFAULT_LANGUAGE) && $localCalcPerms->editPagePermissionIsGranted();
         } else {
             $permsEdit = $localCalcPerms->editContentPermissionIsGranted() && $backendUser->checkRecordEditAccess($table, $record)->isAllowed;
         }
@@ -1672,7 +1672,7 @@ class DatabaseRecordList
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
                 // Disallow manual adjustment of the language field for pages
-                $params['overrideVals']['pages']['sys_language_uid'] = $record->getRawRecord()?->has($languageFieldName) ? $record->getRawRecord()->get($languageFieldName) : 0;
+                $params['overrideVals']['pages']['sys_language_uid'] = $record->getRawRecord()?->has($languageFieldName) ? $record->getRawRecord()->get($languageFieldName) : LanguageMarker::DEFAULT_LANGUAGE;
                 $iconIdentifier = 'actions-page-open';
             }
             $params['returnUrl'] = $this->listURL();
@@ -2220,15 +2220,15 @@ class DatabaseRecordList
         if ($table === 'pages') {
             // Calculate possible translations for pages
             $possibleTranslations = array_map(static fn(SiteLanguage $siteLanguage): int => $siteLanguage->getLanguageId(), $this->languagesAllowedForUser);
-            $possibleTranslations = array_filter($possibleTranslations, static fn(int $languageUid): bool => $languageUid > 0);
+            $possibleTranslations = array_filter($possibleTranslations, static fn(int $languageUid): bool => $languageUid > LanguageMarker::DEFAULT_LANGUAGE);
         }
 
         // Filter by currently selected languages in the language filter
         $selectedLanguages = $this->getSelectedLanguageIds();
         // Only show "localize to" for languages that are currently selected (excluding default 0)
-        $selectedLanguagesWithoutDefault = array_filter($selectedLanguages, static fn(int $languageId): bool => $languageId > 0);
+        $selectedLanguagesWithoutDefault = array_filter($selectedLanguages, static fn(int $languageId): bool => $languageId > LanguageMarker::DEFAULT_LANGUAGE);
         // If only default language is selected, don't show any localization options
-        if (count($selectedLanguages) === 1 && in_array(0, $selectedLanguages, true)) {
+        if (count($selectedLanguages) === 1 && in_array(LanguageMarker::DEFAULT_LANGUAGE, $selectedLanguages, true)) {
             $possibleTranslations = [];
         } elseif ($selectedLanguagesWithoutDefault !== []) {
             $possibleTranslations = array_intersect($possibleTranslations, $selectedLanguagesWithoutDefault);
@@ -2619,7 +2619,7 @@ class DatabaseRecordList
                 // search request is in place and if only translations should be shown.
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->or(
-                        $queryBuilder->expr()->lte($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), 0),
+                        $queryBuilder->expr()->lte($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), LanguageMarker::DEFAULT_LANGUAGE),
                         $queryBuilder->expr()->eq($schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(), 0)
                     )
                 );
@@ -3299,7 +3299,7 @@ class DatabaseRecordList
                     $queryBuilder->expr()->in($languageField, $queryBuilder->createNamedParameter($availableSystemLanguageUids, Connection::PARAM_INT_ARRAY)),
                     $queryBuilder->expr()->gt(
                         $languageField,
-                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)
                     )
                 )
             )
@@ -3320,7 +3320,7 @@ class DatabaseRecordList
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $pageId = $record->getPid();
-        $languageUid = 0;
+        $languageUid = LanguageMarker::DEFAULT_LANGUAGE;
         if ($schema->isLanguageAware()) {
             if ($table === 'pages'
                 && ($transOrigPointerField = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName())
@@ -3608,14 +3608,14 @@ class DatabaseRecordList
     protected function isLocalized(RecordInterface $record): bool
     {
         if ($record instanceof Record) {
-            return $record->getLanguageId() > 0 && $record->getLanguageInfo()?->getTranslationParent() > 0;
+            return $record->getLanguageId() > LanguageMarker::DEFAULT_LANGUAGE && $record->getLanguageInfo()?->getTranslationParent() > 0;
         }
         $schema = $this->tcaSchemaFactory->get($record->getMainType());
         if ($schema->isLanguageAware() && ($rawRecord = $record->getRawRecord()) !== null) {
             $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $transPointerFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
             return $rawRecord->has($languageFieldName)
-                && $rawRecord->get($languageFieldName) > 0
+                && $rawRecord->get($languageFieldName) > LanguageMarker::DEFAULT_LANGUAGE
                 && $rawRecord->has($transPointerFieldName)
                 && $rawRecord->get($transPointerFieldName) > 0;
         }

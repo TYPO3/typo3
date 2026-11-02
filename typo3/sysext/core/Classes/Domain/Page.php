@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Domain;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 
 /**
  * @internal not part of public API, as this needs to be streamlined and proven
@@ -77,7 +78,7 @@ class Page extends Record implements \ArrayAccess
         if ($this->systemProperties?->getLanguage() !== null) {
             return $this->systemProperties->getLanguage()->getLanguageId();
         }
-        return (int)($this->specialProperties['_language'] ?? $this->properties['sys_language_uid'] ?? 0);
+        return (int)($this->specialProperties['_language'] ?? $this->properties['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE);
     }
 
     public function getPageId(): int

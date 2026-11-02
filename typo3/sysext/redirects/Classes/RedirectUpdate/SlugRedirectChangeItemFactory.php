@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\RedirectUpdate;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 
@@ -42,7 +43,7 @@ final readonly class SlugRedirectChangeItemFactory
             return null;
         }
         $languageId = (int)$original['sys_language_uid'];
-        $defaultLanguagePageId = (int)$original['sys_language_uid'] > 0 ? (int)$original['l10n_parent'] : $pageId;
+        $defaultLanguagePageId = (int)$original['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE ? (int)$original['l10n_parent'] : $pageId;
         try {
             $site = $this->siteFinder->getSiteByPageId($defaultLanguagePageId);
         } catch (SiteNotFoundException) {

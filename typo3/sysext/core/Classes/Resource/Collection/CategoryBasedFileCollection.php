@@ -60,7 +60,7 @@ class CategoryBasedFileCollection extends AbstractFileCollection
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $languageAspect = $context->getAspect('language');
-        $languageIds = array_unique([LanguageMarker::ALL_LANGUAGES, 0, $languageAspect->getContentId()]);
+        $languageIds = array_unique([LanguageMarker::ALL_LANGUAGES, LanguageMarker::DEFAULT_LANGUAGE, $languageAspect->getContentId()]);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
         $queryBuilder->getRestrictions()->removeAll();

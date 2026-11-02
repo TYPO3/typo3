@@ -73,12 +73,12 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             } elseif (($result['systemLanguageRows'] ?? []) !== []) {
                 $isLanguageField = $fieldName === ($result['processedTca']['ctrl']['languageField'] ?? '');
 
-                $currentLanguageId = (int)($result['databaseRow'][$fieldName] ?? 0);
+                $currentLanguageId = (int)($result['databaseRow'][$fieldName] ?? LanguageMarker::DEFAULT_LANGUAGE);
 
                 $availablePageLanguageIds = [];
                 if ($isLanguageField && $table !== 'pages' && !empty($result['pageLanguageOverlayRows'])) {
                     foreach ($result['pageLanguageOverlayRows'] as $pageTranslation) {
-                        $availablePageLanguageIds[] = (int)($pageTranslation['sys_language_uid'] ?? 0);
+                        $availablePageLanguageIds[] = (int)($pageTranslation['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE);
                     }
                 }
 
@@ -98,7 +98,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                         }
                     } elseif ($isLanguageField && $availablePageLanguageIds !== []) {
                         // For other tables' language field: only show languages with page translations
-                        if ($languageId === 0 || in_array($languageId, $availablePageLanguageIds, true)) {
+                        if ($languageId === LanguageMarker::DEFAULT_LANGUAGE || in_array($languageId, $availablePageLanguageIds, true)) {
                             $siteLanguages[$languageId] = [
                                 'title' => $language['title'],
                                 'flagIconIdentifier' => $language['flagIconIdentifier'],

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -126,7 +127,7 @@ final readonly class PageLanguageInformationService
             // User has access to this language
             $availableLanguages[$languageId] = $siteLanguage;
 
-            if ($languageId === 0 || isset($existingTranslations[$languageId])) {
+            if ($languageId === LanguageMarker::DEFAULT_LANGUAGE || isset($existingTranslations[$languageId])) {
                 // Default language or existing translation
                 $languageStatuses[$languageId] = LanguageStatus::Existing;
             } elseif ($canUserCreateTranslations) {
@@ -212,7 +213,7 @@ final readonly class PageLanguageInformationService
                 ),
                 $queryBuilder->expr()->neq(
                     $languageField,
-                    0
+                    LanguageMarker::DEFAULT_LANGUAGE
                 )
             );
 

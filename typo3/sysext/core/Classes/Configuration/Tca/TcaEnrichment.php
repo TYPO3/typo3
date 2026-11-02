@@ -228,7 +228,7 @@ final readonly class TcaEnrichment
             if ($transOrigPointerFieldName && !is_array($tableDefinition['columns'][$transOrigPointerFieldName] ?? null)) {
                 $languageFieldName = $tableDefinition['ctrl']['languageField'];
                 $tca[$table]['columns'][$transOrigPointerFieldName] = [
-                    'displayCond' => 'FIELD:' . $languageFieldName . ':>:0',
+                    'displayCond' => 'FIELD:' . $languageFieldName . ':>:' . LanguageMarker::DEFAULT_LANGUAGE,
                     'label' => 'core.db.general:l18n_parent',
                     'config' => [
                         'type' => 'select',
@@ -240,7 +240,7 @@ final readonly class TcaEnrichment
                             ],
                         ],
                         'foreign_table' => $table,
-                        'foreign_table_where' => 'AND {#' . $table . '}.{#pid}=###CURRENT_PID### AND {#' . $table . '}.{#' . $languageFieldName . '} IN (' . LanguageMarker::ALL_LANGUAGES . ',0)',
+                        'foreign_table_where' => 'AND {#' . $table . '}.{#pid}=###CURRENT_PID### AND {#' . $table . '}.{#' . $languageFieldName . '} IN (' . LanguageMarker::ALL_LANGUAGES . ',' . LanguageMarker::DEFAULT_LANGUAGE . ')',
                         'default' => 0,
                     ],
                 ];

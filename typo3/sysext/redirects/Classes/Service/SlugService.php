@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -238,7 +239,7 @@ class SlugService implements LoggerAwareInterface
         $sourceHosts = [];
         $languageUid = (int)$currentPageRecord['sys_language_uid'];
         // resolveSubPages needs the page id of the default language
-        $pageId = $languageUid === 0 ? (int)$currentPageRecord['uid'] : (int)$currentPageRecord['l10n_parent'];
+        $pageId = $languageUid === LanguageMarker::DEFAULT_LANGUAGE ? (int)$currentPageRecord['uid'] : (int)$currentPageRecord['l10n_parent'];
         $subPageRecords = $this->resolveSubPages($pageId, $languageUid);
         foreach ($subPageRecords as $subPageRecord) {
             $changeItem = $this->slugRedirectChangeItemFactory->create(
@@ -253,7 +254,7 @@ class SlugService implements LoggerAwareInterface
                 $this->updatedSubPages++;
             }
             if ($updatedPageRecord !== null && $this->autoCreateRedirects) {
-                $subPageId = (int)$subPageRecord['sys_language_uid'] === 0 ? (int)$subPageRecord['uid'] : (int)$subPageRecord['l10n_parent'];
+                $subPageId = (int)$subPageRecord['sys_language_uid'] === LanguageMarker::DEFAULT_LANGUAGE ? (int)$subPageRecord['uid'] : (int)$subPageRecord['l10n_parent'];
                 $changeItem = $changeItem->withChanged($updatedPageRecord);
                 $sourceHosts += array_values($this->createRedirects($changeItem, $subPageId, $languageUid));
             }
@@ -270,14 +271,14 @@ class SlugService implements LoggerAwareInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT))
             )
             ->orderBy('uid', 'ASC')
             ->executeQuery()
             ->fetchAllAssociative();
 
         // if the language is not the default language, resolve the language related records.
-        if ($languageUid > 0) {
+        if ($languageUid > LanguageMarker::DEFAULT_LANGUAGE) {
             $queryBuilder = $this->getQueryBuilderForPages();
             $subPages = $queryBuilder
                 ->select('*')
@@ -296,7 +297,7 @@ class SlugService implements LoggerAwareInterface
             foreach ($subPages as $subPage) {
                 $results[] = $subPage;
                 // resolveSubPages needs the page id of the default language
-                $pageId = $languageUid === 0 ? (int)$subPage['uid'] : (int)$subPage['l10n_parent'];
+                $pageId = $languageUid === LanguageMarker::DEFAULT_LANGUAGE ? (int)$subPage['uid'] : (int)$subPage['l10n_parent'];
                 foreach ($this->resolveSubPages($pageId, $languageUid) as $page) {
                     $results[] = $page;
                 }

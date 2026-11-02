@@ -76,6 +76,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
         // Auto-select preferred option if none selected
         if (this.getValue() == null && languages.length > 0) {
           // Prefer UID 0 (default language) if available, otherwise take first available
+          // Keep in sync with LanguageMarker::DEFAULT_LANGUAGE on the PHP side.
           const preferredLanguage = languages.find(lang => lang.uid === 0) || languages[0];
           this.setValue(preferredLanguage.uid);
 

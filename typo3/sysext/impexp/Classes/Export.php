@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
@@ -259,7 +260,7 @@ class Export extends ImportExport
         } else {
             // Ensure consistency by only fetching pages where not only l10n_parent matches, but also a
             // sys_language_uid > 0 exists.
-            $constraints[] = $queryBuilder->expr()->gt($languageCapability->getLanguageField()->getName(), 0);
+            $constraints[] = $queryBuilder->expr()->gt($languageCapability->getLanguageField()->getName(), LanguageMarker::DEFAULT_LANGUAGE);
         }
         return $queryBuilder
             ->select('*')

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
@@ -98,7 +99,7 @@ readonly class IntegrityService
         $languageParentField = $languageCapability->getTranslationOriginPointerField()->getName();
         $versionRow = $element->getVersionRecord()->getRow();
         // If element is a localization:
-        if ($versionRow[$languageField] > 0) {
+        if ($versionRow[$languageField] > LanguageMarker::DEFAULT_LANGUAGE) {
             // Get localization parent from live workspace
             $languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
             // If localization parent is a new version....

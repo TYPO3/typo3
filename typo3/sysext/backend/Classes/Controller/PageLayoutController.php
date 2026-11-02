@@ -234,11 +234,11 @@ class PageLayoutController
 
         // Smart language selection when switching to layout mode FROM comparison mode
         if ($targetMode === PageViewMode::LayoutView && $this->pageContext->hasMultipleLanguagesSelected()) {
-            $nonDefaultLanguages = array_filter($this->pageContext->selectedLanguageIds, static fn($id) => $id > 0);
+            $nonDefaultLanguages = array_filter($this->pageContext->selectedLanguageIds, static fn($id) => $id > LanguageMarker::DEFAULT_LANGUAGE);
             $params['languages'] = [
                 count($nonDefaultLanguages) === 1
                     ? reset($nonDefaultLanguages) // Single translation: keep it
-                    : 0, // Multiple: show default
+                    : LanguageMarker::DEFAULT_LANGUAGE, // Multiple: show default
             ];
         }
 
@@ -385,7 +385,7 @@ class PageLayoutController
         }
         if ($currentDocumentType === PageRepository::DOKTYPE_LINK) {
             $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
-            $pageRecord = ($primaryLanguageId > 0 && ($overlayRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? []) !== [])
+            $pageRecord = ($primaryLanguageId > LanguageMarker::DEFAULT_LANGUAGE && ($overlayRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? []) !== [])
                 ? $overlayRecord
                 : $this->pageContext->pageRecord;
             $infoBoxes[] = $this->pageLinkMessageProvider->generateMessagesForPageTypeLink($pageRecord, $request);
@@ -582,7 +582,7 @@ class PageLayoutController
         }
 
         $pageUid = $this->pageContext->pageId;
-        if ($primaryLanguageId > 0 && ($overlayRecord = $this->pageContext->languageInformation->getTranslationRecord($primaryLanguageId)) !== null) {
+        if ($primaryLanguageId > LanguageMarker::DEFAULT_LANGUAGE && ($overlayRecord = $this->pageContext->languageInformation->getTranslationRecord($primaryLanguageId)) !== null) {
             $pageUid = $overlayRecord['uid'];
         }
 
@@ -659,8 +659,8 @@ class PageLayoutController
         foreach ($this->pageContext->selectedLanguageIds as $languageId) {
             $languageIds[] = $languageId;
             // In comparison mode, also include default language (0) if not already selected
-            if ($isComparisonView && $languageId > 0 && !$this->pageContext->isDefaultLanguageSelected()) {
-                $languageIds[] = 0;
+            if ($isComparisonView && $languageId > LanguageMarker::DEFAULT_LANGUAGE && !$this->pageContext->isDefaultLanguageSelected()) {
+                $languageIds[] = LanguageMarker::DEFAULT_LANGUAGE;
             }
         }
         $languageIds = array_unique($languageIds);

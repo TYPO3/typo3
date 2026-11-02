@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata',
@@ -40,7 +42,7 @@ return [
             ],
         ],
         'file' => [
-            'displayCond' => 'FIELD:sys_language_uid:=:0',
+            'displayCond' => 'FIELD:sys_language_uid:=:' . LanguageMarker::DEFAULT_LANGUAGE,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file',
             'config' => [
                 'readOnly' => true,

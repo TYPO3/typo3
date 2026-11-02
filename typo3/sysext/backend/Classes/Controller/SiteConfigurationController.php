@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
 use TYPO3\CMS\Core\Settings\Category;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
@@ -787,7 +788,7 @@ readonly class SiteConfigurationController
         // On new site configurations, ensure that the only existing language has the languageId set to 0
         // @todo: this shouldn't be done here, but rather properly handled in saveAction() where 'siteLanguage' is handled
         if ($isNewConfiguration && count($validChildren) === 1) {
-            $validChildren[0]['languageId'] = 0;
+            $validChildren[0]['languageId'] = LanguageMarker::DEFAULT_LANGUAGE;
         }
         $newSysSiteData['languages'] = $validChildren;
 
@@ -1008,7 +1009,7 @@ readonly class SiteConfigurationController
             ->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('pid', 0),
@@ -1101,7 +1102,7 @@ readonly class SiteConfigurationController
      */
     protected function getLastLanguageId(): int
     {
-        $lastLanguageId = 0;
+        $lastLanguageId = LanguageMarker::DEFAULT_LANGUAGE;
         foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($language->getLanguageId() > $lastLanguageId) {

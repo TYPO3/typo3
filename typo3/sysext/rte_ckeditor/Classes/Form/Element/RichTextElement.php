@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -263,11 +264,11 @@ class RichTextElement extends AbstractFormElement
      */
     protected function getLanguageIsoCodeOfContent(): string
     {
-        $currentLanguageUid = ($this->data['databaseRow']['sys_language_uid'] ?? 0);
+        $currentLanguageUid = ($this->data['databaseRow']['sys_language_uid'] ?? LanguageMarker::DEFAULT_LANGUAGE);
         if (is_array($currentLanguageUid)) {
             $currentLanguageUid = $currentLanguageUid[0];
         }
-        $contentLanguageUid = (int)max($currentLanguageUid, 0);
+        $contentLanguageUid = (int)max($currentLanguageUid, LanguageMarker::DEFAULT_LANGUAGE);
         if ($contentLanguageUid) {
             // the language rows might not be fully initialized, so we fall back to en-US in this case
             $contentLanguage = $this->data['systemLanguageRows'][$currentLanguageUid]['iso'] ?? 'en-US';

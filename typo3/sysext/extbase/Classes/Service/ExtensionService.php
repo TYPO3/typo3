@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -165,7 +166,7 @@ class ExtensionService implements SingletonInterface
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
         if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
             if (!array_key_exists($pluginSignature, $this->targetPidPluginCache)) {
-                $languageId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+                $languageId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE);
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('tt_content');
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));

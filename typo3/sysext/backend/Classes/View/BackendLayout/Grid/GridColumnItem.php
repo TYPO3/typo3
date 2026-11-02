@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -224,7 +225,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function getSiteLanguage(): SiteLanguage
     {
-        return $this->context->getSiteLanguage((int)($this->getRow()[$this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0));
+        return $this->context->getSiteLanguage((int)($this->getRow()[$this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? LanguageMarker::DEFAULT_LANGUAGE));
     }
 
     public function getRecord(): RecordInterface
@@ -316,7 +317,7 @@ class GridColumnItem extends AbstractGridObject
     {
         $allowInconsistentLanguageHandling = $this->context->getDrawingConfiguration()->getAllowInconsistentLanguageHandling();
         return !$allowInconsistentLanguageHandling
-            && $this->getSiteLanguage()->getLanguageId() !== 0
+            && $this->getSiteLanguage()->getLanguageId() !== LanguageMarker::DEFAULT_LANGUAGE
             && $this->context->getLanguageModeIdentifier() === 'mixed'
             && (int)($this->getRow()[$this->schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName()] ?? 0) === 0;
     }

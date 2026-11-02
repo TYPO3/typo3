@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFileBrowser;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
@@ -247,7 +248,7 @@ class FileProvider extends AbstractProvider
             && $this->record->checkActionPermission('editMeta')
             && $this->record->getMetaData()->offsetExists('uid')
             && $this->backendUser->check('tables_modify', 'sys_file_metadata')
-            && $this->backendUser->checkLanguageAccess(0);
+            && $this->backendUser->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE);
     }
 
     protected function canBeRenamed(): bool

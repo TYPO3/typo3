@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
@@ -74,9 +75,9 @@ readonly class StageChangeNotification
         try {
             $schema = $this->tcaSchemaFactory->get($elementTable);
             if ($schema->isLanguageAware()) {
-                $languageId = $elementRecord[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0;
+                $languageId = $elementRecord[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? LanguageMarker::DEFAULT_LANGUAGE;
             } else {
-                $languageId = 0;
+                $languageId = LanguageMarker::DEFAULT_LANGUAGE;
             }
             $previewLink = $this->previewUriBuilder->buildUriForPage($pageUid, $languageId);
         } catch (UnableToLinkToPageException) {

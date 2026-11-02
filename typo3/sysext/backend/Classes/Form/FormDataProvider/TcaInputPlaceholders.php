@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -262,7 +263,7 @@ readonly class TcaInputPlaceholders implements FormDataProviderInterface
                 ),
                 $queryBuilder->expr()->in(
                     $languageField,
-                    $queryBuilder->createNamedParameter([$currentLanguage, 0], Connection::PARAM_INT_ARRAY)
+                    $queryBuilder->createNamedParameter([$currentLanguage, LanguageMarker::DEFAULT_LANGUAGE], Connection::PARAM_INT_ARRAY)
                 )
             )
             ->groupBy($languageField, 'uid')

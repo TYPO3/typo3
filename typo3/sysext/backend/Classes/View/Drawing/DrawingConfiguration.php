@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\View\Drawing;
 
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,7 +40,7 @@ class DrawingConfiguration
      * Array of selected language IDs for multi-language comparison view
      * @var int[]
      */
-    protected array $selectedLanguageIds = [0];
+    protected array $selectedLanguageIds = [LanguageMarker::DEFAULT_LANGUAGE];
 
     /**
      * Corresponds to web.layout.allowInconsistentLanguageHandling TSconfig property
@@ -117,7 +118,7 @@ class DrawingConfiguration
      */
     public function setSelectedLanguageIds(array $selectedLanguageIds): void
     {
-        $this->selectedLanguageIds = $selectedLanguageIds !== [] ? array_map('intval', $selectedLanguageIds) : [0];
+        $this->selectedLanguageIds = $selectedLanguageIds !== [] ? array_map('intval', $selectedLanguageIds) : [LanguageMarker::DEFAULT_LANGUAGE];
     }
 
     /**
@@ -125,7 +126,7 @@ class DrawingConfiguration
      */
     public function getPrimaryLanguageId(): int
     {
-        return $this->selectedLanguageIds[0] ?? 0;
+        return $this->selectedLanguageIds[0] ?? LanguageMarker::DEFAULT_LANGUAGE;
     }
 
     public function getAllowInconsistentLanguageHandling(): bool

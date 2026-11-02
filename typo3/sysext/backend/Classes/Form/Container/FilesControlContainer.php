@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -97,7 +98,7 @@ class FilesControlContainer extends AbstractContainer
 
         $config = $parameterArray['fieldConf']['config'];
         $isReadOnly = (bool)($config['readOnly'] ?? false);
-        $language = 0;
+        $language = LanguageMarker::DEFAULT_LANGUAGE;
         if ($this->data['tcaSchemata']->has($table) && $this->data['tcaSchemata']->get($table)->hasCapability(TcaSchemaCapability::Language)) {
             $languageFieldName = $this->data['tcaSchemata']->get($table)->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)$row[$languageFieldName];
@@ -181,7 +182,7 @@ class FilesControlContainer extends AbstractContainer
             $originPointerField = $this->data['tcaSchemata']->get($table)->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
             $uidOfDefaultRecord = $row[$originPointerField] ?? 0;
         }
-        $isLocalizedParent = $language > 0
+        $isLocalizedParent = $language > LanguageMarker::DEFAULT_LANGUAGE
             && ($uidOfDefaultRecord[0] ?? $uidOfDefaultRecord) > 0
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
         $numberOfFullLocalizedChildren = 0;

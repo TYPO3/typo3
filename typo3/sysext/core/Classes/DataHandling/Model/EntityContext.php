@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\Model;
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 /**
  * Represents the context of an entity
  *
@@ -33,7 +35,7 @@ class EntityContext
     /**
      * @var int
      */
-    protected $languageId = 0;
+    protected $languageId = LanguageMarker::DEFAULT_LANGUAGE;
 
     public function getWorkspaceId(): int
     {

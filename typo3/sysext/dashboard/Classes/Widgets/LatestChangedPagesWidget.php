@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -156,7 +157,7 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
             }
 
             $latestPages[$pageId]['history'] = $historyEntry;
-            $pageRecord['_uid'] = $pageRecord['sys_language_uid'] > 0 ? $pageRecord['l10n_parent'] : $pageRecord['uid'];
+            $pageRecord['_uid'] = $pageRecord['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE ? $pageRecord['l10n_parent'] : $pageRecord['uid'];
             $latestPages[$pageId]['pageRecord'] = $pageRecord;
             try {
                 $latestPages[$pageId]['siteLanguage'] = $this->siteFinder->getSiteByPageId($pageRecord['_uid'])->getLanguageById($pageRecord['sys_language_uid']);
@@ -180,7 +181,7 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
         foreach ($latestPages as $pageId => &$page) {
             $page['rootline'] = $this->getRootLine($pageId);
 
-            $uriPageId = $page['pageRecord']['sys_language_uid'] > 0 ? $page['pageRecord']['l10n_parent'] : $page['pageRecord']['uid'];
+            $uriPageId = $page['pageRecord']['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE ? $page['pageRecord']['l10n_parent'] : $page['pageRecord']['uid'];
             $page['viewLink'] = (string)PreviewUriBuilder::create($page['pageRecord'])
                 ->withRootLine(BackendUtility::BEgetRootLine($uriPageId))
                 ->buildUri();
@@ -208,7 +209,7 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
         }
 
         $queryBuilder = $this->getQueryBuilderForPages();
-        if ((int)$contentRecord['sys_language_uid'] > 0) {
+        if ((int)$contentRecord['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE) {
             return $queryBuilder
                 ->select('uid')
                 ->from('pages')

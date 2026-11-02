@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -184,7 +185,7 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
         }
         try {
             $site = $this->siteFinder->getSiteByPageId($page['uid'] ?: $pid);
-            $language = $languageId > 0 ? $site->getLanguageById($languageId) : $site->getDefaultLanguage();
+            $language = $languageId > LanguageMarker::DEFAULT_LANGUAGE ? $site->getLanguageById($languageId) : $site->getDefaultLanguage();
             $page['sys_language_uid'] = $language->getLanguageId();
             $uri = $site->getRouter($this->context)->generateUri(
                 $page,

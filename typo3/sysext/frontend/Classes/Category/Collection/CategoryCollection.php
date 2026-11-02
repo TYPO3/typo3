@@ -123,7 +123,7 @@ class CategoryCollection extends CoreCategoryCollection
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         $context = GeneralUtility::makeInstance(Context::class);
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-        $languageId = $context->getPropertyFromAspect('language', 'contentId', 0);
+        $languageId = $context->getPropertyFromAspect('language', 'contentId', LanguageMarker::DEFAULT_LANGUAGE);
         $table = $this->getItemTableName();
 
         // If language handling is defined for item table, add language condition
@@ -140,11 +140,11 @@ class CategoryCollection extends CoreCategoryCollection
 
             $languageConstraint = $queryBuilder->expr()->in(
                 $languageField,
-                $queryBuilder->createNamedParameter([0, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY)
+                $queryBuilder->createNamedParameter([LanguageMarker::DEFAULT_LANGUAGE, LanguageMarker::ALL_LANGUAGES], Connection::PARAM_INT_ARRAY)
             );
 
             // If not in default language, also consider items in current language with no original
-            if ($languageId > 0) {
+            if ($languageId > LanguageMarker::DEFAULT_LANGUAGE) {
                 $transOrigPointerField = sprintf(
                     '%s.%s',
                     $table,

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlPlaceholderException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\Loader\YamlPlaceholderGuard;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -68,7 +69,7 @@ readonly class SiteWriter
                 0 => [
                     'title' => 'English',
                     'enabled' => true,
-                    'languageId' => 0,
+                    'languageId' => LanguageMarker::DEFAULT_LANGUAGE,
                     'base' => '/',
                     'locale' => 'en_US.UTF-8',
                     'navigationTitle' => 'English',

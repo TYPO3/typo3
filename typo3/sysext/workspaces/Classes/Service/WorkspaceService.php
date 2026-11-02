@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -323,7 +324,7 @@ readonly class WorkspaceService
         }
         // If table is not localizable, but localized records shall
         // be collected, an empty result array needs to be returned:
-        if (!$schema->isLanguageAware() && $language > 0) {
+        if (!$schema->isLanguageAware() && $language > LanguageMarker::DEFAULT_LANGUAGE) {
             return [];
         }
         $table = $schema->getName();
@@ -447,7 +448,7 @@ readonly class WorkspaceService
         }
         // If table is not localizable, but localized records shall
         // be collected, an empty result array needs to be returned:
-        if (!$schema->isLanguageAware() && $language > 0) {
+        if (!$schema->isLanguageAware() && $language > LanguageMarker::DEFAULT_LANGUAGE) {
             return [];
         }
 
@@ -547,7 +548,7 @@ readonly class WorkspaceService
     {
         // If table is not localizable, but localized records shall
         // be collected, an empty result array needs to be returned:
-        if (!$schema->isLanguageAware() && $language > 0) {
+        if (!$schema->isLanguageAware() && $language > LanguageMarker::DEFAULT_LANGUAGE) {
             return [];
         }
         $table = $schema->getName();
@@ -782,7 +783,7 @@ readonly class WorkspaceService
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0),
+                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
                     $permsClause
                 )
                 ->executeQuery();
@@ -885,7 +886,7 @@ readonly class WorkspaceService
         $schema = $this->tcaSchemaFactory->get($table);
         if ($schema->isLanguageAware()) {
             $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            $languageUid = $record[$languageField] ?? 0;
+            $languageUid = $record[$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE;
         } else {
             return true;
         }
@@ -898,11 +899,11 @@ readonly class WorkspaceService
      * @param int $id Primary key of the page to check
      * @param int $language Language for which to check the page
      */
-    public function isNewPage(int $id, int $language = 0): bool
+    public function isNewPage(int $id, int $language = LanguageMarker::DEFAULT_LANGUAGE): bool
     {
         $isNewPage = false;
         // If the language is not default, check state of overlay
-        if ($language > 0) {
+        if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
             $schema = $this->tcaSchemaFactory->get('pages');
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

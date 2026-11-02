@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,7 +60,7 @@ class HrefLangGenerator
         $hrefLangs = $event->getHrefLangs();
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
-                if ($language['languageId'] === 0) {
+                if ($language['languageId'] === LanguageMarker::DEFAULT_LANGUAGE) {
                     // No need to fetch default language
                     $page = ($pageRecord['_TRANSLATION_SOURCE'] ?? null)?->toArray(true) ?? $pageRecord;
                 } elseif ($language['languageId'] === ($pageRecord['_REQUESTED_OVERLAY_LANGUAGE'] ?? false)) {
@@ -113,7 +114,7 @@ class HrefLangGenerator
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $pageRecord = $pageRepository->getPage($pageId);
         // Overlay was requested but did not apply
-        if ($languageId > 0 && !isset($pageRecord['_LOCALIZED_UID'])) {
+        if ($languageId > LanguageMarker::DEFAULT_LANGUAGE && !isset($pageRecord['_LOCALIZED_UID'])) {
             return [];
         }
         return $pageRecord;

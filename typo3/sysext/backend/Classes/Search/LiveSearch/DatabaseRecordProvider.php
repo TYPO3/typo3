@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -320,7 +321,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             if ($schema->hasCapability(TcaSchemaCapability::Language)) {
                 $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
                 $languageFieldName = $languageCapability->getLanguageField()->getName();
-                $languageId = (int)($row[$languageFieldName] ?? 0);
+                $languageId = (int)($row[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE);
                 $language = $this->resolveLanguage((int)($row['pid'] ?? 0), $languageId);
             }
 

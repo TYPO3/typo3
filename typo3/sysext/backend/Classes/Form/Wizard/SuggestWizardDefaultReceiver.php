@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -108,7 +109,7 @@ class SuggestWizardDefaultReceiver
         if ($this->table === 'pages') {
             $this->queryBuilder->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW)),
-                $this->queryBuilder->expr()->eq('sys_language_uid', 0)
+                $this->queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
             );
         }
         if (isset($config['addWhere'])) {

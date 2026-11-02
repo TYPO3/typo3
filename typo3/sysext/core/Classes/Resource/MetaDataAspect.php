@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -106,7 +107,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
     {
         $context = GeneralUtility::makeInstance(Context::class);
         return implode('-', [
-            $context->getPropertyFromAspect('language', 'contentId', 0),
+            $context->getPropertyFromAspect('language', 'contentId', LanguageMarker::DEFAULT_LANGUAGE),
             $context->getPropertyFromAspect('language', 'overlayType', ''),
             implode(',', $context->getPropertyFromAspect('language', 'fallbackChain', [])),
             $context->getPropertyFromAspect('workspace', 'id', 0),

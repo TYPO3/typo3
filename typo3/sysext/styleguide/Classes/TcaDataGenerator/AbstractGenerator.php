@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -74,7 +75,7 @@ abstract class AbstractGenerator
                 [
                     'title' => 'English',
                     'enabled' => true,
-                    'languageId' => 0,
+                    'languageId' => LanguageMarker::DEFAULT_LANGUAGE,
                     'base' => '/',
                     'typo3Language' => 'default',
                     'locale' => 'en_US.UTF-8',

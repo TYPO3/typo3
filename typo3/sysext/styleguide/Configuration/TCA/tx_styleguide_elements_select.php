@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
+
 return [
     'ctrl' => [
         'title' => 'Form engine elements - select',
@@ -786,7 +788,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => 'AND ({#sys_category}.{#sys_language_uid} = 0 OR {#sys_category}.{#l10n_parent} = 0) ORDER BY sys_category.sorting',
+                'foreign_table_where' => 'AND ({#sys_category}.{#sys_language_uid} = ' . LanguageMarker::DEFAULT_LANGUAGE . ' OR {#sys_category}.{#l10n_parent} = 0) ORDER BY sys_category.sorting',
                 'size' => 20,
                 'treeConfig' => [
                     'parentField' => 'parent',

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Pagination\PaginationInterface;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -118,7 +119,7 @@ class SearchController extends ActionController
 
         $searchData = $this->applyDefaultOptions($searchData);
         // Hand in the current site language as languageUid
-        $searchData['languageUid'] = $this->context->getPropertyFromAspect('language', 'id', 0);
+        $searchData['languageUid'] = $this->context->getPropertyFromAspect('language', 'id', LanguageMarker::DEFAULT_LANGUAGE);
 
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
@@ -953,7 +954,7 @@ class SearchController extends ActionController
      */
     protected function linkPage(int $pageUid, array $row, string $linkText): LinkResultInterface
     {
-        $pageLanguage = $this->context->getPropertyFromAspect('language', 'contentId', 0);
+        $pageLanguage = $this->context->getPropertyFromAspect('language', 'contentId', LanguageMarker::DEFAULT_LANGUAGE);
 
         $linkConfiguration = [
             'parameter' => $pageUid . ',' . $row['data_page_type'],
@@ -967,7 +968,7 @@ class SearchController extends ActionController
         if (!empty($row['data_page_mp'] ?? false)) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
-        if (($pageLanguage === 0 && $row['sys_language_uid'] > 0) || $pageLanguage > 0) {
+        if (($pageLanguage === LanguageMarker::DEFAULT_LANGUAGE && $row['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE) || $pageLanguage > LanguageMarker::DEFAULT_LANGUAGE) {
             $linkConfiguration['_language'] = (int)$row['sys_language_uid'];
         }
 

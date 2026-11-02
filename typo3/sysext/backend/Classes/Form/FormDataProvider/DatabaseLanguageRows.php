@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,7 +47,7 @@ readonly class DatabaseLanguageRows implements FormDataProviderInterface
             $languageField = $result['processedTca']['ctrl']['languageField'];
             $fieldWithUidOfDefaultRecord = $result['processedTca']['ctrl']['transOrigPointerField'];
 
-            if (isset($result['databaseRow'][$languageField]) && $result['databaseRow'][$languageField] > 0
+            if (isset($result['databaseRow'][$languageField]) && $result['databaseRow'][$languageField] > LanguageMarker::DEFAULT_LANGUAGE
                 && isset($result['databaseRow'][$fieldWithUidOfDefaultRecord]) && $result['databaseRow'][$fieldWithUidOfDefaultRecord] > 0
             ) {
                 // Default language record of localized record
@@ -82,7 +83,7 @@ readonly class DatabaseLanguageRows implements FormDataProviderInterface
                     foreach ($additionalLanguageUids as $additionalLanguageUid) {
                         // Continue if this system language record does not exist or if 0 or -1 is requested
                         // or if row is the same as the to-be-displayed row
-                        if ($additionalLanguageUid <= 0
+                        if ($additionalLanguageUid <= LanguageMarker::DEFAULT_LANGUAGE
                             || !isset($result['systemLanguageRows'][$additionalLanguageUid])
                             || $additionalLanguageUid === (int)$result['databaseRow'][$languageField]
                         ) {

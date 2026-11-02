@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Info\Controller\PageInformationController;
 use TYPO3\CMS\Info\Controller\TranslationStatusController;
 
@@ -22,7 +23,7 @@ return [
         'moduleData' => [
             'pages' => '0',
             'depth' => 0,
-            'lang' => 0,
+            'lang' => LanguageMarker::DEFAULT_LANGUAGE,
         ],
     ],
     'web_info_translations' => [

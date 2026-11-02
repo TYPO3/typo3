@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
 use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -69,7 +70,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $languageField = $result['processedTca']['ctrl']['languageField'] ?? '';
             $isTransOrigPointerFieldForDefaultLanguage = $fieldName === $transOrigPointerField
                 && $languageField !== ''
-                && (int)($result['databaseRow'][$languageField] ?? 0) <= 0;
+                && (int)($result['databaseRow'][$languageField] ?? LanguageMarker::DEFAULT_LANGUAGE) <= LanguageMarker::DEFAULT_LANGUAGE;
             if (!$isTransOrigPointerFieldForDefaultLanguage) {
                 $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
             }

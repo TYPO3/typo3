@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -50,7 +51,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $flexFormFieldName = $this->data['flexFormFieldName'];
         $flexFormSheetName = $this->data['flexFormSheetName'];
 
-        $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
+        $userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(LanguageMarker::DEFAULT_LANGUAGE);
 
         $resultArray = $this->initializeResultArray();
 

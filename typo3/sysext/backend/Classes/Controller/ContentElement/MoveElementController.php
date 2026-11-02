@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -88,7 +89,7 @@ final readonly class MoveElementController
 
         $contentElementUid = (int)($parsedBody['uid'] ?? $queryParams['uid'] ?? 0);
         $pageId = (int)($parsedBody['expandPage'] ?? $queryParams['expandPage'] ?? 0);
-        $sysLanguage = (int)($parsedBody['sys_language'] ?? $queryParams['sys_language'] ?? 0);
+        $sysLanguage = (int)($parsedBody['sys_language'] ?? $queryParams['sys_language'] ?? LanguageMarker::DEFAULT_LANGUAGE);
         $makeCopy = (bool)($parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0);
         $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 

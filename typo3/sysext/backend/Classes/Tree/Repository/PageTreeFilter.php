@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\SiteUrlResolver;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -299,7 +300,7 @@ final readonly class PageTreeFilter
                 );
 
                 // Also attach a label to indicate a translated URI
-                if ($uriMatches[$page['uid']]['languageUid'] !== 0) {
+                if ($uriMatches[$page['uid']]['languageUid'] !== LanguageMarker::DEFAULT_LANGUAGE) {
                     if ($uriMatches[$page['uid']]['languageName'] === '') {
                         $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:pageTree.found_translation') ?: 'Found translation';
                     } else {
@@ -451,7 +452,7 @@ final readonly class PageTreeFilter
             : $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $workspace], Connection::PARAM_INT_ARRAY));
 
         $whereConditions = [
-            $queryBuilder->expr()->gt('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+            $queryBuilder->expr()->gt('sys_language_uid', $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
             $queryBuilder->expr()->gt('l10n_parent', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
             $workspaceCondition,
             ...$additionalConditions,
