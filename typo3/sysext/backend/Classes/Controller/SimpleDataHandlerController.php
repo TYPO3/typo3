@@ -216,8 +216,7 @@ class SimpleDataHandlerController
         if (!empty($this->cacheCmd)) {
             $this->tce->clear_cacheCmd($this->cacheCmd);
         }
-        // Update page tree?
-        if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
+        if ($this->tce->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
     }

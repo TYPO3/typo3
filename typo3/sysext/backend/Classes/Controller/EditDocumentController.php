@@ -578,10 +578,8 @@ class EditDocumentController
                 BackendUtility::setUpdateSignal('updateBackendLanguage', [ 'language' => $newLanguageKey ]);
             }
 
-            // If pages are being edited, we set an instruction about updating the page tree after this operation.
-            if ($dataHandler->pagetreeNeedsRefresh
-                && (isset($dataMap['pages']) || $beUser->workspace !== 0 && !empty($dataMap))
-            ) {
+            // Pages or records in a workspace have been written, the page tree has to show the changes.
+            if ($dataHandler->pagetreeNeedsRefresh) {
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
 
