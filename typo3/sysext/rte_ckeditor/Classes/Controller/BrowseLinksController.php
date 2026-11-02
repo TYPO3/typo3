@@ -361,7 +361,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         if (is_array($this->buttonConfig['targetSelector'] ?? null)) {
             $targetSelectorConfig = $this->buttonConfig['targetSelector'];
         }
-        $target = !empty($this->linkAttributeValues['target']) ? $this->linkAttributeValues['target'] : $this->defaultLinkTarget;
+        $target = $this->linkAttributeValues['target'] ?? '';
+        if ($target === '' && $this->currentLinkParts === []) {
+            $target = $this->defaultLinkTarget;
+        }
         $lang = $this->getLanguageService();
 
         $disabled = $targetSelectorConfig['disabled'] ?? false;
@@ -375,7 +378,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:target')) . '
                 </label>
                 <typo3-backend-combobox>
-                    <input id="ltarget" type="text" name="ltarget" class="form-control" value="' . htmlspecialchars($this->linkAttributeValues['target'] ?? '') . '" />
+                    <input id="ltarget" type="text" name="ltarget" class="form-control" value="' . htmlspecialchars($target) . '" />
                     <typo3-backend-combobox-choice value="_top" icon="actions-window">' . $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:top') . '</typo3-backend-combobox-choice>
                     <typo3-backend-combobox-choice value="_blank" icon="actions-window-open">' . $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:newWindow') . '</typo3-backend-combobox-choice>
                 </typo3-backend-combobox>

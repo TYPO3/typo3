@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Tests\Functional\RecordList\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent;
@@ -73,6 +74,100 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
         $eventListener->addListener(ModifyLinkHandlersEvent::class, 'modify-link-handler-listener');
         $eventListener->addListener(ModifyAllowedItemsEvent::class, 'modify-allowed-items-listener');
 
+        $subject = $this->get(BrowseLinksController::class);
+
+        $subject->mainAction($this->createLinkBrowserRequest());
+
+        self::assertInstanceOf(ModifyLinkHandlersEvent::class, $state['modify-link-handler-listener']);
+        self::assertInstanceOf(ModifyAllowedItemsEvent::class, $state['modify-allowed-items-listener']);
+    }
+
+    public static function defaultTargetFixturesDataProvider(): \Generator
+    {
+        yield 'RTE configuration buttons.link.properties.target.default' => [
+            __DIR__ . '/../../Fixtures/rte-pages-link-target-default.csv',
+        ];
+        yield 'page TSconfig TCEMAIN.linkHandler.properties.target.default' => [
+            __DIR__ . '/../../Fixtures/rte-pages-link-handler-target-default.csv',
+        ];
+    }
+
+    /**
+     * A new link gets the configured default target.
+     */
+    #[DataProvider('defaultTargetFixturesDataProvider')]
+    #[Test]
+    public function targetFieldIsPrefilledWithConfiguredDefaultTarget(string $fixture): void
+    {
+        $this->importCSVDataSet($fixture);
+        $subject = $this->get(BrowseLinksController::class);
+
+        $content = (string)$subject->mainAction($this->createLinkBrowserRequest())->getBody();
+
+        self::assertStringContainsString(
+            '<input id="ltarget" type="text" name="ltarget" class="form-control" value="_blank" />',
+            $content
+        );
+    }
+
+    /**
+     * An existing link keeps its own target, the configured default does
+     * not replace it.
+     */
+    #[DataProvider('defaultTargetFixturesDataProvider')]
+    #[Test]
+    public function targetFieldKeepsTargetOfCurrentLinkOverConfiguredDefaultTarget(string $fixture): void
+    {
+        $this->importCSVDataSet($fixture);
+        $subject = $this->get(BrowseLinksController::class);
+
+        $request = $this->createLinkBrowserRequest(['url' => 't3://page?uid=1', 'target' => '_top']);
+        $content = (string)$subject->mainAction($request)->getBody();
+
+        self::assertStringContainsString(
+            '<input id="ltarget" type="text" name="ltarget" class="form-control" value="_top" />',
+            $content
+        );
+    }
+
+    /**
+     * The default only applies to new links. The CKEditor passes only the
+     * attributes an existing link carries, so a link without a target
+     * arrives without one and has to stay that way, otherwise editing it
+     * would add the default target unasked.
+     */
+    #[DataProvider('defaultTargetFixturesDataProvider')]
+    #[Test]
+    public function targetFieldIsEmptyForCurrentLinkWithoutTarget(string $fixture): void
+    {
+        $this->importCSVDataSet($fixture);
+        $subject = $this->get(BrowseLinksController::class);
+
+        $request = $this->createLinkBrowserRequest(['url' => 't3://page?uid=1']);
+        $content = (string)$subject->mainAction($request)->getBody();
+
+        self::assertStringContainsString(
+            '<input id="ltarget" type="text" name="ltarget" class="form-control" value="" />',
+            $content
+        );
+    }
+
+    /**
+     * @param array<string, string> $currentLink link and attributes as the CKEditor passes them in P[curUrl]
+     */
+    private function createLinkBrowserRequest(array $currentLink = []): ServerRequest
+    {
+        $parameters = [
+            'table' => 'tt_content',
+            'uid' => '1',
+            'fieldName' => 'bodytext',
+            'recordType' => 'text',
+            'pid' => '1',
+            'richtextConfigurationName' => '',
+        ];
+        if ($currentLink !== []) {
+            $parameters['curUrl'] = $currentLink;
+        }
         $request = new ServerRequest()
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/main', [
@@ -82,22 +177,8 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
             ->withQueryParams([
                 'editorId' => 'cke_1',
                 'contentsLanguage' => 'en',
-                'P' => [
-                    'table' => 'tt_content',
-                    'uid' => '1',
-                    'fieldName' => 'bodytext',
-                    'recordType' => 'text',
-                    'pid' => '1',
-                    'richtextConfigurationName' => '',
-                ],
+                'P' => $parameters,
             ]);
-        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-
-        $subject = $this->get(BrowseLinksController::class);
-
-        $subject->mainAction($request);
-
-        self::assertInstanceOf(ModifyLinkHandlersEvent::class, $state['modify-link-handler-listener']);
-        self::assertInstanceOf(ModifyAllowedItemsEvent::class, $state['modify-allowed-items-listener']);
+        return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
 }
