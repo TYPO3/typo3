@@ -1,0 +1,11 @@
+"tt_content",,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","tx_testirreforeignfield_hotels"
+,100,1,0,0,0,0
+,110,1,0,0,0,1
+,111,1,0,1,110,0
+"tx_testirreforeignfield_hotel",,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","parentid"
+,1,1,0,0,0,110
+"tx_testirreforeignfield_offer",,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","parentid"
+,1,1,0,0,0,1

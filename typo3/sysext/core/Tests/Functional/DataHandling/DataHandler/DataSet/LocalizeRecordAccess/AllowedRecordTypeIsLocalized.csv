@@ -1,0 +1,9 @@
+"tt_content",,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","CType"
+,100,1,0,0,0,"textmedia"
+,110,1,0,0,0,"text"
+,111,1,0,1,100,"textmedia"
+"sys_file_reference",,,,,,
+,"uid","pid","deleted","sys_language_uid","l10n_parent","uid_foreign"
+,10,1,0,0,0,100
+,11,1,0,1,10,111
