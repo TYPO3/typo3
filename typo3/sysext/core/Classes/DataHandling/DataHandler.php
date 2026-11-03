@@ -4504,6 +4504,11 @@ class DataHandler
 
         // Moving a workspace aware record in workspaces
         if ($isMovingInWorkspaces && $workspaceRecord === null && $isTableWorkspaceAware) {
+            if ($table === 'pages' && !$this->destNotInsideSelf($this->getPidOfPageMoveDestination($destination), (int)$liveRecord['uid'])) {
+                // Reject before versionizeRecord() creates the workspace version, so a rejected move leaves no record
+                $this->log($table, (int)$liveRecord['uid'], SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move pages:{uid} to inside of its own rootline', null, ['uid' => (int)$liveRecord['uid']]);
+                return;
+            }
             // Create version of record first, if it does not exist
             // @todo: This strategy is odd. A "dummy" record is created in correct workspace, but it is a
             //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move pointer.
@@ -4580,9 +4585,11 @@ class DataHandler
 
         if ($table === 'pages') {
             if ($isMovingToDifferentPid) {
-                if (!$this->destNotInsideSelf($updateFields['pid'], $sourceUid)) {
-                    // When page is moved to a different pid, it must not be a child of itself
-                    $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move pages:{uid} to inside of its own rootline', null, ['uid' => $sourceUid]);
+                $pageUidInRootline = (int)($liveRecord['uid'] ?? $sourceUid);
+                if ((int)$updateFields['pid'] === $sourceUid || !$this->destNotInsideSelf($updateFields['pid'], $pageUidInRootline)) {
+                    // When page is moved to a different pid, it must not be a child of itself.
+                    // The rootline holds live uids, so the workspace uid of the page is only checked as the destination.
+                    $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move pages:{uid} to inside of its own rootline', null, ['uid' => $pageUidInRootline]);
                     return;
                 }
                 if (!$this->hasPageContextPermission($table, Permission::PAGE_DELETE, $sourcePageRecord)) {
@@ -7686,6 +7693,20 @@ class DataHandler
             $pages = array_merge($pages, $this->getSubPagesOfPage((int)$row['uid'], $useDeletedRestriction), [$row]);
         }
         return $pages;
+    }
+
+    /**
+     * Resolves the page a page is moved into: the destination itself, or the
+     * parent of the page a negative destination places the moved page after.
+     */
+    private function getPidOfPageMoveDestination(int $destination): int
+    {
+        if ($destination >= 0) {
+            return $destination;
+        }
+        $previousPage = BackendUtility::getRecord('pages', abs($destination));
+        BackendUtility::workspaceOL('pages', $previousPage, $this->BE_USER->workspace);
+        return (int)($previousPage['pid'] ?? 0);
     }
 
     /**

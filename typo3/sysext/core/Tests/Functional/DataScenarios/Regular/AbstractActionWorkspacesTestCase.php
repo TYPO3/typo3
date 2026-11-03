@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
@@ -83,6 +84,17 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, -self::VALUE_PageIdTarget, ['title' => 'Testing #1', 'hidden' => 0]);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
+    }
+
+    /**
+     * The second move is rejected. Its target is the workspace version of
+     * page 89, which is page 89 itself.
+     */
+    public function movePageToDifferentPageAndIntoItsWorkspaceVersion(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $versionedPage = BackendUtility::getWorkspaceVersionOfRecord(self::VALUE_WorkspaceId, self::TABLE_Page, self::VALUE_PageId, 'uid');
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, (int)$versionedPage['uid']);
     }
 
     public function createContentAndCopyDraftPage(): void
