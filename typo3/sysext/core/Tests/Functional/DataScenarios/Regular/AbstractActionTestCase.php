@@ -518,6 +518,36 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
     }
 
+    /**
+     * The second move is rejected: in a workspace, the moved page 89 is shown
+     * at its live and at its moved position, and one is dropped onto the other.
+     */
+    public function movePageToDifferentPageAndIntoItself(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageId);
+    }
+
+    /**
+     * The second move is rejected: page 89 is a subpage of page 88, at its
+     * live and at its moved position below page 90.
+     */
+    public function movePageToDifferentPageAndParentIntoIt(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_PageId);
+    }
+
+    /**
+     * The second move is rejected: placing page 88 after page 89 makes it a
+     * sibling of 89 below page 90, which is a subpage of page 88 itself.
+     */
+    public function movePageToDifferentPageAndParentAfterIt(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdParent, -self::VALUE_PageId);
+    }
+
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);

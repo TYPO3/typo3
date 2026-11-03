@@ -786,6 +786,42 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function movePageToDifferentPageAndIntoItself(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        parent::movePageToDifferentPageAndIntoItself();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
+    }
+
+    #[Test]
+    public function movePageToDifferentPageAndParentIntoIt(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        parent::movePageToDifferentPageAndParentIntoIt();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
+    }
+
+    #[Test]
+    public function movePageToDifferentPageAndParentAfterIt(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        parent::movePageToDifferentPageAndParentAfterIt();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
+    }
+
+    #[Test]
+    public function movePageToDifferentPageAndIntoItsWorkspaceVersion(): void
+    {
+        $this->expectedErrorLogEntries = 1;
+        parent::movePageToDifferentPageAndIntoItsWorkspaceVersion();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
+    }
+
+    #[Test]
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
