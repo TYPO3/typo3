@@ -7,3 +7,8 @@
 "sys_history",,,,,,,,,,
 ,"uid","tstamp","actiontype","usertype","userid","tablename","recuid","history_data","workspace","correlation_id"
 ,10,1700000900,6,"BE",1,"pages",1,"{""current"":0,""next"":1,""comment"":""Please review this page""}",0,"0400$b:1"
+,11,1700000950,6,"BE",1,"pages",1,"{""current"":1,""next"":-10,""comment"":""""}",0,"0400$b:2"
+
+"sys_workspace_stage",,
+,"uid","pid","title"
+,1,0,"Custom stage"

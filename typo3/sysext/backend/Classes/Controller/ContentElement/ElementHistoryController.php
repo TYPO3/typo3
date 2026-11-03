@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * Controller for showing the history module of TYPO3s backend.
@@ -423,6 +424,8 @@ class ElementHistoryController
             }
             if ($actionType === RecordHistoryStore::ACTION_STAGECHANGE) {
                 $singleLine['stageComment'] = trim((string)($entry['history_data']['comment'] ?? ''));
+                $singleLine['previousStage'] = $this->getStageTitle((int)($entry['history_data']['current'] ?? 0));
+                $singleLine['nextStage'] = $this->getStageTitle((int)($entry['history_data']['next'] ?? 0));
             }
             if ($actionType === RecordHistoryStore::ACTION_MODIFY || $actionType === RecordHistoryStore::ACTION_PUBLISH) {
                 // show changes
@@ -620,5 +623,19 @@ class ElementHistoryController
 
         return $schema->hasCapability(TcaSchemaCapability::EditLock)
             && ($record[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] ?? false);
+    }
+
+    private function getStageTitle(int $stageId): string
+    {
+        $label = match ($stageId) {
+            StagesService::STAGE_EDIT_ID => 'workspaces.mod:stage_editing',
+            StagesService::STAGE_PUBLISH_ID => 'workspaces.mod:stage_ready_to_publish',
+            StagesService::STAGE_PUBLISH_EXECUTE_ID => 'workspaces.mod:stage_publish',
+            default => '',
+        };
+        if ($label !== '') {
+            return $this->getLanguageService()->sL($label);
+        }
+        return (string)(BackendUtility::getRecord('sys_workspace_stage', $stageId, 'title')['title'] ?? '#' . $stageId);
     }
 }

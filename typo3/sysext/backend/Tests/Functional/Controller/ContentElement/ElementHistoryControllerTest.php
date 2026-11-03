@@ -36,6 +36,8 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
+    protected array $coreExtensionsToLoad = ['workspaces'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -155,6 +157,17 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryMoveAndStage.csv');
 
         self::assertStringContainsString('Please review this page', $this->renderHistoryOfRootPage());
+    }
+
+    #[Test]
+    public function stageChangeShowsPreviousAndNextStage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryMoveAndStage.csv');
+
+        $body = $this->renderHistoryOfRootPage();
+
+        self::assertStringContainsString('Editing ⇾ Custom stage', $body);
+        self::assertStringContainsString('Custom stage ⇾ Ready to publish', $body);
     }
 
     #[Test]

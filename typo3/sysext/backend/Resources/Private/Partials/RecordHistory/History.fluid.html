@@ -96,6 +96,9 @@
                             <f:if condition="{historyRow.movedWithinPage}">
                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.movedWithinPage" />
                             </f:if>
+                            <f:if condition="{historyRow.nextStage}">
+                                {historyRow.previousStage} ⇾ {historyRow.nextStage}
+                            </f:if>
                             <f:if condition="{historyRow.stageComment}">
                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.stageComment" />: {historyRow.stageComment}
                             </f:if>
