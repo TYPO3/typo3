@@ -91,7 +91,7 @@ final class CategoryReadTest extends FunctionalTestCase
     public function readingTheCategoriesOfARecordByCore(): void
     {
         // Given: post 1 is read in English
-        $languageAspect = new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $this->get(Context::class)->setAspect('language', $languageAspect);
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('tx_blogexample_domain_model_post')
             ->select(['*'], 'tx_blogexample_domain_model_post', ['uid' => 1])->fetchAssociative();
@@ -118,7 +118,7 @@ final class CategoryReadTest extends FunctionalTestCase
     public function readingTheCategoriesOfARecordByExtbase(): void
     {
         // Given: post 1 is read in English
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(1);
 
         // When: its categories are read
@@ -140,7 +140,7 @@ final class CategoryReadTest extends FunctionalTestCase
     public function readingTheCategoriesOfATranslationWithOverlaysOnByCore(): void
     {
         // Given: post 1 is read in German with overlays on
-        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $this->get(Context::class)->setAspect('language', $languageAspect);
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('tx_blogexample_domain_model_post')
             ->select(['*'], 'tx_blogexample_domain_model_post', ['uid' => 1])->fetchAssociative();
@@ -167,7 +167,7 @@ final class CategoryReadTest extends FunctionalTestCase
     public function readingTheCategoriesOfATranslationWithOverlaysOnByExtbase(): void
     {
         // Given: post 1 is read in German with overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(1);
 
         // When: its categories are read

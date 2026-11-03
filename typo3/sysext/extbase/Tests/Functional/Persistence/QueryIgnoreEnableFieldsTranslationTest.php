@@ -61,7 +61,7 @@ final class QueryIgnoreEnableFieldsTranslationTest extends FunctionalTestCase
     #[Test]
     public function hiddenTranslationIsNotOverlaidWithEnableFieldsRespected(): void
     {
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $query = $this->postRepository->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -74,7 +74,7 @@ final class QueryIgnoreEnableFieldsTranslationTest extends FunctionalTestCase
     #[Test]
     public function hiddenTranslationIsOverlaidWhenEnableFieldsAreIgnored(): void
     {
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $query = $this->postRepository->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -88,7 +88,7 @@ final class QueryIgnoreEnableFieldsTranslationTest extends FunctionalTestCase
     #[Test]
     public function hiddenTranslationIsOverlaidWhenOnlyTheDisabledFieldIsIgnored(): void
     {
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $query = $this->postRepository->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);

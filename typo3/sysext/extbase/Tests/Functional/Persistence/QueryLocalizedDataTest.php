@@ -74,7 +74,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     public function findByUidOverlayModeOnDefaultLanguage(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post2 = $this->postRepository->findByUid(2);
 
@@ -159,7 +159,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     public function findByUidOverlayModeOnLanguage(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post2 = $this->postRepository->findByUid(2);
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
@@ -242,7 +242,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         // we're in default lang and fetching by uid of the record in default language
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -264,7 +264,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $querySettings->setLanguageAspect(new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -276,7 +276,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
@@ -287,7 +287,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
-        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $querySettings->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
@@ -600,16 +600,31 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             'only fetch records with l10n_parent and try overlays' => [
                 'languageUid' => 1,
-                'overlay' => LanguageAspect::OVERLAYS_ON,
-                // here we have only 4 items instead of 5 as post "Post DA only" uid:15 has no language 0 parent,
-                // so with overlay enabled it's not shown.
-                // Tags without translation are also hidden with OVERLAYS_ON.
+                'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
+                // Post "Post DA only" uid:15 has no language 0 parent, but is included as floating record.
+                // Tags without translation are hidden with OVERLAYS_ON_WITH_FLOATING.
                 'expected' => [
                     [
                         'title' => 'Post 5 - DA',
                         AbstractDomainObject::PROPERTY_UID => 5,
                         AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
                         'content' => 'A - content',
+                        'blog.title' => 'Blog 1 DA',
+                        'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
+                        'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+                        'author.firstname' => 'Translated John',
+                        'author.' . AbstractDomainObject::PROPERTY_UID => 1,
+                        'author.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+                        'secondAuthor.firstname' => 'Translated John',
+                        'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 1,
+                        'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
+                        'tags' => [],
+                    ],
+                    [
+                        'title' => 'Post DA only',
+                        AbstractDomainObject::PROPERTY_UID => 15,
+                        AbstractDomainObject::PROPERTY_LOCALIZED_UID => 15,
+                        'content' => 'B - content',
                         'blog.title' => 'Blog 1 DA',
                         'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
                         'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
@@ -895,27 +910,6 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             [
                 'languageUid' => 1,
-                'overlay' => LanguageAspect::OVERLAYS_ON,
-                'expected' => [
-                    [
-                        'title' => 'Post 5 - DA',
-                        AbstractDomainObject::PROPERTY_UID => 5,
-                        AbstractDomainObject::PROPERTY_LOCALIZED_UID => 13,
-                        'content' => 'A - content',
-                        'blog.title' => 'Blog 1 DA',
-                        'blog.' . AbstractDomainObject::PROPERTY_UID => 1,
-                        'blog.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                        'author.firstname' => 'Translated John',
-                        'author.' . AbstractDomainObject::PROPERTY_UID => 1,
-                        'author.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                        'secondAuthor.firstname' => 'Translated John',
-                        'secondAuthor.' . AbstractDomainObject::PROPERTY_UID => 1,
-                        'secondAuthor.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 2,
-                    ],
-                ],
-            ],
-            [
-                'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => [
                     [
@@ -1036,7 +1030,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         return [
             'default with overlays' => [
                 'languageUid' => 0,
-                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => $allLanguages,
             ],
             'default without overlays, show all languages' => [
@@ -1046,7 +1040,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
             ],
             'DA with overlays, shows translated records twice (which is a bug)' => [
                 'languageUid' => 1,
-                'overlay' => LanguageAspect::OVERLAYS_ON,
+                'overlay' => LanguageAspect::OVERLAYS_ON_WITH_FLOATING,
                 'expected' => [
                     [
                         'title' => 'Blog 1 DA',

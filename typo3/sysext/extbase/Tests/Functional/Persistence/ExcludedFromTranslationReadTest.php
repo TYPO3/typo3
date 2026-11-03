@@ -102,13 +102,13 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $germanRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $german = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $germanRow);
         $frenchRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $french = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $frenchRow);
 
@@ -135,10 +135,10 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
 
         // When: the post is read with the overlay of the German and of the French translation, overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $german = $this->get(PostRepository::class)->findByUid(1);
         $this->get(PersistenceManager::class)->clearState();
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $french = $this->get(PostRepository::class)->findByUid(1);
 
         // Then: author, reviewer and date are those stored in the translation
@@ -226,13 +226,13 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $germanRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $german = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $germanRow);
         $frenchRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $french = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $frenchRow);
 
@@ -248,10 +248,10 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
     public function infoOfExcludedInlineRelationIsTheCopyOfTheTranslationWithOverlaysOnByExtbase(): void
     {
         // When: the post is read with the overlay of the German and of the French translation, overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $german = $this->get(PostRepository::class)->findByUid(1);
         $this->get(PersistenceManager::class)->clearState();
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $french = $this->get(PostRepository::class)->findByUid(1);
 
         // Then: the info is the copy owned by that translation
@@ -324,7 +324,7 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $germanRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $german = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $germanRow);
 
@@ -344,7 +344,7 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
     public function commentsOfExcludedInlineRelationAreTheCopiesOfTheTranslationWithOverlaysOnByExtbase(): void
     {
         // When: the third post is read with the overlay of the German translation, overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $german = $this->get(PostRepository::class)->findByUid(7);
 
         // Then: the post returns the two comments of the translation
@@ -413,13 +413,13 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $germanRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $german = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $germanRow);
         $frenchRow = $this->get(PageRepository::class)->getLanguageOverlay(
             'tx_blogexample_domain_model_post',
             $row,
-            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)
+            new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)
         );
         $french = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tx_blogexample_domain_model_post', $frenchRow);
 
@@ -452,10 +452,10 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
 
         // When: the post is read with the overlay of the German and of the French translation, overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $german = $this->get(PostRepository::class)->findByUid(1);
         $this->get(PersistenceManager::class)->clearState();
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $french = $this->get(PostRepository::class)->findByUid(1);
 
         // Then: the post returns both tags
@@ -550,13 +550,13 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         foreach ($rows as $row) {
             $german = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow(
                 'tx_blogexample_domain_model_post',
-                $this->get(PageRepository::class)->getLanguageOverlay('tx_blogexample_domain_model_post', $row, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON))
+                $this->get(PageRepository::class)->getLanguageOverlay('tx_blogexample_domain_model_post', $row, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING))
             );
             self::assertInstanceOf(Record::class, $german);
             $foundInGerman[] = [$german->getOverlaidUid(), $german->getLanguageId()];
             $french = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow(
                 'tx_blogexample_domain_model_post',
-                $this->get(PageRepository::class)->getLanguageOverlay('tx_blogexample_domain_model_post', $row, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON))
+                $this->get(PageRepository::class)->getLanguageOverlay('tx_blogexample_domain_model_post', $row, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING))
             );
             self::assertInstanceOf(Record::class, $french);
             $foundInFrench[] = [$french->getOverlaidUid(), $french->getLanguageId()];
@@ -578,14 +578,14 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $anna = $this->get(PersonRepository::class)->findOneBy(['firstname' => 'Anna']);
 
         // When: the posts of Anna are queried with the overlay of the German and of the French translation, overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $germanPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInGerman = array_map(
             static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],
             $germanPosts
         );
         $this->get(PersistenceManager::class)->clearState();
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $frenchPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInFrench = array_map(
             static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],

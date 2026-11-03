@@ -102,7 +102,7 @@ final class QueryResultSerializationTest extends FunctionalTestCase
     public function cachedQueryResultTranslatesRecordsOfTheQueryLanguage(): void
     {
         $query = $this->postRepository->createQuery();
-        $query->getQuerySettings()->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $query->getQuerySettings()->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query->matching($query->equals('uid', 11));
 
         // Cached before the result is initialized, so the mapping happens after restoring it
@@ -142,7 +142,7 @@ final class QueryResultSerializationTest extends FunctionalTestCase
             ->setEnableFieldsToBeIgnored(['disabled'])
             ->setIncludeDeleted(true)
             ->setRespectSysLanguage(false)
-            ->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+            ->setLanguageAspect(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $querySettings = $this->cacheRoundTrip($query->execute())->getQuery()->getQuerySettings();
 

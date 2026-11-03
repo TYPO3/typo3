@@ -123,9 +123,9 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
         $reads = [
-            'en' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'de' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'fr' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
+            'en' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $result = [];
         foreach ($reads as $key => [$blogUid, $languageAspect]) {
@@ -165,9 +165,9 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: blog 1 and its posts are read in English, German and French with overlays on
         $reads = [
-            'en' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'de' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'fr' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
+            'en' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $result = [];
         foreach ($reads as $key => [$blogUid, $languageAspect]) {
@@ -383,12 +383,12 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
         $reads = [
-            'en:1' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'en:3' => [3, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'de:1' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'de:3' => [3, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'fr:1' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
-            'fr:3' => [3, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
+            'en:1' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'en:3' => [3, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de:1' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de:3' => [3, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr:1' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr:3' => [3, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $collectPaths = static function (RecordInterface $folder, string $parentPath) use (&$collectPaths): array {
             $path = $parentPath === '' ? $folder->get('title') : $parentPath . ' > ' . $folder->get('title');
@@ -444,12 +444,12 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: both roots are read with their tree in English, German and French with overlays on
         $reads = [
-            'en:1' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'en:3' => [3, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON)],
-            'de:1' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'de:3' => [3, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
-            'fr:1' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
-            'fr:3' => [3, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON)],
+            'en:1' => [1, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'en:3' => [3, new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de:1' => [1, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'de:3' => [3, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr:1' => [1, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
+            'fr:3' => [3, new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $collectPaths = static function (Folder $folder, string $parentPath) use (&$collectPaths): array {
             $path = $parentPath === '' ? $folder->getTitle() : $parentPath . ' > ' . $folder->getTitle();
@@ -1015,7 +1015,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviewRow = $contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['uidInList' => '14', 'pidInList' => '2'])[0] ?? null;
@@ -1057,7 +1057,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: review 14 is read with French, the fallback chain German, English and overlays on and its relations are
         // followed
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $this->get(PersistenceManager::class)->clearState();
         $review = $this->get(PostRepository::class)->findByUid(14);
         $result = ['blog' => [], 'relatedPosts' => []];
@@ -1103,7 +1103,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviewRow = $contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['uidInList' => '16', 'pidInList' => '2'])[0] ?? null;
@@ -1141,7 +1141,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationsOfTranslationsRead/TranslatedReviews.csv');
 
         // When: review 16 is read with German and overlays on and its relations are followed
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $review = $this->get(PostRepository::class)->findByUid(16);
         $result = ['blog' => [], 'relatedPosts' => []];
@@ -1190,7 +1190,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
         $reads = [
-            'de' => [6, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
+            'de' => [6, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $result = [];
         foreach ($reads as $key => [$blogUid, $languageAspect]) {
@@ -1229,7 +1229,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: the posts of the blog are read with German and overlays on
         $reads = [
-            'de' => [6, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON)],
+            'de' => [6, new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING)],
         ];
         $result = [];
         foreach ($reads as $key => [$blogUid, $languageAspect]) {
@@ -1353,7 +1353,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviews = [];
@@ -1384,7 +1384,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: the reviews of blog 2 are selected by the stored value of the field blog and read in German with
         // overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $constraintObject = $this->get(BlogRepository::class)->findByUid(2);
         $query = $this->get(PostRepository::class)->createQuery();
@@ -1420,7 +1420,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviews = [];
@@ -1450,7 +1450,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
 
         // When: the reviews of blog 2 are selected by the stored value of the field blog and read in German with
         // overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $constraintObject = $this->get(BlogRepository::class)->findByUid(2);
         $query = $this->get(PostRepository::class)->createQuery();
@@ -1485,7 +1485,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviews = [];
@@ -1514,7 +1514,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationsOfTranslationsRead/Reviews.csv');
 
         // When: the reviews that have a relation row to post 2 are selected and read in German with overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $constraintObject = $this->get(PostRepository::class)->findByUid(2);
         $query = $this->get(PostRepository::class)->createQuery();
@@ -1549,7 +1549,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviews = [];
@@ -1578,7 +1578,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationsOfTranslationsRead/Reviews.csv');
 
         // When: the reviews that have a relation row to post 2 are selected and read in German with overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $constraintObject = $this->get(PostRepository::class)->findByUid(2);
         $query = $this->get(PostRepository::class)->createQuery();
@@ -1613,7 +1613,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
             ->withAttribute('frontend.page.information', $pageInformation)
             ->withAttribute('frontend.cache.collector', new CacheDataCollector())
             ->withAttribute('frontend.page.parts', new PageParts());
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
         $reviews = [];
@@ -1639,7 +1639,7 @@ final class RelationsOfTranslationsReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationsOfTranslationsRead/Reviews.csv');
 
         // When: the reviews that have a relation row to post 2 are selected and read in German with overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->get(PersistenceManager::class)->clearState();
         $constraintObject = $this->get(PostRepository::class)->findByUid(2);
         $query = $this->get(PostRepository::class)->createQuery();

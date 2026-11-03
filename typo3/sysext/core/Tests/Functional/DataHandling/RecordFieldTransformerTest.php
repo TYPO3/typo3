@@ -491,7 +491,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/category_many_to_many_localized.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $dummyRecord = $this->createTestRecordObject([
             'typo3tests_contentelementb_categories_mm' => 2,
             'sys_language_uid' => 1,

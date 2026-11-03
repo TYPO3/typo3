@@ -446,7 +446,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
     public function aTranslationIsReadThroughItsOwnVersionByCore(): void
     {
         // When: the blogs of the page with a translated blog are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($this->request);
         $rows = $contentObjectRenderer->getRecords('tx_blogexample_domain_model_blog', ['pidInList' => '10', 'orderBy' => 'uid']);
@@ -466,7 +466,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
     public function aTranslationIsReadThroughItsOwnVersionByExtbase(): void
     {
         // When: the blogs of the page with a translated blog are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(BlogRepository::class)->createQuery();
         $query->getQuerySettings()->setStoragePageIds([10]);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -627,7 +627,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceRead/TranslatedPostDeleted.csv');
 
         // When: the posts of the blog are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($this->request);
         $rows = $contentObjectRenderer->getRecords('tx_blogexample_domain_model_blog', ['pidInList' => '14', 'orderBy' => 'uid']);
@@ -656,7 +656,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceRead/TranslatedPostDeleted.csv');
 
         // When: the posts of the blog are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(BlogRepository::class)->createQuery();
         $query->getQuerySettings()->setStoragePageIds([14]);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -743,7 +743,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceRead/TranslatedPostOfHiddenDefault.csv');
 
         // When: the posts of the blog are read in the workspace with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($this->request);
         $rows = $contentObjectRenderer->getRecords('tx_blogexample_domain_model_blog', ['pidInList' => '16', 'orderBy' => 'uid']);
@@ -778,7 +778,7 @@ final class WorkspaceReadTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceRead/TranslatedPostOfHiddenDefault.csv');
 
         // When: the posts of the blog are read in the workspace with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(BlogRepository::class)->createQuery();
         $query->getQuerySettings()->setStoragePageIds([16]);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);

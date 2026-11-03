@@ -180,19 +180,15 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             'default language, overlays off' => [0, LanguageAspect::OVERLAYS_OFF, [], [
                 'P5|5|5|0', 'P4 all languages|4|4|-1', 'P2|2|2|0', 'P1|1|1|0', 'P8 moved in WS|8|8|0',
             ]],
-            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON, [], [
+            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [], [
                 'P5|5|5|0', 'P4 all languages|4|4|-1', 'P2|2|2|0', 'P1|1|1|0', 'P8 moved in WS|8|8|0',
             ]],
             // Free mode selects rows of the language as they are, even P3 DA whose default record is hidden.
             'DA, overlays off' => [1, LanguageAspect::OVERLAYS_OFF, [], [
                 'P4 all languages|4|4|-1', 'P16 floating DA|16|16|1', 'P3 DA|3|13|1', 'P2 DA|2|11|1',
             ]],
-            // Only translations of visible default records. P3 DA (hidden default), P5 DA (hidden translation)
-            // and the floating P16 are dropped. Sorting uses the translated "content" values.
-            // pending review.typo3.org/c/Packages/TYPO3.CMS/+/94510
-            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [], [
-                'P4 all languages|4|4|-1', 'P2 DA|2|11|1',
-            ]],
+            // Translations of visible default records and the floating P16. P3 DA (hidden default) and
+            // P5 DA (hidden translation) are dropped. Sorting uses the translated "content" values.
             // pending review.typo3.org/c/Packages/TYPO3.CMS/+/94510
             'DA, overlays on with floating' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [], [
                 'P4 all languages|4|4|-1', 'P16 floating DA|16|16|1', 'P2 DA|2|11|1',
@@ -207,7 +203,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             ]],
             // The SQL only selects language 3 rows, so the fallback chain is never used for root records.
             // pending review.typo3.org/c/Packages/TYPO3.CMS/+/94510
-            'language 3 with fallback to DE, overlays on' => [3, LanguageAspect::OVERLAYS_ON, [2], [
+            'language 3 with fallback to DE, overlays on' => [3, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [2], [
                 'P4 all languages|4|4|-1',
             ]],
         ];
@@ -227,12 +223,12 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public static function relationsOfTranslatedRecordDataProvider(): array
     {
         return [
-            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON, [], [
+            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [], [
                 'P2|2|2|0', 'John|1|1|0', 'Blog A|1|1|0', ['T1|1|1|0', 'T2|2|2|0'],
             ]],
             // n:1 relations stored with default uids (author) and translated uids (blog) both resolve to the
             // default uid with the translation as _localizedUid. MM tags come from the translation's own MM rows.
-            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [], [
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [], [
                 'P2 DA|2|11|1', 'John DA|1|2|1', 'Blog A DA|1|2|1', ['T1 DA|1|21|1'],
             ]],
             // Relations are loaded with "mixed" when the root uses free mode, so untranslated T3 is kept.
@@ -248,7 +244,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             ]],
             // Relations without a record in language 3 or 2 are dropped in "on" mode.
             // pending review.typo3.org/c/Packages/TYPO3.CMS/+/94510
-            'language 3 with fallback to DE, overlays on' => [3, LanguageAspect::OVERLAYS_ON, [2], [
+            'language 3 with fallback to DE, overlays on' => [3, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [2], [
                 'P2 DE|2|22|2', 'null', 'null', [],
             ]],
         ];
@@ -276,12 +272,12 @@ final class BehaviourConformanceTest extends FunctionalTestCase
         return [
             // @todo P2 is listed twice, once as P2 and once as P2 DE, because the DE
             //       translation points to the default blog and is re-based onto its default record.
-            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON, [
+            'default language, overlays on' => [0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
                 'Blog A|1|1|0', ['P1|1|1|0', 'P2|2|2|0', 'P2 DE|2|22|2', 'P4 all languages|4|4|-1', 'P5|5|5|0', 'P8 moved in WS|8|8|0'],
             ]],
             // Children are selected by the parent's _localizedUid (2): the DA posts, not the default ones.
             // P3 DA is shown although its default record is hidden; P5 DA (hidden) is not.
-            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
                 'Blog A DA|1|2|1', ['P2 DA|2|11|1', 'P3 DA|3|13|1', 'P16 floating DA|16|16|1'],
             ]],
             'DA, overlays mixed' => [1, LanguageAspect::OVERLAYS_MIXED, [
@@ -310,11 +306,11 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function ignoredEnableFieldsAlsoApplyToTranslationLookup(): void
     {
-        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $query = $this->createPostQuery($languageAspect);
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         self::assertSame(
-            ['P4 all languages|4|4|-1', 'P5 DA hidden|5|15|1', 'P3 DA|3|13|1', 'P2 DA|2|11|1'],
+            ['P4 all languages|4|4|-1', 'P16 floating DA|16|16|1', 'P5 DA hidden|5|15|1', 'P3 DA|3|13|1', 'P2 DA|2|11|1'],
             self::describeAll($query->execute())
         );
     }
@@ -325,7 +321,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function recordInAllLanguagesIsNotOverlaidButItsRelationsAre(): void
     {
-        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $post = $this->get(PostRepository::class)->findByUid(4);
         self::assertSame(['P4 all languages|4|4|-1', 'John DA|1|2|1'], [self::describe($post), self::describe($post->getAuthor())]);
     }
@@ -336,7 +332,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function findByTranslatedUidReturnsTranslationInDefaultLanguage(): void
     {
-        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $post = $this->get(PostRepository::class)->findByUid(11);
         self::assertSame(['P2 DA|2|11|1', 'John DA|1|2|1', ['T1 DA|1|21|1']], [
             self::describe($post),
@@ -353,7 +349,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function defaultAndTranslatedUidInOneRequestYieldTwoObjectsWithSameUid(): void
     {
-        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $postRepository = $this->get(PostRepository::class);
         $persistenceManager = $this->get(PersistenceManager::class);
         $default = $postRepository->findByUid(2);
@@ -374,8 +370,8 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function sameRowUnderTwoOverlayTypesYieldsTwoObjects(): void
     {
-        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
-        $query = $this->createPostQuery(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
+        $query = $this->createPostQuery(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $viaOn = $query->matching($query->equals('uid', 11))->execute()->getFirst();
         $viaMixed = null;
         foreach ($this->createPostQuery(new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED))->execute() as $post) {
@@ -395,10 +391,10 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function propertyMapperAcceptsLocalizedIdentity(): void
     {
-        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertSame('P2|2|2|0', self::describe($this->get(PropertyMapper::class)->convert('2_11', Post::class)));
         $this->get(PersistenceManager::class)->clearState();
-        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertSame('P2 DA|2|11|1', self::describe($this->get(PropertyMapper::class)->convert('2_11', Post::class)));
     }
 
@@ -408,7 +404,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function relationsUseParentLanguageWithoutRespectSysLanguage(): void
     {
-        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $query = $this->createPostQuery($languageAspect, false);
         $post = $query->matching($query->equals('uid', 11))->execute()->getFirst();
         self::assertSame(['P2 DA|2|11|1', 'John DA|1|2|1', ['T1 DA|1|21|1']], [
@@ -425,7 +421,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function withoutRespectSysLanguageTranslationsAreReturnedTwice(): void
     {
-        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertSame(
             ['P4 all languages|4|4|-1', 'P2 DA|2|11|1', 'P2 DE|2|22|2', 'P16 floating DA|16|16|1', 'P3 DA|3|13|1', 'P2 DA|2|11|1'],
             self::describeAll($this->createPostQuery($languageAspect, false)->execute())
@@ -438,12 +434,12 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function countIgnoresRowsDroppedByOverlay(): void
     {
-        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertCount(9, $this->createPostQuery($languageAspect, false)->execute());
         self::assertCount(6, $this->createPostQuery($languageAspect, false)->execute()->toArray());
         // With respectSysLanguage the SQL already excludes what the overlay would drop.
-        self::assertCount(2, $this->createPostQuery($languageAspect)->execute());
-        self::assertCount(2, $this->createPostQuery($languageAspect)->execute()->toArray());
+        self::assertCount(3, $this->createPostQuery($languageAspect)->execute());
+        self::assertCount(3, $this->createPostQuery($languageAspect)->execute()->toArray());
     }
 
     /**
@@ -452,7 +448,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function limitIsAppliedBeforeOverlayDropsRows(): void
     {
-        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $query = $this->createPostQuery($languageAspect, false);
         $query->setLimit(3);
         self::assertSame(['P4 all languages|4|4|-1', 'P2 DA|2|11|1'], self::describeAll($query->execute()));
@@ -465,10 +461,10 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     #[Test]
     public function limitWithRespectSysLanguageIsAppliedAfterLanguageFiltering(): void
     {
-        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $query = $this->createPostQuery($languageAspect);
         $query->setLimit(2);
-        self::assertSame(['P4 all languages|4|4|-1', 'P2 DA|2|11|1'], self::describeAll($query->execute()));
+        self::assertSame(['P4 all languages|4|4|-1', 'P16 floating DA|16|16|1'], self::describeAll($query->execute()));
     }
 
     public static function workspaceReadDataProvider(): array
@@ -478,12 +474,12 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             // Dropped: P1 (hidden in the workspace), P3 (hidden live), P5 (delete placeholder) and
             // P8, whose live row is removed as a moved record while the move pointer is not selected.
             // P6 exists only in the workspace, so uid and _versionedUid are the new record's uid.
-            'default language' => [0, LanguageAspect::OVERLAYS_ON, [
+            'default language' => [0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
                 'P2 WS|2|102|20', 'P4 all languages|4|4|20', 'P6 new in WS|106|106|20',
             ]],
             // The translation's own version (111) is used.
-            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [
-                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20',
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
+                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P16 floating DA|16|16|20',
             ]],
             'DA, overlays mixed' => [1, LanguageAspect::OVERLAYS_MIXED, [
                 'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P6 new in WS|106|106|20',
@@ -511,7 +507,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public function workspaceQueryWithIgnoredEnableFieldsReturnsHiddenVersions(): void
     {
         $this->setWorkspace(1);
-        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $query = $this->createWorkspacePostQuery($languageAspect);
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         self::assertSame(
@@ -528,7 +524,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public function movedRecordIsResolvedWhenFetchedAlone(): void
     {
         $this->setWorkspace(1);
-        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertSame('P8 moved in WS|8|108|21', self::describeVersion($this->get(PostRepository::class)->findByUid(8)));
     }
 
@@ -548,7 +544,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public function workspaceCountAndLimit(): void
     {
         $this->setWorkspace(1);
-        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         self::assertCount(7, $this->createWorkspacePostQuery($languageAspect)->execute());
         $query = $this->createWorkspacePostQuery($languageAspect);
         $query->setLimit(2);
@@ -560,14 +556,14 @@ final class BehaviourConformanceTest extends FunctionalTestCase
         return [
             // @todo the DE translation of P2 is listed with the default blog; it also
             //       carries the _versionedUid (102) of the default record's version.
-            'default language' => [0, LanguageAspect::OVERLAYS_ON, [
+            'default language' => [0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
                 'Blog A WS|1|101|20', ['P2 WS|2|102|20', 'P2 DE|2|102|20', 'P4 all languages|4|4|20', 'P6 new in WS|106|106|20'],
             ]],
             // The DA blog has no version of its own, but _versionedUid is the default record's version (101).
             // @todo P3 DA (13) is missing: Typo3DbBackend re-fetches its default record P3 (hidden) via
             //       PageRepository::getRawRecord(), whose versionOL() drops it in a workspace. Live and the
             //       Record API keep P3 DA.
-            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON, [
+            'DA, overlays on' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [
                 'Blog A DA|1|101|20', ['P2 DA WS|2|111|20', 'P16 floating DA|16|16|20'],
             ]],
         ];
@@ -593,7 +589,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public function workspaceMmRelationsUseTheVersionedUid(): void
     {
         $this->setWorkspace(1);
-        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage(0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $post = $this->get(PostRepository::class)->findByUid(2);
         self::assertSame(['T2|2|2|0', 'T3|3|3|0'], self::describeAll($post->getTags()));
     }
@@ -615,7 +611,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
     public function updateInWorkspaceWritesLiveRow(int $languageId, int $liveUid, int $versionUid, string $versionTitle): void
     {
         $this->setWorkspace(1);
-        $this->setLanguage($languageId, LanguageAspect::OVERLAYS_ON);
+        $this->setLanguage($languageId, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $postRepository = $this->get(PostRepository::class);
         $post = $postRepository->findByUid(2);
         self::assertSame($versionTitle, $post->getTitle());

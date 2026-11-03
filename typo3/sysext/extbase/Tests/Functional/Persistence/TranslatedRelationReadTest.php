@@ -95,7 +95,7 @@ final class TranslatedRelationReadTest extends FunctionalTestCase
     public function theFileReferencesOfATranslationWithOverlaysOnByCore(): void
     {
         // Given: content element 1 is read with German and overlays on
-        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $this->get(Context::class)->setAspect('language', $languageAspect);
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content')
             ->select(['*'], 'tt_content', ['uid' => 1])->fetchAssociative();
@@ -122,7 +122,7 @@ final class TranslatedRelationReadTest extends FunctionalTestCase
     public function theFileReferencesOfATranslationWithOverlaysOnByExtbase(): void
     {
         // Given: content element 1 is read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $content = $this->get(TtContentRepository::class)->findByUid(1);
 
         // When: its images are followed
@@ -199,7 +199,7 @@ final class TranslatedRelationReadTest extends FunctionalTestCase
     public function theCopiedFileReferencesOfATranslationAreItsOwnByCore(): void
     {
         // Given: content element 3 is read with German and overlays on
-        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON);
+        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING);
         $this->get(Context::class)->setAspect('language', $languageAspect);
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content')
             ->select(['*'], 'tt_content', ['uid' => 3])->fetchAssociative();
@@ -226,7 +226,7 @@ final class TranslatedRelationReadTest extends FunctionalTestCase
     public function theCopiedFileReferencesOfATranslationAreItsOwnByExtbase(): void
     {
         // Given: content element 3 is read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $content = $this->get(TtContentRepository::class)->findByUid(3);
 
         // When: its images are followed

@@ -85,7 +85,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     public function actionGetsBlogFromUidArgument(int $language, int $blogUid, string $expectedTitle): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect($language, $language, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect($language, $language, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->request = $this->request->withControllerActionName('details');
         $this->request = $this->request->withArgument('blog', $blogUid);
 
@@ -99,7 +99,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     public function actionThrowsRequiredArgumentMissingExceptionWhenNoBlogGiven(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->request = $this->request->withControllerActionName('testSingle');
 
         $this->expectException(RequiredArgumentMissingException::class);
@@ -111,7 +111,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     public function actionHandlesArgumentMissingExceptionAsPageNotFoundIfConfigured(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->request = $this->request->withControllerActionName('testSingle');
 
         $configurationManager = $this->get(ConfigurationManager::class);
@@ -136,7 +136,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     public function actionThrowsTargetNotFoundExceptionExceptionWhenBlogUidNotFound(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->request = $this->request->withControllerActionName('testSingle');
         $this->request = $this->request->withArgument('blog', 11);
 
@@ -149,7 +149,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     public function actionHandlesTargetNotFoundExceptionAsPageNotFoundIfConfigured(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $this->request = $this->request->withControllerActionName('testSingle');
         $this->request = $this->request->withArgument('blog', 11);
 

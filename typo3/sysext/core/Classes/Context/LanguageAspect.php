@@ -45,15 +45,19 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * - defines which way the records should be fetched from
  * - usually you fetch language 0 and -1, then take the "contentId" and "overlay" them
  *    - here you have two choices
- *          1. "on" if there is no overlay, do not render the default language records ("hideNonTranslated")
+ *          1. "on" (deprecated) - same as "includeFloating", but without records that have no default language counterpart
  *          2. "mixed" - if there is no overlay, just keep the default language, possibility to have mixed languages - config.sys_language_overlay = 1
  *          3. "off" - do not do overlay, only fetch records available in the current "contentId" (see above), and do not care about overlays or fallbacks - fallbacks could be an option here, actually that is placed on top
- *          4. "includeFloating" - on + includeRecordsWithoutDefaultTranslation
+ *          4. "includeFloating" - if there is no overlay, do not render the default language records ("hideNonTranslated"),
+ *             but include records of the "contentId" without default language counterpart (includeRecordsWithoutDefaultTranslation)
  */
 final readonly class LanguageAspect implements AspectInterface
 {
     public const string OVERLAYS_OFF = 'off';  // config.sys_language_overlay = 0
     public const string OVERLAYS_MIXED = 'mixed';  // config.sys_language_overlay = 1 (keep the ones that are only available in default language)
+    /**
+     * @deprecated since v15, will be removed in v16. Use OVERLAYS_ON_WITH_FLOATING instead.
+     */
     public const string OVERLAYS_ON = 'on';    // "hideNonTranslated"
     public const string OVERLAYS_ON_WITH_FLOATING = 'includeFloating';    // "hideNonTranslated" + records that are only available in polish
 
@@ -65,7 +69,14 @@ final readonly class LanguageAspect implements AspectInterface
         private ?int $contentId = null,
         private string $overlayType = self::OVERLAYS_ON_WITH_FLOATING,
         private array $fallbackChain = [],
-    ) {}
+    ) {
+        if ($overlayType === self::OVERLAYS_ON) {
+            trigger_error(
+                'Using LanguageAspect overlay type "' . self::OVERLAYS_ON . '" (LanguageAspect::OVERLAYS_ON) is deprecated and will stop working in TYPO3 v16.0. Use LanguageAspect::OVERLAYS_ON_WITH_FLOATING instead.',
+                E_USER_DEPRECATED
+            );
+        }
+    }
 
     /**
      * Used language overlay

@@ -147,8 +147,8 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function buildIdentifierProducesUniqueIdentifiersForDifferentContentIds(): void
     {
-        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
-        $languageAspect2 = new LanguageAspect(1, 2, LanguageAspect::OVERLAYS_ON, [0]);
+        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
+        $languageAspect2 = new LanguageAspect(1, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
 
         $session = new Session();
         $identifier1 = $session->buildIdentifier('1', $languageAspect1);
@@ -160,7 +160,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function buildIdentifierProducesUniqueIdentifiersForDifferentOverlayTypes(): void
     {
-        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
+        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
         $languageAspect2 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED, [0]);
 
         $session = new Session();
@@ -173,8 +173,8 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function buildIdentifierProducesUniqueIdentifiersForDifferentFallbackChains(): void
     {
-        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
-        $languageAspect2 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [2, 0]);
+        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
+        $languageAspect2 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [2, 0]);
 
         $session = new Session();
         $identifier1 = $session->buildIdentifier('1', $languageAspect1);
@@ -186,8 +186,8 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function buildIdentifierProducesSameIdentifierForSameConfiguration(): void
     {
-        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
-        $languageAspect2 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
+        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
+        $languageAspect2 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
 
         $session = new Session();
         $identifier1 = $session->buildIdentifier('1', $languageAspect1);
@@ -201,8 +201,8 @@ final class SessionTest extends UnitTestCase
     {
         // The language ID is used for menus/links, not for content fetching,
         // so it should not affect the identifier. Only contentId matters.
-        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
-        $languageAspect2 = new LanguageAspect(2, 1, LanguageAspect::OVERLAYS_ON, [0]);
+        $languageAspect1 = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
+        $languageAspect2 = new LanguageAspect(2, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
 
         $session = new Session();
         $identifier1 = $session->buildIdentifier('1', $languageAspect1);
@@ -230,7 +230,7 @@ final class SessionTest extends UnitTestCase
     public function buildIdentifierFromArrayRow(): void
     {
         $session = new Session();
-        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON, [0]);
+        $languageAspect = new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]);
         $identifier = $session->buildIdentifier(['uid' => 42, '_LOCALIZED_UID' => 13], $languageAspect);
 
         self::assertSame('42_13', $session->getBaseIdentifier($identifier));
@@ -241,7 +241,7 @@ final class SessionTest extends UnitTestCase
     public function buildIdentifierFromArrayRowWithoutLocalizedUid(): void
     {
         $session = new Session();
-        $languageAspect = new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON, []);
+        $languageAspect = new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, []);
         $identifier = $session->buildIdentifier(['uid' => 42], $languageAspect);
 
         self::assertSame('42', $session->getBaseIdentifier($identifier));

@@ -269,7 +269,7 @@ final class VisibilityTest extends FunctionalTestCase
     public function aHiddenTranslationHidesThePostWithOverlaysOnByCore(): void
     {
         // Given: the language is German and overlays are on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         // When: the posts of the page with translations are read
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
@@ -290,7 +290,7 @@ final class VisibilityTest extends FunctionalTestCase
     public function aHiddenTranslationHidesThePostWithOverlaysOnByExtbase(): void
     {
         // Given: the language is German and overlays are on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         // When: the posts of the page with translations are read
         $query = $this->get(PostRepository::class)->createQuery();
@@ -359,7 +359,7 @@ final class VisibilityTest extends FunctionalTestCase
     {
         // Given: the visibility aspect includes hidden content, the language is German and overlays are on
         $this->get(Context::class)->setAspect('visibility', new VisibilityAspect(false, true));
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         // When: the posts of the page with translations are read
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
@@ -382,7 +382,7 @@ final class VisibilityTest extends FunctionalTestCase
     public function ignoringTheHiddenFlagAlsoAppliesToTheTranslationByExtbase(): void
     {
         // Given: the language is German and overlays are on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         // When: the posts of the page with translations are read, ignoring the hidden flag
         $query = $this->get(PostRepository::class)->createQuery();

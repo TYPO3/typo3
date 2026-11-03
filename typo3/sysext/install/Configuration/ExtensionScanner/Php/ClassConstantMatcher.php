@@ -664,4 +664,9 @@ return [
             'Breaking-107654-RemoveRandomSubpageOptionOfDoktypeShortcut.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Context\LanguageAspect::OVERLAYS_ON' => [
+        'restFiles' => [
+            'Deprecation-111326-LanguageAspectOverlaysOn.rst',
+        ],
+    ],
 ];

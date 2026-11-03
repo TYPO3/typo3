@@ -89,60 +89,6 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     }
 
     /**
-     * Read with German and overlays on, `ContentObjectRenderer::getRecords()` selects the default rows and the rows for
-     * all languages of the storage page 2 and overlays each default row with its German translation. It returns post 2
-     * as "Erster Beitrag" and post 5 as "Zweiter Beitrag", both under the uid of the default record, and post 7 for all
-     * languages unchanged. Post 1 "Only in English" has no translation and is dropped. The German post 8 "Freie
-     * Übersetzung" has no default record and is not selected.
-     *
-     * @see readingAllPostsWithOverlaysOnByExtbase()
-     */
-    #[Test]
-    public function readingAllPostsWithOverlaysOnByCore(): void
-    {
-        // When: all posts are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
-        $posts = array_map(
-            static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
-            $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'orderBy' => 'uid']),
-        );
-
-        // Then: the translated posts and the post for all languages are returned
-        self::assertSame([
-            'Erster Beitrag (uid 2, language 1)',
-            'Zweiter Beitrag (uid 5, language 1)',
-            'All languages (uid 7, language -1)',
-        ], $posts);
-    }
-
-    /**
-     * Read with German and overlays on, Extbase returns the same three posts as the core: post 2 as "Erster Beitrag"
-     * and post 5 as "Zweiter Beitrag" under the uids of their default records, and post 7 for all languages. Post 1
-     * "Only in English" is dropped and the German post 8 "Freie Übersetzung" without default record is not returned.
-     *
-     * @see readingAllPostsWithOverlaysOnByCore()
-     */
-    #[Test]
-    public function readingAllPostsWithOverlaysOnByExtbase(): void
-    {
-        // When: all posts are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
-        $query = $this->get(PostRepository::class)->createQuery();
-        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
-        $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
-            $query->execute()->toArray(),
-        );
-
-        // Then: the translated posts and the post for all languages are returned
-        self::assertSame([
-            'Erster Beitrag (uid 2, language 1)',
-            'Zweiter Beitrag (uid 5, language 1)',
-            'All languages (uid 7, language -1)',
-        ], $posts);
-    }
-
-    /**
      * Read with German and overlays mixed, `ContentObjectRenderer::getRecords()` returns the translated posts with the
      * German title and keeps the untranslated post in English: post 1 as "Only in English", post 2 as "Erster Beitrag",
      * post 5 as "Zweiter Beitrag", post 7 for all languages and the German post 8 "Freie Übersetzung", which has no
@@ -207,8 +153,8 @@ final class ReadingTranslationsTest extends FunctionalTestCase
      * Read with German and overlays on with floating, `ContentObjectRenderer::getRecords()` returns the posts that have
      * a German translation with the German title, the post for all languages and the German post without default
      * record: post 2 as "Erster Beitrag", post 5 as "Zweiter Beitrag", post 7 and post 8 as "Freie Übersetzung". Post 1
-     * has no translation and is dropped. Unlike with overlays on, the core also selects records of the requested
-     * language without a default record and returns them unchanged.
+     * has no translation and is dropped. Records of the requested language without a default record are returned
+     * unchanged.
      *
      * @see readingAllPostsWithOverlaysOnWithFloatingByExtbase()
      */
@@ -384,7 +330,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function readingWithAFallbackChainAndOverlaysOnByCore(): void
     {
         // When: all posts are read with French, the fallback chain German, English and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $posts = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'orderBy' => 'uid']),
@@ -412,7 +358,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
 
         // When: all posts are read with French, the fallback chain German, English and overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
@@ -438,7 +384,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function countingPostsWithAFallbackChainAndOverlaysOnByCore(): void
     {
         // When: the posts are counted with French, the fallback chain German, English and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $count = count($this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2']));
 
         // Then: the number of posts that are shown is returned
@@ -459,7 +405,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
 
         // When: the posts are counted with French, the fallback chain German, English and overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $query = $this->get(PostRepository::class)->createQuery();
         $count = $query->count();
 
@@ -468,38 +414,39 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     }
 
     /**
-     * With German and overlays on, the core has three posts to show: 2, 5 and 7. The number of posts is the size of the
-     * overlaid result, so it is 3.
+     * With German and overlays on with floating, the core has four posts to show: 2, 5, 7 and 8. The number of posts is
+     * the size of the overlaid result, so it is 4.
      *
-     * @see countingPostsWithOverlaysOnByExtbase()
+     * @see countingPostsWithOverlaysOnWithFloatingByExtbase()
      */
     #[Test]
-    public function countingPostsWithOverlaysOnByCore(): void
+    public function countingPostsWithOverlaysOnWithFloatingByCore(): void
     {
-        // When: the posts are counted with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        // When: the posts are counted with German and overlays on with floating
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $count = count($this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2']));
 
         // Then: the number of posts that are shown is returned
-        self::assertSame(3, $count);
+        self::assertSame(4, $count);
     }
 
     /**
-     * With German and overlays on, Extbase counts the three posts that it also returns when it reads them: the German
-     * translations of the posts 2 and 5 and the post for all languages. The count is 3.
+     * With German and overlays on with floating, Extbase counts the four posts that it also returns when it reads them:
+     * the German translations of the posts 2 and 5, the post for all languages and the German post without default
+     * record (8). The count is 4.
      *
-     * @see countingPostsWithOverlaysOnByCore()
+     * @see countingPostsWithOverlaysOnWithFloatingByCore()
      */
     #[Test]
-    public function countingPostsWithOverlaysOnByExtbase(): void
+    public function countingPostsWithOverlaysOnWithFloatingByExtbase(): void
     {
-        // When: the posts are counted with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        // When: the posts are counted with German and overlays on with floating
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $count = $query->count();
 
         // Then: the number of posts that are shown is returned
-        self::assertSame(3, $count);
+        self::assertSame(4, $count);
     }
 
     /**
@@ -556,7 +503,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReadingTranslations/Given/SortedPosts.csv');
 
         // When: the posts are read with German and overlays on, ordered by sorting
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $posts = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '3', 'orderBy' => 'sorting']),
@@ -587,7 +534,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReadingTranslations/Given/SortedPosts.csv');
 
         // When: the posts are read with German and overlays on, ordered by sorting
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->getQuerySettings()->setStoragePageIds([3]);
         $query->setOrderings(['sorting' => QueryInterface::ORDER_ASCENDING]);
@@ -671,15 +618,15 @@ final class ReadingTranslationsTest extends FunctionalTestCase
 
     /**
      * The core has no query without language restriction: it reads default rows and overlays them, so the result is the
-     * one of reading with German and overlays on. Every post is returned once: posts 2, 5 and 7.
+     * one of reading with German and overlays on with floating. Every post is returned once: posts 2, 5, 7 and 8.
      *
      * @see readingWithoutLanguageRestrictionByExtbase()
      */
     #[Test]
     public function readingWithoutLanguageRestrictionByCore(): void
     {
-        // When: all posts are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        // When: all posts are read with German and overlays on with floating
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $posts = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'orderBy' => 'uid']),
@@ -690,6 +637,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
             'Erster Beitrag (uid 2, language 1)',
             'Zweiter Beitrag (uid 5, language 1)',
             'All languages (uid 7, language -1)',
+            'Freie Übersetzung (uid 8, language 1)',
         ], $posts);
     }
 
@@ -704,11 +652,11 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     #[Test]
     public function readingWithoutLanguageRestrictionByExtbase(): void
     {
-        self::markTestSkipped('Extbase differs from core: it returns seven records with post 2 three times and post 5 twice, and includes the German post without default record (8), where the core returns each of the three posts once.');
+        self::markTestSkipped('Extbase differs from core: it returns seven records with post 2 three times and post 5 twice, where the core returns each of the four posts once.');
 
-        // When: all posts are read with German and overlays on
+        // When: all posts are read with German and overlays on with floating
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -722,47 +670,48 @@ final class ReadingTranslationsTest extends FunctionalTestCase
             'Erster Beitrag (uid 2, language 1)',
             'Zweiter Beitrag (uid 5, language 1)',
             'All languages (uid 7, language -1)',
+            'Freie Übersetzung (uid 8, language 1)',
         ], $posts);
     }
 
     /**
      * The core has no query without language restriction: it reads default rows and overlays them, and the number of
-     * posts it has to show is the size of the overlaid result. With German and overlays on these are the posts 2, 5 and
-     * 7, so the number is 3.
+     * posts it has to show is the size of the overlaid result. With German and overlays on with floating these are the
+     * posts 2, 5, 7 and 8, so the number is 4.
      *
      * @see countingPostsWithoutLanguageRestrictionByExtbase()
      */
     #[Test]
     public function countingPostsWithoutLanguageRestrictionByCore(): void
     {
-        // When: the posts are counted with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        // When: the posts are counted with German and overlays on with floating
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $count = count($this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2']));
 
         // Then: the number of posts that are shown is returned
-        self::assertSame(3, $count);
+        self::assertSame(4, $count);
     }
 
     /**
      * With the language restriction of the query off, Extbase counts the rows of the storage page of every language in
-     * the database: eight. That is not the 3 posts that the core has to show.
+     * the database: eight. That is not the 4 posts that the core has to show.
      *
      * @see countingPostsWithoutLanguageRestrictionByCore()
      */
     #[Test]
     public function countingPostsWithoutLanguageRestrictionByExtbase(): void
     {
-        self::markTestSkipped('Extbase differs from core: `count()` returns 8, the rows of every language, where the core has 3 posts to show, see Forge #110798.');
+        self::markTestSkipped('Extbase differs from core: `count()` returns 8, the rows of every language, where the core has 4 posts to show, see Forge #110798.');
 
-        // When: the posts are counted with German and overlays on
+        // When: the posts are counted with German and overlays on with floating
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $count = $query->count();
 
         // Then: the number of posts that are shown is returned
-        self::assertSame(3, $count);
+        self::assertSame(4, $count);
     }
 
     /**
@@ -776,7 +725,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function findingATranslationByTheUidOfTheDefaultRecordByCore(): void
     {
         // When: the posts 2 and 5 are read with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $posts = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'uidInList' => '2,5', 'orderBy' => 'uid']),
@@ -802,7 +751,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
 
         // When: the posts 2 and 5 are read with German and overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->matching($query->in('uid', [2, 5]));
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -830,7 +779,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function findingATranslatedPostByUidByCore(): void
     {
         // When: post 2 is read by its uid with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $output = $this->contentObjectRenderer->cObjGetSingle('RECORDS', [
             'source' => 'tx_blogexample_domain_model_post_2',
             'tables' => 'tx_blogexample_domain_model_post',
@@ -858,7 +807,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function findingATranslatedPostByUidByExtbase(): void
     {
         // When: post 2 is read by its uid with German and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(2);
         $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID));
 
@@ -878,7 +827,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function findingAPostByTheUidOfItsTranslationInTheDefaultLanguageByCore(): void
     {
         // When: post 3 is read by its uid with the default language and overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $output = $this->contentObjectRenderer->cObjGetSingle('RECORDS', [
             'source' => 'tx_blogexample_domain_model_post_3',
             'tables' => 'tx_blogexample_domain_model_post',
@@ -910,7 +859,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
 
         // When: post 3 is read by its uid with the default language and overlays on
         // @phpstan-ignore deadCode.unreachable
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(3);
         $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID));
 
@@ -928,12 +877,12 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function aRecordForAllLanguagesIsReadOnceByCore(): void
     {
         // When: all posts are read with German and with French, overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $german = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'orderBy' => 'uid']),
         );
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $french = array_map(
             static fn(array $row): string => sprintf('%s (uid %d, language %d)', $row['title'], $row['uid'], $row['sys_language_uid']),
             $this->contentObjectRenderer->getRecords('tx_blogexample_domain_model_post', ['pidInList' => '2', 'orderBy' => 'uid']),
@@ -954,7 +903,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     public function aRecordForAllLanguagesIsReadOnceByExtbase(): void
     {
         // When: all posts are read with German and with French, overlays on
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $german = array_map(
@@ -962,7 +911,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
             $query->execute()->toArray(),
         );
         $this->get(PersistenceManager::class)->clearState();
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $french = array_map(

@@ -63,7 +63,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function translatedRecordIsRenderedInWorkspaceWhenLiveRecordIsHidden(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $context->setAspect('workspace', new WorkspaceAspect(1));
 
         // Query for the translated post in workspace - should return the translation
@@ -84,7 +84,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function hiddenDefaultLanguageRecordIsNotRenderedInDefaultLanguageAndLive(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post = $this->postRepository->findByUid(100);
         self::assertNull($post, 'Hidden default language post should not be found');
@@ -94,7 +94,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function hiddenTranslationIsNotRenderedInDefaultLanguageAndLive(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post = $this->postRepository->findByUid(100);
         self::assertNull($post, 'Hidden translation post should not be found');
@@ -104,7 +104,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function hiddenTranslationIsNotRenderedWhenDefaultRecordIsDeleted(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post = $this->postRepository->findByUid(300);
         self::assertNull($post, 'Hidden translation should not be found when default record is deleted');
@@ -114,7 +114,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function visibleTranslationIsNotRenderedWhenDefaultRecordIsDeleted(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
 
         $post = $this->postRepository->findByUid(400);
         self::assertNull($post, 'Visible translation should not be found when default record is deleted');
@@ -124,7 +124,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function hiddenTranslationIsNotRenderedInWorkspaceWhenDefaultRecordIsDeleted(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $context->setAspect('workspace', new WorkspaceAspect(1));
 
         $post = $this->postRepository->findByUid(300);
@@ -135,7 +135,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     public function visibleTranslationIsNotRenderedInWorkspaceWhenDefaultRecordIsDeleted(): void
     {
         $context = $this->get(Context::class);
-        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $context->setAspect('workspace', new WorkspaceAspect(1));
 
         $post = $this->postRepository->findByUid(400);
