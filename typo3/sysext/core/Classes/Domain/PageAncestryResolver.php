@@ -22,10 +22,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Record\PagePermissions;
 use TYPO3\CMS\Core\Domain\Repository\PageAncestryRepository;
 use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
 use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Resolves the ancestry of a page in a workspace with one database query, as the
@@ -63,6 +66,15 @@ readonly class PageAncestryResolver
         } catch (BrokenRootLineException|CircularRootLineException) {
             // The ancestry found so far is kept, it is reported as incomplete.
         }
+        if ($records === [] && $pageId > 0) {
+            // A page new in a workspace only exists in the ancestry of its own workspace
+            $ownWorkspaceId = $this->findWorkspaceOfNewPage($pageId, $includeDeleted);
+            if ($ownWorkspaceId !== null && $ownWorkspaceId !== $workspaceId) {
+                $ancestry = $this->resolve($pageId, $ownWorkspaceId, $includeDeleted);
+                $this->runtimeCache->set($cacheIdentifier, $ancestry);
+                return $ancestry;
+            }
+        }
         $ancestry = new PageAncestry(
             $pageId,
             $records,
@@ -71,6 +83,26 @@ readonly class PageAncestryResolver
         );
         $this->runtimeCache->set($cacheIdentifier, $ancestry);
         return $ancestry;
+    }
+
+    private function findWorkspaceOfNewPage(int $pageId, bool $includeDeleted): ?int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        if (!$includeDeleted) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+        $workspaceId = $queryBuilder
+            ->select('t3ver_wsid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+            )
+            ->executeQuery()
+            ->fetchOne();
+        return $workspaceId === false ? null : (int)$workspaceId;
     }
 
     private function createPage(array $record): Page

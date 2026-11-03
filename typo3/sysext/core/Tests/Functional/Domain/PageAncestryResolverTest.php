@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Domain;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
@@ -103,6 +104,36 @@ final class PageAncestryResolverTest extends FunctionalTestCase
         self::assertTrue($subject->getPermissions(7)->getEverybodyPermissions()->showPagePermissionIsGranted());
     }
 
+    public static function pageNewInWorkspaceIsResolvedInItsWorkspaceDataProvider(): iterable
+    {
+        yield 'from live' => [0];
+        yield 'from its own workspace' => [1];
+        yield 'from another workspace' => [2];
+    }
+
+    #[Test]
+    #[DataProvider('pageNewInWorkspaceIsResolvedInItsWorkspaceDataProvider')]
+    public function pageNewInWorkspaceIsResolvedInItsWorkspace(int $workspaceId): void
+    {
+        $subject = $this->get(PageAncestryResolver::class)->resolve(12, $workspaceId);
+        self::assertSame([12, 3, 6, 1], $subject->getPageIds());
+        self::assertTrue($subject->isComplete());
+    }
+
+    #[Test]
+    public function pagesTsConfigOfPageNewInWorkspaceIsResolvedFromLive(): void
+    {
+        $this->setUpBackendUser(1);
+        self::assertSame('root', BackendUtility::getPagesTSconfig(12)['mod.']['ancestry'] ?? null);
+    }
+
+    #[Test]
+    public function formEngineRootlineOfPageNewInWorkspaceIsResolvedFromLive(): void
+    {
+        $this->setUpBackendUser(1);
+        $result = $this->get(DatabasePageRootline::class)->addData(['effectivePid' => 12]);
+        self::assertSame([12, 3, 6, 1, 0], array_map(intval(...), array_column($result['rootline'], 'uid')));
+    }
     #[Test]
     public function ancestryIsCachedForTheRequest(): void
     {
