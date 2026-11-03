@@ -193,9 +193,9 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             'DA, overlays on with floating' => [1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [], [
                 'P4 all languages|4|4|-1', 'P16 floating DA|16|16|1', 'P2 DA|2|11|1',
             ]],
-            // Untranslated defaults are kept; P5 stays in default language because its translation is hidden.
+            // Untranslated defaults and the floating P16 are kept; P5 stays in default language because its translation is hidden.
             'DA, overlays mixed' => [1, LanguageAspect::OVERLAYS_MIXED, [], [
-                'P5|5|5|0', 'P4 all languages|4|4|-1', 'P1|1|1|0', 'P8 moved in WS|8|8|0', 'P2 DA|2|11|1',
+                'P5|5|5|0', 'P4 all languages|4|4|-1', 'P1|1|1|0', 'P8 moved in WS|8|8|0', 'P16 floating DA|16|16|1', 'P2 DA|2|11|1',
             ]],
             // P2 has no language 3 record and falls back to DE; the others keep the default language.
             'language 3 with fallback to DE, overlays mixed' => [3, LanguageAspect::OVERLAYS_MIXED, [2], [
@@ -482,7 +482,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
                 'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P16 floating DA|16|16|20',
             ]],
             'DA, overlays mixed' => [1, LanguageAspect::OVERLAYS_MIXED, [
-                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P6 new in WS|106|106|20',
+                'P4 all languages|4|4|20', 'P2 DA WS|2|111|20', 'P16 floating DA|16|16|20', 'P6 new in WS|106|106|20',
             ]],
         ];
     }

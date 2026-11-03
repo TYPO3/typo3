@@ -233,6 +233,10 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                         'header' => '[Translate to Dansk:] Regular Element #3',
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
                     ],
+                    303 => [
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
+                    ],
                 ],
             ],
             [
@@ -384,7 +388,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                 ],
             ],
             // danish elements are shown because of the fallback chain 1,0 - first danish, then default language
-            // note that '[DA] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
+            // floating elements in the target language are still shown
             [
                 'fallbackType' => 'fallback',
                 'fallbackChain' => ['DA', 'EN'],
@@ -400,6 +404,10 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    303 => [
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
             ],
@@ -424,6 +432,10 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
                         'image' => ['[Kasper] Image translated to Dansk', '[T3BOARD] Image added in Dansk (without parent)'],
+                    ],
+                    303 => [
+                        'header' => '[DA] Without default language',
+                        'image' => ['[T3BOARD] Image added to DA element without default language'],
                     ],
                 ],
             ],
@@ -556,21 +568,21 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
             [
                 'fallbackType' => 'fallback',
                 'fallbackChain' => ['EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3', '[PL] Without default language'],
             ],
             // Expected behaviour:
             // Not translated element #2 is shown
             [
                 'fallbackType' => 'fallback',
                 'fallbackChain' => ['EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3', '[PL] Without default language'],
             ],
             // Expected behaviour:
             // Element #3 is shown from DA. Element #3 from PL is not translated, but a fallback to DA is defined
             [
                 'fallbackType' => 'fallback',
                 'fallbackChain' => ['DA', 'EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3', '[PL] Without default language'],
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of strict mode

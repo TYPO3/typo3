@@ -118,19 +118,16 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     }
 
     /**
-     * Read with German and overlays mixed, Extbase returns post 1 in English, posts 2 and 5 with the German title and
-     * post 7 for all languages, but not the German post 8 "Freie Übersetzung" without default record that the core
-     * returns. Extbase selects such records only with overlays on with floating, not with overlays mixed.
+     * Read with German and overlays mixed, Extbase returns the same five posts as the core: post 1 in English, posts 2
+     * and 5 with the German title, post 7 for all languages and the German post 8 "Freie Übersetzung" without default
+     * record.
      *
      * @see readingAllPostsWithOverlaysMixedByCore()
      */
     #[Test]
     public function readingAllPostsWithOverlaysMixedByExtbase(): void
     {
-        self::markTestSkipped('Extbase differs from core: with overlays mixed it does not return the German post without default record (8), see Forge #89131.');
-
         // When: all posts are read with German and overlays mixed
-        // @phpstan-ignore deadCode.unreachable
         $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -467,19 +464,15 @@ final class ReadingTranslationsTest extends FunctionalTestCase
     }
 
     /**
-     * With German and overlays mixed, Extbase counts the four posts that it also returns when it reads them: 1, 2, 5
-     * and 7. The German post without default record (8) is not counted, so the count is 4 where the core has 5 posts to
-     * show.
+     * With German and overlays mixed, Extbase counts the five posts that it also returns when it reads them: 1, 2, 5,
+     * 7 and the German post without default record (8). The count is 5.
      *
      * @see countingPostsWithOverlaysMixedByCore()
      */
     #[Test]
     public function countingPostsWithOverlaysMixedByExtbase(): void
     {
-        self::markTestSkipped('Extbase differs from core: it counts 4 where the core has 5 posts to show, because with overlays mixed it does not select the German post without default record (8), see Forge #89131.');
-
         // When: the posts are counted with German and overlays mixed
-        // @phpstan-ignore deadCode.unreachable
         $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         $query = $this->get(PostRepository::class)->createQuery();
         $count = $query->count();

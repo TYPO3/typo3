@@ -800,7 +800,7 @@ class Typo3DbQueryParser
             )
         );
         // Records in translation with no default language
-        if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_ON_WITH_FLOATING) {
+        if (in_array($languageAspect->getOverlayType(), [LanguageAspect::OVERLAYS_ON_WITH_FLOATING, LanguageAspect::OVERLAYS_MIXED], true)) {
             $andConditions[] = $this->queryBuilder->expr()->and(
                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, $languageAspect->getContentId()),
                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $transOrigPointerField, 0),
