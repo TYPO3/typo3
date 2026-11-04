@@ -8,15 +8,15 @@
       </trans-unit>
       <trans-unit id="ab" approved="yes">
         <source>Abkhazian</source>
-        <target>abchazština</target>
+        <target>abcházština</target>
       </trans-unit>
       <trans-unit id="ace" approved="yes">
         <source>Achinese</source>
-        <target>atěžština</target>
+        <target>acehština</target>
       </trans-unit>
       <trans-unit id="ach" approved="yes">
         <source>Acoli</source>
-        <target>ačoli (luoština)</target>
+        <target>akolština</target>
       </trans-unit>
       <trans-unit id="ada" approved="yes">
         <source>Adangme</source>
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="ba" approved="yes">
         <source>Bashkir</source>
-        <target>baskirština</target>
+        <target>baškirština</target>
       </trans-unit>
       <trans-unit id="bad" approved="yes">
         <source>Banda languages</source>
@@ -196,7 +196,7 @@
       </trans-unit>
       <trans-unit id="bi" approved="yes">
         <source>Bislama</source>
-        <target>bislámština</target>
+        <target>bislamština</target>
       </trans-unit>
       <trans-unit id="bih" approved="yes">
         <source>Bihari languages</source>
@@ -316,7 +316,7 @@
       </trans-unit>
       <trans-unit id="cho" approved="yes">
         <source>Choctaw</source>
-        <target>choctawština</target>
+        <target>čoktština</target>
       </trans-unit>
       <trans-unit id="chp" approved="yes">
         <source>Chipewyan; Dene Suline</source>
@@ -380,7 +380,7 @@
       </trans-unit>
       <trans-unit id="cu" approved="yes">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
-        <target>církevní slověnština; slověnština; stará bulharština</target>
+        <target>církevní slovanština; staroslověnština; starobulharština; stará církevní slovanština</target>
       </trans-unit>
       <trans-unit id="cus" approved="yes">
         <source>Cushitic languages</source>
@@ -404,7 +404,7 @@
       </trans-unit>
       <trans-unit id="dar" approved="yes">
         <source>Dargwa</source>
-        <target>dargwa</target>
+        <target>darginština</target>
       </trans-unit>
       <trans-unit id="day" approved="yes">
         <source>Land Dayak languages</source>
@@ -420,7 +420,7 @@
       </trans-unit>
       <trans-unit id="den" approved="yes">
         <source>Slave (Athapascan)</source>
-        <target>atabaské jazyky</target>
+        <target>athabaské jazyky</target>
       </trans-unit>
       <trans-unit id="dgr" approved="yes">
         <source>Tlicho; Dogrib</source>
@@ -528,7 +528,7 @@
       </trans-unit>
       <trans-unit id="ff" approved="yes">
         <source>Fulah</source>
-        <target>fulahština</target>
+        <target>fulbština</target>
       </trans-unit>
       <trans-unit id="fi" approved="yes">
         <source>Finnish</source>
@@ -588,7 +588,7 @@
       </trans-unit>
       <trans-unit id="gaa" approved="yes">
         <source>Ga</source>
-        <target>ga</target>
+        <target>gaština</target>
       </trans-unit>
       <trans-unit id="gay" approved="yes">
         <source>Gayo</source>
@@ -688,7 +688,7 @@
       </trans-unit>
       <trans-unit id="hil" approved="yes">
         <source>Hiligaynon</source>
-        <target>hiligayonština</target>
+        <target>hiligajnonština</target>
       </trans-unit>
       <trans-unit id="him" approved="yes">
         <source>Himachali languages; Western Pahari languages</source>
@@ -736,11 +736,11 @@
       </trans-unit>
       <trans-unit id="ia" approved="yes">
         <source>Interlingua (International Auxiliary Language Association)</source>
-        <target>Interlingua (Mezinárodní pomocná jazyková asociace)</target>
+        <target>Interlingua (Mezinárodní asociace pomocných jazyků)</target>
       </trans-unit>
       <trans-unit id="iba" approved="yes">
         <source>Iban</source>
-        <target>iban</target>
+        <target>ibanština</target>
       </trans-unit>
       <trans-unit id="id" approved="yes">
         <source>Indonesian</source>
@@ -752,7 +752,7 @@
       </trans-unit>
       <trans-unit id="ig" approved="yes">
         <source>Igbo</source>
-        <target>igbo</target>
+        <target>igboština</target>
       </trans-unit>
       <trans-unit id="ii" approved="yes">
         <source>Sichuan Yi; Nuosu</source>
@@ -804,7 +804,7 @@
       </trans-unit>
       <trans-unit id="iu" approved="yes">
         <source>Inuktitut</source>
-        <target>inuktitut</target>
+        <target>inuktitutština</target>
       </trans-unit>
       <trans-unit id="ja" approved="yes">
         <source>Japanese</source>
@@ -836,7 +836,7 @@
       </trans-unit>
       <trans-unit id="kab" approved="yes">
         <source>Kabyle</source>
-        <target>kabulí</target>
+        <target>kabylština</target>
       </trans-unit>
       <trans-unit id="kac" approved="yes">
         <source>Kachin; Jingpho</source>
@@ -920,11 +920,11 @@
       </trans-unit>
       <trans-unit id="kr" approved="yes">
         <source>Kanuri</source>
-        <target>kanuri</target>
+        <target>kanurijština</target>
       </trans-unit>
       <trans-unit id="krc" approved="yes">
         <source>Karachay-Balkar</source>
-        <target>karachay-balkarština</target>
+        <target>karačajsko-balkarština</target>
       </trans-unit>
       <trans-unit id="krl" approved="yes">
         <source>Karelian</source>
@@ -972,7 +972,7 @@
       </trans-unit>
       <trans-unit id="lad" approved="yes">
         <source>Ladino</source>
-        <target>ladinština</target>
+        <target>ladino</target>
       </trans-unit>
       <trans-unit id="lah" approved="yes">
         <source>Lahnda</source>
@@ -1052,7 +1052,7 @@
       </trans-unit>
       <trans-unit id="mag" approved="yes">
         <source>Magahi</source>
-        <target>magahština</target>
+        <target>magahijština</target>
       </trans-unit>
       <trans-unit id="mai" approved="yes">
         <source>Maithili</source>
@@ -1076,11 +1076,11 @@
       </trans-unit>
       <trans-unit id="mdf" approved="yes">
         <source>Moksha</source>
-        <target>moksha</target>
+        <target>mokša</target>
       </trans-unit>
       <trans-unit id="mdr" approved="yes">
         <source>Mandar</source>
-        <target>mandarínština</target>
+        <target>mandarština</target>
       </trans-unit>
       <trans-unit id="men" approved="yes">
         <source>Mende</source>
@@ -1108,7 +1108,7 @@
       </trans-unit>
       <trans-unit id="min" approved="yes">
         <source>Minangkabau</source>
-        <target>minangkabau</target>
+        <target>minangkabauština</target>
       </trans-unit>
       <trans-unit id="mis" approved="yes">
         <source>Uncoded languages</source>
@@ -1132,7 +1132,7 @@
       </trans-unit>
       <trans-unit id="mnc" approved="yes">
         <source>Manchu</source>
-        <target>manchu</target>
+        <target>mandžuština</target>
       </trans-unit>
       <trans-unit id="mni" approved="yes">
         <source>Manipuri</source>
@@ -1160,7 +1160,7 @@
       </trans-unit>
       <trans-unit id="mt" approved="yes">
         <source>Maltese</source>
-        <target>maltézština</target>
+        <target>maltština</target>
       </trans-unit>
       <trans-unit id="mul" approved="yes">
         <source>Multiple languages</source>
@@ -1192,7 +1192,7 @@
       </trans-unit>
       <trans-unit id="myv" approved="yes">
         <source>Erzya</source>
-        <target>erzya</target>
+        <target>erzja</target>
       </trans-unit>
       <trans-unit id="na" approved="yes">
         <source>Nauru</source>
@@ -1260,7 +1260,7 @@
       </trans-unit>
       <trans-unit id="nog" approved="yes">
         <source>Nogai</source>
-        <target>nogai</target>
+        <target>nogajština</target>
       </trans-unit>
       <trans-unit id="non" approved="yes">
         <source>Norse, Old</source>
@@ -1276,7 +1276,7 @@
       </trans-unit>
       <trans-unit id="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
-        <target>pedi; sepedi; severní sothoština</target>
+        <target>pedi; sepedi; severní sothština</target>
       </trans-unit>
       <trans-unit id="nub" approved="yes">
         <source>Nubian languages</source>
@@ -1380,7 +1380,7 @@
       </trans-unit>
       <trans-unit id="phn" approved="yes">
         <source>Phoenician</source>
-        <target>foiničtina</target>
+        <target>féničtina</target>
       </trans-unit>
       <trans-unit id="pi" approved="yes">
         <source>Pali</source>
@@ -1436,7 +1436,7 @@
       </trans-unit>
       <trans-unit id="rn" approved="yes">
         <source>Rundi</source>
-        <target>rundština</target>
+        <target>kirundština</target>
       </trans-unit>
       <trans-unit id="ro" approved="yes">
         <source>Romanian; Moldavian; Moldovan</source>
@@ -1492,7 +1492,7 @@
       </trans-unit>
       <trans-unit id="sat" approved="yes">
         <source>Santali</source>
-        <target>santálí</target>
+        <target>santálština</target>
       </trans-unit>
       <trans-unit id="sc" approved="yes">
         <source>Sardinian</source>
@@ -1524,7 +1524,7 @@
       </trans-unit>
       <trans-unit id="sg" approved="yes">
         <source>Sango</source>
-        <target>sangština</target>
+        <target>sango</target>
       </trans-unit>
       <trans-unit id="sga" approved="yes">
         <source>Irish, Old (to 900)</source>
@@ -1580,7 +1580,7 @@
       </trans-unit>
       <trans-unit id="smj" approved="yes">
         <source>Lule Sami</source>
-        <target>lule sami</target>
+        <target>lulejská sámština</target>
       </trans-unit>
       <trans-unit id="smn" approved="yes">
         <source>Inari Sami</source>
@@ -1596,7 +1596,7 @@
       </trans-unit>
       <trans-unit id="snk" approved="yes">
         <source>Soninke</source>
-        <target>sonikština</target>
+        <target>soninkština</target>
       </trans-unit>
       <trans-unit id="so" approved="yes">
         <source>Somali</source>
@@ -1604,7 +1604,7 @@
       </trans-unit>
       <trans-unit id="sog" approved="yes">
         <source>Sogdian</source>
-        <target>sogdijština</target>
+        <target>sogdština</target>
       </trans-unit>
       <trans-unit id="son" approved="yes">
         <source>Songhai languages</source>
@@ -1628,7 +1628,7 @@
       </trans-unit>
       <trans-unit id="ss" approved="yes">
         <source>Swati</source>
-        <target>svatština</target>
+        <target>svazijština</target>
       </trans-unit>
       <trans-unit id="ssa" approved="yes">
         <source>Nilo-Saharan languages</source>
@@ -1636,7 +1636,7 @@
       </trans-unit>
       <trans-unit id="st" approved="yes">
         <source>Sotho, Southern</source>
-        <target>sothoština, jižní</target>
+        <target>sesothština</target>
       </trans-unit>
       <trans-unit id="su" approved="yes">
         <source>Sundanese</source>
@@ -1664,7 +1664,7 @@
       </trans-unit>
       <trans-unit id="syc" approved="yes">
         <source>Classical Syriac</source>
-        <target>Klasická syrština</target>
+        <target>klasická syrština</target>
       </trans-unit>
       <trans-unit id="syr" approved="yes">
         <source>Syriac</source>
@@ -1680,7 +1680,7 @@
       </trans-unit>
       <trans-unit id="te" approved="yes">
         <source>Telugu</source>
-        <target>telugu</target>
+        <target>telugština</target>
       </trans-unit>
       <trans-unit id="tem" approved="yes">
         <source>Timne</source>
@@ -1696,7 +1696,7 @@
       </trans-unit>
       <trans-unit id="tg" approved="yes">
         <source>Tajik</source>
-        <target>tadžičtina</target>
+        <target>tádžičtina</target>
       </trans-unit>
       <trans-unit id="th" approved="yes">
         <source>Thai</source>
@@ -1848,7 +1848,7 @@
       </trans-unit>
       <trans-unit id="vot" approved="yes">
         <source>Votic</source>
-        <target>votiatština</target>
+        <target>votština</target>
       </trans-unit>
       <trans-unit id="wa" approved="yes">
         <source>Walloon</source>
@@ -1857,6 +1857,10 @@
       <trans-unit id="wak" approved="yes">
         <source>Wakashan languages</source>
         <target>wakashské jazyky</target>
+      </trans-unit>
+      <trans-unit id="wal" approved="yes">
+        <source>Wolaitta; Wolaytta</source>
+        <target>wolajtština</target>
       </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>
@@ -1880,7 +1884,7 @@
       </trans-unit>
       <trans-unit id="xh" approved="yes">
         <source>Xhosa</source>
-        <target>xhosština</target>
+        <target>xhoština</target>
       </trans-unit>
       <trans-unit id="yao" approved="yes">
         <source>Yao</source>
@@ -1936,7 +1940,7 @@
       </trans-unit>
       <trans-unit id="zun" approved="yes">
         <source>Zuni</source>
-        <target>zunijština</target>
+        <target>zuniština</target>
       </trans-unit>
       <trans-unit id="zxx" approved="yes">
         <source>No linguistic content; Not applicable</source>
