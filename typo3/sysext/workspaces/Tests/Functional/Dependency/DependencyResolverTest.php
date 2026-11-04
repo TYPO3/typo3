@@ -20,10 +20,14 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Dependency;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
+use TYPO3\CMS\Workspaces\Dependency\DependencyLookupDirection;
 use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
+use TYPO3\CMS\Workspaces\Event\IsReferenceConsideredForDependencyEvent;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DependencyResolverTest extends FunctionalTestCase
@@ -163,9 +167,7 @@ final class DependencyResolverTest extends FunctionalTestCase
      * (or link) in live that points to a record which is not published.
      *
      * @todo Whether such references should be considered for dependencies is up to discussion.
-     *       IsReferenceConsideredForDependencyEvent does not provide the information
-     *       to tell them apart (e.g. sys_refindex.softref_key), nor any information on
-     *       the state of the referenced record.
+     *       The core listener does not consider the state of the referenced record.
      */
     #[Test]
     #[DataProvider('referencesToNewRecordsAreNotConsideredAsDependencyDataProvider')]
@@ -206,8 +208,8 @@ final class DependencyResolverTest extends FunctionalTestCase
      * of them end up in one structure.
      *
      * @todo The core listener considers every relation of a FlexForm field, regardless
-     *       of the FlexForm field it originates from. IsReferenceConsideredForDependencyEvent
-     *       does not provide sys_refindex.flexpointer to tell them apart.
+     *       of the FlexForm field it originates from, which is provided by
+     *       IsReferenceConsideredForDependencyEvent::getFlexPointer().
      */
     #[Test]
     #[DataProvider('flexFormStructureDataProvider')]
@@ -221,9 +223,9 @@ final class DependencyResolverTest extends FunctionalTestCase
      * linking record its outermost parent, so the complete structure of
      * everyFlexFormRelationIsConsideredAsStructuralDependency() is resolved.
      *
-     * @todo Dependencies are symmetric parent/child structures, a listener cannot express
-     *       a relation that only applies in one direction. IsReferenceConsideredForDependencyEvent
-     *       does not tell whether children or parents of an element are resolved.
+     * @todo Dependencies are symmetric parent/child structures. The core listener considers
+     *       relations regardless of the direction they are resolved in, which is provided by
+     *       IsReferenceConsideredForDependencyEvent::getDirection().
      */
     #[Test]
     #[DataProvider('flexFormStructureDataProvider')]
@@ -314,6 +316,48 @@ final class DependencyResolverTest extends FunctionalTestCase
 
         self::assertTrue($dependencyResolver->getElements()['tt_content:3131']->hasReferences());
         self::assertSame([], $dependencyResolver->getOuterMostParents());
+    }
+
+    /**
+     * tt_content:3111 references tt_content:3112 with a group and pages:3114 with a link,
+     * both in a FlexForm. Requesting both records resolves the children of tt_content:3111
+     * and the parents of pages:3114.
+     */
+    #[Test]
+    public function eventProvidesDetailsOfTheReference(): void
+    {
+        $events = [];
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set('test-workspace-dependency-listener', static function (IsReferenceConsideredForDependencyEvent $event) use (&$events): void {
+            $events[] = [
+                $event->getTableName() . ':' . $event->getRecordId(),
+                $event->getReferenceTable() . ':' . $event->getReferenceId(),
+                $event->getFlexPointer(),
+                $event->getSoftReferenceKey(),
+                $event->getSoftReferenceId(),
+                $event->getDirection(),
+            ];
+        });
+        $this->get(ListenerProvider::class)->addListener(
+            IsReferenceConsideredForDependencyEvent::class,
+            'test-workspace-dependency-listener'
+        );
+
+        $this->resolve(DependencyCollectionAction::Publish, ['tt_content:3111', 'pages:3114']);
+
+        self::assertContains(
+            ['tt_content:3111', 'tt_content:3112', 'sDEF/lDEF/related/vDEF/', '', '', DependencyLookupDirection::Children],
+            $events
+        );
+        self::assertContains(
+            ['tt_content:3111', 'pages:3114', 'sDEF/lDEF/link/vDEF/', 'typolink', '0000000000000000000000000000000a:0', DependencyLookupDirection::Children],
+            $events
+        );
+        self::assertContains(
+            ['tt_content:3111', 'pages:3114', 'sDEF/lDEF/link/vDEF/', 'typolink', '0000000000000000000000000000000a:0', DependencyLookupDirection::Parents],
+            $events
+        );
     }
 
     #[Test]

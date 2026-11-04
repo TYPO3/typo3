@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Event;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
+use TYPO3\CMS\Workspaces\Dependency\DependencyLookupDirection;
 use TYPO3\CMS\Workspaces\Event\IsReferenceConsideredForDependencyEvent;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,6 +45,35 @@ final class IsReferenceConsideredForDependencyEventTest extends UnitTestCase
         self::assertSame(7, $event->getReferenceId());
         self::assertSame(DependencyCollectionAction::Publish, $event->getAction());
         self::assertSame(1, $event->getWorkspaceId());
+        self::assertSame('', $event->getFlexPointer());
+        self::assertSame('', $event->getSoftReferenceKey());
+        self::assertSame('', $event->getSoftReferenceId());
+        self::assertFalse($event->isSoftReference());
+        self::assertSame(DependencyLookupDirection::Children, $event->getDirection());
+    }
+
+    #[Test]
+    public function gettersReturnReferenceDetails(): void
+    {
+        $event = new IsReferenceConsideredForDependencyEvent(
+            'tt_content',
+            42,
+            'pi_flexform',
+            'pages',
+            7,
+            DependencyCollectionAction::Publish,
+            1,
+            'sDEF/lDEF/link/vDEF/',
+            'typolink',
+            'b0e3f8c1d6a2e4f7a9c5b1d3e8f0a2c4:0',
+            DependencyLookupDirection::Parents,
+        );
+
+        self::assertSame('sDEF/lDEF/link/vDEF/', $event->getFlexPointer());
+        self::assertSame('typolink', $event->getSoftReferenceKey());
+        self::assertSame('b0e3f8c1d6a2e4f7a9c5b1d3e8f0a2c4:0', $event->getSoftReferenceId());
+        self::assertTrue($event->isSoftReference());
+        self::assertSame(DependencyLookupDirection::Parents, $event->getDirection());
     }
 
     #[Test]

@@ -319,8 +319,8 @@ final class ChangeStageCommandTest extends FunctionalTestCase
      * Content element A references the new record B in a FlexForm. Sending only B to
      * the next stage also sends A to the next stage.
      *
-     * @todo Dependencies are symmetric parent/child structures, a listener cannot express
-     *       a relation that only applies in one direction, see
+     * @todo The core listener considers relations regardless of the direction they are
+     *       resolved in, see
      *       DependencyResolverTest::referencedRecordOfFlexFormResolvesTheReferencingStructure().
      */
     #[Test]

@@ -318,8 +318,8 @@ final class PublishCommandTest extends FunctionalTestCase
      * Content element A references the new record B in a FlexForm. Publishing only B
      * also publishes A.
      *
-     * @todo Dependencies are symmetric parent/child structures, a listener cannot express
-     *       a relation that only applies in one direction, see
+     * @todo The core listener considers relations regardless of the direction they are
+     *       resolved in, see
      *       DependencyResolverTest::referencedRecordOfFlexFormResolvesTheReferencingStructure().
      */
     #[Test]
