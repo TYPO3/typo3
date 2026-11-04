@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
+use TYPO3\CMS\Backend\Form\Element\InputSlugElement;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -220,6 +223,57 @@ final class FormSlugAjaxControllerTest extends FunctionalTestCase
         );
 
         self::assertSame('/unsere-services.html', $this->requestPreviewPath(0, '/unsere-services'));
+    }
+
+    #[Test]
+    public function suggestActionRespectsColumnsOverridesOfRecordTypeForNewRecord(): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [$this->buildDefaultLanguageConfiguration('EN', '/')]
+        );
+        $GLOBALS['TCA']['pages']['types']['254']['columnsOverrides']['slug']['config']['generatorOptions']['fields'] = ['nav_title'];
+
+        // Render the slug element of a new sys folder like FormEngine does
+        $formData = $this->get(FormDataCompiler::class)->compile(
+            [
+                'vanillaUid' => 1,
+                'request' => new ServerRequest(),
+                'command' => 'new',
+                'tableName' => 'pages',
+                'defaultValues' => [
+                    'pages' => [
+                        'doktype' => '254',
+                    ],
+                ],
+            ],
+            $this->get(TcaDatabaseRecord::class),
+        );
+        $fieldConfiguration = $formData['processedTca']['columns']['slug'];
+        $formData['fieldName'] = 'slug';
+        $formData['parameterArray'] = [
+            'itemFormElValue' => '',
+            'itemFormElName' => 'data[pages][' . $formData['databaseRow']['uid'] . '][slug]',
+            'fieldConf' => $fieldConfiguration,
+        ];
+        $element = $this->get(InputSlugElement::class);
+        $element->setData($formData);
+        $result = $element->render();
+        $options = $result['javaScriptModules'][0]->getItems()[0]['args'][1];
+
+        // FormEngine renders the element with the type specific configuration, listening on "nav_title"
+        self::assertSame(['nav_title'], array_keys($options['listenerFieldNames']));
+
+        // Send the slug proposal request with the options of the element, like the slug JavaScript module does
+        $parameters = array_diff_key($options, array_flip(['config', 'listenerFieldNames', 'originalValue', 'includeUidInValues']));
+        $parameters['mode'] = 'auto';
+        $parameters['values'] = ['nav_title' => 'Override Title'];
+        $request = new ServerRequest('http://localhost/typo3/', 'POST')->withParsedBody($parameters);
+
+        $response = $this->get(FormSlugAjaxController::class)->suggestAction($request);
+
+        self::assertSame('/override-title', json_decode((string)$response->getBody(), true)['proposal']);
     }
 
     private function requestPreviewPath(int $languageId, string $slug, int $recordId = 2, int $parentPageId = 1, array $values = []): string

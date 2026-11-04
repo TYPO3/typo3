@@ -87,7 +87,10 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
 
         $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
         $row = (array)BackendUtility::getRecordWSOL($tableName, $recordId);
-        $recordType = BackendUtility::getTCAtypeValue($tableName, $row, true);
+        $recordType = (string)($queryParameters['recordType'] ?? '');
+        if (!isset($GLOBALS['TCA'][$tableName]['types'][$recordType])) {
+            $recordType = BackendUtility::getTCAtypeValue($tableName, $row, true);
+        }
         if ($recordType !== null) {
             $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
             if ($columnsOverridesConfigOfField) {
@@ -219,6 +222,7 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
                     $queryParameters['fieldName'],
                     $queryParameters['command'],
                     $queryParameters['parentPageId'],
+                    $queryParameters['recordType'] ?? '',
                 ]
             ),
             __CLASS__

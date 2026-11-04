@@ -227,6 +227,7 @@ class InputSlugElement extends AbstractFormElement
             }
         }
         $parentPageId = $this->data['parentPageRow']['uid'] ?? 0;
+        $recordType = (string)($this->data['recordTypeValue'] ?? '');
         $signature = $this->hashService->hmac(
             implode(
                 '',
@@ -238,6 +239,7 @@ class InputSlugElement extends AbstractFormElement
                     $this->data['fieldName'],
                     $this->data['command'],
                     $parentPageId,
+                    $recordType,
                 ]
             ),
             FormSlugAjaxController::class
@@ -254,6 +256,7 @@ class InputSlugElement extends AbstractFormElement
             'signature' => $signature,
             'command' => $this->data['command'],
             'parentPageId' => $parentPageId,
+            'recordType' => $recordType,
             'includeUidInValues' => $includeUidInValues,
         ];
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
