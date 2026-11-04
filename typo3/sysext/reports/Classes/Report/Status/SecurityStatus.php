@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
@@ -33,6 +34,8 @@ use TYPO3\CMS\Reports\Status as ReportStatus;
  */
 class SecurityStatus implements RequestAwareStatusProviderInterface
 {
+    public function __construct(private readonly StorageRepository $storageRepository) {}
+
     /**
      * Determines the security of this TYPO3 installation
      *
@@ -227,7 +230,17 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         if (count($exportedFiles) > 0) {
             $files = [];
             foreach ($exportedFiles as $exportedFile) {
-                $files[] = '<li>' . htmlspecialchars($exportedFile['storage'] . ':' . $exportedFile['identifier']) . '</li>';
+                $storageName = $this->storageRepository->findByUid((int)$exportedFile['storage'])?->getName();
+                $arguments = [
+                    'id' => (int)$exportedFile['storage'],
+                    'identifier' => $exportedFile['identifier'],
+                ];
+                $label = 'reports.reports:status_storageFileUnknownName';
+                if ($storageName !== null) {
+                    $label = 'reports.reports:status_storageFile';
+                    $arguments['name'] = $storageName;
+                }
+                $files[] = '<li>' . htmlspecialchars((string)$this->getLanguageService()->label($label, $arguments)) . '</li>';
             }
 
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');

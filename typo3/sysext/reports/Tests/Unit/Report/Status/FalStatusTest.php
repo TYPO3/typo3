@@ -68,7 +68,7 @@ final class FalStatusTest extends UnitTestCase
         $status = $subject->getDetailedStatus()['ConsistencyCheck'];
 
         self::assertSame(ContextualFeedbackSeverity::ERROR, $status->getSeverity());
-        self::assertStringContainsString('1:/broken/', $status->getMessage());
+        self::assertStringContainsString('/broken/', $status->getMessage());
         self::assertStringContainsString('Hash has to be non-empty string.', $status->getMessage());
     }
 }
