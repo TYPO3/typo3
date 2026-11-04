@@ -78,6 +78,12 @@
       <trans-unit id="status_missingFilesMessage">
         <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
       </trans-unit>
+      <trans-unit id="status_storageFile">
+        <source>Storage "{name}" (id:{id}): {identifier}</source>
+      </trans-unit>
+      <trans-unit id="status_storageFileUnknownName">
+        <source>Storage (id:{id}): {identifier}</source>
+      </trans-unit>
       <trans-unit id="status_memcachedConfiguration">
         <source>Memcached Configuration</source>
       </trans-unit>

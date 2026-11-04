@@ -125,7 +125,11 @@ readonly class FalStatus implements StatusProviderInterface
 
             $message = '<p>' . $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFilesMessage') . '</p>';
             foreach ($files as $file) {
-                $message .= $storages[$file['storage']]->getName() . ' ' . $file['identifier'] . '<br />';
+                $message .= htmlspecialchars((string)$this->getLanguageService()->label('reports.reports:status_storageFile', [
+                    'name' => $storages[$file['storage']]->getName(),
+                    'id' => (int)$file['storage'],
+                    'identifier' => $file['identifier'],
+                ])) . '<br />';
             }
 
             if ($count > $maxFilesToShow) {
@@ -183,7 +187,7 @@ readonly class FalStatus implements StatusProviderInterface
     private function checkFolderConsistency(FolderInterface $folder): array
     {
         $inconsistencies = [];
-        $folderIdentifier = $folder->getStorage()->getUid() . ':' . $folder->getIdentifier();
+        $folderIdentifier = $folder->getIdentifier();
         try {
             $files = $folder->getFiles();
         } catch (\Exception $exception) {
@@ -197,7 +201,7 @@ readonly class FalStatus implements StatusProviderInterface
             try {
                 $this->resourceConsistencyService->validate($file->getStorage(), $file);
             } catch (ResultException $exception) {
-                $inconsistencies[$file->getCombinedIdentifier()] = $this->compileResultMessages(
+                $inconsistencies[$file->getIdentifier()] = $this->compileResultMessages(
                     $exception->messages,
                     $this->getLanguageService()
                 );
