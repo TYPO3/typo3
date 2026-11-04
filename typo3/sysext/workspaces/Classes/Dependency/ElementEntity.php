@@ -172,6 +172,10 @@ class ElementEntity
                             (int)$row['ref_uid'],
                             $action,
                             $this->dependency->getWorkspace(),
+                            (string)$row['flexpointer'],
+                            (string)$row['softref_key'],
+                            (string)$row['softref_id'],
+                            DependencyLookupDirection::Children,
                         )
                     );
                     $isDependency = $event->isDependency();
@@ -248,6 +252,10 @@ class ElementEntity
                             (int)$row['ref_uid'],
                             $action,
                             $this->dependency->getWorkspace(),
+                            (string)$row['flexpointer'],
+                            (string)$row['softref_key'],
+                            (string)$row['softref_id'],
+                            DependencyLookupDirection::Parents,
                         )
                     );
                     $isDependency = $event->isDependency();

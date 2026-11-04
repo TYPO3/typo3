@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Event;
 
 use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
+use TYPO3\CMS\Workspaces\Dependency\DependencyLookupDirection;
 
 /**
  * Event dispatched per sys_refindex row when evaluating workspace
@@ -39,6 +40,10 @@ final class IsReferenceConsideredForDependencyEvent
         private readonly int $referenceId,
         private readonly DependencyCollectionAction $action,
         private readonly int $workspaceId,
+        private readonly string $flexPointer = '',
+        private readonly string $softReferenceKey = '',
+        private readonly string $softReferenceId = '',
+        private readonly DependencyLookupDirection $direction = DependencyLookupDirection::Children,
     ) {}
 
     public function getTableName(): string
@@ -74,6 +79,47 @@ final class IsReferenceConsideredForDependencyEvent
     public function getWorkspaceId(): int
     {
         return $this->workspaceId;
+    }
+
+    /**
+     * Path of the FlexForm field the reference originates from (sys_refindex.flexpointer),
+     * empty if the reference does not originate from a FlexForm.
+     */
+    public function getFlexPointer(): string
+    {
+        return $this->flexPointer;
+    }
+
+    /**
+     * Key of the soft reference parser that found the reference (sys_refindex.softref_key),
+     * empty if the reference is no soft reference.
+     */
+    public function getSoftReferenceKey(): string
+    {
+        return $this->softReferenceKey;
+    }
+
+    /**
+     * Identifier of the soft reference in the field value (sys_refindex.softref_id),
+     * empty if the reference is no soft reference.
+     */
+    public function getSoftReferenceId(): string
+    {
+        return $this->softReferenceId;
+    }
+
+    public function isSoftReference(): bool
+    {
+        return $this->softReferenceKey !== '';
+    }
+
+    /**
+     * Whether the reference is followed to collect children of the record owning
+     * the field, or parents of the referenced record.
+     */
+    public function getDirection(): DependencyLookupDirection
+    {
+        return $this->direction;
     }
 
     public function setDependency(bool $isDependency): void
