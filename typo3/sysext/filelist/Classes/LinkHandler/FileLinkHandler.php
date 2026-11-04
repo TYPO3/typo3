@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Backend\View\ResourceUtilityRenderer;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Filelist\Type\Mode;
 class FileLinkHandler extends AbstractResourceLinkHandler
 {
     protected LinkType $type = LinkType::FILE;
+    protected ?FileExtensionFilter $fileExtensionFilter = null;
 
     public function initializeVariables(ServerRequestInterface $request): void
     {
@@ -54,6 +56,8 @@ class FileLinkHandler extends AbstractResourceLinkHandler
         if (count($allowedFileExtensions) >= 1) {
             $fileExtensionMatcher = GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class);
             $fileExtensionMatcher->setExtensions($allowedFileExtensions);
+            $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+            $this->fileExtensionFilter->setAllowedFileExtensions($allowedFileExtensions);
         } else {
             $fileExtensionMatcher = GeneralUtility::makeInstance(ResourceFileTypeMatcher::class);
         }
@@ -122,8 +126,8 @@ class FileLinkHandler extends AbstractResourceLinkHandler
 
             // Render the file upload and folder creation form
             $resourceUtilityRenderer = GeneralUtility::makeInstance(ResourceUtilityRenderer::class, $this);
-            $markup[] = $resourceUtilityRenderer->uploadForm($request, $this->selectedFolder);
-            $markup[] = $resourceUtilityRenderer->addOnlineMedia($request, $this->selectedFolder);
+            $markup[] = $resourceUtilityRenderer->uploadForm($request, $this->selectedFolder, $this->fileExtensionFilter);
+            $markup[] = $resourceUtilityRenderer->addOnlineMedia($request, $this->selectedFolder, $this->fileExtensionFilter);
             $markup[] = $resourceUtilityRenderer->createFolder($request, $this->selectedFolder);
 
             $contentHtml = implode(PHP_EOL, $markup);
