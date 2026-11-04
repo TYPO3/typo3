@@ -220,26 +220,20 @@ final class WorkspaceDependencyReferenceListenerTest extends UnitTestCase
             'sys_file',
             true,
         ];
-        // @todo Single file fields store their reference with foreign_field like any other file field,
-        //       but the listener only accepts OneToMany and List relationships.
-        yield 'file field with foreign_field and relationship manyToOne is not a dependency' => [
+        yield 'file field with foreign_field and relationship manyToOne is a dependency' => [
             'single_image',
             'sys_file_reference',
-            false,
+            true,
         ];
-        // @todo Single inline fields store their child with foreign_field like any other inline field,
-        //       but the listener only accepts OneToMany and List relationships.
-        yield 'inline field with foreign_field and relationship manyToOne is not a dependency' => [
+        yield 'inline field with foreign_field and relationship manyToOne is a dependency' => [
             'inline_many_to_one',
             'tx_irre_child',
-            false,
+            true,
         ];
-        // @todo Single inline fields store their child with foreign_field like any other inline field,
-        //       but the listener only accepts OneToMany and List relationships.
-        yield 'inline field with foreign_field and relationship oneToOne is not a dependency' => [
+        yield 'inline field with foreign_field and relationship oneToOne is a dependency' => [
             'inline_one_to_one',
             'tx_irre_child',
-            false,
+            true,
         ];
         // @todo Whether group relations outside of FlexForms should be considered is up to discussion.
         yield 'group field is not a dependency' => [

@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
-use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Workspaces\Event\IsReferenceConsideredForDependencyEvent;
 
@@ -51,7 +50,7 @@ final readonly class WorkspaceDependencyReferenceListener
         }
         if (
             ($field instanceof InlineFieldType || $field instanceof FileFieldType)
-            && in_array($field->getRelationshipType(), [RelationshipType::OneToMany, RelationshipType::List], true)
+            && $field->getRelationshipType()->isSingularRelationship()
         ) {
             $event->setDependency(true);
         }
