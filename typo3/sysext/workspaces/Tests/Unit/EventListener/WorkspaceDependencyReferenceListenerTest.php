@@ -100,6 +100,48 @@ final class WorkspaceDependencyReferenceListenerTest extends UnitTestCase
                             'type' => 'file',
                         ],
                     ],
+                    'single_image' => [
+                        'config' => [
+                            'type' => 'file',
+                            'foreign_table' => 'sys_file_reference',
+                            'foreign_field' => 'uid_foreign',
+                            'relationship' => 'manyToOne',
+                        ],
+                    ],
+                    'inline_many_to_one' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'tx_irre_child',
+                            'foreign_field' => 'parentid',
+                            'relationship' => 'manyToOne',
+                        ],
+                    ],
+                    'inline_one_to_one' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'tx_irre_child',
+                            'foreign_field' => 'parentid',
+                            'relationship' => 'oneToOne',
+                        ],
+                    ],
+                    'inline_list' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'tx_irre_child',
+                        ],
+                    ],
+                    'records' => [
+                        'config' => [
+                            'type' => 'group',
+                            'allowed' => 'tt_content',
+                        ],
+                    ],
+                    'bodytext' => [
+                        'config' => [
+                            'type' => 'text',
+                            'softref' => 'typolink_tag,email[subst],url',
+                        ],
+                    ],
                 ],
             ],
             'tx_irre_child' => [
@@ -166,6 +208,54 @@ final class WorkspaceDependencyReferenceListenerTest extends UnitTestCase
         yield 'file without foreign_field is not a dependency' => [
             'file_no_foreign',
             'sys_file_reference',
+            false,
+        ];
+        yield 'inline field with comma separated list is a dependency' => [
+            'inline_list',
+            'tx_irre_child',
+            true,
+        ];
+        yield 'flex field is a dependency regardless of the referenced table' => [
+            'pi_flexform',
+            'sys_file',
+            true,
+        ];
+        // @todo Single file fields store their reference with foreign_field like any other file field,
+        //       but the listener only accepts OneToMany and List relationships.
+        yield 'file field with foreign_field and relationship manyToOne is not a dependency' => [
+            'single_image',
+            'sys_file_reference',
+            false,
+        ];
+        // @todo Single inline fields store their child with foreign_field like any other inline field,
+        //       but the listener only accepts OneToMany and List relationships.
+        yield 'inline field with foreign_field and relationship manyToOne is not a dependency' => [
+            'inline_many_to_one',
+            'tx_irre_child',
+            false,
+        ];
+        // @todo Single inline fields store their child with foreign_field like any other inline field,
+        //       but the listener only accepts OneToMany and List relationships.
+        yield 'inline field with foreign_field and relationship oneToOne is not a dependency' => [
+            'inline_one_to_one',
+            'tx_irre_child',
+            false,
+        ];
+        // @todo Whether group relations outside of FlexForms should be considered is up to discussion.
+        yield 'group field is not a dependency' => [
+            'records',
+            'tt_content',
+            false,
+        ];
+        // @todo Whether soft references outside of FlexForms should be considered is up to discussion.
+        yield 'text field with soft references is not a dependency' => [
+            'bodytext',
+            'pages',
+            false,
+        ];
+        yield 'field without schema is not a dependency' => [
+            'tx_removed_field',
+            'pages',
             false,
         ];
     }
