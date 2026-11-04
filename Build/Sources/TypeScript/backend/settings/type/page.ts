@@ -36,8 +36,8 @@ export class PageTypeElement extends BaseElement<number> {
           id=${this.formid}
           class="form-control"
           ?readonly=${this.readonly}
-          .value=${this.value}
-          @change=${(e: InputEvent) => this.value = parseInt((e.target as HTMLInputElement).value, 10)}
+          .value=${this.value || ''}
+          @change=${(e: InputEvent) => this.value = parseInt((e.target as HTMLInputElement).value, 10) || 0}
         />
         ${this.canUseElementBrowser()
           ? html`
