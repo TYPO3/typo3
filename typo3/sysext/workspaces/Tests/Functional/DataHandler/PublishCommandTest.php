@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -36,7 +37,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class PublishCommandTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
-    protected array $testExtensionsToLoad = ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
+        'typo3/sysext/workspaces/Tests/Functional/Fixtures/Extensions/test_workspace_dependencies',
+    ];
 
     private function setUpWorkspace(int $workspaceId): ActionService
     {
@@ -185,5 +189,236 @@ final class PublishCommandTest extends FunctionalTestCase
         self::assertSame('Changed in workspace', $this->fetchRecord('tt_content', 1)['header']);
         self::assertSame(0, (int)$this->fetchRecord('tt_content', 1)['t3ver_wsid']);
         self::assertNull($this->fetchRecord('tt_content', $versionId));
+    }
+
+    #[Test]
+    public function requestedInlineChildPublishesItsParentAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $map = $actionService->createNewRecords(1, [
+            'tt_content' => ['header' => 'New parent', 'tx_testworkspacedependencies_children_list' => '__nextUid'],
+            'tx_testworkspacedependencies_child' => ['title' => 'New child'],
+        ]);
+        $contentVersionId = (int)$map['tt_content'][0];
+        $childVersionId = (int)$map['tx_testworkspacedependencies_child'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $this->publish(['tx_testworkspacedependencies_child' => [$childVersionId => ['publish' => []]]]);
+
+        self::assertSame(0, (int)$this->fetchRecord('tt_content', $contentVersionId)['t3ver_wsid']);
+        self::assertSame(0, (int)$this->fetchRecord('tx_testworkspacedependencies_child', $childVersionId)['t3ver_wsid']);
+    }
+
+    #[Test]
+    public function fileReferenceIsPublishedAlongWithItsParent(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file.csv');
+        $map = $actionService->createNewRecords(1, [
+            'tt_content' => ['header' => 'New content with image', 'image' => '__nextUid'],
+            'sys_file_reference' => ['uid_local' => 1],
+        ]);
+        $contentVersionId = (int)$map['tt_content'][0];
+        $fileReferenceVersionId = (int)$map['sys_file_reference'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $this->publish(['tt_content' => [$contentVersionId => ['publish' => []]]]);
+
+        self::assertSame(0, (int)$this->fetchRecord('tt_content', $contentVersionId)['t3ver_wsid']);
+        self::assertSame(0, (int)$this->fetchRecord('sys_file_reference', $fileReferenceVersionId)['t3ver_wsid']);
+    }
+
+    /**
+     * tt_content.tx_testworkspacedependencies_image is a type=file field with
+     * "relationship" => "manyToOne". Other than in fileReferenceIsPublishedAlongWithItsParent(),
+     * its file reference is not published along, the published content element refers to
+     * a file reference that only exists in the workspace.
+     *
+     * @todo The core listener for IsReferenceConsideredForDependencyEvent only accepts
+     *       RelationshipType::OneToMany and ::List, see DependencyResolverTest.
+     */
+    #[Test]
+    public function fileReferenceOfSingleFileFieldIsNotPublishedAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file.csv');
+        $map = $actionService->createNewRecords(1, [
+            'tt_content' => ['header' => 'New content with single image', 'tx_testworkspacedependencies_image' => '__nextUid'],
+            'sys_file_reference' => ['uid_local' => 1],
+        ]);
+        $contentVersionId = (int)$map['tt_content'][0];
+        $fileReferenceVersionId = (int)$map['sys_file_reference'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $this->publish(['tt_content' => [$contentVersionId => ['publish' => []]]]);
+
+        $publishedContent = $this->fetchRecord('tt_content', $contentVersionId);
+        self::assertSame(0, (int)$publishedContent['t3ver_wsid']);
+        self::assertSame(1, (int)$publishedContent['tx_testworkspacedependencies_image']);
+        self::assertSame(91, (int)$this->fetchRecord('sys_file_reference', $fileReferenceVersionId)['t3ver_wsid']);
+    }
+
+    /**
+     * The published content element points to a content element that only exists in
+     * the workspace.
+     *
+     * @todo Whether group relations should be considered for dependencies up to discussion,
+     *       see DependencyResolverTest.
+     */
+    #[Test]
+    public function newRecordReferencedByGroupFieldIsNotPublishedAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $targetId = (int)$actionService->createNewRecord('tt_content', 1, ['header' => 'New target'])['tt_content'][0];
+        $actionService->modifyRecord('tt_content', 1, ['records' => 'tt_content_' . $targetId]);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $versionId = $this->resolveVersionId('tt_content', 1, 91);
+
+        $this->publish(['tt_content' => [$versionId => ['publish' => []]]]);
+
+        self::assertSame((string)$targetId, $this->fetchRecord('tt_content', 1)['records']);
+        self::assertSame(91, (int)$this->fetchRecord('tt_content', $targetId)['t3ver_wsid']);
+    }
+
+    /**
+     * The published content element links to a page that only exists in the
+     * workspace.
+     *
+     * @todo Whether soft references should be considered for dependencies up to discussion,
+     *       see DependencyResolverTest.
+     */
+    #[Test]
+    public function newPageLinkedBySoftReferenceIsNotPublishedAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $pageId = (int)$actionService->createNewRecord('pages', 1, ['title' => 'New page', 'hidden' => 0])['pages'][0];
+        $bodytext = '<p><a href="t3://page?uid=' . $pageId . '">New page</a></p>';
+        $actionService->modifyRecord('tt_content', 1, ['bodytext' => $bodytext]);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $versionId = $this->resolveVersionId('tt_content', 1, 91);
+
+        $this->publish(['tt_content' => [$versionId => ['publish' => []]]]);
+
+        self::assertSame($bodytext, $this->fetchRecord('tt_content', 1)['bodytext']);
+        self::assertSame(91, (int)$this->fetchRecord('pages', $pageId)['t3ver_wsid']);
+    }
+
+    public static function publishingRecordReferencedInFlexFormAlsoPublishesReferencingRecordDataProvider(): iterable
+    {
+        yield 'group field' => [
+            'flexFormField' => 'related',
+            'referencedTable' => 'tt_content',
+            'referencedRecord' => ['header' => 'Referenced'],
+            'flexFormValue' => 'tt_content_%d',
+        ];
+        yield 'soft reference in link field' => [
+            'flexFormField' => 'link',
+            'referencedTable' => 'pages',
+            'referencedRecord' => ['title' => 'Referenced', 'hidden' => 0],
+            'flexFormValue' => 't3://page?uid=%d',
+        ];
+    }
+
+    /**
+     * Content element A references the new record B in a FlexForm. Publishing only B
+     * also publishes A.
+     *
+     * @todo Dependencies are symmetric parent/child structures, a listener cannot express
+     *       a relation that only applies in one direction, see
+     *       DependencyResolverTest::referencedRecordOfFlexFormResolvesTheReferencingStructure().
+     */
+    #[Test]
+    #[DataProvider('publishingRecordReferencedInFlexFormAlsoPublishesReferencingRecordDataProvider')]
+    public function publishingRecordReferencedInFlexFormAlsoPublishesReferencingRecord(
+        string $flexFormField,
+        string $referencedTable,
+        array $referencedRecord,
+        string $flexFormValue,
+    ): void {
+        $actionService = $this->setUpWorkspace(91);
+        $referencedId = (int)$actionService->createNewRecord($referencedTable, 1, $referencedRecord)[$referencedTable][0];
+        $referencingId = (int)$actionService->createNewRecord('tt_content', 1, [
+            'header' => 'Referencing',
+            'tx_testworkspacedependencies_flex' => [
+                'data' => ['sDEF' => ['lDEF' => [$flexFormField => ['vDEF' => sprintf($flexFormValue, $referencedId)]]]],
+            ],
+        ])['tt_content'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $this->publish([$referencedTable => [$referencedId => ['publish' => []]]]);
+
+        self::assertSame(0, (int)$this->fetchRecord($referencedTable, $referencedId)['t3ver_wsid']);
+        self::assertSame(0, (int)$this->fetchRecord('tt_content', $referencingId)['t3ver_wsid']);
+    }
+
+    public static function recordReferencedInFlexFormIsPublishedAlongDataProvider(): iterable
+    {
+        yield 'group field' => [
+            'flexFormField' => 'related',
+            'referencedTable' => 'tt_content',
+            'referencedRecord' => ['header' => 'Referenced'],
+            'referencedChange' => ['header' => 'Referenced changed'],
+            'flexFormValue' => 'tt_content_%d',
+        ];
+        yield 'soft reference in link field' => [
+            'flexFormField' => 'link',
+            'referencedTable' => 'pages',
+            'referencedRecord' => ['title' => 'Referenced', 'hidden' => 0],
+            'referencedChange' => ['title' => 'Referenced changed'],
+            'flexFormValue' => 't3://page?uid=%d',
+        ];
+        yield 'soft reference in rich text field' => [
+            'flexFormField' => 'text',
+            'referencedTable' => 'pages',
+            'referencedRecord' => ['title' => 'Referenced', 'hidden' => 0],
+            'referencedChange' => ['title' => 'Referenced changed'],
+            'flexFormValue' => '<p><a href="t3://page?uid=%d">Referenced</a></p>',
+        ];
+    }
+
+    /**
+     * Content element A references record B in a FlexForm. B has a change of its own in
+     * the workspace, which is published along with A, although only A was requested.
+     * The same kinds of relations in regular fields do not publish anything along, see
+     * newRecordReferencedByGroupFieldIsNotPublishedAlong() and
+     * newPageLinkedBySoftReferenceIsNotPublishedAlong().
+     *
+     * @todo Every relation of a FlexForm field is considered, regardless of the FlexForm
+     *       field it originates from, see DependencyResolverTest.
+     */
+    #[Test]
+    #[DataProvider('recordReferencedInFlexFormIsPublishedAlongDataProvider')]
+    public function recordReferencedInFlexFormIsPublishedAlong(
+        string $flexFormField,
+        string $referencedTable,
+        array $referencedRecord,
+        array $referencedChange,
+        string $flexFormValue,
+    ): void {
+        $actionService = $this->setUpWorkspace(91);
+        $referencingId = (int)$actionService->createNewRecord('tt_content', 1, ['header' => 'Referencing'])['tt_content'][0];
+        $referencedId = (int)$actionService->createNewRecord($referencedTable, 1, $referencedRecord)[$referencedTable][0];
+        $commandMap = [];
+        $commandMap['tt_content'][$referencingId]['publish'] = [];
+        $commandMap[$referencedTable][$referencedId]['publish'] = [];
+        $this->publish($commandMap);
+
+        $actionService->modifyRecord($referencedTable, $referencedId, $referencedChange);
+        $actionService->modifyRecord('tt_content', $referencingId, [
+            'header' => 'Referencing changed',
+            'tx_testworkspacedependencies_flex' => [
+                'data' => ['sDEF' => ['lDEF' => [$flexFormField => ['vDEF' => sprintf($flexFormValue, $referencedId)]]]],
+            ],
+        ]);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $referencingVersionId = $this->resolveVersionId('tt_content', $referencingId, 91);
+
+        $this->publish(['tt_content' => [$referencingVersionId => ['publish' => []]]]);
+
+        self::assertSame('Referencing changed', $this->fetchRecord('tt_content', $referencingId)['header']);
+        $publishedReferencedRecord = $this->fetchRecord($referencedTable, $referencedId);
+        foreach ($referencedChange as $fieldName => $value) {
+            self::assertSame($value, $publishedReferencedRecord[$fieldName]);
+        }
     }
 }

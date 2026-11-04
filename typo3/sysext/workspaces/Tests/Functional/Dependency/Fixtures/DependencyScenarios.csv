@@ -1,0 +1,63 @@
+"pages",,,,,,,,,,
+,"uid","pid","title","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","t3ver_state","deleted","perms_everybody"
+,1,0,"Root",128,0,0,0,0,0,15
+,3053,1,"New link target",256,0,0,91,1,0,15
+,3091,1,"New shortcut page",384,0,0,91,1,0,15
+,3114,1,"New flex link target",512,0,0,91,1,0,15
+"tt_content",,,,,,,,,
+,"uid","pid","header","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","t3ver_state","deleted"
+,3001,1,"New inline foreign_field parent",128,0,0,91,1,0
+,3011,1,"New inline CSV parent",256,0,0,91,1,0
+,3021,1,"New content with image",384,0,0,91,1,0
+,3060,1,"Live group records source",512,0,0,0,0,0
+,3061,1,"Changed group records source",512,3060,0,91,0,0
+,3062,1,"New group records target",640,0,0,91,1,0
+,3070,1,"Live group pages source",768,0,0,0,0,0
+,3071,1,"Changed group pages source",768,3070,0,91,0,0
+,3080,1,"Live bodytext link source",896,0,0,0,0,0
+,3081,1,"Changed bodytext link source",896,3080,0,91,0,0
+,3101,1,"New content with flex inline",1024,0,0,91,1,0
+,3110,1,"Live flex group source",1152,0,0,0,0,0
+,3111,1,"Changed flex group source",1152,3110,0,91,0,0
+,3112,1,"Live flex group target",1280,0,0,0,0,0
+,3113,1,"Changed flex group target",1280,3112,0,91,0,0
+,3121,1,"New content with flex file link",1408,0,0,91,1,0
+,3131,1,"New cycle A",1536,0,0,91,1,0
+,3132,1,"New cycle B",1664,0,0,91,1,0
+,3140,1,"Live discard parent",1792,0,0,0,0,0
+,3141,1,"Changed discard parent",1792,3140,0,91,0,0
+,3150,1,"Live deleted discard parent",1920,0,0,0,0,0
+,3151,1,"Deleted discard parent",1920,3150,0,91,2,0
+,3201,1,"New content with single image",2048,0,0,91,1,0
+"tx_testworkspacedependencies_child",,,,,,,,,
+,"uid","pid","title","parentid","parenttable","t3ver_oid","t3ver_wsid","t3ver_state","deleted"
+,3001,1,"New child with foreign_field",3001,"tt_content",0,91,1,0
+,3011,1,"New child in comma separated list",0,"",0,91,1,0
+,3101,1,"New child in FlexForm",0,"",0,91,1,0
+,3140,1,"Live child",0,"",0,0,0,0
+,3141,1,"Changed child",0,"",3140,91,0,0
+,3150,1,"Live deleted child",0,"",0,0,0,0
+,3151,1,"Deleted child",0,"",3150,91,2,0
+"sys_file_reference",,,,,,,,,,
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","t3ver_oid","t3ver_wsid","t3ver_state","deleted"
+,3021,1,1,3021,"tt_content","image",0,91,1,0
+,3201,1,1,3201,"tt_content","tx_testworkspacedependencies_image",0,91,1,0
+"sys_refindex",,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","ref_table","ref_uid","workspace","sorting"
+,"00000000000000000000000000003001","tt_content",3001,"tx_testworkspacedependencies_children","","","","tx_testworkspacedependencies_child",3001,91,0
+,"00000000000000000000000000003011","tt_content",3011,"tx_testworkspacedependencies_children_list","","","","tx_testworkspacedependencies_child",3011,91,0
+,"00000000000000000000000000003021","tt_content",3021,"image","","","","sys_file_reference",3021,91,0
+,"00000000000000000000000000003022","sys_file_reference",3021,"uid_local","","","","sys_file",1,91,0
+,"00000000000000000000000000003061","tt_content",3061,"records","","","","tt_content",3062,91,0
+,"00000000000000000000000000003071","tt_content",3071,"pages","","","","pages",3053,91,0
+,"00000000000000000000000000003081","tt_content",3081,"bodytext","","typolink_tag","1","pages",3053,91,0
+,"00000000000000000000000000003091","pages",3091,"shortcut","","","","pages",3053,91,0
+,"00000000000000000000000000003101","tt_content",3101,"tx_testworkspacedependencies_flex","sDEF/lDEF/children/vDEF/","","","tx_testworkspacedependencies_child",3101,91,0
+,"00000000000000000000000000003111","tt_content",3111,"tx_testworkspacedependencies_flex","sDEF/lDEF/related/vDEF/","","","tt_content",3112,91,0
+,"00000000000000000000000000003112","tt_content",3111,"tx_testworkspacedependencies_flex","sDEF/lDEF/link/vDEF/","typolink","0000000000000000000000000000000a:0","pages",3114,91,1
+,"00000000000000000000000000003121","tt_content",3121,"tx_testworkspacedependencies_flex","sDEF/lDEF/link/vDEF/","typolink","0000000000000000000000000000000b:0","sys_file",1,91,0
+,"00000000000000000000000000003131","tt_content",3131,"tx_testworkspacedependencies_flex","sDEF/lDEF/related/vDEF/","","","tt_content",3132,91,0
+,"00000000000000000000000000003132","tt_content",3132,"tx_testworkspacedependencies_flex","sDEF/lDEF/related/vDEF/","","","tt_content",3131,91,0
+,"00000000000000000000000000003141","tt_content",3141,"tx_testworkspacedependencies_children_list","","","","tx_testworkspacedependencies_child",3141,91,0
+,"00000000000000000000000000003151","tt_content",3151,"tx_testworkspacedependencies_children_list","","","","tx_testworkspacedependencies_child",3151,91,0
+,"00000000000000000000000000003201","tt_content",3201,"tx_testworkspacedependencies_image","","","","sys_file_reference",3201,91,0

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -36,7 +37,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ChangeStageCommandTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
-    protected array $testExtensionsToLoad = ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
+        'typo3/sysext/workspaces/Tests/Functional/Fixtures/Extensions/test_workspace_dependencies',
+    ];
 
     private function setUpWorkspace(int $workspaceId): ActionService
     {
@@ -293,5 +297,54 @@ final class ChangeStageCommandTest extends FunctionalTestCase
         $expected = ['change_stage' => ['stage' => -10, 'comment' => 'New']];
         self::assertSame($expected, $commandMap['tt_content'][$contentVersionId]);
         self::assertSame($expected, $commandMap['tx_testirrecsv_hotel'][$hotelVersionId]);
+    }
+
+    public static function stagingRecordReferencedInFlexFormAlsoStagesReferencingRecordDataProvider(): iterable
+    {
+        yield 'group field' => [
+            'flexFormField' => 'related',
+            'referencedTable' => 'tt_content',
+            'referencedRecord' => ['header' => 'Referenced'],
+            'flexFormValue' => 'tt_content_%d',
+        ];
+        yield 'soft reference in link field' => [
+            'flexFormField' => 'link',
+            'referencedTable' => 'pages',
+            'referencedRecord' => ['title' => 'Referenced', 'hidden' => 0],
+            'flexFormValue' => 't3://page?uid=%d',
+        ];
+    }
+
+    /**
+     * Content element A references the new record B in a FlexForm. Sending only B to
+     * the next stage also sends A to the next stage.
+     *
+     * @todo Dependencies are symmetric parent/child structures, a listener cannot express
+     *       a relation that only applies in one direction, see
+     *       DependencyResolverTest::referencedRecordOfFlexFormResolvesTheReferencingStructure().
+     */
+    #[Test]
+    #[DataProvider('stagingRecordReferencedInFlexFormAlsoStagesReferencingRecordDataProvider')]
+    public function stagingRecordReferencedInFlexFormAlsoStagesReferencingRecord(
+        string $flexFormField,
+        string $referencedTable,
+        array $referencedRecord,
+        string $flexFormValue,
+    ): void {
+        $actionService = $this->setUpWorkspace(91);
+        $referencedId = (int)$actionService->createNewRecord($referencedTable, 1, $referencedRecord)[$referencedTable][0];
+        $referencingId = (int)$actionService->createNewRecord('tt_content', 1, [
+            'header' => 'Referencing',
+            'tx_testworkspacedependencies_flex' => [
+                'data' => ['sDEF' => ['lDEF' => [$flexFormField => ['vDEF' => sprintf($flexFormValue, $referencedId)]]]],
+            ],
+        ])['tt_content'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $dataHandler = $this->processCommandMap([$referencedTable => [$referencedId => ['change_stage' => ['stage' => -10]]]]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-10, $this->fetchStage($referencedTable, $referencedId));
+        self::assertSame(-10, $this->fetchStage('tt_content', $referencingId));
     }
 }
