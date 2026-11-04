@@ -29,6 +29,7 @@ interface FieldOptions {
   signature: string;
   command: string;
   parentPageId: number;
+  recordType: string;
   includeUidInValues: boolean;
 }
 
@@ -182,6 +183,7 @@ class SlugElement {
       language: this.options.language,
       fieldName: this.options.fieldName,
       command: this.options.command,
+      recordType: this.options.recordType,
       signature: this.options.signature,
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
