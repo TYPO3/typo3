@@ -230,15 +230,10 @@ final class PublishCommandTest extends FunctionalTestCase
 
     /**
      * tt_content.tx_testworkspacedependencies_image is a type=file field with
-     * "relationship" => "manyToOne". Other than in fileReferenceIsPublishedAlongWithItsParent(),
-     * its file reference is not published along, the published content element refers to
-     * a file reference that only exists in the workspace.
-     *
-     * @todo The core listener for IsReferenceConsideredForDependencyEvent only accepts
-     *       RelationshipType::OneToMany and ::List, see DependencyResolverTest.
+     * "relationship" => "manyToOne".
      */
     #[Test]
-    public function fileReferenceOfSingleFileFieldIsNotPublishedAlong(): void
+    public function fileReferenceOfSingleFileFieldIsPublishedAlongWithItsParent(): void
     {
         $actionService = $this->setUpWorkspace(91);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file.csv');
@@ -255,7 +250,7 @@ final class PublishCommandTest extends FunctionalTestCase
         $publishedContent = $this->fetchRecord('tt_content', $contentVersionId);
         self::assertSame(0, (int)$publishedContent['t3ver_wsid']);
         self::assertSame(1, (int)$publishedContent['tx_testworkspacedependencies_image']);
-        self::assertSame(91, (int)$this->fetchRecord('sys_file_reference', $fileReferenceVersionId)['t3ver_wsid']);
+        self::assertSame(0, (int)$this->fetchRecord('sys_file_reference', $fileReferenceVersionId)['t3ver_wsid']);
     }
 
     /**

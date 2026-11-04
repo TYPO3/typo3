@@ -117,19 +117,16 @@ final class DependencyResolverTest extends FunctionalTestCase
 
     /**
      * tt_content.tx_testworkspacedependencies_image is a type=file field with
-     * "relationship" => "manyToOne", which resolves to a single file reference in
-     * Record objects. Its file reference is stored with foreign_field like the one of
-     * any other file field, but it is not nested below the content element, other than
-     * the file reference in fileReferenceIsNestedBelowItsParent().
-     *
-     * @todo The core listener only accepts RelationshipType::OneToMany and ::List.
-     *       Before IsReferenceConsideredForDependencyEvent was introduced, foreign_field
-     *       was evaluated, which made single file fields a dependency as well.
+     * "relationship" => "manyToOne".
      */
     #[Test]
-    public function fileReferenceOfSingleFileFieldIsNotConsideredAsDependency(): void
+    #[DataProvider('structureIsResolvedForAllActionsButDiscardDataProvider')]
+    public function fileReferenceOfSingleFileFieldIsNestedBelowItsParent(DependencyCollectionAction $action, bool $isResolved): void
     {
-        self::assertSame([], $this->resolve(DependencyCollectionAction::Publish, ['tt_content:3201']));
+        self::assertSame(
+            $isResolved ? ['tt_content:3201' => ['tt_content:3201', 'sys_file_reference:3201']] : [],
+            $this->resolve($action, ['tt_content:3201'])
+        );
     }
 
     #[Test]
