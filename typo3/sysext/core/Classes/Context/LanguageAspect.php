@@ -121,9 +121,15 @@ final readonly class LanguageAspect implements AspectInterface
 
     /**
      * Here for compatibility reasons
+     *
+     * @deprecated since v15, will be removed in v16. Use getFallbackChain() instead.
      */
     public function getLegacyLanguageMode(): string
     {
+        trigger_error(
+            'LanguageAspect::getLegacyLanguageMode() and the aspect property "legacyLanguageMode" are deprecated and will be removed in TYPO3 v16.0. Use LanguageAspect::getFallbackChain() instead.',
+            E_USER_DEPRECATED
+        );
         if ($this->fallbackChain === ['off']) {
             return '';
         }
@@ -135,9 +141,15 @@ final readonly class LanguageAspect implements AspectInterface
 
     /**
      * Here for compatibility reasons
+     *
+     * @deprecated since v15, will be removed in v16. Use getOverlayType() instead.
      */
     public function getLegacyOverlayType(): string
     {
+        trigger_error(
+            'LanguageAspect::getLegacyOverlayType() and the aspect property "legacyOverlayType" are deprecated and will be removed in TYPO3 v16.0. Use LanguageAspect::getOverlayType() instead.',
+            E_USER_DEPRECATED
+        );
         return match ($this->overlayType) {
             self::OVERLAYS_ON_WITH_FLOATING, self::OVERLAYS_ON => 'hideNonTranslated',
             self::OVERLAYS_MIXED => '1',

@@ -669,4 +669,9 @@ return [
             'Deprecation-111326-LanguageAspectOverlaysOn.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE' => [
+        'restFiles' => [
+            'Deprecation-111336-LegacyLanguageModeAndOverlayTypeOfLanguageAspect.rst',
+        ],
+    ],
 ];

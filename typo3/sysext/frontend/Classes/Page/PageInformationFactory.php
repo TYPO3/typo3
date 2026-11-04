@@ -354,40 +354,26 @@ final readonly class PageInformationFactory
                     );
                     throw new PageInformationCreationFailedException($response, 1533931388);
                 }
-                switch ($languageAspect->getLegacyLanguageMode()) {
-                    case 'strict':
+                // Setting content uid (but leaving the sys_language_uid) when a fallback language was found.
+                foreach ($languageAspect->getFallbackChain() as $orderValue) {
+                    if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
+                        $languageContentId = LanguageMarker::DEFAULT_LANGUAGE;
+                        break;
+                    }
+                    if (MathUtility::canBeInterpretedAsInteger($orderValue) && $overlaidLanguageId === (int)$orderValue) {
+                        $languageContentId = (int)$orderValue;
+                        break;
+                    }
+                    if ($orderValue === 'pageNotFound') {
+                        // The existing fallbacks have not been found, but instead of continuing page rendering
+                        // with default language, a "page not found" message should be shown instead.
                         $response = $this->errorController->pageNotFoundAction(
                             $request,
-                            'Page is not available in the requested language (strict).',
-                            ['code' => PageAccessFailureReasons::LANGUAGE_NOT_AVAILABLE_STRICT_MODE]
+                            'Page is not available in the requested language (fallbacks did not apply).',
+                            ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
                         );
-                        throw new PageInformationCreationFailedException($response, 1533931395);
-                    case 'content_fallback':
-                        // Setting content uid (but leaving the sys_language_uid) when a content_fallback value was found.
-                        foreach ($languageAspect->getFallbackChain() as $orderValue) {
-                            if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
-                                $languageContentId = LanguageMarker::DEFAULT_LANGUAGE;
-                                break;
-                            }
-                            if (MathUtility::canBeInterpretedAsInteger($orderValue) && $overlaidLanguageId === (int)$orderValue) {
-                                $languageContentId = (int)$orderValue;
-                                break;
-                            }
-                            if ($orderValue === 'pageNotFound') {
-                                // The existing fallbacks have not been found, but instead of continuing page rendering
-                                // with default language, a "page not found" message should be shown instead.
-                                $response = $this->errorController->pageNotFoundAction(
-                                    $request,
-                                    'Page is not available in the requested language (fallbacks did not apply).',
-                                    ['code' => PageAccessFailureReasons::LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE]
-                                );
-                                throw new PageInformationCreationFailedException($response, 1533931402);
-                            }
-                        }
-                        break;
-                    default:
-                        // Default is that everything defaults to the default language.
-                        $languageId = ($languageContentId = LanguageMarker::DEFAULT_LANGUAGE);
+                        throw new PageInformationCreationFailedException($response, 1533931402);
+                    }
                 }
             }
 

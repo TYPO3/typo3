@@ -42,6 +42,9 @@ final class PageAccessFailureReasons
 
     // Language-related issues
     public const string LANGUAGE_NOT_AVAILABLE = 'language';
+    /**
+     * @deprecated since v15, will be removed in v16. This reason is not used by TYPO3 anymore.
+     */
     public const string LANGUAGE_NOT_AVAILABLE_STRICT_MODE = 'language.strict';
     public const string LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE = 'language.fallbacks';
     public const string LANGUAGE_DEFAULT_NOT_AVAILABLE = 'language.default';

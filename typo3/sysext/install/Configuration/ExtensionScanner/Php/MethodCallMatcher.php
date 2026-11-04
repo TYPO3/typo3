@@ -7164,6 +7164,20 @@ return [
             'Deprecation-111298-DataHandlerClearCacheCmd.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Context\LanguageAspect->getLegacyLanguageMode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-111336-LegacyLanguageModeAndOverlayTypeOfLanguageAspect.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Context\LanguageAspect->getLegacyOverlayType' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-111336-LegacyLanguageModeAndOverlayTypeOfLanguageAspect.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names
