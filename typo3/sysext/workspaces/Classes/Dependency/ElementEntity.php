@@ -392,13 +392,11 @@ class ElementEntity
      * Resolves workspace state for this element: validates workspace awareness,
      * resolves liveId, and marks invalid records.
      *
-     * Only executed for Publish and Display actions (matching original behavior
-     * where Stage/Discard did not register a construct callback).
+     * Not executed for Discard, which only considers delete placeholders.
      */
     private function resolveWorkspaceState(): void
     {
-        $action = $this->dependency->getAction();
-        if ($action !== DependencyCollectionAction::Publish && $action !== DependencyCollectionAction::Display) {
+        if ($this->dependency->getAction() === DependencyCollectionAction::Discard) {
             return;
         }
 
@@ -411,6 +409,10 @@ class ElementEntity
 
         $versionRecord = $this->getRecord();
         if (empty($versionRecord)) {
+            if ($this->dependency->getAction() === DependencyCollectionAction::StageChange) {
+                // Left to the stage change, which rejects the command for a missing record
+                return;
+            }
             throw new \RuntimeException(
                 'Element "' . $this->table . ':' . $this->id . '" does not exist',
                 1393960943

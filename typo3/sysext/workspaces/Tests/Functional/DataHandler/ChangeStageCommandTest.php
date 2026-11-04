@@ -347,4 +347,70 @@ final class ChangeStageCommandTest extends FunctionalTestCase
         self::assertSame(-10, $this->fetchStage($referencedTable, $referencedId));
         self::assertSame(-10, $this->fetchStage('tt_content', $referencingId));
     }
+
+    /**
+     * sys_refindex points to the live uid of a record that is changed in the workspace,
+     * the stage of its workspace version is changed along.
+     */
+    #[Test]
+    public function changedRecordReferencedInFlexFormIsStagedAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $referencingId = (int)$actionService->createNewRecord('tt_content', 1, ['header' => 'Referencing'])['tt_content'][0];
+        $referencedId = (int)$actionService->createNewRecord('tt_content', 1, ['header' => 'Referenced'])['tt_content'][0];
+        $commandMap = [];
+        $commandMap['tt_content'][$referencingId]['publish'] = [];
+        $commandMap['tt_content'][$referencedId]['publish'] = [];
+        $this->processCommandMap($commandMap);
+
+        $actionService->modifyRecord('tt_content', $referencedId, ['header' => 'Referenced changed']);
+        $actionService->modifyRecord('tt_content', $referencingId, [
+            'tx_testworkspacedependencies_flex' => [
+                'data' => ['sDEF' => ['lDEF' => ['related' => ['vDEF' => 'tt_content_' . $referencedId]]]],
+            ],
+        ]);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $referencingVersionId = $this->resolveVersionId('tt_content', $referencingId, 91);
+        $referencedVersionId = $this->resolveVersionId('tt_content', $referencedId, 91);
+
+        $dataHandler = $this->processCommandMap(['tt_content' => [$referencingVersionId => ['change_stage' => ['stage' => -10]]]]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-10, $this->fetchStage('tt_content', $referencingVersionId));
+        self::assertSame(-10, $this->fetchStage('tt_content', $referencedVersionId));
+        self::assertSame(0, $this->fetchStage('tt_content', $referencedId));
+    }
+
+    /**
+     * sys_file is not workspace aware and has no stage to be changed.
+     */
+    #[Test]
+    public function fileReferencedInFlexFormIsNotStagedAlong(): void
+    {
+        $actionService = $this->setUpWorkspace(91);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file.csv');
+        $versionId = (int)$actionService->createNewRecord('tt_content', 1, [
+            'header' => 'Linking a file',
+            'tx_testworkspacedependencies_flex' => [
+                'data' => ['sDEF' => ['lDEF' => ['link' => ['vDEF' => 't3://file?uid=1']]]],
+            ],
+        ])['tt_content'][0];
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+
+        $dataHandler = $this->processCommandMap(['tt_content' => [$versionId => ['change_stage' => ['stage' => -10]]]]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-10, $this->fetchStage('tt_content', $versionId));
+    }
+
+    #[Test]
+    public function changeStageCommandForMissingRecordIsRejected(): void
+    {
+        $this->setUpWorkspace(91);
+
+        $dataHandler = $this->processCommandMap(['tt_content' => [9999 => ['change_stage' => ['stage' => -10]]]]);
+
+        self::assertCount(1, $dataHandler->errorLog);
+        self::assertStringEndsWith('Attempt to set stage for record failed: No Record', $dataHandler->errorLog[0]);
+    }
 }

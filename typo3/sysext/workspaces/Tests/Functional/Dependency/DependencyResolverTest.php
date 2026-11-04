@@ -175,11 +175,8 @@ final class DependencyResolverTest extends FunctionalTestCase
     }
 
     /**
-     * tt_content:3112 is changed in the workspace as tt_content:3113. Only Publish and
-     * Display resolve elements to their versioned uid, StageChange keeps the live uid
-     * sys_refindex points to. Discard only considers relations to delete placeholders.
-     *
-     * @todo Whether elements are resolved to their versioned uid for StageChange as well is up to discussion.
+     * tt_content:3112 is changed in the workspace as tt_content:3113, sys_refindex points
+     * to the live uid. Discard only considers relations to delete placeholders.
      */
     public static function flexFormStructureDataProvider(): iterable
     {
@@ -189,7 +186,7 @@ final class DependencyResolverTest extends FunctionalTestCase
         ];
         yield 'stage change' => [
             'action' => DependencyCollectionAction::StageChange,
-            'expectedStructure' => ['tt_content:3111' => ['tt_content:3111', 'tt_content:3112', 'pages:3114']],
+            'expectedStructure' => ['tt_content:3111' => ['tt_content:3111', 'tt_content:3113', 'pages:3114']],
         ];
         yield 'display' => [
             'action' => DependencyCollectionAction::Display,
@@ -265,7 +262,7 @@ final class DependencyResolverTest extends FunctionalTestCase
         ];
         yield 'stage change' => [
             'action' => DependencyCollectionAction::StageChange,
-            'expectedInvalidStates' => ['tt_content:3121' => false, 'sys_file:1' => false],
+            'expectedInvalidStates' => ['tt_content:3121' => false, 'sys_file:1' => true],
         ];
         yield 'display' => [
             'action' => DependencyCollectionAction::Display,
