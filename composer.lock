@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4f902e3e71039474e1ef8de97683489",
+    "content-hash": "fd0e25bf2ec723111dca0704f957548b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8962,16 +8962,16 @@
         },
         {
             "name": "sokil/php-isocodes-db-i18n",
-            "version": "4.0.29",
+            "version": "4.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sokil/php-isocodes-db-i18n.git",
-                "reference": "debdd0ee74df019c39e4583253788c6d817e2656"
+                "reference": "4c6c786d516c308909cfde8292c765d488d173e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/debdd0ee74df019c39e4583253788c6d817e2656",
-                "reference": "debdd0ee74df019c39e4583253788c6d817e2656",
+                "url": "https://api.github.com/repos/sokil/php-isocodes-db-i18n/zipball/4c6c786d516c308909cfde8292c765d488d173e1",
+                "reference": "4c6c786d516c308909cfde8292c765d488d173e1",
                 "shasum": ""
             },
             "require": {
@@ -8996,9 +8996,9 @@
             "description": "Database and internationalisation filed for ISO country, subdivision, language, currency and script definitions and their translations. Based on pythons pycountry and Debian's iso-codes.",
             "support": {
                 "issues": "https://github.com/sokil/php-isocodes-db-i18n/issues",
-                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.29"
+                "source": "https://github.com/sokil/php-isocodes-db-i18n/tree/4.0.30"
             },
-            "time": "2026-09-19T13:54:30+00:00"
+            "time": "2026-11-03T07:23:45+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
