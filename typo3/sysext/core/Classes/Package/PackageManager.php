@@ -169,7 +169,7 @@ class PackageManager implements SingletonInterface, LoggerAwareInterface
             $appPackage = new VirtualAppPackage(
                 $this,
                 Environment::getProjectPath() . '/',
-                '',
+                Environment::getRelativePublicPath(),
             );
             $this->registerPackage($appPackage);
             $this->registerActivePackage($appPackage);

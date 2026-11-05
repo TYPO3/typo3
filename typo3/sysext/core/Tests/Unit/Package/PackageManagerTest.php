@@ -26,11 +26,13 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
+use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\Resource\Definition\PublicResourceDefinition;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -734,6 +736,89 @@ final class PackageManagerTest extends UnitTestCase
         $sortedPackageKeys = $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
         self::assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
+    }
+
+    public static function initializeCreatesAppPackageResourcesRelativeToPublicPathInClassicModeDataProvider(): \Generator
+    {
+        yield 'public path equals project path' => [
+            '',
+            [
+                '_assets',
+                'uploads',
+                'typo3temp/assets',
+            ],
+            'typo3temp/assets/css/foo.css',
+        ];
+        yield 'public path is a sub-folder of project path' => [
+            '/public',
+            [
+                'public/_assets',
+                'public/uploads',
+                'public/typo3temp/assets',
+            ],
+            'public/typo3temp/assets/css/foo.css',
+        ];
+    }
+
+    #[DataProvider('initializeCreatesAppPackageResourcesRelativeToPublicPathInClassicModeDataProvider')]
+    #[Test]
+    public function initializeCreatesAppPackageResourcesRelativeToPublicPathInClassicMode(
+        string $publicPathSuffix,
+        array $expectedPublicRelativePaths,
+        string $publicFilePath,
+    ): void {
+        $packageManager = $this->getAccessibleMock(
+            PackageManager::class,
+            ['loadPackageManagerStatesFromCache', 'loadPackageStates', 'initializePackageObjects', 'saveToPackageCache'],
+            [new DependencyOrderingService()]
+        );
+        $packageManager->method('loadPackageManagerStatesFromCache')->willThrowException(
+            new PackageManagerCacheUnavailableException('no cache', 1762345678)
+        );
+        $packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
+
+        $projectPath = rtrim($this->testRoot, '/');
+        $publicPath = $projectPath . $publicPathSuffix;
+        if (!is_dir($publicPath)) {
+            mkdir($publicPath, 0770, true);
+        }
+
+        $composerMode = Environment::isComposerMode();
+        $originalProjectPath = Environment::getProjectPath();
+        $originalPublicPath = Environment::getPublicPath();
+        Environment::initialize(
+            Environment::getContext(),
+            Environment::isCli(),
+            false,
+            $projectPath,
+            $publicPath,
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        try {
+            $packageManager->initialize();
+            $resources = $packageManager->getPackage('typo3/app')->getResources();
+            $actualPublicRelativePaths = array_map(
+                static fn(PublicResourceDefinition $definition): string => $definition->getRelativePath(),
+                $resources->getPublicResourceDefinitions()
+            );
+            self::assertSame($expectedPublicRelativePaths, array_values($actualPublicRelativePaths));
+            self::assertTrue($resources->isPublicPath($publicFilePath));
+        } finally {
+            Environment::initialize(
+                Environment::getContext(),
+                Environment::isCli(),
+                $composerMode,
+                $originalProjectPath,
+                $originalPublicPath,
+                Environment::getVarPath(),
+                Environment::getConfigPath(),
+                Environment::getCurrentScript(),
+                Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+            );
+        }
     }
 
     #[Test]
