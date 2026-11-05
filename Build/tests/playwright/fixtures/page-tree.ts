@@ -34,7 +34,7 @@ export class PageTree {
     // For some reason sometimes there are multiple loaders, just wait for the last to disappear
     await expect(this.tree.locator('.nodes-loader-inner').last()).not.toBeAttached();
     await expect(this.tree.locator('[identifier="spinner-circle"]')).not.toBeAttached();
-    await expect(this.page.locator('typo3-backend-progress-bar')).not.toBeVisible();
+    await expect(this.page.locator('typo3-backend-progress-bar:not([value="100"])')).not.toBeVisible();
   }
 
   /**
