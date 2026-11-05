@@ -23,6 +23,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitorAbstract;
@@ -56,6 +57,7 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
         if ($node instanceof StaticCall
             && $node->class instanceof FullyQualified
             && $node->class->name === GeneralUtility::class
+            && $node->name instanceof Identifier
             && $node->name->name === 'makeInstance'
             && isset($node->args[0]->value)
             && $node->args[0]->value instanceof Expr

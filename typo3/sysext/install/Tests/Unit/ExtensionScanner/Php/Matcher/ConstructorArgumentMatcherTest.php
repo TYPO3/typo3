@@ -30,6 +30,9 @@ use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 
 final class ConstructorArgumentMatcherTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: array<string, array<string, mixed>>, 1: list<int>}>
+     */
     public static function hitsFromFixtureAreFoundDataProvider(): array
     {
         $defaults = [
@@ -75,13 +78,18 @@ final class ConstructorArgumentMatcherTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $configuration
+     * @param list<int> $expectation
+     */
     #[DataProvider('hitsFromFixtureAreFoundDataProvider')]
     #[Test]
     public function hitsFromFixtureAreFound(array $configuration, array $expectation): void
     {
         $parser = new ParserFactory()->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/ConstructorArgumentMatcherFixture.php';
-        $statements = $parser->parse(file_get_contents($fixtureFile));
+        $statements = $parser->parse((string)file_get_contents($fixtureFile));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         // first process completely to resolve fully qualified names of arguments
         $traverser = new NodeTraverser();
@@ -106,6 +114,7 @@ final class ConstructorArgumentMatcherTest extends TestCase
     {
         $parser = new ParserFactory()->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse('<?php new \\TYPO3\\CMS\\Install\\Tests\\Unit\\ExtensionScanner\\Php\\Matcher\\Fixtures\\Subject("a", false);');
+        self::assertIsArray($statements, 'Code could not be parsed.');
         $subject = new ConstructorArgumentMatcher([
             Subject::class => [
                 'unused' => [
