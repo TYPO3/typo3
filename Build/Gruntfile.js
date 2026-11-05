@@ -101,9 +101,8 @@ module.exports = function (grunt) {
           // - cefta: Central European Free Trade Agreement
           // - ta: Tristan da Cunha
           // - un: United Nations
-          // - um: United States Minor Outlying Islands
           // - xx: Placeholder
-          src: ['**/*.svg', '!cp.svg', '!dg.svg', '!cefta.svg', '!ta.svg', '!um.svg', '!un.svg', '!xx.svg'],
+          src: ['**/*.svg', '!cp.svg', '!dg.svg', '!cefta.svg', '!ta.svg', '!un.svg', '!xx.svg'],
           dest: '<%= paths.core %>/Public/Icons/Flags'
         }]
       },
