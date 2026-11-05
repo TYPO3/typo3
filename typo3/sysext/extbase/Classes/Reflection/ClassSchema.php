@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Validator\Constraint;
@@ -84,7 +85,7 @@ class ClassSchema
 
             self::$propertyInfoExtractor = new PropertyInfoExtractor(
                 [],
-                [$phpDocExtractor, $reflectionExtractor]
+                [$phpDocExtractor, new PhpStanExtractor(), $reflectionExtractor]
             );
         }
 
