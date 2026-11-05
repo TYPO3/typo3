@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd0e25bf2ec723111dca0704f957548b",
+    "content-hash": "e03549ed303468b06c0cdbfccda8dceb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4227,16 +4227,16 @@
         },
         {
             "name": "symfony/property-info",
-            "version": "v7.4.20",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "d24c4c810b1285c5d8d77c6fd7b25e714479bd48"
+                "reference": "1eeaa666bcd1864b883b98cad9e5188064ddac26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/d24c4c810b1285c5d8d77c6fd7b25e714479bd48",
-                "reference": "d24c4c810b1285c5d8d77c6fd7b25e714479bd48",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/1eeaa666bcd1864b883b98cad9e5188064ddac26",
+                "reference": "1eeaa666bcd1864b883b98cad9e5188064ddac26",
                 "shasum": ""
             },
             "require": {
@@ -4293,7 +4293,7 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-info/tree/v7.4.20"
+                "source": "https://github.com/symfony/property-info/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -4313,7 +4313,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-28T09:47:41+00:00"
+            "time": "2026-11-02T10:56:49+00:00"
         },
         {
             "name": "symfony/rate-limiter",
