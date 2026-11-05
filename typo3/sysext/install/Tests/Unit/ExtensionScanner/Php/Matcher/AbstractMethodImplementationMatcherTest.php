@@ -32,7 +32,8 @@ final class AbstractMethodImplementationMatcherTest extends UnitTestCase
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/AbstractMethodImplementationMatcherFixture.php';
-        $statements = $parser->parse(file_get_contents($fixtureFile));
+        $statements = $parser->parse((string)file_get_contents($fixtureFile));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());
@@ -69,7 +70,8 @@ final class AbstractMethodImplementationMatcherTest extends UnitTestCase
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/AbstractMethodImplementationMatcherFixture.php';
-        $statements = $parser->parse(str_replace('§extensionScannerIgnoreFile', '@extensionScannerIgnoreFile', file_get_contents($fixtureFile)));
+        $statements = $parser->parse(str_replace('§extensionScannerIgnoreFile', '@extensionScannerIgnoreFile', (string)file_get_contents($fixtureFile)));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $traverser = new NodeTraverser();
         $configuration = [

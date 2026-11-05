@@ -33,7 +33,8 @@ final class ClassNameMatcherTest extends UnitTestCase
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/ClassNameMatcherFixture.php';
-        $statements = $parser->parse(file_get_contents($fixtureFile));
+        $statements = $parser->parse((string)file_get_contents($fixtureFile));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());

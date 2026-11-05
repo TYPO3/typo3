@@ -28,6 +28,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PropertyExistsStaticMatcherTest extends UnitTestCase
 {
+    /**
+     * @return array<string, array{0: string, 1: list<int>}>
+     */
     public static function hitsFromFixturesAreFoundDataProvider(): array
     {
         return [
@@ -54,12 +57,16 @@ final class PropertyExistsStaticMatcherTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @param list<int> $expectedHitLineNumbers
+     */
     #[DataProvider('hitsFromFixturesAreFoundDataProvider')]
     #[Test]
     public function hitsFromFixturesAreFound(string $fixtureFile, array $expectedHitLineNumbers): void
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
-        $statements = $parser->parse(file_get_contents($fixtureFile));
+        $statements = $parser->parse((string)file_get_contents($fixtureFile));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());

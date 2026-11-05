@@ -33,7 +33,8 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $fixtureFile = __DIR__ . '/Fixtures/PropertyProtectedMatcherFixture.php';
-        $statements = $parser->parse(file_get_contents($fixtureFile));
+        $statements = $parser->parse((string)file_get_contents($fixtureFile));
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new NameResolver());
@@ -63,6 +64,13 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
         self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
+    /**
+     * @return array<string, array{
+     *     0: array<string, array<string, mixed>>,
+     *     1: string,
+     *     2: array<int, array<string, mixed>>
+     * }>
+     */
     public static function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
@@ -122,12 +130,17 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $configuration
+     * @param array<int, array<string, mixed>> $expected
+     */
     #[DataProvider('matchesReturnsExpectedRestFilesDataProvider')]
     #[Test]
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
         $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
         $statements = $parser->parse($phpCode);
+        self::assertIsArray($statements, 'Code could not be parsed.');
 
         $subject = new PropertyProtectedMatcher($configuration);
 
