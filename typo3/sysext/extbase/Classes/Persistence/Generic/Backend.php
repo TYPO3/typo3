@@ -958,7 +958,7 @@ class Backend implements BackendInterface
             return null;
         }
 
-        $className = $property->getPrimaryType()->getClassName() ?? null;
+        $className = $property->getPrimaryType()?->getClassName();
 
         if ($className === null) {
             return null;
