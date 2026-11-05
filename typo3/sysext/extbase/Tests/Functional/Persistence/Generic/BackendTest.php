@@ -34,6 +34,7 @@ use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\DateExample;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Model\Tag;
+use TYPO3Tests\BlogExample\Domain\Model\UntypedPropertyExample;
 
 final class BackendTest extends FunctionalTestCase
 {
@@ -166,6 +167,25 @@ final class BackendTest extends FunctionalTestCase
         self::assertEquals($expected, $row[$field]);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $bak;
+    }
+
+    #[Test]
+    public function persistingNullForPropertyWithoutTypeStoresNull(): void
+    {
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $example = new UntypedPropertyExample();
+        $example->setUntyped('value');
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $example->setUntyped(null);
+        $persistenceManager->update($example);
+        $persistenceManager->persistAll();
+
+        $table = 'tx_blogexample_domain_model_untypedpropertyexample';
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $rows = $queryBuilder->select('untyped')->from($table)->executeQuery()->fetchAllAssociative();
+        self::assertSame([['untyped' => null]], $rows);
     }
 
     #[Test]
