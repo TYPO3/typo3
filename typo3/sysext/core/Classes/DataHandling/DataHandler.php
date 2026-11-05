@@ -3945,15 +3945,26 @@ class DataHandler
         // Check if referenced records of select or group fields should also be localized in general.
         // A further check is done in the loop below for each table name.
         if ($language > LanguageMarker::DEFAULT_LANGUAGE && $mmTable === '' && !empty($conf['localizeReferencesAtParentLocalization'])) {
-            // Check whether allowed tables can be localized.
+            // Check whether allowed tables can be localized and collect their language field.
             $localizeTables = [];
             foreach ($allowedTablesArray as $allowedTable) {
-                $localizeTables[$allowedTable] = (bool)$this->tcaSchemaFactory->get($allowedTable)->isLanguageAware();
+                $allowedTableSchema = $this->tcaSchemaFactory->get($allowedTable);
+                if ($allowedTableSchema->isLanguageAware()) {
+                    $localizeTables[$allowedTable] = $allowedTableSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                }
             }
 
             foreach ($dbAnalysis->itemArray as $index => $item) {
                 // No action required, if referenced tables cannot be localized (current value will be used).
-                if (empty($localizeTables[$item['table']])) {
+                if (!isset($localizeTables[$item['table']])) {
+                    continue;
+                }
+
+                // No action required, if the referenced record is already in the target language, e.g. when a
+                // translated record is copied. Localizing it again would create another translation of its parent.
+                $languageField = $localizeTables[$item['table']];
+                $referencedRecord = BackendUtility::getRecord($item['table'], (int)$item['id'], $languageField);
+                if ((int)($referencedRecord[$languageField] ?? 0) === (int)$language) {
                     continue;
                 }
 
