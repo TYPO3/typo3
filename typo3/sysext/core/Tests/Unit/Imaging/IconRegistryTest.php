@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
@@ -48,6 +50,20 @@ final class IconRegistryTest extends UnitTestCase
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->isRegistered('my-super-unregistered-identifier');
         self::assertFalse($result);
+    }
+
+    #[Test]
+    public function flagIconIsRegisteredForEveryCountry(): void
+    {
+        $subject = new IconRegistry(new NullFrontend('test'), 'BackendIcons');
+        $missing = [];
+        foreach ((new CountryProvider(new NoopEventDispatcher()))->getAll() as $country) {
+            $identifier = 'flags-' . strtolower($country->getAlpha2IsoCode());
+            if (!$subject->isRegistered($identifier)) {
+                $missing[] = $identifier;
+            }
+        }
+        self::assertSame([], $missing);
     }
 
     #[Test]
