@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
-use phpDocumentor\Reflection\DocBlockFactory;
-use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Validator\Constraint;
@@ -72,14 +71,9 @@ class ClassSchema
         }
 
         if (self::$propertyInfoExtractor === null) {
-            $docBlockFactory = DocBlockFactory::createInstance();
-            $phpDocExtractor = new PhpDocExtractor($docBlockFactory);
-
-            $reflectionExtractor = new ReflectionExtractor();
-
             self::$propertyInfoExtractor = new PropertyInfoExtractor(
                 [],
-                [$phpDocExtractor, $reflectionExtractor]
+                [new PhpStanExtractor(), new ReflectionExtractor()]
             );
         }
 

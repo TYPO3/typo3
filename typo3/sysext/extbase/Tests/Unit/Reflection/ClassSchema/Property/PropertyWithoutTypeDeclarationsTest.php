@@ -271,12 +271,8 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         $propertyTypes = new ClassSchema(DummyEntityWithoutTypeDeclarations::class)
             ->getProperty('arrayAccessAndTraversable')->getTypes();
 
-        // symfony/property-info skips intersection types in doc comments and falls back
-        // to the ReflectionExtractor, which finds no type on an untyped property.
-        // @todo: Expect both types once intersection types are resolved from doc comments
-        // self::assertCount(2, $propertyTypes);
-        // self::assertSame(\ArrayAccess::class, $propertyTypes[0]->getClassName());
-        // self::assertSame(\Traversable::class, $propertyTypes[1]->getClassName());
-        self::assertSame([], $propertyTypes);
+        self::assertCount(2, $propertyTypes);
+        self::assertSame(\ArrayAccess::class, $propertyTypes[0]->getClassName());
+        self::assertSame(\Traversable::class, $propertyTypes[1]->getClassName());
     }
 }
