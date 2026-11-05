@@ -303,6 +303,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function copyLocalizedContentOfRelationWithLocalizeReferencesAtParentLocalization(): void
+    {
+        parent::copyLocalizedContentOfRelationWithLocalizeReferencesAtParentLocalization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentOfRelationWLocalizeReferencesAtParentLocalization.csv');
+    }
+
+    #[Test]
     public function localizeContentChainOfRelationWithLanguageSynchronizationSource(): void
     {
         parent::localizeContentChainOfRelationWithLanguageSynchronizationSource();
