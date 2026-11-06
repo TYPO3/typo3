@@ -261,6 +261,39 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         self::assertSame($expectedResult, $this->normalizeProcessedDataResult($result));
     }
 
+    public static function replaceFileWithoutUploadedFileIsRejectedWithMatchingMessageDataProvider(): \Generator
+    {
+        yield 'command without upload position, as sent by an aborted request' => [
+            'fileCommands' => ['replace' => [1 => ['keepFilename' => '1']]],
+            'uploadableFiles' => [],
+        ];
+        yield 'command without upload position, but with uploaded file' => [
+            'fileCommands' => ['replace' => [1 => ['keepFilename' => '1']]],
+            'uploadableFiles' => ['replace_1' => __DIR__ . '/Fixtures/temp.png'],
+        ];
+        yield 'command with upload position, but without uploaded file' => [
+            'fileCommands' => ['replace' => [1 => ['uid' => '1:/file-commands/existing.png', 'data' => '1', 'keepFilename' => '1']]],
+            'uploadableFiles' => [],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('replaceFileWithoutUploadedFileIsRejectedWithMatchingMessageDataProvider')]
+    public function replaceFileWithoutUploadedFileIsRejectedWithMatchingMessage(array $fileCommands, array $uploadableFiles): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
+        $extendedFileUtility = new ExtendedFileUtility();
+        $extendedFileUtility->start($fileCommands, array_map($this->createUploadedFile(...), $uploadableFiles));
+        $result = $extendedFileUtility->processData();
+
+        self::assertSame(['replace' => [false]], $result);
+        $messages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
+        self::assertCount(1, $messages);
+        self::assertSame('No file was uploaded for replacement.', $messages[0]->getMessage());
+    }
+
     #[Test]
     public function copyFolderIntoItsOwnSubfolderIsRejectedWithMatchingMessage(): void
     {

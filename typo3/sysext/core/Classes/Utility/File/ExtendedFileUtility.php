@@ -1082,9 +1082,12 @@ class ExtendedFileUtility extends BasicFileUtility
     protected function replaceFile(array $cmdArr)
     {
         $fileObjectToReplace = null;
-        $uploadPosition = $cmdArr['data'];
-        $uploadedFile = $this->uploadedFiles['replace_' . $uploadPosition];
-        if (empty($uploadedFile->getClientFilename())) {
+        $uploadPosition = (string)($cmdArr['data'] ?? '');
+        $uploadedFile = $this->uploadedFiles['replace_' . $uploadPosition] ?? null;
+        if ($uploadPosition === ''
+            || !$uploadedFile instanceof UploadedFileInterface
+            || empty($uploadedFile->getClientFilename())
+        ) {
             $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::SYSTEM_ERROR, 'No file was uploaded for replacement');
             $this->addMessageToFlashMessageQueue('FileUtility.NoFileWasUploadedForReplacing');
             return false;
