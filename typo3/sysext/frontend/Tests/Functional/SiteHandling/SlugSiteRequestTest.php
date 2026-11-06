@@ -710,15 +710,15 @@ final class SlugSiteRequestTest extends AbstractTestCase
         $instructions = [
             // no frontend user given
             ['https://website.local/my-acme/whitepapers', 0],
-            // ['https://website.local/my-acme/whitepapers/products', 0], // @todo extendToSubpages currently missing
+            ['https://website.local/my-acme/whitepapers/products', 0],
             ['https://website.local/my-acme/whitepapers/solutions', 0],
             ['https://website.local/my-acme/whitepapers/research', 0],
             ['https://website.local/my-acme/forecasts', 0],
-            // ['https://website.local/my-acme/forecasts/current-year', 0], // @todo extendToSubpages currently missing
+            ['https://website.local/my-acme/forecasts/current-year', 0],
             // frontend user 1
             ['https://website.local/my-acme/whitepapers/research', 1],
             ['https://website.local/my-acme/forecasts', 1],
-            // ['https://website.local/my-acme/forecasts/current-year', 1], // @todo extendToSubpages currently missing
+            ['https://website.local/my-acme/forecasts/current-year', 1],
             // frontend user 2
             ['https://website.local/my-acme/whitepapers/solutions', 2],
         ];
