@@ -20,10 +20,13 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PermutationUtility;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -532,6 +535,85 @@ final class SiteRequestTest extends AbstractTestCase
                 self::identicalTo('ID was not an accessible page'),
                 self::identicalTo('Subsection was found and not accessible')
             )
+        );
+    }
+
+    public static function restrictedSiteRootPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    {
+        $instructions = [
+            // no frontend user given
+            ['https://website.local/', 0],
+            ['https://website.local/?id=1000', 0],
+            // frontend user 2
+            ['https://website.local/', 2],
+            ['https://website.local/?id=1000', 2],
+        ];
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    #[DataProvider('restrictedSiteRootPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider')]
+    #[Test]
+    public function restrictedSiteRootPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
+    {
+        $this->restrictSiteRootPageToCustomers();
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [403])
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+        );
+        $json = json_decode((string)$response->getBody(), true);
+
+        self::assertSame(403, $response->getStatusCode());
+        self::assertSame('ID was not an accessible page', $json['message'] ?? null);
+        self::assertSame(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED, $json['reasons']['code'] ?? null);
+        self::assertSame(1000, $json['reasons']['direct_access'][0]['uid'] ?? null);
+    }
+
+    public static function restrictedSiteRootPageIsRenderedForAuthorizedVisitorDataProvider(): array
+    {
+        $instructions = [
+            // frontend user 1
+            ['https://website.local/', 1],
+            ['https://website.local/?id=1000', 1],
+        ];
+        return self::keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    #[DataProvider('restrictedSiteRootPageIsRenderedForAuthorizedVisitorDataProvider')]
+    #[Test]
+    public function restrictedSiteRootPageIsRenderedForAuthorizedVisitor(string $uri, int $frontendUserId): void
+    {
+        $this->restrictSiteRootPageToCustomers();
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
+        );
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('ACME Inc', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
+     * Turns the shortcut root page 1000 into a standard page visible to fe_group 10 only.
+     */
+    private function restrictSiteRootPageToCustomers(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->update(
+            'pages',
+            ['doktype' => PageRepository::DOKTYPE_DEFAULT, 'fe_group' => '10'],
+            ['uid' => 1000]
         );
     }
 
