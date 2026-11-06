@@ -24,6 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -45,6 +46,7 @@ readonly class PreviewSimulator implements MiddlewareInterface
     public function __construct(
         protected Context $context,
         protected PageRepository $pageRepository,
+        protected RecordAccessVoter $accessVoter,
         protected PreviewSimulatorCalculator $previewSimulatorCalculator = new PreviewSimulatorCalculator(),
     ) {}
 
@@ -69,11 +71,13 @@ readonly class PreviewSimulator implements MiddlewareInterface
                 );
             }
             $visibilityAspect = $this->context->getAspect('visibility');
+            // Simulate date and user group first, so the rootline check below
+            // evaluates against the simulated context.
+            $simulatingDate = $this->simulateDate($request);
+            $simulatingGroup = $this->simulateUserGroup($request);
             // The preview flag is set if the current page turns out to be hidden
             $showHiddenPages = $this->checkIfPageIsHidden($pageArguments->getPageId(), $request);
             $rootlineRequiresPreviewFlag = $this->checkIfRootlineRequiresPreview($pageArguments->getPageId());
-            $simulatingDate = $this->simulateDate($request);
-            $simulatingGroup = $this->simulateUserGroup($request);
             $showHiddenRecords = $visibilityAspect->includeHidden();
             $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace || $rootlineRequiresPreviewFlag;
             if ($this->context->hasAspect('frontend.preview')) {
@@ -92,36 +96,26 @@ readonly class PreviewSimulator implements MiddlewareInterface
     }
 
     /**
-     * Evaluate if the "extendToSubpages" flag was set on any of the previous ancestor pages,
-     * but be sure to not check for the current page itself.
+     * Evaluate if any ancestor page, which sets "extendToSubpages", restricts access
+     * for the current request. The current page itself is not checked.
      */
     protected function checkIfRootlineRequiresPreview(int $pageId): bool
     {
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, '', $this->context);
-        $groupRestricted = false;
-        $timeRestricted = false;
-        $hidden = false;
         try {
             $rootLine = $rootlineUtility->get();
-
             // Remove the current page from the rootline
             array_shift($rootLine);
             foreach ($rootLine as $page) {
-                // Skip root node and pages which do not define extendToSubpages
-                if ((int)($page['uid'] ?? 0) === 0 || !(bool)($page['extendToSubpages'] ?? false)) {
-                    continue;
+                if (!$this->accessVoter->accessGrantedForPageInRootLine($page, $this->context)) {
+                    return true;
                 }
-                $groupRestricted = (bool)(string)($page['fe_group'] ?? '');
-                $timeRestricted = (int)($page['starttime'] ?? 0) || (int)($page['endtime'] ?? 0);
-                $hidden = (int)($page['hidden'] ?? 0);
-                // Stop as soon as a page in the rootline has extendToSubpages set
-                break;
             }
         } catch (\Exception) {
             // if the rootline cannot be resolved (404 because of delete placeholder in workspaces for example)
             // we do not want to fail here but rather continue handling the request to trigger the middleware 404 handling
         }
-        return $groupRestricted || $timeRestricted || $hidden;
+        return false;
     }
 
     /**
