@@ -162,11 +162,13 @@ class MfaInfoElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        // JavaScript is not needed in case deactivation is not allowed or no active providers exist
+        // JavaScript is not needed in case deactivation is not allowed or no active providers exist.
+        // be_users_settings is a FormEngine pseudo-table; the Ajax endpoint only accepts real user tables.
         if ($isDeactivationAllowed && $activeProviders !== []) {
+            $ajaxTableName = $tableName === 'be_users_settings' ? 'be_users' : $tableName;
             $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
                 '@typo3/backend/form-engine/element/mfa-info-element.js'
-            )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $tableName]);
+            )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $ajaxTableName]);
         }
 
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend($status . implode(PHP_EOL, $html));

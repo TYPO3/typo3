@@ -135,9 +135,36 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger mt-2 "/s', $result['html']);
-        // JavaScript is added
+        // JavaScript is added and targets the real backend user table
         self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['javaScriptModules'][0]);
         self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['javaScriptModules'][0]->getName());
+        self::assertSame(
+            ['userId' => 4, 'tableName' => 'be_users'],
+            $result['javaScriptModules'][0]->getItems()[0]['args'][1]
+        );
+    }
+
+    #[Test]
+    public function renderPassesRealBackendUserTableForUserSettingsTest(): void
+    {
+        $result = $this->getFormElementResult([
+            'tableName' => 'be_users_settings',
+            'databaseRow' => [
+                'uid' => 4,
+            ],
+            'parameterArray' => [
+                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2}}',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
+            ],
+        ]);
+
+        self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['javaScriptModules'][0]);
+        self::assertSame(
+            ['userId' => 4, 'tableName' => 'be_users'],
+            $result['javaScriptModules'][0]->getItems()[0]['args'][1]
+        );
     }
 
     #[Test]
