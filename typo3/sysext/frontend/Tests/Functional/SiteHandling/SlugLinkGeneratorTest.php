@@ -1442,8 +1442,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                 1200,
                 [
                     ['title' => 'English', 'link' => '/features', 'active' => 1, 'current' => 0, 'available' => 1],
-                    ['title' => 'French', 'link' => 'https://acme.fr/features', 'active' => 0, 'current' => 0, 'available' => 0],
-                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/features', 'active' => 0, 'current' => 0, 'available' => 0],
+                    ['title' => 'French', 'link' => 'https://acme.fr/features', 'active' => 0, 'current' => 0, 'available' => 1],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/features', 'active' => 0, 'current' => 0, 'available' => 1],
                 ],
             ],
         ];
