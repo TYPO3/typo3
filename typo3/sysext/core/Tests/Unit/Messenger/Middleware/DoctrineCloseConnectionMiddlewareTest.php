@@ -39,9 +39,9 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
      */
     private function stackReturning(callable $next): StackInterface
     {
-        $nextMiddleware = $this->createMock(MiddlewareInterface::class);
+        $nextMiddleware = self::createStub(MiddlewareInterface::class);
         $nextMiddleware->method('handle')->willReturnCallback($next);
-        $stack = $this->createMock(StackInterface::class);
+        $stack = self::createStub(StackInterface::class);
         $stack->method('next')->willReturn($nextMiddleware);
         return $stack;
     }
@@ -50,14 +50,14 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
     {
         $connection = $this->createMock(Connection::class);
         $connection->method('getDatabasePlatform')->willReturn(
-            $sqlite ? $this->createMock(SQLitePlatform::class) : $this->createMock(AbstractPlatform::class),
+            $sqlite ? self::createStub(SQLitePlatform::class) : self::createStub(AbstractPlatform::class),
         );
         return $connection;
     }
 
-    private function connectionPoolWith(Connection $connection): ConnectionPool&MockObject
+    private function connectionPoolWith(Connection $connection): ConnectionPool
     {
-        $connectionPool = $this->createMock(ConnectionPool::class);
+        $connectionPool = self::createStub(ConnectionPool::class);
         $connectionPool->method('getOpenConnectionNames')->willReturn(['Default']);
         $connectionPool->method('getConnectionByName')->willReturnMap([['Default', $connection]]);
         return $connectionPool;
@@ -65,7 +65,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
 
     private function passThroughDispatcher(): EventDispatcherInterface
     {
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dispatcher = self::createStub(EventDispatcherInterface::class);
         $dispatcher->method('dispatch')->willReturnArgument(0);
         return $dispatcher;
     }
@@ -111,7 +111,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
     {
         $connection = $this->connection();
         $connection->expects($this->never())->method('close');
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dispatcher = self::createStub(EventDispatcherInterface::class);
         $dispatcher->method('dispatch')->willReturnCallback(static function (object $event): object {
             self::assertInstanceOf(BeforeMessengerDoctrineCloseEvent::class, $event);
             $event->skip();

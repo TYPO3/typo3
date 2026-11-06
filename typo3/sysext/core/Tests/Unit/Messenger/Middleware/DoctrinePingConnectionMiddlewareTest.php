@@ -42,9 +42,9 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
      */
     private function stackReturning(callable $next): StackInterface
     {
-        $nextMiddleware = $this->createMock(MiddlewareInterface::class);
+        $nextMiddleware = self::createStub(MiddlewareInterface::class);
         $nextMiddleware->method('handle')->willReturnCallback($next);
-        $stack = $this->createMock(StackInterface::class);
+        $stack = self::createStub(StackInterface::class);
         $stack->method('next')->willReturn($nextMiddleware);
         return $stack;
     }
@@ -55,7 +55,7 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
      */
     private function connection(?\Throwable $firstPingThrows = null): Connection&MockObject
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $platform->method('getDummySelectSQL')->willReturn('SELECT 1');
         $connection = $this->createMock(Connection::class);
         $connection->method('getDatabasePlatform')->willReturn($platform);
@@ -65,14 +65,14 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
             if ($calls === 1 && $firstPingThrows !== null) {
                 throw $firstPingThrows;
             }
-            return $this->createMock(Result::class);
+            return self::createStub(Result::class);
         });
         return $connection;
     }
 
-    private function connectionPoolWith(Connection $connection): ConnectionPool&MockObject
+    private function connectionPoolWith(Connection $connection): ConnectionPool
     {
-        $connectionPool = $this->createMock(ConnectionPool::class);
+        $connectionPool = self::createStub(ConnectionPool::class);
         $connectionPool->method('getOpenConnectionNames')->willReturn(['Default']);
         $connectionPool->method('getConnectionByName')->willReturnMap([['Default', $connection]]);
         return $connectionPool;
@@ -80,7 +80,7 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
 
     private function passThroughDispatcher(): EventDispatcherInterface
     {
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dispatcher = self::createStub(EventDispatcherInterface::class);
         $dispatcher->method('dispatch')->willReturnArgument(0);
         return $dispatcher;
     }
@@ -133,7 +133,7 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
     {
         $connection = $this->connection();
         $connection->expects($this->never())->method('executeQuery');
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dispatcher = self::createStub(EventDispatcherInterface::class);
         $dispatcher->method('dispatch')->willReturnCallback(static function (object $event): object {
             self::assertInstanceOf(BeforeMessengerDoctrinePingEvent::class, $event);
             $event->skip();
@@ -149,7 +149,7 @@ final class DoctrinePingConnectionMiddlewareTest extends UnitTestCase
     public function sqliteConnectionIsNotPinged(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->method('getDatabasePlatform')->willReturn($this->createMock(SQLitePlatform::class));
+        $connection->method('getDatabasePlatform')->willReturn(self::createStub(SQLitePlatform::class));
         $connection->expects($this->never())->method('executeQuery');
         // The event is not even dispatched for a skipped (SQLite) connection.
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
