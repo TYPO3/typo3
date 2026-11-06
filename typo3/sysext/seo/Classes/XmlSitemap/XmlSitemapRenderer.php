@@ -84,15 +84,16 @@ final readonly class XmlSitemapRenderer
         $view->assign('type', $request->getAttribute('routing')->getPageType());
         $view->assign('sitemapType', $sitemapType);
         $configConfiguration = $configurationArrayWithoutDots['config'] ?? [];
-        if (!empty($sitemapName = ($request->getQueryParams()['tx_seo']['sitemap'] ?? null))) {
-            $xslResource = $this->getXslResource($configConfiguration, $sitemapType, $sitemapName);
+        $sitemapName = $request->getQueryParams()['tx_seo']['sitemap'] ?? null;
+        $sitemapName = is_string($sitemapName) && $sitemapName !== '' ? $sitemapName : null;
+        $xslResource = $this->getXslResource($configConfiguration, $sitemapType, $sitemapName);
+        if ($xslResource !== null) {
             $this->applyDynamicContentSecurityPolicy($xslResource);
             $view->assign('xslFile', (string)$this->resourcePublisher->generateUri($xslResource, $request));
+        }
+        if ($sitemapName !== null) {
             return $this->renderSitemap($request, $view, $configConfiguration, $sitemapType, $sitemapName);
         }
-        $xslResource = $this->getXslResource($configConfiguration, $sitemapType);
-        $this->applyDynamicContentSecurityPolicy($xslResource);
-        $view->assign('xslFile', (string)$this->resourcePublisher->generateUri($xslResource, $request));
         return $this->renderIndex($request, $view, $configConfiguration, $sitemapType);
     }
 
@@ -171,15 +172,21 @@ final readonly class XmlSitemapRenderer
     }
 
     /**
+     * Returns null if the most specific `xslFile` setting is empty, which disables the stylesheet.
+     *
      * @throws CanNotResolvePublicResourceException
      * @throws CanNotResolveSystemResourceException
      */
-    private function getXslResource(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): PublicResourceInterface&SystemResourceInterface
+    private function getXslResource(array $configConfiguration, string $sitemapType, ?string $sitemapName): (PublicResourceInterface&SystemResourceInterface)|null
     {
         $resourceIdentifier = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName ?? '']['config']['xslFile']
             ?? $configConfiguration[$sitemapType]['sitemaps']['xslFile']
             ?? $configConfiguration['xslFile']
             ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';
+        $resourceIdentifier = trim((string)$resourceIdentifier);
+        if ($resourceIdentifier === '') {
+            return null;
+        }
         $xslResource = $this->resourceFactory->createPublicResource($resourceIdentifier);
         if (!$xslResource instanceof SystemResourceInterface) {
             throw new \InvalidArgumentException('Can not resolve xslFile "%s" to a system resource', 1761032332);

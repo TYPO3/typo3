@@ -146,4 +146,102 @@ final class XmlSitemapXslTest extends AbstractTestCase
             ],
         ];
     }
+
+    public static function emptyXslFileDisablesStylesheetDataProvider(): array
+    {
+        return [
+            'index, disabled globally' => [
+                [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl-disabled.typoscript',
+                ],
+                '',
+            ],
+            'pages sitemap, disabled globally' => [
+                [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl-disabled.typoscript',
+                ],
+                'pages',
+            ],
+            'records sitemap, disabled for this sitemap only' => [
+                [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl-disabled-records.typoscript',
+                ],
+                'records',
+            ],
+        ];
+    }
+
+    #[DataProvider('emptyXslFileDisablesStylesheetDataProvider')]
+    #[Test]
+    public function emptyXslFileDisablesStylesheet(array $typoscriptSetupFiles, string $sitemap): void
+    {
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
+                'setup' => $typoscriptSetupFiles,
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $config = [
+            'id' => 1,
+            'type' => 1533906435,
+        ];
+        if ($sitemap !== '') {
+            $config['tx_seo[sitemap]'] = $sitemap;
+        }
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('http://localhost/')->withQueryParameters($config)
+        );
+        $body = (string)$response->getBody();
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $body);
+        self::assertStringNotContainsString('xml-stylesheet', $body);
+        self::assertMatchesRegularExpression('/<(sitemapindex|urlset) /', $body);
+    }
+
+    #[Test]
+    public function emptyXslFileForOneSitemapKeepsStylesheetOfOtherSitemaps(): void
+    {
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
+                'setup' => [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl-disabled-records.typoscript',
+                ],
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('http://localhost/')->withQueryParameters([
+                'id' => 1,
+                'type' => 1533906435,
+                'tx_seo[sitemap]' => 'pages',
+            ])
+        );
+
+        self::assertStringContainsString('XslFile1.xsl', (string)$response->getBody());
+    }
 }

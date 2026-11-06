@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="{xslFile}"?>
+<?xml version="1.0" encoding="UTF-8"?><f:if condition="{xslFile}"><?xml-stylesheet type="text/xsl" href="{xslFile}"?></f:if>
 
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <f:for each="{sitemaps}" as="sitemap">
