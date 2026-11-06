@@ -282,9 +282,7 @@ class ExtensionManagementService
      */
     public function downloadMainExtension(Extension $extension): void
     {
-        // The extension object has a uid if the extension is not present in the system
-        // or an update of a present extension is triggered.
-        if ($extension->uid) {
+        if ($extension->resolvedFromRemote) {
             $this->rawDownload($extension);
         }
     }

@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
+use TYPO3\CMS\Extensionmanager\Tests\Functional\Fixtures\TerApiFake;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -35,6 +36,13 @@ final class ListUtilityTest extends FunctionalTestCase
         'typo3/sysext/extensionmanager/Tests/Functional/Fixtures/Extensions/deepl_write',
         'typo3/sysext/extensionmanager/Tests/Functional/Fixtures/Extensions/deepltranslate_core',
     ];
+
+    protected function setUp(): void
+    {
+        $this->configurationToUseInTestInstance = TerApiFake::cacheConfiguration();
+        parent::setUp();
+        TerApiFake::register([]);
+    }
 
     #[Test]
     public function getAvailableAndInstalledExtensionsReturnsExpectedResultForComplexExtensionDependencyChainConstellation(): void

@@ -213,11 +213,15 @@ class ListUtility
     }
 
     /**
-     * Adds the information from TER to the extension information
+     * Adds the information from TER to the extension information.
+     * System extensions are not offered by TER, so it is not asked about them.
      */
     public function enrichExtensionsWithTerInformation(array $extensions): array
     {
         foreach ($extensions as $extensionKey => $properties) {
+            if (($properties['type'] ?? '') === ExtensionType::System->value) {
+                continue;
+            }
             $terObject = $this->getExtensionTerData($extensionKey, $properties['version'] ?? '');
             if ($terObject === null) {
                 continue;

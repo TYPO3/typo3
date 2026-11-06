@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -25,6 +27,9 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
+use TYPO3\CMS\Extensionmanager\Remote\ApiRequestFailedException;
+use TYPO3\CMS\Extensionmanager\Remote\TerApiClient;
+use TYPO3\CMS\Extensionmanager\Remote\TerExtensionMapper;
 
 /**
  * A repository for extensions.
@@ -32,14 +37,25 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
  * The implementation does not filter extension marked as insecure, this has
  * to happen on a different level when needed.
  *
+ * The packages offered for download are resolved through the TER REST API
+ * first, so downloads, dependencies and updates are as current as the
+ * catalogue browsed in the module. The imported extension list answers
+ * whenever TER does not know an extension, can not be asked, or "offlineMode"
+ * is enabled.
+ *
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
 readonly class ExtensionRepository implements ExtensionCatalogueInterface
 {
     private const string TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+    private const string TER_REMOTE_IDENTIFIER = 'ter';
 
     public function __construct(
         private ConnectionPool $connectionPool,
+        private TerApiClient $terApiClient,
+        private TerExtensionMapper $terExtensionMapper,
+        private ExtensionConfiguration $extensionConfiguration,
+        private LoggerInterface $logger,
     ) {}
 
     public function countAll(): int
@@ -89,6 +105,10 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
      */
     public function findByExtensionKeyOrderedByVersion(string $extensionKey): array
     {
+        $versions = $this->findAllVersionsOnTer($extensionKey);
+        if ($versions !== null) {
+            return array_values(array_filter($versions, static fn(Extension $extension): bool => $extension->reviewState !== -1));
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $result = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
@@ -119,6 +139,12 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
      */
     public function findOneByPackageIdentifier(PackageIdentifier $packageIdentifier): ?Extension
     {
+        if ($packageIdentifier->remote === self::TER_REMOTE_IDENTIFIER) {
+            $versions = $this->findAllVersionsOnTer($packageIdentifier->packageKey);
+            if ($versions !== null) {
+                return $this->findVersion($versions, $packageIdentifier->version);
+            }
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $row = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
@@ -187,6 +213,10 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
      */
     public function findOneByExtensionKeyAndVersion(string $extensionKey, string $version): ?Extension
     {
+        $versions = $this->findAllVersionsOnTer($extensionKey);
+        if ($versions !== null) {
+            return $this->findVersion($versions, $version);
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $row = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
@@ -300,6 +330,29 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
      */
     public function findByVersionRangeAndExtensionKeyOrderedByVersion(string $extensionKey, int $lowestVersion = 0, int $highestVersion = 0, bool $includeCurrentVersion = true): array
     {
+        $versions = $this->findAllVersionsOnTer($extensionKey);
+        if ($versions !== null) {
+            return array_values(array_filter(
+                $versions,
+                static function (Extension $extension) use ($lowestVersion, $highestVersion, $includeCurrentVersion): bool {
+                    $version = $extension->integerVersion;
+                    if ($extension->reviewState < 0) {
+                        return false;
+                    }
+                    if ($lowestVersion !== 0 && ($includeCurrentVersion ? $version < $lowestVersion : $version <= $lowestVersion)) {
+                        return false;
+                    }
+                    if ($highestVersion !== 0) {
+                        // Without a lower bound, $includeCurrentVersion applies to the upper one
+                        $excludeHighest = $lowestVersion === 0 && !$includeCurrentVersion;
+                        if ($excludeHighest ? $version >= $highestVersion : $version > $highestVersion) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            ));
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->select('*')->from(self::TABLE_NAME);
         $constraints = [
@@ -394,11 +447,23 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
      */
     public function findHighestAvailableVersion(string $extensionKey): ?Extension
     {
+        $versions = $this->findAllVersionsOnTer($extensionKey);
+        if ($versions !== null) {
+            foreach ($versions as $extension) {
+                if ($extension->reviewState >= 0) {
+                    return $extension;
+                }
+            }
+            return null;
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $result = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                    $queryBuilder->expr()->eq('composer_name', $queryBuilder->createNamedParameter($extensionKey, Connection::PARAM_STR)),
+                ),
                 $queryBuilder->expr()->gte('review_state', 0),
             )
             ->orderBy('integer_version', 'DESC')
@@ -455,5 +520,73 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
             }
         }
         return $filteredExtensions;
+    }
+
+    /**
+     * Every version TER has of an extension, highest version first, or null
+     * when the imported list has to answer instead: TER does not know the
+     * extension, can not be asked, or must not be asked in "offlineMode".
+     *
+     * @param string $extensionKey the extension key or the composer name
+     * @return Extension[]|null
+     */
+    private function findAllVersionsOnTer(string $extensionKey): ?array
+    {
+        if ($extensionKey === '' || (bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode')) {
+            return null;
+        }
+        try {
+            if (str_contains($extensionKey, '/')) {
+                $extensionKey = $this->findExtensionKeyOfComposerNameOnTer($extensionKey);
+                if ($extensionKey === null) {
+                    return null;
+                }
+            }
+            $remoteExtension = $this->terApiClient->getExtension($extensionKey);
+            if ($remoteExtension === null) {
+                return null;
+            }
+            $extensions = [];
+            foreach ($this->terApiClient->getVersions($extensionKey) as $version) {
+                $extensions[] = $this->terExtensionMapper->map($remoteExtension, $version, self::TER_REMOTE_IDENTIFIER);
+            }
+            return $extensions;
+        } catch (ApiRequestFailedException $e) {
+            $this->logger->notice(
+                'Resolving "{extensionKey}" from the imported extension list, TER could not be asked: {reason}',
+                ['extensionKey' => $extensionKey, 'reason' => $e->getMessage(), 'exception' => $e]
+            );
+            return null;
+        }
+    }
+
+    /**
+     * A dependency may name the composer package instead of the extension key.
+     * The search filter of TER matches composer names, among others, so only
+     * an exact match counts.
+     *
+     * @throws ApiRequestFailedException
+     */
+    private function findExtensionKeyOfComposerNameOnTer(string $composerName): ?string
+    {
+        foreach ($this->terApiClient->query($composerName, 0, 1, 50)->extensions as $remoteExtension) {
+            if (strcasecmp($remoteExtension->composerName, $composerName) === 0) {
+                return $remoteExtension->key;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param Extension[] $extensions
+     */
+    private function findVersion(array $extensions, string $version): ?Extension
+    {
+        foreach ($extensions as $extension) {
+            if ($extension->version === $version) {
+                return $extension;
+            }
+        }
+        return null;
     }
 }

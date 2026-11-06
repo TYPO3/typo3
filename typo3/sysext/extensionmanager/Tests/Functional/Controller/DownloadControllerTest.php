@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
+use TYPO3\CMS\Extensionmanager\Tests\Functional\Fixtures\TerApiFake;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DownloadControllerTest extends FunctionalTestCase
@@ -40,7 +41,9 @@ final class DownloadControllerTest extends FunctionalTestCase
 
     protected function setUp(): void
     {
+        $this->configurationToUseInTestInstance = TerApiFake::cacheConfiguration();
         parent::setUp();
+        TerApiFake::register([]);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
