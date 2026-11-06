@@ -37,7 +37,7 @@ plugin.tx_seo {
   }
 
   config {
-    # Here you can override the xslFile for all sitemaps
+    # Here you can override the xslFile for all sitemaps, an empty value disables the stylesheet
     # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
     xmlSitemap {
       sitemaps {
