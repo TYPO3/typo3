@@ -51,6 +51,7 @@ readonly class TerExtensionMapper
         $extension = new Extension();
         $extension->extensionKey = $remoteExtension->key;
         $extension->remote = $remoteIdentifier;
+        $extension->resolvedFromRemote = true;
         $extension->ownerusername = $remoteExtension->owner;
         $extension->alldownloadcounter = $remoteExtension->downloads;
         $extension->documentationLink = $remoteExtension->documentationLink;

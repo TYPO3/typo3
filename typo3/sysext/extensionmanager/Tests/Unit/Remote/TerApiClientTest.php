@@ -213,6 +213,45 @@ final class TerApiClientTest extends UnitTestCase
     }
 
     /**
+     * Most locally installed extensions are unknown to TER, and the list of
+     * installed extensions asks about every one of them on every view.
+     */
+    #[Test]
+    public function anUnknownExtensionIsNotAskedForAgain(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->expects($this->once())->method('request')->willReturn($this->createResponse('{"status":404}', 404));
+
+        $subject = new TerApiClient($requestFactory, $this->createMemoryCache(), new Typo3Version());
+
+        self::assertNull($subject->getExtension('no_such_extension'));
+        self::assertNull($subject->getExtension('no_such_extension'));
+    }
+
+    /**
+     * An extension published right after it was asked about must not stay
+     * unknown for as long as the answers about known extensions are kept.
+     */
+    #[Test]
+    public function anUnknownExtensionIsRememberedOnlyForAShortWhile(): void
+    {
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->method('request')->willReturn($this->createResponse('{"status":404}', 404));
+        $lifetime = null;
+        $cache = $this->createMock(FrontendInterface::class);
+        $cache->method('get')->willReturn(false);
+        $cache->method('set')->willReturnCallback(static function (string $identifier, mixed $data, array $tags = [], ?int $cacheLifetime = null) use (&$lifetime): void {
+            $lifetime = $cacheLifetime;
+        });
+
+        $subject = new TerApiClient($requestFactory, $cache, new Typo3Version());
+        $subject->getExtension('no_such_extension');
+
+        self::assertGreaterThan(0, $lifetime);
+        self::assertLessThan(3600, $lifetime);
+    }
+
+    /**
      * Guzzle throws on any 4xx by default, which would turn "no such extension"
      * into a failure. And the global HTTP timeout is unlimited by default, which
      * would let a slow remote hold the module hostage instead of falling back.

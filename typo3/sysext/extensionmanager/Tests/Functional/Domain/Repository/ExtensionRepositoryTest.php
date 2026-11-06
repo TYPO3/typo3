@@ -25,6 +25,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
+use TYPO3\CMS\Extensionmanager\Tests\Functional\Fixtures\TerApiFake;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ExtensionRepositoryTest extends FunctionalTestCase
@@ -32,6 +33,13 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = [
         'extensionmanager',
     ];
+
+    protected function setUp(): void
+    {
+        $this->configurationToUseInTestInstance = TerApiFake::cacheConfiguration();
+        parent::setUp();
+        TerApiFake::register([]);
+    }
 
     /**
      * The list views depend on the contract, not on an implementation, so the
@@ -58,6 +66,134 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
         self::assertSame('ext_dependency', $extension->extensionKey);
         self::assertSame('1.0.0', $extension->version);
         self::assertSame('ter', $extension->remote);
+    }
+
+    #[Test]
+    public function getByPackageIdentifierResolvesAPackageTheImportedListDoesNotKnowThroughTer(): void
+    {
+        TerApiFake::register([
+            'ext_dependency' => [
+                ['number' => '1.0.0', 'artifact_sha256' => str_repeat('a', 64)],
+                ['number' => '1.1.0'],
+            ],
+        ]);
+
+        $extension = $this->get(ExtensionRepository::class)
+            ->getByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'ter'));
+
+        self::assertSame('ext_dependency', $extension->extensionKey);
+        self::assertSame('1.0.0', $extension->version);
+        self::assertSame('ter', $extension->remote);
+        self::assertSame(str_repeat('a', 64), $extension->artifactSha256);
+        self::assertTrue($extension->resolvedFromRemote);
+    }
+
+    #[Test]
+    public function terIsPreferredOverAnOutdatedImportedList(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0');
+        TerApiFake::register([
+            'news' => [
+                ['number' => '1.0.0'],
+                ['number' => '2.0.0'],
+            ],
+        ]);
+        $repository = $this->get(ExtensionRepository::class);
+
+        self::assertSame('2.0.0', $repository->findHighestAvailableVersion('news')?->version);
+        self::assertSame(['2.0.0', '1.0.0'], $this->versionsOf($repository->findByExtensionKeyOrderedByVersion('news')));
+        self::assertSame(['2.0.0'], $this->versionsOf($repository->findByVersionRangeAndExtensionKeyOrderedByVersion('news', 1000000, 0, false)));
+        self::assertNotNull($repository->findOneByExtensionKeyAndVersion('news', '2.0.0'));
+    }
+
+    #[Test]
+    public function insecureVersionsOnTerAreNotPickedForInstallationButFoundWhenAskedFor(): void
+    {
+        TerApiFake::register([
+            'news' => [
+                ['number' => '1.0.0'],
+                ['number' => '2.0.0', 'review_state' => -1],
+            ],
+        ]);
+        $repository = $this->get(ExtensionRepository::class);
+
+        self::assertSame('1.0.0', $repository->findHighestAvailableVersion('news')?->version);
+        self::assertSame(['1.0.0'], $this->versionsOf($repository->findByExtensionKeyOrderedByVersion('news')));
+        self::assertSame(['1.0.0'], $this->versionsOf($repository->findByVersionRangeAndExtensionKeyOrderedByVersion('news')));
+        self::assertSame(-1, $repository->findOneByExtensionKeyAndVersion('news', '2.0.0')?->reviewState);
+    }
+
+    #[Test]
+    public function theImportedListAnswersWhenTerCanNotBeAsked(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0');
+        TerApiFake::register(['news' => [['number' => '2.0.0']]], true);
+
+        self::assertSame('1.0.0', $this->get(ExtensionRepository::class)->findHighestAvailableVersion('news')?->version);
+    }
+
+    #[Test]
+    public function terIsNotAskedInOfflineMode(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0');
+        TerApiFake::register(['news' => [['number' => '2.0.0']]]);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extensionmanager']['offlineMode'] = true;
+
+        self::assertSame('1.0.0', $this->get(ExtensionRepository::class)->findHighestAvailableVersion('news')?->version);
+    }
+
+    #[Test]
+    public function terIsNotAskedForAPackageOfAnotherRemote(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0', ['remote' => 'mirror']);
+        TerApiFake::register(['news' => [['number' => '1.0.0']]]);
+
+        $extension = $this->get(ExtensionRepository::class)
+            ->findOneByPackageIdentifier(new PackageIdentifier('news', '1.0.0', 'mirror'));
+
+        self::assertSame('mirror', $extension?->remote);
+    }
+
+    #[Test]
+    public function aComposerNameIsResolvedThroughTer(): void
+    {
+        TerApiFake::register(
+            [
+                'content_blocks' => [['number' => '1.0.0'], ['number' => '2.0.0']],
+                'content_blocks_gui' => [['number' => '1.0.0']],
+            ],
+            false,
+            [
+                'content_blocks' => 'friendsoftypo3/content-blocks',
+                'content_blocks_gui' => 'friendsoftypo3/content-blocks-gui',
+            ]
+        );
+        $repository = $this->get(ExtensionRepository::class);
+
+        $extensions = $repository->findByExtensionKeyOrderedByVersion('friendsoftypo3/content-blocks');
+        self::assertSame(['2.0.0', '1.0.0'], $this->versionsOf($extensions));
+        self::assertSame('content_blocks', $extensions[0]->extensionKey);
+        self::assertSame(
+            ['1.0.0'],
+            $this->versionsOf($repository->findByVersionRangeAndExtensionKeyOrderedByVersion('friendsoftypo3/content-blocks', 1000000, 1999999))
+        );
+    }
+
+    #[Test]
+    public function aComposerNameTerDoesNotKnowIsResolvedFromTheImportedList(): void
+    {
+        $this->createRemoteExtensionRecord('content_blocks', '5.0.0', ['composer_name' => 'friendsoftypo3/content-blocks']);
+        TerApiFake::register(
+            ['content_blocks_gui' => [['number' => '1.0.0']]],
+            false,
+            ['content_blocks_gui' => 'friendsoftypo3/content-blocks-gui']
+        );
+
+        $extensions = $this->get(ExtensionRepository::class)
+            ->findByExtensionKeyOrderedByVersion('friendsoftypo3/content-blocks');
+
+        self::assertSame(['5.0.0'], $this->versionsOf($extensions));
+        self::assertSame('content_blocks', $extensions[0]->extensionKey);
     }
 
     #[Test]
@@ -198,6 +334,27 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
 
         self::assertCount(1, $extensions);
         self::assertSame('content_blocks', $extensions[0]->extensionKey);
+    }
+
+    #[Test]
+    public function findHighestAvailableVersionResolvesComposerNameFromTheImportedList(): void
+    {
+        $this->createRemoteExtensionRecord('content_blocks', '5.0.0', ['composer_name' => 'friendsoftypo3/content-blocks']);
+
+        $extension = $this->get(ExtensionRepository::class)
+            ->findHighestAvailableVersion('friendsoftypo3/content-blocks');
+
+        self::assertSame('content_blocks', $extension?->extensionKey);
+        self::assertSame('5.0.0', $extension->version);
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return string[]
+     */
+    private function versionsOf(array $extensions): array
+    {
+        return array_map(static fn(Extension $extension): string => $extension->version, $extensions);
     }
 
     /**

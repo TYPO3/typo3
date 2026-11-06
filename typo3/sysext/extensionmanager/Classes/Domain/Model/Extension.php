@@ -57,6 +57,12 @@ class Extension
     public string $distributionWelcomeImage = '';
     public string $remote = '';
 
+    /**
+     * Set for a package resolved from a remote, which has to be downloaded
+     * before it can be installed. Not set for a package present locally.
+     */
+    public bool $resolvedFromRemote = false;
+
     public static function createObjectFromRow(array $row): self
     {
         $extension = new self();
@@ -85,6 +91,7 @@ class Extension
         $extension->distributionImage = $row['distribution_image'] ?? '';
         $extension->distributionWelcomeImage = $row['distribution_welcome_image'] ?? '';
         $extension->dependencies = null;
+        $extension->resolvedFromRemote = true;
 
         return $extension;
     }

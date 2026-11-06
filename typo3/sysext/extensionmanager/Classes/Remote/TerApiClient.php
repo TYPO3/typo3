@@ -45,6 +45,8 @@ class TerApiClient
     private const BASE_URL = 'https://extensions.typo3.org/api/v1';
     private const UNAVAILABLE_CACHE_IDENTIFIER = 'ter_api_unavailable';
     private const UNAVAILABLE_LIFETIME = 300;
+    private const NOT_FOUND = 'not_found';
+    private const NOT_FOUND_LIFETIME = 300;
 
     public function __construct(
         protected readonly RequestFactory $requestFactory,
@@ -138,6 +140,9 @@ class TerApiClient
         if (is_array($cached)) {
             return $cached;
         }
+        if ($cached === self::NOT_FOUND) {
+            return null;
+        }
         if ($this->cache->has(self::UNAVAILABLE_CACHE_IDENTIFIER)) {
             throw new ApiRequestFailedException('"' . $url . '" is not asked, the remote could not answer a moment ago', 1791628922);
         }
@@ -150,6 +155,7 @@ class TerApiClient
         // "Unknown to this remote" is an answer, not a failure, and the callers
         // turn it into null or an empty list themselves.
         if ($response->getStatusCode() === 404) {
+            $this->cache->set($cacheIdentifier, self::NOT_FOUND, [], self::NOT_FOUND_LIFETIME);
             return null;
         }
         if (!$this->isSuccessfulResponse($response)) {
