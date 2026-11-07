@@ -68,6 +68,13 @@ class UploadExtensionFileController extends AbstractController
             );
         }
 
+        if ((bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode')) {
+            throw new ExtensionManagerException(
+                'Offline mode is active. You are not allowed to upload any extension file.',
+                1794057769
+            );
+        }
+
         return $this->htmlResponse();
     }
 
@@ -84,6 +91,13 @@ class UploadExtensionFileController extends AbstractController
             throw new ExtensionManagerException(
                 'Composer mode is active. You are not allowed to upload any extension file.',
                 1444725853
+            );
+        }
+
+        if ((bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode')) {
+            throw new ExtensionManagerException(
+                'Offline mode is active. You are not allowed to upload any extension file.',
+                1794057770
             );
         }
 

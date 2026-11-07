@@ -198,7 +198,7 @@ class ListController extends AbstractController
      */
     protected function registerDocHeaderButtons(ModuleTemplate $view): ModuleTemplate
     {
-        if (Environment::isComposerMode()) {
+        if (Environment::isComposerMode() || ($this->settings['offlineMode'] ?? false)) {
             return $view;
         }
         if ($this->actionMethodName === 'showAllVersionsAction') {
