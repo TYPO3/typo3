@@ -1253,7 +1253,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $result = new \ReflectionMethod($this->subject, 'checkFlexFormData')
-            ->invoke($this->subject, $data, [], $dataStructure, 'tt_content', 777, 'update', 1, 'tt_content:777:pi_flexform', 0);
+            ->invoke($this->subject, $data, [], $dataStructure, 'tt_content', 777, 'update', 1, 'tt_content:777:pi_flexform', 0, []);
         self::assertSame($expected, $result);
     }
 
@@ -1613,7 +1613,7 @@ final class DataHandlerTest extends UnitTestCase
                 ['Item 3', 0],
             ],
         ];
-        self::assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
+        self::assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, '', []));
     }
 
     #[Test]
@@ -1622,7 +1622,7 @@ final class DataHandlerTest extends UnitTestCase
         $expectedResult = [];
         $tcaConfig = [];
         $value = 0;
-        $result = $this->subject->_call('checkValueForRadio', [], $value, $tcaConfig, '', 0, 0, '');
+        $result = $this->subject->_call('checkValueForRadio', [], $value, $tcaConfig, '', 0, 0, '', []);
         self::assertSame($expectedResult, $result);
     }
 
@@ -1630,7 +1630,7 @@ final class DataHandlerTest extends UnitTestCase
     public function checkValueForInputConvertsNullToEmptyString(): void
     {
         $expectedResult = ['value' => ''];
-        self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'input', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
+        self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'input', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption', []));
     }
 
     public static function checkValueForJsonDataProvider(): \Generator

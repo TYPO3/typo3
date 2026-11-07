@@ -370,14 +370,6 @@ class DataHandler
     // Various
 
     /**
-     * Set to "currentRecord" during checking of values.
-     *
-     * @var array
-     * @internal
-     */
-    public $checkValue_currentRecord = [];
-
-    /**
      * The outermost instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
      * This object instantiates itself on versioning and localization ...
      */
@@ -1045,7 +1037,6 @@ class DataHandler
             }
         }
 
-        $this->checkValue_currentRecord = $checkValueRecord;
         // In the following all incoming value-fields are tested:
         // - Are the user allowed to change the field?
         // - Is the field uid/pid (which are already set)
@@ -1105,7 +1096,7 @@ class DataHandler
                 default:
                     if ($schema->hasField($field)) {
                         // Evaluating the value
-                        $res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID, $incomingFieldArray);
+                        $res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID, $incomingFieldArray, $checkValueRecord);
                         if (array_key_exists('value', $res)) {
                             $fieldArray[$field] = $res['value'];
                         }
@@ -1178,7 +1169,7 @@ class DataHandler
      * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
      * @internal should only be used from within DataHandler
      */
-    public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = []): array
+    public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = [], array $currentRecordValues = []): array
     {
         $currentRecord = null;
         $currentRecordValue = null;
@@ -1213,7 +1204,7 @@ class DataHandler
         }
 
         // Getting config for the field
-        $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $this->checkValue_currentRecord);
+        $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $currentRecordValues);
 
         // Create $recFID only for those types that need it
         if ($tcaFieldConf['type'] === 'flex') {
@@ -1222,7 +1213,7 @@ class DataHandler
             $recFID = '';
         }
 
-        return $this->checkValue_SW([], $value, $tcaFieldConf, $table, $id, $currentRecordValue, $status, $realPid, $recFID, $field, $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
+        return $this->checkValue_SW([], $value, $tcaFieldConf, $table, $id, $currentRecordValue, $status, $realPid, $recFID, $field, $tscPID, ['incomingFieldArray' => $incomingFieldArray], $currentRecordValues);
     }
 
     /**
@@ -1302,7 +1293,7 @@ class DataHandler
      * @return array Returns the evaluated $value as key "value" in this array.
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ?array $additionalData = null): array
+    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ?array $additionalData = null, array $currentRecordValues = []): array
     {
         // Convert to NULL value if defined in TCA
         if ($value === null && ($tcaFieldConf['nullable'] ?? false)) {
@@ -1315,22 +1306,22 @@ class DataHandler
 
         $res = (array)match ((string)$tcaFieldConf['type']) {
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
-            'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field, $currentRecordValues),
             'color' => $this->checkValueForColor((string)$value, $tcaFieldConf),
             'country' => $this->checkValueForCountry((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
-            'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
-            'flex' => $this->checkValueForFlex($res, $value, $tcaFieldConf, (string)$table, $id, (string)$curValue, (string)$status, (int)$realPid, (string)$recFID, (int)$tscPID, (string)$field),
+            'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField, $currentRecordValues),
+            'flex' => $this->checkValueForFlex($res, $value, $tcaFieldConf, (string)$table, $id, (string)$curValue, (string)$status, (int)$realPid, (string)$recFID, (int)$tscPID, (string)$field, $currentRecordValues),
             'inline' => $this->checkValueForInline($res, (string)$value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
             'file' => $this->checkValueForFile($res, (string)$value, $tcaFieldConf, $table, $id, $field, $additionalData),
-            'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field, $currentRecordValues),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
             'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id, $checkField),
             'number' => $this->checkValueForNumber($value, $tcaFieldConf),
             'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $additionalData['incomingFieldArray'] ?? []),
-            'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
-            'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
-            'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
+            'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field, $currentRecordValues),
+            'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? [], $currentRecordValues),
+            'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field, $currentRecordValues),
             'group', 'folder', 'select' => $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field),
             'json' => $this->checkValueForJson($value, $tcaFieldConf),
             'uuid' => $this->checkValueForUuid((string)$value, $tcaFieldConf),
@@ -1409,7 +1400,7 @@ class DataHandler
      * @param string $field Field name
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForText($value, $tcaFieldConf, $table, $realPid, $field)
+    protected function checkValueForText($value, $tcaFieldConf, $table, $realPid, $field, array $currentRecordValues)
     {
         $richtextEnabled = (bool)($tcaFieldConf['enableRichtext'] ?? false);
 
@@ -1437,7 +1428,7 @@ class DataHandler
             return $valueArray;
         }
         if ($richtextEnabled) {
-            $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
+            $recordType = BackendUtility::getTCAtypeValue($table, $currentRecordValues);
             $richtextConfiguration = $this->richtext->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $rteParser = GeneralUtility::makeInstance(RteHtmlParser::class);
             $valueArray['value'] = $rteParser->transformTextForPersistence((string)$value, $richtextConfiguration['proc.'] ?? []);
@@ -1457,7 +1448,7 @@ class DataHandler
      * @param string $field Field name
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field): array
+    protected function checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field, array $currentRecordValues): array
     {
         // Secures the string-length to be less than max.
         if (isset($tcaFieldConf['max']) && (int)$tcaFieldConf['max'] > 0) {
@@ -1482,10 +1473,10 @@ class DataHandler
             // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
             if ($field && !empty($res['value'])) {
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
-                    $res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
+                    $res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid, $currentRecordValues);
                 }
                 if ($res['value'] && in_array('unique', $evalCodesArray, true)) {
-                    $res['value'] = $this->getUnique($table, $field, $res['value'], $id);
+                    $res['value'] = $this->getUnique($table, $field, $res['value'], $id, 0, $currentRecordValues);
                 }
             }
         }
@@ -1591,7 +1582,8 @@ class DataHandler
         string $table,
         int|string $id,
         int $realPid,
-        string $field
+        string $field,
+        array $currentRecordValues
     ): array {
         // Always trim the value
         $value = trim($value);
@@ -1629,10 +1621,10 @@ class DataHandler
         // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
         if ($field && !empty($res['value'])) {
             if (in_array('uniqueInPid', $evalCodesArray, true)) {
-                $res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
+                $res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid, $currentRecordValues);
             }
             if ($res['value'] && in_array('unique', $evalCodesArray, true)) {
-                $res['value'] = $this->getUnique($table, $field, $res['value'], $id);
+                $res['value'] = $this->getUnique($table, $field, $res['value'], $id, 0, $currentRecordValues);
             }
         }
 
@@ -1767,11 +1759,11 @@ class DataHandler
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      * @see SlugHelper
      */
-    protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = []): array
+    protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = [], array $currentRecordValues = []): array
     {
         $workspaceId = $this->BE_USER->workspace;
         $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field, $tcaFieldConf, $workspaceId);
-        $fullRecord = array_replace_recursive($this->checkValue_currentRecord, $incomingFieldArray);
+        $fullRecord = array_replace_recursive($currentRecordValues, $incomingFieldArray);
         // Generate a value if there is none, otherwise ensure that all characters are cleaned up
         if ($value === '') {
             $value = $helper->generate($fullRecord, $realPid);
@@ -2026,7 +2018,7 @@ class DataHandler
      * @param string $field Field name
      * @return array Modified $res array
      */
-    protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field)
+    protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field, array $currentRecordValues)
     {
         $items = $tcaFieldConf['items'] ?? null;
         if (
@@ -2038,7 +2030,7 @@ class DataHandler
             $context = new ItemsProcessorContext(
                 table: $table,
                 field: $field,
-                row: $this->checkValue_currentRecord,
+                row: $currentRecordValues,
                 fieldConfiguration: $tcaFieldConf,
                 processorParameters: [],
                 realPid: $realPid,
@@ -2118,7 +2110,7 @@ class DataHandler
      * @param string $field The field to check
      * @return array Modified $res array
      */
-    protected function checkValueForRadio(array $res, $value, $tcaFieldConf, $table, $id, $pid, $field): array
+    protected function checkValueForRadio(array $res, $value, $tcaFieldConf, $table, $id, $pid, $field, array $currentRecordValues): array
     {
         if (!is_array($tcaFieldConf['items'] ?? null)) {
             $tcaFieldConf['items'] = [];
@@ -2141,7 +2133,7 @@ class DataHandler
             $context = new ItemsProcessorContext(
                 table: $table,
                 field: $field,
-                row: $this->checkValue_currentRecord,
+                row: $currentRecordValues,
                 fieldConfiguration: $tcaFieldConf,
                 processorParameters: [],
                 realPid: $pid,
@@ -2366,7 +2358,7 @@ class DataHandler
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $recFID Field identifier [table:uid:field] for flexforms
      */
-    protected function checkValueForFlex(array $res, mixed $value, array $tcaFieldConf, string $table, string|int $id, string $curValue, string $status, int $realPid, string $recFID, int $tscPID, string $field): array
+    protected function checkValueForFlex(array $res, mixed $value, array $tcaFieldConf, string $table, string|int $id, string $curValue, string $status, int $realPid, string $recFID, int $tscPID, string $field, array $currentRecordValues): array
     {
         // Called from within a FlexForm traversal (e.g. checkFlexFormData): a flex field
         // cannot nest another flex field, so skip processing entirely.
@@ -2379,10 +2371,10 @@ class DataHandler
         }
 
         // This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
-        // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $this->checkValue_currentRecord
+        // Problem: when copying a page, flexform XML comes along in the array for the new record - but since $currentRecordValues
         // does not have a uid or pid for that sake, the FlexFormTools->getDataStructureIdentifier() function returns no good DS. For new
         // records we do know the expected PID, so we send that with this special parameter. Only active when larger than zero.
-        $row = $this->checkValue_currentRecord;
+        $row = $currentRecordValues;
         if ($status === 'new') {
             $row['pid'] = $realPid;
         }
@@ -2411,7 +2403,7 @@ class DataHandler
         }
         // Remove all old meta for languages...
         // Evaluation of input values:
-        $value['data'] = $this->checkFlexFormData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, $table, $id, $status, $realPid, $recFID, $tscPID);
+        $value['data'] = $this->checkFlexFormData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, $table, $id, $status, $realPid, $recFID, $tscPID, $currentRecordValues);
         // Create XML from input value:
         $xmlValue = $this->flexFormTools->flexArray2Xml($value);
 
@@ -2592,7 +2584,7 @@ class DataHandler
      * @todo: publishing a workspace value that is already taken in live is not handled, see #52070
      * @internal should only be used from within DataHandler
      */
-    public function getUnique($table, $field, $value, $id, $newPid = 0)
+    public function getUnique($table, $field, $value, $id, $newPid = 0, array $currentRecordValues = [])
     {
         if (!$this->tcaSchemaFactory->has($table) || !$this->tcaSchemaFactory->get($table)->hasField($field)) {
             // Field is not configured in TCA
@@ -2603,7 +2595,7 @@ class DataHandler
         $tcaField = $schema->getField($field);
         if ($tcaField->getTranslationBehaviour() === FieldTranslationBehaviour::Excluded && $schema->isLanguageAware()) {
             $transOrigPointerField = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-            $l10nParent = (int)($this->checkValue_currentRecord[$transOrigPointerField] ?? 0);
+            $l10nParent = (int)($currentRecordValues[$transOrigPointerField] ?? 0);
             if ($l10nParent > 0) {
                 // Current record is a translation and l10n_mode "exclude" just copies the value from source language
                 return $value;
@@ -2611,7 +2603,7 @@ class DataHandler
         }
 
         $newValue = $originalValue = $value;
-        $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
+        $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid, $currentRecordValues);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
         $statement = $queryBuilder->prepare();
         $result = $statement->executeQuery();
@@ -2650,7 +2642,8 @@ class DataHandler
         string $table,
         string $field,
         int $uid,
-        int $pid
+        int $pid,
+        array $currentRecordValues
     ): QueryBuilder {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -2664,7 +2657,7 @@ class DataHandler
         // Editing in a workspace writes to a versioned record, which lives on the same pid as its
         // live counterpart and starts out with the very same values. Ignore that live record, it is
         // the record being edited and must not be treated as a collision with its own version.
-        $liveId = $this->BE_USER->workspace > 0 ? $this->resolveLiveVersionId($table, $uid) : 0;
+        $liveId = $this->BE_USER->workspace > 0 ? $this->resolveLiveVersionId($table, $uid, $currentRecordValues) : 0;
         if ($liveId > 0) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($liveId, Connection::PARAM_INT))
@@ -2710,12 +2703,12 @@ class DataHandler
      * through checkValue() from insertNewCopyVersion(), and only the "t3ver_oid" of that
      * field array tells which live record is being versionized.
      */
-    protected function resolveLiveVersionId(string $table, int $uid): int
+    protected function resolveLiveVersionId(string $table, int $uid, array $currentRecordValues): int
     {
         if ($uid > 0) {
             return (int)(BackendUtility::getLiveVersionIdOfRecord($table, $uid) ?? 0);
         }
-        return (int)($this->checkValue_currentRecord['t3ver_oid'] ?? 0);
+        return (int)($currentRecordValues['t3ver_oid'] ?? 0);
     }
 
     /**
@@ -3018,7 +3011,7 @@ class DataHandler
      * Data Structure definitions by calling checkValue_SW() on each vDEF value.
      * Structure-driven: only DS-declared sheets and elements are processed.
      */
-    private function checkFlexFormData(array $data, array $currentData, array $dataStructure, string $table, string|int $id, string $status, int $realPid, string $recFID, int $tscPID): array
+    private function checkFlexFormData(array $data, array $currentData, array $dataStructure, string $table, string|int $id, string $status, int $realPid, string $recFID, int $tscPID, array $currentRecordValues): array
     {
         foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
             foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
@@ -3066,7 +3059,8 @@ class DataHandler
                                     $recFID,
                                     '',
                                     $tscPID,
-                                    ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath]
+                                    ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath],
+                                    $currentRecordValues
                                 );
                                 if (isset($res['value'])) {
                                     $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] = $res['value'];
@@ -3106,7 +3100,8 @@ class DataHandler
                         $recFID,
                         '',
                         $tscPID,
-                        ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath]
+                        ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath],
+                        $currentRecordValues
                     );
                     if (isset($res['value'])) {
                         $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $res['value'];
@@ -3831,9 +3826,7 @@ class DataHandler
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $id = StringUtility::getUniqueId('NEW');
-        // $fieldArray is set as current record.
         // The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
-        $this->checkValue_currentRecord = $fieldArray;
         // Makes sure that transformations aren't processed on the copy.
         $backupDontProcessTransformations = $this->dontProcessTransformations;
         $this->dontProcessTransformations = true;
@@ -3841,7 +3834,7 @@ class DataHandler
         foreach ($fieldArray as $field => $fieldValue) {
             if ($schema->hasField($field)) {
                 // Evaluating the value.
-                $res = $this->checkValue($table, $field, $fieldValue, $id, 'new', $realPid, 0, $fieldArray);
+                $res = $this->checkValue($table, $field, $fieldValue, $id, 'new', $realPid, 0, $fieldArray, $fieldArray);
                 if (isset($res['value'])) {
                     $fieldArray[$field] = $res['value'];
                 }
@@ -8549,14 +8542,13 @@ class DataHandler
     {
         // getUnique() reads translation and version information from the record being checked,
         // which otherwise still holds the last record processed by the data map
-        $this->checkValue_currentRecord = $row;
         $newData = [];
         // Use type-specific sub-schema fields if available, otherwise main schema fields
         foreach ($this->getTypeSpecificFields($table, $row) as $field) {
             if ($field->isType(TableColumnType::INPUT, TableColumnType::EMAIL) && (string)($row[$field->getName()] ?? '') !== '') {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $field->getConfiguration()['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
-                    $newValue = $this->getUnique($table, $field->getName(), $row[$field->getName()], (int)$row['uid'], (int)$row['pid']);
+                    $newValue = $this->getUnique($table, $field->getName(), $row[$field->getName()], (int)$row['uid'], (int)$row['pid'], $row);
                     if ((string)$newValue !== (string)$row[$field->getName()]) {
                         $newData[$field->getName()] = $newValue;
                     }
