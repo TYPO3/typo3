@@ -55,6 +55,10 @@ final class CacheFlusherTest extends FunctionalTestCase
                         'backend' => FlushCountingBackend::class,
                         'groups' => [],
                     ],
+                    'cache_flusher_test_system_group' => [
+                        'backend' => FlushCountingBackend::class,
+                        'groups' => ['system'],
+                    ],
                 ],
             ],
         ],
@@ -418,6 +422,57 @@ final class CacheFlusherTest extends FunctionalTestCase
         $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forCommand('all'));
 
         self::assertSame(1, $backend->flushCount);
+    }
+
+    public static function tagsAreFlushedInTheirGroupDataProvider(): array
+    {
+        return [
+            'the "pages" group' => ['pages', ['pages', 'cache_flusher_test_pages_group']],
+            'another group' => ['system', ['cache_flusher_test_system_group']],
+            'all caches' => ['all', ['pages', 'cache_flusher_test_pages_group', 'cache_flusher_test_default_group', 'cache_flusher_test_without_group', 'cache_flusher_test_system_group']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('tagsAreFlushedInTheirGroupDataProvider')]
+    public function tagsAreFlushedInTheirGroup(string $group, array $expectedFlushedCaches): void
+    {
+        $caches = ['pages', 'cache_flusher_test_pages_group', 'cache_flusher_test_default_group', 'cache_flusher_test_without_group', 'cache_flusher_test_system_group'];
+        $cacheManager = $this->get(CacheManager::class);
+        foreach ($caches as $cacheIdentifier) {
+            $cacheManager->getCache($cacheIdentifier)->set('entry', 'dummy', ['myTag']);
+        }
+
+        $result = $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forTagsInGroup($group, 'myTag'));
+
+        $flushedCaches = array_values(array_filter($caches, static fn(string $cacheIdentifier): bool => !$cacheManager->getCache($cacheIdentifier)->has('entry')));
+        self::assertEqualsCanonicalizing($expectedFlushedCaches, $flushedCaches);
+        self::assertSame([$group => ['myTag']], $result->tags);
+    }
+
+    #[Test]
+    public function tagsOfAnUnknownGroupAreSkipped(): void
+    {
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
+        $pageCache->set('entry', 'dummy', ['myTag']);
+
+        $result = $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forTagsInGroup('unknown', 'myTag')->withTagsInGroup('pages', 'otherTag'));
+
+        self::assertTrue($pageCache->has('entry'));
+        self::assertSame(['pages' => ['otherTag']], $result->tags);
+        self::assertSame(['unknown' => CacheFlushSkipReason::UnknownGroup], $result->skippedGroups);
+    }
+
+    #[Test]
+    public function resultListsTagsPerGroupAndAllTags(): void
+    {
+        $result = $this->get(CacheFlusher::class)->flush(
+            CacheFlushDemand::forTags('pageTag', 'sharedTag')->withTagsInGroup('all', 'sharedTag', 'fileTag')
+        );
+
+        self::assertSame(['pageTag', 'sharedTag'], $result->getTags('pages'));
+        self::assertSame(['sharedTag', 'fileTag'], $result->getTags('all'));
+        self::assertSame(['pageTag', 'sharedTag', 'fileTag'], $result->getTags());
     }
 
     private function addListener(string $event, \Closure $listener): void

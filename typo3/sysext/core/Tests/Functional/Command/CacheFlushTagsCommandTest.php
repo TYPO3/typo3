@@ -30,6 +30,10 @@ final class CacheFlushTagsCommandTest extends AbstractCommandTestCase
                     'pages' => [
                         'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     ],
+                    'cache_flush_tags_test_system' => [
+                        'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
+                        'groups' => ['system'],
+                    ],
                 ],
             ],
         ],
@@ -46,5 +50,48 @@ final class CacheFlushTagsCommandTest extends AbstractCommandTestCase
         self::assertSame(0, $result['status']);
         self::assertFalse($pageCache->has('dummy-page-cache-hash-one'));
         self::assertTrue($pageCache->has('dummy-page-cache-hash-two'));
+    }
+
+    #[Test]
+    public function tagsAreFlushedInAllCachesByDefault(): void
+    {
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
+        $pageCache->set('page-entry', ['dummy'], ['tag1']);
+        $systemCache = $this->get(CacheManager::class)->getCache('cache_flush_tags_test_system');
+        $systemCache->set('system-entry', ['dummy'], ['tag1']);
+
+        $result = $this->executeConsoleCommand('cache:flushtags tag1');
+
+        self::assertSame(0, $result['status']);
+        self::assertFalse($pageCache->has('page-entry'));
+        self::assertFalse($systemCache->has('system-entry'));
+    }
+
+    #[Test]
+    public function tagsAreFlushedInTheGivenGroupsOnly(): void
+    {
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
+        $pageCache->set('page-entry', ['dummy'], ['tag1']);
+        $systemCache = $this->get(CacheManager::class)->getCache('cache_flush_tags_test_system');
+        $systemCache->set('system-entry', ['dummy'], ['tag1']);
+
+        $result = $this->executeConsoleCommand('cache:flushtags tag1 --groups system');
+
+        self::assertSame(0, $result['status']);
+        self::assertTrue($pageCache->has('page-entry'));
+        self::assertFalse($systemCache->has('system-entry'));
+    }
+
+    #[Test]
+    public function unknownGroupIsReported(): void
+    {
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
+        $pageCache->set('page-entry', ['dummy'], ['tag1']);
+
+        $result = $this->executeConsoleCommand('cache:flushtags tag1 --groups pages,unknown');
+
+        self::assertSame(1, $result['status']);
+        self::assertStringContainsString('Cache group "unknown" does not exist.', $result['stdout']);
+        self::assertFalse($pageCache->has('page-entry'));
     }
 }

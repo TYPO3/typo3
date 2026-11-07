@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Core\Resource\Cache;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMovedEvent;
@@ -29,7 +30,7 @@ use TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
 final readonly class FlushCacheTagForFile
 {
     public function __construct(
-        private CacheManager $cacheManager,
+        private CacheFlusher $cacheFlusher,
         #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
         private bool $autoTagging
     ) {}
@@ -45,6 +46,6 @@ final readonly class FlushCacheTagForFile
         if (!$this->autoTagging) {
             return;
         }
-        $this->cacheManager->flushCachesByTag(sprintf('sys_file_%s', $event->getFile()->getProperty('uid')));
+        $this->cacheFlusher->flush(CacheFlushDemand::forTagsInGroup('all', sprintf('sys_file_%s', $event->getFile()->getProperty('uid'))));
     }
 }

@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Cache\Flush;
 
 /**
- * The resolved outcome of a CacheFlushDemand: the cache tags (flushed in
- * the "pages" group) and cache groups that will be flushed, and the records
- * and cache commands they were resolved from.
+ * The resolved outcome of a CacheFlushDemand: the cache tags per cache group
+ * ("pages" unless stated, "all" for all caches) and the cache groups that
+ * will be flushed, and the records and cache commands they were resolved from.
  */
 final class CacheFlushPlan
 {
-    /** @var array<string, true> */
+    /** @var array<string, array<string, true>> cache group => tags */
     private array $tags = [];
     /** @var array<string, true> */
     private array $groups = [];
@@ -39,29 +39,40 @@ final class CacheFlushPlan
         public readonly CacheFlushingContext $context,
     ) {}
 
-    public function addTag(string $tag): void
+    public function addTag(string $tag, string $group = 'pages'): void
     {
         if ($tag !== '') {
-            $this->tags[$tag] = true;
+            $this->tags[$group][$tag] = true;
         }
     }
 
-    public function removeTag(string $tag): void
+    public function removeTag(string $tag, string $group = 'pages'): void
     {
-        unset($this->tags[$tag]);
+        unset($this->tags[$group][$tag]);
+        if (($this->tags[$group] ?? null) === []) {
+            unset($this->tags[$group]);
+        }
     }
 
-    public function hasTag(string $tag): bool
+    public function hasTag(string $tag, string $group = 'pages'): bool
     {
-        return isset($this->tags[$tag]);
+        return isset($this->tags[$group][$tag]);
     }
 
     /**
      * @return list<string>
      */
-    public function getTags(): array
+    public function getTags(string $group = 'pages'): array
     {
-        return array_map(strval(...), array_keys($this->tags));
+        return array_map(strval(...), array_keys($this->tags[$group] ?? []));
+    }
+
+    /**
+     * @return array<string, list<string>> cache group => tags
+     */
+    public function getTagsByGroup(): array
+    {
+        return array_map(static fn(array $tags): array => array_map(strval(...), array_keys($tags)), $this->tags);
     }
 
     /**

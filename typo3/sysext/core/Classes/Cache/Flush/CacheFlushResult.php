@@ -18,14 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Cache\Flush;
 
 /**
- * What was flushed: cache tags of the "pages" group, cache groups, and the
+ * What was flushed: cache tags per cache group, cache groups, and the
  * records and cache commands this was resolved from, including what was
  * skipped and why.
  */
 final readonly class CacheFlushResult
 {
     /**
-     * @param list<string> $tags
+     * @param array<string, list<string>> $tags cache group => tags, "all" stands for all caches
      * @param list<string> $groups "all" stands for all caches
      * @param array<string, CacheFlushSkipReason> $skippedGroups
      * @param list<CacheFlushRecord> $records
@@ -44,7 +44,7 @@ final readonly class CacheFlushResult
     {
         return new self(
             $plan->context,
-            $plan->getTags(),
+            $plan->getTagsByGroup(),
             $plan->getGroups(),
             $plan->getSkippedGroups(),
             $plan->getRecords(),
@@ -60,12 +60,25 @@ final readonly class CacheFlushResult
     public function getPageIds(): array
     {
         $pageIds = [];
-        foreach ($this->tags as $tag) {
+        foreach ($this->tags['pages'] ?? [] as $tag) {
             if (preg_match('/^pageId_(\d+)$/', $tag, $matches)) {
                 $pageIds[] = (int)$matches[1];
             }
         }
         return $pageIds;
+    }
+
+    /**
+     * The flushed cache tags of a cache group, or of all groups if none is given.
+     *
+     * @return list<string>
+     */
+    public function getTags(?string $group = null): array
+    {
+        if ($group !== null) {
+            return $this->tags[$group] ?? [];
+        }
+        return array_values(array_unique(array_merge(...array_values($this->tags))));
     }
 
     /**

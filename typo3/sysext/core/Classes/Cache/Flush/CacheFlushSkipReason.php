@@ -27,4 +27,6 @@ enum CacheFlushSkipReason: string
     case WorkspaceVersion = 'workspaceVersion';
     /** The CacheFlushingContext does not permit flushing this cache group */
     case NotPermitted = 'notPermitted';
+    /** Cache tags were requested for a cache group that does not exist */
+    case UnknownGroup = 'unknownGroup';
 }

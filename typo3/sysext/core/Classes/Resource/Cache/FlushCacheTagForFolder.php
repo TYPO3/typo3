@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Core\Resource\Cache;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFolderMovedEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -28,7 +29,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 final readonly class FlushCacheTagForFolder
 {
     public function __construct(
-        private CacheManager $cacheManager,
+        private CacheFlusher $cacheFlusher,
         #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
         private bool $autoTagging
     ) {}
@@ -41,11 +42,15 @@ final readonly class FlushCacheTagForFolder
             return;
         }
         $files = $event->getFolder()->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
-        $this->cacheManager->flushCachesByTags(
-            array_map(
-                static fn(File $file) => sprintf('sys_file_%s', $file->getProperty('uid')),
-                $files
+        if ($files === []) {
+            return;
+        }
+        $this->cacheFlusher->flush(CacheFlushDemand::forTagsInGroup(
+            'all',
+            ...array_map(
+                static fn(File $file): string => sprintf('sys_file_%s', $file->getProperty('uid')),
+                array_values($files)
             )
-        );
+        ));
     }
 }

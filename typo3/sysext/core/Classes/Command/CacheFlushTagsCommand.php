@@ -23,14 +23,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[AsCommand('cache:flushtags', 'Flushes caches identified by one or more cache tags.')]
 class CacheFlushTagsCommand extends Command
 {
     public function __construct(
-        protected readonly CacheManager $cacheManager,
+        protected readonly CacheFlusher $cacheFlusher,
     ) {
         parent::__construct();
     }
@@ -66,15 +67,15 @@ class CacheFlushTagsCommand extends Command
         $groups = GeneralUtility::trimExplode(',', $input->getOption('groups') ?? '', true);
         $tags = GeneralUtility::trimExplode(',', $input->getArgument('tags') ?? '', true);
 
+        $demand = CacheFlushDemand::create();
         foreach ($groups as $group) {
-            if ($group === 'all') {
-                $this->cacheManager->flushCachesByTags($tags);
-                continue;
-            }
-
-            $this->cacheManager->flushCachesInGroupByTags($group, $tags);
+            $demand = $demand->withTagsInGroup($group, ...$tags);
         }
+        $result = $this->cacheFlusher->flush($demand);
 
-        return Command::SUCCESS;
+        foreach (array_keys($result->skippedGroups) as $group) {
+            $output->writeln(sprintf('<error>Cache group "%s" does not exist.</error>', $group));
+        }
+        return $result->skippedGroups === [] ? Command::SUCCESS : Command::FAILURE;
     }
 }

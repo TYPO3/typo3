@@ -26,7 +26,7 @@ final readonly class CacheFlushDemand
     /**
      * @param array<string, array<int, list<int>>> $records table => uid => pages the record was located on before it was moved or deleted
      * @param list<int> $pageIds
-     * @param list<string> $tags
+     * @param array<string, list<string>> $tags cache group => tags, "all" for all caches
      * @param list<string> $commands
      */
     private function __construct(
@@ -62,9 +62,21 @@ final readonly class CacheFlushDemand
         return new self(pageIds: array_values(array_unique($pageIds)));
     }
 
+    /**
+     * Flushes cache tags in the caches of the "pages" group.
+     */
     public static function forTags(string ...$tags): self
     {
-        return new self(tags: array_values(array_unique(array_filter($tags, static fn(string $tag): bool => $tag !== ''))));
+        return self::create()->withTagsInGroup('pages', ...$tags);
+    }
+
+    /**
+     * Flushes cache tags in the caches of a cache group, or in all caches
+     * for the group "all".
+     */
+    public static function forTagsInGroup(string $group, string ...$tags): self
+    {
+        return self::create()->withTagsInGroup($group, ...$tags);
     }
 
     /**
@@ -89,6 +101,22 @@ final readonly class CacheFlushDemand
             $records[$table][$uid][] = $originalPageId;
         }
         return new self($records, $this->pageIds, $this->tags, $this->commands);
+    }
+
+    /**
+     * Flushes cache tags in the caches of a cache group, or in all caches
+     * for the group "all".
+     */
+    public function withTagsInGroup(string $group, string ...$tags): self
+    {
+        $groupTags = array_values(array_unique(array_merge(
+            $this->tags[$group] ?? [],
+            array_filter($tags, static fn(string $tag): bool => $tag !== '')
+        )));
+        if ($groupTags === []) {
+            return $this;
+        }
+        return new self($this->records, $this->pageIds, [...$this->tags, $group => $groupTags], $this->commands);
     }
 
     public function isEmpty(): bool

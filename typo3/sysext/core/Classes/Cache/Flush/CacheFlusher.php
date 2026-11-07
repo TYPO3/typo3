@@ -37,7 +37,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Flushes the caches affected by changed records, pages, cache tags and
  * cache commands, without the need of a DataHandler.
  *
- * Cache tags are flushed in the cache group "pages". Cache groups are flushed
+ * Cache tags are flushed in the cache group "pages", unless the demand names
+ * another group or "all" for all caches. Cache groups are flushed
  * by dispatching CacheFlushEvent, like the "cache:flush" command does.
  * All events are dispatched here, callers only describe what to flush.
  * flush() resolves and executes a demand in one go, resolve() alone tells
@@ -77,13 +78,16 @@ readonly class CacheFlusher
         foreach ($demand->pageIds as $pageId) {
             $plan->addTag('pageId_' . $pageId);
         }
-        foreach ($demand->tags as $tag) {
-            $plan->addTag($tag);
+        foreach ($demand->tags as $group => $tags) {
+            foreach ($tags as $tag) {
+                $plan->addTag($tag, (string)$group);
+            }
         }
         foreach ($demand->commands as $command) {
             $this->resolveCommand($command, $plan);
         }
         $this->eventDispatcher->dispatch(new BeforeCacheFlushEvent($plan));
+        $this->skipTagsOfUnknownGroups($plan);
         return $plan;
     }
 
@@ -101,8 +105,13 @@ readonly class CacheFlusher
             if ($plan->getGroups() !== []) {
                 $this->eventDispatcher->dispatch(new CacheFlushEvent($plan->getGroups()));
             }
-            if ($plan->getTags() !== []) {
-                $this->cacheManager->flushCachesInGroupByTags('pages', $plan->getTags());
+            $this->skipTagsOfUnknownGroups($plan);
+            foreach ($plan->getTagsByGroup() as $group => $tags) {
+                if ($group === 'all') {
+                    $this->cacheManager->flushCachesByTags($tags);
+                } elseif (!$plan->hasGroup($group)) {
+                    $this->cacheManager->flushCachesInGroupByTags($group, $tags);
+                }
             }
         }
         $result = CacheFlushResult::fromPlan($plan);
@@ -201,6 +210,20 @@ readonly class CacheFlusher
             $plan->addTag('pageId_' . (int)$command);
         } elseif (str_starts_with($lowerCaseCommand, 'cachetag:')) {
             $plan->addTag(substr($command, 9));
+        }
+    }
+
+    private function skipTagsOfUnknownGroups(CacheFlushPlan $plan): void
+    {
+        $cacheGroups = $this->cacheManager->getCacheGroups();
+        foreach ($plan->getTagsByGroup() as $group => $tags) {
+            if ($group === 'all' || in_array($group, $cacheGroups, true)) {
+                continue;
+            }
+            foreach ($tags as $tag) {
+                $plan->removeTag($tag, $group);
+            }
+            $plan->skipGroup($group, CacheFlushSkipReason::UnknownGroup);
         }
     }
 
