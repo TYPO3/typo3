@@ -151,7 +151,7 @@ final class RelationsOfRecordFoundByUidWithFallbackChainTest extends FunctionalT
     public function readingTheChildrenOfAParentFoundByUidWithAFallbackChainAndOverlaysOnByCore(): void
     {
         // Given: post 1 with a German translation and without a French one
-        $languageAspect = new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]);
+        $languageAspect = new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]);
         $this->get(Context::class)->setAspect('language', $languageAspect);
 
         // When: post 1 is read with French, the fallback chain German, English and overlays on and its tags are followed
@@ -181,7 +181,7 @@ final class RelationsOfRecordFoundByUidWithFallbackChainTest extends FunctionalT
     public function readingTheChildrenOfAParentFoundByUidWithAFallbackChainAndOverlaysOnByExtbase(): void
     {
         // Given: post 1 with a German translation and without a French one
-        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON, [1, 0]));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [1, 0]));
         $this->get(PersistenceManager::class)->clearState();
 
         // When: post 1 is found by findByUid() with French, the fallback chain German, English and overlays on and its tags are followed
