@@ -238,6 +238,50 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public static function recordLinkIsGeneratedForRecordDisplayedInLanguageDataProvider(): array
+    {
+        return [
+            'fallback, translated record' => ['fallback', 't3://record?identifier=content&uid=400', '<a href="/features-fr#c400">FR: Features</a>'],
+            'fallback, untranslated record' => ['fallback', 't3://record?identifier=content&uid=420', '<a href="/features-fr#c420">FR: Features</a>'],
+            'strict, translated record' => ['strict', 't3://record?identifier=content&uid=400', '<a href="/features-fr#c400">FR: Features</a>'],
+            'strict, untranslated record' => ['strict', 't3://record?identifier=content&uid=420', ''],
+        ];
+    }
+
+    #[DataProvider('recordLinkIsGeneratedForRecordDisplayedInLanguageDataProvider')]
+    #[Test]
+    public function recordLinkIsGeneratedForRecordDisplayedInLanguage(string $fallbackType, string $parameter, string $expectation): void
+    {
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://acme.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://acme.fr/', $fallbackType === 'strict' ? [] : ['EN'], $fallbackType),
+                $this->buildLanguageConfiguration('FR-CA', 'https://acme.ca/', ['FR', 'EN']),
+            ]
+        );
+        $request = (new InternalRequest('https://acme.fr/'))
+            ->withPageId(1100)
+            ->withInstructions([
+                (new TypoScriptInstruction())->withTypoScript([
+                    'config.' => [
+                        'recordLinks.' => [
+                            'content.' => [
+                                'typolink.' => [
+                                    'parameter.' => ['field' => 'pid'],
+                                    'section.' => ['field' => 'uid', 'wrap' => 'c|'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]),
+                $this->createTypoLinkInstruction(['parameter' => $parameter]),
+            ]);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     public static function ATagParamsAreAddedInOrderDataProvider(): array
     {
         return [
