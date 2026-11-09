@@ -167,6 +167,16 @@ abstract class AbstractTemplateModuleController
     }
 
     /**
+     * The rootline of a page in the workspace of the backend user, in the structure TypoScript expects.
+     */
+    protected function getRootLine(int $pageId): array
+    {
+        return GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pageId, (int)$this->getBackendUser()->workspace)
+            ->toLegacyRootLine(false);
+    }
+
+    /**
      * Get the closest page row that has a template up in rootline
      */
     protected function getClosestAncestorPageWithTemplateRecord(int $pageId): array

@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVis
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * TypoScript template analyzer.
@@ -98,7 +97,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             }
         }
 
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
@@ -156,7 +155,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
             return $this->responseFactory->createResponse(400);
         }
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
@@ -191,7 +190,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         if ($pageUid === 0 || $includeIdentifier === null || !in_array($type, ['constants', 'setup'], true)) {
             return $this->responseFactory->createResponse(400);
         }
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);

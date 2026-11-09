@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageAncestryResolverTest extends FunctionalTestCase
@@ -133,6 +135,26 @@ final class PageAncestryResolverTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         $result = $this->get(DatabasePageRootline::class)->addData(['effectivePid' => 12]);
         self::assertSame([12, 3, 6, 1, 0], array_map(intval(...), array_column($result['rootline'], 'uid')));
+    }
+    public static function legacyRootLineWithoutVirtualRootMatchesRootlineUtilityDataProvider(): iterable
+    {
+        yield 'page on the root level' => [1];
+        yield 'page on level three' => [3];
+        yield 'page below a restricted page' => [7];
+    }
+
+    #[Test]
+    #[DataProvider('legacyRootLineWithoutVirtualRootMatchesRootlineUtilityDataProvider')]
+    public function legacyRootLineWithoutVirtualRootMatchesRootlineUtility(int $pageId): void
+    {
+        $reduce = static fn(array $rootLine): array => array_map(
+            static fn(array $record): array => [(int)$record['uid'], (int)$record['pid'], (string)$record['title']],
+            $rootLine
+        );
+        self::assertSame(
+            $reduce(GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get()),
+            $reduce($this->get(PageAncestryResolver::class)->resolve($pageId, 0)->toLegacyRootLine(false))
+        );
     }
     #[Test]
     public function ancestryIsCachedForTheRequest(): void

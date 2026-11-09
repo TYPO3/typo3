@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuil
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * TypoScript Constant editor
@@ -139,7 +138,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         }
 
         // Build the constant include tree
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
@@ -235,7 +234,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
             throw new \RuntimeException('No template found on page', 1661350211);
         }
 
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());

@@ -22,10 +22,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -39,7 +41,6 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -68,6 +69,8 @@ final readonly class BackendConfigurationManager
         private FrontendTypoScriptFactory $frontendTypoScriptFactory,
         private ConnectionPool $connectionPool,
         private SetRegistry $setRegistry,
+        private PageAncestryResolver $pageAncestryResolver,
+        private Context $context,
     ) {}
 
     /**
@@ -166,7 +169,9 @@ final readonly class BackendConfigurationManager
         $rootLine = [];
         $sysTemplateRows = [];
         if ($currentPageId > 0) {
-            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageId)->get();
+            $rootLine = $this->pageAncestryResolver
+                ->resolve($currentPageId, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0))
+                ->toLegacyRootLine(false);
             // When the site acts as a TypoScript root, limit sys_template lookup to
             // pages within this site by truncating the rootline at the site root page.
             // This mirrors the frontend behavior and prevents sys_template records from

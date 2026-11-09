@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\CodeEditor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -30,7 +31,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Code completion for code editor
@@ -45,6 +45,7 @@ readonly class CodeCompletionController
         private SysTemplateTreeBuilder $treeBuilder,
         private LossyTokenizer $lossyTokenizer,
         private IncludeTreeTraverser $treeTraverser,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -75,7 +76,9 @@ readonly class CodeCompletionController
      */
     protected function getMergedTemplates(int $pageId, ServerRequestInterface $request): array
     {
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        $rootLine = $this->pageAncestryResolver
+            ->resolve($pageId, (int)$GLOBALS['BE_USER']->workspace)
+            ->toLegacyRootLine(false);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
         /** @var SiteInterface|null $site */
         $site = $request->getAttribute('site');

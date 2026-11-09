@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\Page;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
@@ -33,7 +35,6 @@ use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * This widget will show a list of pages where latest changes in pages and tt_content
@@ -235,11 +236,13 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
 
     private function getRootLine(int $pageId): string
     {
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        $pages = GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pageId, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0))
+            ->getPagesFromRootLevel();
         return implode(' / ', array_slice(
             array_map(
-                static fn(array $page): string => $page['title'],
-                array_reverse($rootLine)
+                static fn(Page $page): string => (string)$page->getRawRecord()->get('title'),
+                $pages
             ),
             0,
             -1

@@ -113,16 +113,21 @@ final class PageAncestry implements \IteratorAggregate, \Countable
      * from the root level, ordered from the page to the root level, and a complete ancestry
      * ends with a record for the virtual tree root with uid 0.
      *
-     * @internal Only to be used to migrate consumers of BackendUtility::BEgetRootLine().
+     * Without the virtual tree root, this is the structure of RootlineUtility::get() as
+     * expected by TypoScript: the page on the root level has the key 0.
+     *
+     * @internal Only to be used to migrate consumers of BackendUtility::BEgetRootLine()
+     *           and RootlineUtility::get().
      */
-    public function toLegacyRootLine(): array
+    public function toLegacyRootLine(bool $includeVirtualRoot = true): array
     {
-        $key = count($this->records) + ($this->isComplete() ? 1 : 0);
+        $includeVirtualRoot = $includeVirtualRoot && $this->isComplete();
+        $key = count($this->records) + ($includeVirtualRoot ? 1 : 0);
         $rootLine = [];
         foreach ($this->records as $record) {
             $rootLine[--$key] = $record;
         }
-        if ($this->isComplete()) {
+        if ($includeVirtualRoot) {
             $fieldNames = array_filter(
                 array_keys($this->records[0] ?? ['pid' => null]),
                 static fn(string $fieldName): bool => !str_starts_with($fieldName, '_')

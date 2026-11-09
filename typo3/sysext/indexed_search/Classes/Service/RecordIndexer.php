@@ -21,13 +21,12 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
-use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
@@ -47,6 +46,7 @@ final readonly class RecordIndexer
         private AdministrationRepository $administrationRepository,
         #[AutowireLocator([Indexer::class])]
         private ServiceLocator $indexers,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -171,11 +171,7 @@ final readonly class RecordIndexer
      */
     private function getLocalRootLineUids(int $pageId): array
     {
-        try {
-            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-        } catch (RootLineException) {
-            return [];
-        }
+        $rootLine = $this->pageAncestryResolver->resolve($pageId, 0)->toLegacyRootLine(false);
         $uids = [];
         foreach (array_reverse($rootLine) as $page) {
             if (!empty($page['is_siteroot'])) {

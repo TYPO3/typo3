@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVi
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * The "TypoScript -> Active TypoScript" Backend module
@@ -90,8 +89,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
 
-        // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
 
@@ -222,8 +220,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute('web_typoscript_recordsoverview'));
         }
 
-        // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
-        $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $rootLine = $this->getRootLine($pageUid);
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
 
