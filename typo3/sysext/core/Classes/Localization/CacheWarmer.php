@@ -49,6 +49,10 @@ readonly class CacheWarmer
             foreach ($packages as $package) {
                 $baseLocaleResources = $this->labelFileResolver->getAllLabelFilesOfPackage($package->getPackageKey(), true)['default'] ?? [];
                 foreach ($baseLocaleResources as $fileReference) {
+                    // Deprecated files are parsed on first real use, which then triggers the deprecation.
+                    if ($this->localizationFactory->isLanguageFileDeprecated($fileReference)) {
+                        continue;
+                    }
                     $allBaseLocaleResources[] = $fileReference;
                 }
             }
