@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -28,6 +32,77 @@ final class FluidEmailTest extends FunctionalTestCase
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_fluid_email',
     ];
+
+    public static function systemEmailFooterNamesTheSenderDataProvider(): \Generator
+    {
+        $requestWithHost = new ServerRequest('https://example.com/typo3/')->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)->withAttribute(
+            'normalizedParams',
+            new NormalizedParams(
+                ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on', 'SCRIPT_NAME' => '/index.php'],
+                [],
+                '/var/www/html/index.php',
+                '/var/www/html'
+            )
+        );
+        $requestWithoutHost = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)->withAttribute(
+            'normalizedParams',
+            new NormalizedParams(['SCRIPT_NAME' => 'vendor/bin/typo3'], [], '/var/www/html/vendor/bin/typo3', '/var/www/html')
+        );
+        foreach ([FluidEmail::FORMAT_PLAIN, FluidEmail::FORMAT_HTML] as $format) {
+            yield $format . ': site name and URL' => [
+                $format,
+                'ACME Inc',
+                $requestWithHost,
+                'This email was sent by ACME Inc from https://example.com/. Please contact',
+            ];
+            yield $format . ': site name without request' => [
+                $format,
+                'ACME Inc',
+                null,
+                'This email was sent by ACME Inc. Please contact',
+            ];
+            yield $format . ': site name with request without host' => [
+                $format,
+                'ACME Inc',
+                $requestWithoutHost,
+                'This email was sent by ACME Inc. Please contact',
+            ];
+            yield $format . ': URL without site name' => [
+                $format,
+                '',
+                $requestWithHost,
+                'This email was sent from https://example.com/. Please contact',
+            ];
+            yield $format . ': neither site name nor URL' => [
+                $format,
+                '',
+                null,
+                'Please contact',
+            ];
+        }
+    }
+
+    #[DataProvider('systemEmailFooterNamesTheSenderDataProvider')]
+    #[Test]
+    public function systemEmailFooterNamesTheSender(string $format, string $siteName, ?ServerRequest $request, string $expectedFooter): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = $siteName;
+        $subject = new FluidEmail();
+        if ($request !== null) {
+            $subject->setRequest($request);
+        }
+        $subject
+            ->format($format)
+            ->setTemplate('Default')
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Content')
+            ->to('some-recipient@example.com');
+
+        $body = $format === FluidEmail::FORMAT_HTML ? strip_tags((string)$subject->getHtmlBody(true)) : (string)$subject->getTextBody(true);
+        $footer = trim((string)preg_replace('/\s+/', ' ', substr($body, (int)strrpos($body, 'Content') + strlen('Content'))));
+
+        self::assertStringStartsWith($expectedFooter . ' your site administrator', $footer);
+    }
 
     #[Test]
     public function settingFormatWithTextOnlyGeneratesTextEmail(): void

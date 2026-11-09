@@ -1,8 +1,12 @@
 <f:spaceless><f:render section="Title" optional="true" />
 <f:render section="Main" /></f:spaceless>
 
-This email was sent by {typo3.sitename} from URL: {normalizedParams.siteUrl}
+<f:if condition="{typo3.sitename} && {normalizedParams.requestHostOnly}"><f:then>This email was sent by {typo3.sitename} from {normalizedParams.siteUrl}.
 
-Please contact your site administrator if you feel you received this email by accident.
+</f:then><f:else if="{typo3.sitename}">This email was sent by {typo3.sitename}.
+
+</f:else><f:else if="{normalizedParams.requestHostOnly}">This email was sent from {normalizedParams.siteUrl}.
+
+</f:else></f:if>Please contact your site administrator if you feel you received this email by accident.
 
 {typo3.information.copyrightNotice -> f:format.stripTags() -> f:format.htmlentitiesDecode()}
