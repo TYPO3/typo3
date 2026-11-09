@@ -58,7 +58,6 @@ const packages = [
   'ckeditor5-undo',
   'ckeditor5-upload',
   'ckeditor5-utils',
-  'ckeditor5-watchdog',
   'ckeditor5-widget',
   'ckeditor5-word-count',
 ];
