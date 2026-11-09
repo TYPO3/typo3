@@ -170,6 +170,43 @@ final class DatabaseRowInitializeNewTest extends UnitTestCase
     }
 
     #[Test]
+    public function addDataIgnoresDefaultDataFromPageTsForFlexFormFields(): void
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'isInlineChild' => false,
+            'databaseRow' => [],
+            'pageTsConfig' => [
+                'TCAdefaults.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'aFlex.' => [
+                                'sDEF.' => [
+                                    'aFlexField' => 'pageTsValue',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [],
+                ],
+            ],
+        ];
+        $expected = [
+            'pid' => 23,
+        ];
+        $result = new DatabaseRowInitializeNew()->addData($input);
+        self::assertSame($expected, $result['databaseRow']);
+    }
+
+    #[Test]
     public function addDataDoesNotSetDefaultDataFromPageTsIfColumnIsMissingInTca(): void
     {
         $input = [

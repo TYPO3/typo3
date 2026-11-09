@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
@@ -926,6 +927,106 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
 
         self::assertEquals($expected, new TcaFlexProcess()->addData($input));
+    }
+
+    public static function addDataSetsDefaultValueFromTcaDefaultsDataProvider(): \Generator
+    {
+        $pageTsDefaults = ['aTable.' => ['aField.' => ['aFlex.' => ['sDEF.' => ['aFlexField' => 'pageTsValue', 'settings.dotted' => 'dottedValue']]]]];
+        $userTsDefaults = ['aTable.' => ['aField.' => ['aFlex.' => ['sDEF.' => ['aFlexField' => 'userTsValue']]]]];
+        yield 'page TSconfig on new record' => [
+            'new', $pageTsDefaults, [], ['aFlexField' => 'pageTsValue', 'settings.dotted' => 'dottedValue', 'notConfigured' => 'dsDefault'],
+        ];
+        yield 'user TSconfig on new record' => [
+            'new', [], $userTsDefaults, ['aFlexField' => 'userTsValue', 'settings.dotted' => 'dsDefault', 'notConfigured' => 'dsDefault'],
+        ];
+        yield 'page TSconfig overrides user TSconfig' => [
+            'new', $pageTsDefaults, $userTsDefaults, ['aFlexField' => 'pageTsValue', 'settings.dotted' => 'dottedValue', 'notConfigured' => 'dsDefault'],
+        ];
+        yield 'not applied to existing record' => [
+            'edit', $pageTsDefaults, $userTsDefaults, ['aFlexField' => 'dsDefault', 'settings.dotted' => 'dsDefault', 'notConfigured' => 'dsDefault'],
+        ];
+        yield 'other data structure is not affected' => [
+            'new', ['aTable.' => ['aField.' => ['otherFlex.' => ['sDEF.' => ['aFlexField' => 'pageTsValue']]]]], [], ['aFlexField' => 'dsDefault', 'settings.dotted' => 'dsDefault', 'notConfigured' => 'dsDefault'],
+        ];
+    }
+
+    #[DataProvider('addDataSetsDefaultValueFromTcaDefaultsDataProvider')]
+    #[Test]
+    public function addDataSetsDefaultValueFromTcaDefaults(string $command, array $pageTsDefaults, array $userTsDefaults, array $expectedValues): void
+    {
+        $fieldDefinition = [
+            'label' => 'aFlexFieldLabel',
+            'config' => [
+                'type' => 'input',
+                'default' => 'dsDefault',
+            ],
+        ];
+        $input = [
+            'request' => new ServerRequest(),
+            'command' => $command,
+            'tableName' => 'aTable',
+            'effectivePid' => 1,
+            'selectTreeCompileItems' => false,
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => [
+                    'data' => [],
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'aFlexField' => $fieldDefinition,
+                                                'settings.dotted' => $fieldDefinition,
+                                                'notConfigured' => $fieldDefinition,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => $pageTsDefaults === [] ? [] : ['TCAdefaults.' => $pageTsDefaults],
+            'userTsConfig' => $userTsDefaults === [] ? [] : ['TCAdefaults.' => $userTsDefaults],
+        ];
+        $input = $this->addTcaSchemata($input);
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
+            DatabaseRowDefaultValues::class => [],
+        ];
+
+        $languageService = self::createStub(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->willReturnArgument(0);
+
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserStub = self::createStub(BackendUserAuthentication::class);
+        $backendUserStub->method('isAdmin')->willReturn(true);
+        $backendUserStub->method('checkLanguageAccess')->willReturn(true);
+
+        $result = new TcaFlexProcess()->addData($input);
+
+        $values = array_map(
+            static fn(array $value): mixed => $value['vDEF'] ?? null,
+            $result['databaseRow']['aField']['data']['sDEF']['lDEF']
+        );
+        self::assertSame($expectedValues, $values);
+        self::assertSame(
+            'dsDefault',
+            $result['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['aFlexField']['config']['default']
+        );
     }
 
     #[Test]

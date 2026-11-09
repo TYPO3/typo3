@@ -131,6 +131,45 @@ class TcaFlexProcess implements FormDataProviderInterface
     }
 
     /**
+     * Determine TCAdefaults.aTable.aField.matchingIdentifier.aSheet of user and page TSconfig,
+     * page TSconfig takes precedence. As for regular fields, the defaults apply to new records only.
+     *
+     * Example: "TCAdefaults.tt_content.pi_flexform.news_pi1.sDEF.settings\.orderBy = title"
+     */
+    private function getTcaDefaultsOfFlexSheet(array $result, string $fieldName, string $sheetName): array
+    {
+        if (($result['command'] ?? '') !== 'new') {
+            return [];
+        }
+        $flexIdentifier = $this->getSimplifiedDataStructureIdentifier(
+            $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier']
+        );
+        $tcaDefaults = [];
+        foreach ([$result['userTsConfig'] ?? [], $result['pageTsConfig'] ?? []] as $tsConfig) {
+            $tcaDefaultsOfSheet = $tsConfig['TCAdefaults.'][$result['tableName'] . '.'][$fieldName . '.'][$flexIdentifier . '.'][$sheetName . '.'] ?? null;
+            if (!is_array($tcaDefaultsOfSheet)) {
+                continue;
+            }
+            foreach ($tcaDefaultsOfSheet as $flexFieldName => $value) {
+                if (is_scalar($value)) {
+                    $tcaDefaults[$flexFieldName] = $value;
+                }
+            }
+        }
+        return $tcaDefaults;
+    }
+
+    private function applyTcaDefaultsToFlexFields(array $fieldDefinitions, array $tcaDefaults): array
+    {
+        foreach ($tcaDefaults as $flexFieldName => $value) {
+            if (isset($fieldDefinitions[$flexFieldName])) {
+                $fieldDefinitions[$flexFieldName]['config']['default'] = $value;
+            }
+        }
+        return $fieldDefinitions;
+    }
+
+    /**
      * Handle "outer" flex data structure changes like language and sheet
      * description. Does not change "TCA" or values of single elements
      *
@@ -456,21 +495,29 @@ class TcaFlexProcess implements FormDataProviderInterface
 
             if (!empty($tcaNewColumns)) {
                 // @todo: this has the same problem in scenario "a field was added later" as flex section container
+                $tcaDefaultsOfSheet = $this->getTcaDefaultsOfFlexSheet($result, $fieldName, $dataStructureSheetName);
                 $inputToFlexFormSegment['command'] = 'new';
-                $inputToFlexFormSegment['processedTca']['columns'] = $tcaNewColumns;
+                $inputToFlexFormSegment['processedTca']['columns'] = $this->applyTcaDefaultsToFlexFields($tcaNewColumns, $tcaDefaultsOfSheet);
                 $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment, $formDataGroup);
 
-                foreach ($tcaNewColumns as $dataStructureFieldName => $_) {
+                foreach ($tcaNewColumns as $dataStructureFieldName => $dataStructureFieldDefinition) {
                     // Set data value result
                     if (array_key_exists($dataStructureFieldName, $flexSegmentResult['databaseRow'])) {
                         $result['databaseRow'][$fieldName]
                             ['data'][$dataStructureSheetName]['lDEF'][$dataStructureFieldName]['vDEF']
                             = $flexSegmentResult['databaseRow'][$dataStructureFieldName];
                     }
-                    // Set TCA structure result
+                    // Set TCA structure result, a default from TCAdefaults is a value, not part of the data structure
+                    $processedFieldDefinition = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
+                    if (isset($tcaDefaultsOfSheet[$dataStructureFieldName])) {
+                        unset($processedFieldDefinition['config']['default']);
+                        if (array_key_exists('default', $dataStructureFieldDefinition['config'] ?? [])) {
+                            $processedFieldDefinition['config']['default'] = $dataStructureFieldDefinition['config']['default'];
+                        }
+                    }
                     $result['processedTca']['columns'][$fieldName]['config']['ds']
                         ['sheets'][$dataStructureSheetName]['ROOT']['el'][$dataStructureFieldName]
-                        = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
+                        = $processedFieldDefinition;
                 }
             }
 
