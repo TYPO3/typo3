@@ -36,6 +36,11 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'cleanup:orphanrecords', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'cleanup:missingfiles', 'args' => ['-n'], 'expectedExitCode' => 0],
             ['command' => 'syslog:list', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'list', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'lowlevel:inspect', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'lowlevel:inspect %s', 'args' => ['beUserUc'], 'expectedExitCode' => 0],
+            ['command' => 'lowlevel:inspect %s', 'args' => ['toolbaritems'], 'expectedExitCode' => 0],
+            ['command' => 'lowlevel:inspect %s %s', 'args' => ['tca', '--flat'], 'expectedExitCode' => 0],
         ];
     }
 

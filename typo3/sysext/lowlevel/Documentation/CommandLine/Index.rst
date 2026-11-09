@@ -152,3 +152,55 @@ Example script for cleaning your installation
     ./typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv --update-refindex
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv
+
+
+..  _command-line-inspect:
+
+Inspecting the configuration
+============================
+
+`lowlevel:inspect` shows the data of the
+:guilabel:`System > Configuration` backend module on the command line,
+including providers added by extensions. It only reads and changes nothing.
+
+..  code-block:: bash
+
+    # All providers, grouped as in the backend module
+    vendor/bin/typo3 lowlevel:inspect
+
+    # One provider, one argument per key level
+    vendor/bin/typo3 lowlevel:inspect tca tt_content columns header
+    vendor/bin/typo3 lowlevel:inspect confVars SYS sitename
+
+    # Complete output for scripts
+    vendor/bin/typo3 lowlevel:inspect tca --flat | grep renderType
+    vendor/bin/typo3 lowlevel:inspect httpMiddlewareStacks frontend --json
+
+    # Translate label references, in English or another installed language
+    vendor/bin/typo3 lowlevel:inspect tca tt_content columns header --resolve-labels=de
+
+Tree (default)
+    An overview of about 200 lines. Every entry of the first
+    level is listed, branches that don't fit are shown as complete JSON on one
+    line or as a shortened preview, and a closing hint says what was cut.
+    `--depth=<n>` shows a fixed number of levels instead, `--depth=0`
+    everything.
+
+`--flat`
+    One line per value: the path relative to the selection, which can be
+    pasted after the same command, and the value as JSON.
+
+`--json`
+    The selected data as JSON.
+
+`--flat` and `--json` are always complete and refused above 1 MB unless
+`--no-size-limit` is given. Errors are written to stderr; the command exits
+with code 2 for invalid input and with code 1 if a provider cannot be read on
+the command line or the output is too large.
+
+Place `--resolve-labels` after the path segments or write
+`--resolve-labels=<lang>`, as a following argument is taken as the language.
+
+For filtered or tabular views of single providers there are dedicated
+commands, for example `configuration:show`, `site:sets:list` and
+`site:show`.
