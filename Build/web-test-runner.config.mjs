@@ -181,7 +181,6 @@ export default {
             '@ckeditor/ckeditor5-undo': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-undo.js',
             '@ckeditor/ckeditor5-upload': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-upload.js',
             '@ckeditor/ckeditor5-utils': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-utils.js',
-            '@ckeditor/ckeditor5-watchdog': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-watchdog.js',
             '@ckeditor/ckeditor5-widget': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-widget.js',
             '@ckeditor/ckeditor5-word-count': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-word-count.js',
 
