@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Middleware\PageContextInitialization;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -208,6 +209,53 @@ final class PageContextInitializationTest extends FunctionalTestCase
         $middleware->process($request, $handler);
 
         // PageContext should NOT be set
+        self::assertNull($handler->pageContext);
+    }
+
+    #[Test]
+    public function addsPageContextForModuleWithPageTreeNavigationComponent(): void
+    {
+        $request = new ServerRequest('https://example.com/typo3/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('backend.user', $this->backendUser)
+            ->withAttribute('route', new Route('/module/web/layout', []))
+            ->withAttribute('module', $this->get(ModuleProvider::class)->getModule('web_layout'))
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['id' => 2]);
+
+        $pageContext = $this->processMiddleware($request);
+
+        self::assertSame(2, $pageContext->pageId);
+        self::assertTrue($pageContext->isAccessible());
+    }
+
+    #[Test]
+    public function skipsProcessingForModuleWithoutPageTreeNavigationComponent(): void
+    {
+        $request = new ServerRequest('https://example.com/typo3/')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', new NullSite())
+            ->withAttribute('backend.user', $this->backendUser)
+            ->withAttribute('route', new Route('/module/site/configuration', []))
+            ->withAttribute('module', $this->get(ModuleProvider::class)->getModule('site_configuration'))
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest(new ServerRequest()))
+            ->withQueryParams(['id' => 2]);
+
+        $middleware = $this->get(PageContextInitialization::class);
+
+        $handler = new class implements RequestHandlerInterface {
+            public ?PageContext $pageContext = null;
+
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $this->pageContext = $request->getAttribute('pageContext');
+                return new Response();
+            }
+        };
+
+        $middleware->process($request, $handler);
+
         self::assertNull($handler->pageContext);
     }
 

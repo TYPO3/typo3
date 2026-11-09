@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * - Which languages can be created (permissions)
  * - Translation records with workspace overlay applied
  * - UI-ready language items for display
- *
- * @internal
  */
 final readonly class PageLanguageInformation
 {
@@ -42,6 +40,8 @@ final readonly class PageLanguageInformation
      * @param int[] $creatableLanguageIds IDs of languages that can be created
      * @param bool $canUserCreateTranslations Whether user has permission to create translations
      * @param LanguageItem[] $languageItems UI-ready language items
+     *
+     * @internal Created by the PageLanguageInformationService.
      */
     public function __construct(
         public int $pageId,

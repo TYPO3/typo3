@@ -22,11 +22,12 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 /**
  * Represents a single language with its status and UI properties.
  * Contains all information needed to render language menu items.
- *
- * @internal
  */
 final readonly class LanguageItem
 {
+    /**
+     * @internal Created by the PageLanguageInformationService.
+     */
     public function __construct(
         public SiteLanguage $siteLanguage,
         public LanguageStatus $status,

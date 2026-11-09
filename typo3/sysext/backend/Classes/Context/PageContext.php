@@ -26,7 +26,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Generic page context for all backend modules working with pages ("id" parameter and page-tree navigation component).
  *
- * This context is added to the backend request by the PSR-15 "PageContextInitialization" middleware.
+ * This context is added as request attribute "pageContext" to backend requests of modules
+ * using the page tree navigation component, and of routes with the option "requestPageContext".
+ * The page is taken from the "id" parameter, or from the record of an "edit" or "cmd" statement.
  * Replaces the module-specific duplication of language handling, page information, and site context.
  *
  * Contains shared data needed across Layout Module, Records Module, etc.
@@ -49,8 +51,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  *     $pageAncestry = $pageContext->pageAncestry;
  *     $pageTsConfig = $pageContext->pageTsConfig;
  *     $moduleTsConfig = $pageContext->getModuleTsConfig('web_layout');
- *
- * @internal
  */
 final readonly class PageContext
 {
@@ -62,6 +62,8 @@ final readonly class PageContext
      * @param ?PageAncestry $pageAncestry Ancestry of the page in the workspace of the user (null if no access)
      * @param array $pageTsConfig PageTSconfig array (dots removed, overlaid by user permissions, falls back to page 0 if no access)
      * @param Permission $pagePermissions User's permissions for this page (calculated from backendUser->calcPerms)
+     *
+     * @internal Created by the PageContextFactory, use the "pageContext" request attribute.
      */
     public function __construct(
         public int $pageId,

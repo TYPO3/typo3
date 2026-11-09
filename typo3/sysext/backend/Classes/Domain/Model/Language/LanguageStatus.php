@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Backend\Domain\Model\Language;
 
 /**
  * Status of a language for a specific page.
- *
- * @internal
  */
 enum LanguageStatus
 {
