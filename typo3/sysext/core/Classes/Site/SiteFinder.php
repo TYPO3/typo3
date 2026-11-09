@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationChangedEvent;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -125,6 +126,29 @@ readonly class SiteFinder
             }
         }
         throw new SiteNotFoundException('No site found in root line of page ' . $pageId, 1521716622);
+    }
+
+    /**
+     * Finds the site of an already resolved page. Only the root line of its parent page
+     * is needed, which is usually already known when rendering menus or links.
+     *
+     * @throws SiteNotFoundException
+     */
+    public function getSiteByPage(Page $page, string $mountPointParameter = ''): Site
+    {
+        $pageId = $page->getPageId();
+        if ($mountPointParameter !== '') {
+            return $this->getSiteByPageId($pageId, null, $mountPointParameter);
+        }
+        $rootLine = [['uid' => $pageId]];
+        if ($page->getPid() > 0) {
+            try {
+                $rootLine = [...$rootLine, ...GeneralUtility::makeInstance(RootlineUtility::class, $page->getPid())->get()];
+            } catch (PageNotFoundException) {
+                // Usually when the parent page was hidden or disconnected
+            }
+        }
+        return $this->getSiteByPageId($pageId, $rootLine);
     }
 
     #[AsEventListener(event: SiteConfigurationChangedEvent::class)]

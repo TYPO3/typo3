@@ -160,7 +160,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
 
         // Check if the target page has a site configuration
         try {
-            $siteOfTargetPage = $this->siteFinder->getSiteByPageId((int)$resolvedPage['uid'], null, $queryParameters['MP'] ?? '');
+            if (isset($resolvedPage['pid'])) {
+                $siteOfTargetPage = $this->siteFinder->getSiteByPage(new Page($resolvedPage), (string)($queryParameters['MP'] ?? ''));
+            } else {
+                $siteOfTargetPage = $this->siteFinder->getSiteByPageId((int)$resolvedPage['uid'], null, $queryParameters['MP'] ?? '');
+            }
             $currentSite = $this->getCurrentSite();
         } catch (SiteNotFoundException $e) {
             // Usually happens in tests, as sites with configuration should be available everywhere.

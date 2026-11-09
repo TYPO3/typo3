@@ -1,0 +1,10 @@
+"pages"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","title","slug","is_siteroot"
+,1,0,0,0,0,"Main root","/",1
+,2,1,0,0,0,"Main page","/main-page",0
+,3,2,0,0,0,"Nested root","/nested",1
+,4,3,0,0,0,"Below nested root","/nested/below",0
+,5,1,0,0,0,"Broken nested root","/broken",1
+,6,5,0,0,0,"Below broken nested root","/broken/below",0
+,7,0,0,0,0,"Root level page without site","/",0
+,8,1,0,1,2,"Main page (DE)","/main-page",0
