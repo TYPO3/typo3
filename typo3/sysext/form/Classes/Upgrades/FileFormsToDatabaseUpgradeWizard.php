@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Upgrades;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -44,6 +42,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\FormTransferService;
+use TYPO3\CMS\Form\Storage\FormDefinitionMetadataExtractor;
 
 /**
  * Migrate file-based form definitions (YAML) to database storage.
@@ -74,6 +73,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
         private ResourceFactory $resourceFactory,
         private PersistenceConfigurationService $storageConfiguration,
         private StorageRepository $storageRepository,
+        private FormDefinitionMetadataExtractor $metadataExtractor,
     ) {}
 
     public function getTitle(): string
@@ -511,7 +511,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
         $rawYamlContent = $file->getContents();
 
         try {
-            $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
+            $yaml = $this->metadataExtractor->extract($rawYamlContent);
             $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
             return FormMetadata::createFromYaml(
                 $yaml,
@@ -521,34 +521,6 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
         } catch (\Exception $e) {
             return FormMetadata::createInvalid($persistenceIdentifier, $e->getMessage());
         }
-    }
-
-    private function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
-    {
-        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
-        $metaData = [];
-        foreach (explode(LF, $maybeRawFormDefinition) as $line) {
-            if (empty($line) || $line[0] === ' ') {
-                continue;
-            }
-            $parts = explode(':', $line, 2);
-            $key = trim($parts[0]);
-            if (!($parts[1] ?? null) || !in_array($key, $metaDataProperties, true)) {
-                continue;
-            }
-            if ($key === 'label') {
-                try {
-                    $parsedLabelLine = Yaml::parse($line);
-                    $value = $parsedLabelLine['label'] ?? '';
-                } catch (ParseException) {
-                    $value = '';
-                }
-            } else {
-                $value = trim($parts[1], " '\"\r");
-            }
-            $metaData[$key] = $value;
-        }
-        return $metaData;
     }
 
     private function looksLikeAFormDefinition(FormMetadata $formMetadata): bool
