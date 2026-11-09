@@ -98,14 +98,14 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                         // If a record is already in a localized version OR if the record is set to "All Languages"
                         // we allow the generation of the link
                         if ($languageIdOfRecord === LanguageMarker::DEFAULT_LANGUAGE && $languageAspect->doOverlays()) {
+                            // Records of the default language are linked if they are displayed in the current
+                            // language: translated, or kept untranslated by the language mode "mixed"
                             $overlay = $this->pageRepository->getLanguageOverlay(
                                 $databaseTable,
                                 $record,
                                 $languageAspect
                             );
-                            // If the record is not translated (overlays enabled), even though it should have been done
-                            // We avoid linking to it
-                            if (!isset($overlay['_LOCALIZED_UID'])) {
+                            if ($overlay === null) {
                                 $record = null;
                             }
                         }
