@@ -155,7 +155,6 @@ class LanguageColumn
         $pageId = $this->context->getPageId();
         $languageId = $this->context->getSiteLanguage()->getLanguageId();
         return (string)PreviewUriBuilder::create($this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord())
-            ->withRootLine(BackendUtility::BEgetRootLine($pageId))
             ->withLanguage($languageId)
             ->serializeDispatcherAttributes();
     }

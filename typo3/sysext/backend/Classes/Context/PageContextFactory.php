@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Service\PageLanguageInformationService;
 use TYPO3\CMS\Backend\User\SharedUserPreferences;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -46,6 +47,7 @@ final readonly class PageContextFactory
     public function __construct(
         private SharedUserPreferences $sharedPreferences,
         private PageLanguageInformationService $languageService,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -94,7 +96,7 @@ final readonly class PageContextFactory
                 pageId: $pageId,
                 pageRecord: $pageRecord,
                 site: $site,
-                rootLine: [],
+                pageAncestry: null,
                 pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
                 selectedLanguageIds: [LanguageMarker::DEFAULT_LANGUAGE],
                 languageInformation: $this->languageService->getLanguageInformationForPage(0, $site, $backendUser),
@@ -158,7 +160,7 @@ final readonly class PageContextFactory
             pageId: $pageId,
             pageRecord: $pageRecord,
             site: $site,
-            rootLine: BackendUtility::BEgetRootLine($pageId),
+            pageAncestry: $this->pageAncestryResolver->resolve($pageId, (int)$backendUser->workspace),
             pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId)),
             selectedLanguageIds: $validLanguages,
             languageInformation: $languageInformation,
@@ -197,7 +199,7 @@ final readonly class PageContextFactory
                 pageId: $pageId,
                 pageRecord: $pageRecord,
                 site: $site,
-                rootLine: [],
+                pageAncestry: null,
                 pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig(0)),
                 selectedLanguageIds: array_map('intval', $languageIds),
                 languageInformation: $this->languageService->getLanguageInformationForPage(0, $site, $backendUser),
@@ -210,7 +212,7 @@ final readonly class PageContextFactory
             pageId: $pageId,
             pageRecord: $pageRecord,
             site: $site,
-            rootLine: BackendUtility::BEgetRootLine($pageId),
+            pageAncestry: $this->pageAncestryResolver->resolve($pageId, (int)$backendUser->workspace),
             pageTsConfig: GeneralUtility::removeDotsFromTS(BackendUtility::getPagesTSconfig($pageId)),
             selectedLanguageIds: array_map('intval', $languageIds),
             languageInformation: $this->languageService->getLanguageInformationForPage($pageId, $site, $backendUser),

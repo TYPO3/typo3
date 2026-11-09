@@ -467,7 +467,6 @@ class RecordListController
             if ($uriBuilder->isPreviewable()) {
                 $view->addButtonToButtonBar(
                     $this->componentFactory->createViewButton(PreviewUriBuilder::create($this->pageContext->pageRecord)
-                        ->withRootLine($this->pageContext->rootLine)
                         ->buildDispatcherDataAttributes() ?? []),
                     ButtonBar::BUTTON_POSITION_LEFT,
                     15

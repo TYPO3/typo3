@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
@@ -207,9 +208,10 @@ class InternalLinktype extends AbstractLinktype
      */
     protected function getPageHidingSubpages(int $pageId): ?array
     {
-        foreach (BackendUtility::BEgetRootLine($pageId) as $page) {
-            if ((int)$page['uid'] !== $pageId && $page['extendToSubpages'] && $this->isHidden($page)) {
-                return $page;
+        foreach (GeneralUtility::makeInstance(PageAncestryResolver::class)->resolve($pageId, 0) as $page) {
+            $record = $page->getRawRecord()->toArray();
+            if ($page->getUid() !== $pageId && $record['extendToSubpages'] && $this->isHidden($record)) {
+                return $record;
             }
         }
         return null;

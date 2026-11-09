@@ -24,6 +24,8 @@ use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -43,6 +45,8 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
         private ModuleResolver $moduleResolver,
         private UriBuilder $uriBuilder,
         private LoggerInterface $logger,
+        private PageAncestryResolver $pageAncestryResolver,
+        private Context $context,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -112,20 +116,9 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
         $pid = $record->getPid();
 
         try {
-            $rootline = BackendUtility::BEgetRootLine($pid);
-            if ($rootline === []) {
-                return [];
-            }
-
-            // Remove the site root (already added as first node)
-            array_pop($rootline);
-            ksort($rootline);
-
-            foreach ($rootline as $item) {
-                if (!is_array($item) || !isset($item['uid'])) {
-                    continue;
-                }
-
+            $pageAncestry = $this->pageAncestryResolver->resolve($pid, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0));
+            foreach ($pageAncestry->getPagesFromRootLevel() as $page) {
+                $item = $page->getRawRecord()->toArray();
                 try {
                     $icon = $this->iconFactory->getIconForRecord('pages', $item, IconSize::SMALL);
                     $breadcrumb[] = new BreadcrumbNode(

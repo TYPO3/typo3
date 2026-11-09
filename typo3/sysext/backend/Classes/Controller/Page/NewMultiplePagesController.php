@@ -84,7 +84,6 @@ readonly class NewMultiplePagesController
         $view->addButtonToButtonBar(
             $this->componentFactory->createViewButton(
                 PreviewUriBuilder::create($pageRecord)
-                    ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
                     ->buildDispatcherDataAttributes() ?? []
             )
         );

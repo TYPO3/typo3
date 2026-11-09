@@ -21,7 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -36,7 +37,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 readonly class SiteResolver implements MiddlewareInterface
 {
     public function __construct(
-        private SiteMatcher $siteMatcher
+        private SiteMatcher $siteMatcher,
+        private PageAncestryResolver $pageAncestryResolver,
+        private Context $context,
     ) {}
 
     /**
@@ -57,7 +60,9 @@ readonly class SiteResolver implements MiddlewareInterface
         $pageId = (int)$pageId;
         $rootLine = null;
         if ($pageId > 0) {
-            $rootLine = BackendUtility::BEgetRootLine($pageId);
+            $rootLine = $this->pageAncestryResolver
+                ->resolve($pageId, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0))
+                ->toLegacyRootLine();
         }
         $site = $this->siteMatcher->matchByPageId($pageId, $rootLine);
         $request = $request->withAttribute('site', $site);

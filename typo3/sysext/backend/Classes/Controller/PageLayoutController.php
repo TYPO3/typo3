@@ -566,7 +566,6 @@ class PageLayoutController
         }
 
         return $this->componentFactory->createViewButton($previewUriBuilder
-            ->withRootLine($this->pageContext->rootLine)
             ->withLanguage($this->pageContext->getPrimaryLanguageId())
             ->buildDispatcherDataAttributes() ?? []);
     }

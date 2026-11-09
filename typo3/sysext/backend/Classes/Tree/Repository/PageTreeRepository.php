@@ -420,13 +420,15 @@ class PageTreeRepository
 
         $ids = array_column($pageRecords, 'uid');
         foreach ($dbMounts as $mount) {
-            $entryPointRootLine = BackendUtility::BEgetRootLine($mount, '', false, $this->fields);
+            $entryPointRootLine = GeneralUtility::makeInstance(PageAncestryResolver::class)
+                ->resolve((int)$mount, $this->currentWorkspace)
+                ->toLegacyRootLine();
             foreach ($entryPointRootLine as $page) {
                 $pageId = (int)$page['uid'];
                 if (in_array($pageId, $ids) || $pageId === 0) {
                     continue;
                 }
-                $pageRecords[] = $page;
+                $pageRecords[] = array_intersect_key($page, array_flip($this->fields));
                 $ids[] = $pageId;
             }
         }

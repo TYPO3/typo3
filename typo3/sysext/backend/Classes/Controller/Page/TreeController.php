@@ -315,13 +315,17 @@ class TreeController
             return new JsonResponse(['rootline' => ['0']]);
         }
 
-        $rootline = BackendUtility::BEgetRootLine((int)$identifier);
-        if ($rootline === []) {
+        $pageAncestry = $this->pageAncestryResolver->resolve($pageId, (int)$this->getBackendUser()->workspace);
+        if ($pageAncestry->getPage() === null) {
             return new JsonResponse(null, 404);
+        }
+        $pageIds = array_reverse($pageAncestry->getPageIds());
+        if ($pageAncestry->isComplete()) {
+            array_unshift($pageIds, 0);
         }
 
         return new JsonResponse([
-            'rootline' => array_map(strval(...), array_column(array_reverse($rootline), 'uid')),
+            'rootline' => array_map(strval(...), $pageIds),
         ]);
     }
 

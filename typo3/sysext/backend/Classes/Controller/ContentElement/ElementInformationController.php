@@ -552,8 +552,7 @@ class ElementInformationController
 
             // retrieve record to get page language
             $record = BackendUtility::getRecord($schema->getName(), $uid);
-            $previewUriBuilder = PreviewUriBuilder::create($record)
-                ->withRootLine(BackendUtility::BEgetRootLine($uid));
+            $previewUriBuilder = PreviewUriBuilder::create($record);
 
             // View page button
             $actions['previewUrlAttributes'] = $previewUriBuilder->serializeDispatcherAttributes();

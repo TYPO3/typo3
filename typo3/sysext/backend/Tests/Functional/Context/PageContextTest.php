@@ -660,7 +660,7 @@ final class PageContextTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function contextProvidesRootLine(): void
+    public function contextProvidesPageAncestry(): void
     {
         $site = new Site('test-site', 1, [
             'base' => 'https://example.com/',
@@ -677,11 +677,9 @@ final class PageContextTest extends FunctionalTestCase
         $pageContextFactory = $this->get(PageContextFactory::class);
         $pageContext = $pageContextFactory->createFromRequest($request, 1, $this->backendUser);
 
-        self::assertNotEmpty($pageContext->rootLine);
-        // Rootline contains pages from page up to root (page 1 is last element)
-        $pageIds = array_column($pageContext->rootLine, 'uid');
-        self::assertContains(1, $pageIds);
-        self::assertContains(0, $pageIds); // Root page should be included
+        self::assertSame(1, $pageContext->pageAncestry->getPage()->getUid());
+        self::assertContains(1, $pageContext->pageAncestry->getPageIds());
+        self::assertTrue($pageContext->pageAncestry->isComplete());
     }
 
     #[Test]
@@ -790,7 +788,7 @@ final class PageContextTest extends FunctionalTestCase
         self::assertFalse($pageContext->isAccessible());
         self::assertEquals(1, $pageContext->pageId, 'PageId is always preserved!');
         self::assertNull($pageContext->pageRecord);
-        self::assertSame([], $pageContext->rootLine);
+        self::assertNull($pageContext->pageAncestry);
         self::assertSame([0], $pageContext->selectedLanguageIds);
         // No permissions when no access
         self::assertSame(0, $pageContext->pagePermissions->__toInt());

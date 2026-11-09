@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Domain\PageAncestry;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -115,7 +117,6 @@ class PreviewUriBuilder
         $previewPageId = self::getPreviewPageId($table, $recordId, $pageId);
         $obj = self::create($previewPageId);
         $obj->table = $table;
-        $obj = $obj->withRootLine(BackendUtility::BEgetRootLine($previewPageId));
         $obj = $obj->withSection($table === 'tt_content' ? '#c' . $recordId : '');
         $obj = $obj->withAdditionalQueryParameters(self::getPreviewUrlParameters($previewPageId, $table, $record));
 
@@ -242,7 +243,7 @@ class PreviewUriBuilder
             $event = new BeforePagePreviewUriGeneratedEvent(
                 $this->pageId,
                 $this->languageId,
-                $this->rootLine,
+                $this->rootLine !== [] ? $this->rootLine : self::resolveRootLine($this->pageId),
                 $this->section,
                 $this->additionalQueryParameters,
                 $context ?? $this->context,
@@ -259,7 +260,7 @@ class PreviewUriBuilder
                 $pageInfo = BackendUtility::readPageAccess($event->getPageId(), $permissionClause) ?: [];
                 // Check if the page (= its rootline) has a site attached, otherwise just keep the URI as is
                 if ($event->getRootline() === []) {
-                    $event->setRootline(BackendUtility::BEgetRootLine($event->getPageId()));
+                    $event->setRootline(self::resolveRootLine($event->getPageId()));
                 }
                 // prepare custom context for link generation (to allow for example time based previews)
                 $event->setAdditionalQueryParameters(
@@ -406,27 +407,39 @@ class PreviewUriBuilder
             return (int)$previewConfiguration['previewPageId'];
         }
 
-        $rootPageData = null;
-        $rootLine = BackendUtility::BEgetRootLine($rootPageId);
-        $currentPage = (array)(reset($rootLine) ?: []);
-        if (VersionState::tryFrom($currentPage['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER
-            && self::isPreviewableDoktype((int)($currentPage['uid'] ?? 0), (int)($currentPage['doktype'] ?? 0))
+        $pageAncestry = self::resolvePageAncestry($rootPageId);
+        $currentPage = $pageAncestry->getPage();
+        if ($currentPage !== null
+            && $currentPage->getVersionInfo()?->getState() !== VersionState::DELETE_PLACEHOLDER
+            && self::isPreviewableDoktype($currentPage->getUid(), (int)$currentPage->getRecordType())
         ) {
             // try the current page
-            $previewPageId = $rootPageId;
-        } else {
-            // or search for the root page
-            foreach ($rootLine as $page) {
-                if ($page['is_siteroot'] ?? false) {
-                    $rootPageData = $page;
-                    break;
-                }
-            }
-            $previewPageId = isset($rootPageData)
-                ? (int)$rootPageData['uid']
-                : $rootPageId;
+            return $rootPageId;
         }
-        return $previewPageId;
+        // or search for the root page
+        foreach ($pageAncestry as $page) {
+            if ($page->getRawRecord()->has('is_siteroot') && $page->getRawRecord()->get('is_siteroot')) {
+                return $page->getUid();
+            }
+        }
+        return $rootPageId;
+    }
+
+    /**
+     * Resolves the ancestry of a page in the workspace of the current backend user.
+     */
+    private static function resolvePageAncestry(int $pageId): PageAncestry
+    {
+        return GeneralUtility::makeInstance(PageAncestryResolver::class)
+            ->resolve($pageId, (int)($GLOBALS['BE_USER']->workspace ?? 0));
+    }
+
+    /**
+     * The rootline structure handed to events and getAdditionalQueryParametersForAccessRestrictedPages().
+     */
+    private static function resolveRootLine(int $pageId): array
+    {
+        return self::resolvePageAncestry($pageId)->toLegacyRootLine();
     }
 
     protected function buildAttributes(?array $options = null): ?array

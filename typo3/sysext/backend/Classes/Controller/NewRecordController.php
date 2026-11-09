@@ -366,7 +366,6 @@ final readonly class NewRecordController
             if ($previewUriBuilder->isPreviewable()) {
                 $view->addButtonToButtonBar(
                     $this->componentFactory->createViewButton($previewUriBuilder
-                        ->withRootLine(BackendUtility::BEgetRootLine($pageinfo['uid']))
                         ->buildDispatcherDataAttributes() ?? []),
                     ButtonBar::BUTTON_POSITION_LEFT,
                     30

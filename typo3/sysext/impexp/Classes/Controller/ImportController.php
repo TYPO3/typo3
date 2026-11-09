@@ -152,7 +152,6 @@ readonly class ImportController
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);
         if ((int)($pageInfo['uid'] ?? 0) > 0) {
             $view->addButtonToButtonBar($this->componentFactory->createViewButton(PreviewUriBuilder::create($pageInfo)
-                ->withRootLine(BackendUtility::BEgetRootLine($pageInfo['uid']))
                 ->buildDispatcherDataAttributes() ?? []));
         }
         return $view->renderResponse('Import');

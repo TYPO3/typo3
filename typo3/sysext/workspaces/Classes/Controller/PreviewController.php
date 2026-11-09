@@ -118,7 +118,7 @@ final readonly class PreviewController
 
             // Build URL for live version of page
             $page = BackendUtility::getRecord('pages', $pageUid);
-            $rootline = BackendUtility::BEgetRootLine($pageUid);
+            $rootline = $this->pageAncestryResolver->resolve($pageUid, 0)->toLegacyRootLine();
             $queryParametersLive = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
                 $page,
                 clone $this->context,

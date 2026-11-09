@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Context;
 
 use TYPO3\CMS\Backend\Domain\Model\Language\PageLanguageInformation;
+use TYPO3\CMS\Core\Domain\PageAncestry;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -45,7 +46,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  *     }
  *     $selectedLanguages = $pageContext->selectedLanguageIds;
  *     $languageInfo = $pageContext->languageInformation;
- *     $rootLine = $pageContext->rootLine;
+ *     $pageAncestry = $pageContext->pageAncestry;
  *     $pageTsConfig = $pageContext->pageTsConfig;
  *     $moduleTsConfig = $pageContext->getModuleTsConfig('web_layout');
  *
@@ -58,7 +59,7 @@ final readonly class PageContext
      * @param ?array $pageRecord Page record from readPageAccess (null if no access)
      * @param int[] $selectedLanguageIds Selected language IDs (resolved and validated)
      * @param PageLanguageInformation $languageInformation Complete language information for this page
-     * @param array $rootLine Page rootline including the page itself (empty array if no access)
+     * @param ?PageAncestry $pageAncestry Ancestry of the page in the workspace of the user (null if no access)
      * @param array $pageTsConfig PageTSconfig array (dots removed, overlaid by user permissions, falls back to page 0 if no access)
      * @param Permission $pagePermissions User's permissions for this page (calculated from backendUser->calcPerms)
      */
@@ -66,7 +67,7 @@ final readonly class PageContext
         public int $pageId,
         public ?array $pageRecord,
         public SiteInterface $site,
-        public array $rootLine,
+        public ?PageAncestry $pageAncestry,
         public array $pageTsConfig,
         public array $selectedLanguageIds,
         public PageLanguageInformation $languageInformation,

@@ -184,7 +184,6 @@ readonly class LatestChangedPagesWidget implements WidgetRendererInterface
 
             $uriPageId = $page['pageRecord']['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE ? $page['pageRecord']['l10n_parent'] : $page['pageRecord']['uid'];
             $page['viewLink'] = (string)PreviewUriBuilder::create($page['pageRecord'])
-                ->withRootLine(BackendUtility::BEgetRootLine($uriPageId))
                 ->buildUri();
             $page['userName'] = $userNames[$page['history']['userid']]['username'] ?? '';
             $page['realName'] = $userNames[$page['history']['userid']]['realName'] ?? '';

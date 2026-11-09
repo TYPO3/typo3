@@ -70,7 +70,6 @@ readonly class SortSubPagesController
         $view->addButtonToButtonBar(
             $this->componentFactory->createViewButton(
                 PreviewUriBuilder::create($pageInformation)
-                    ->withRootLine(BackendUtility::BEgetRootLine($parentPageUid))
                     ->buildDispatcherDataAttributes() ?? []
             )
         );
