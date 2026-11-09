@@ -29,6 +29,7 @@ use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Storage\ExtensionStorageAdapter;
+use TYPO3\CMS\Form\Storage\FormDefinitionMetadataExtractor;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
@@ -106,6 +107,7 @@ final class ExtensionStorageAdapterFunctionalTest extends FunctionalTestCase
                 $this->get(ResourceFactory::class),
                 $this->get(PersistenceConfigurationService::class),
                 $this->get('cache.runtime'),
+                $this->get(FormDefinitionMetadataExtractor::class),
             ],
         );
         self::assertSame(

@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Storage;
 
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
@@ -97,34 +95,6 @@ abstract class AbstractFileStorageAdapter
             sprintf('Could not find a unique persistence identifier for form identifier "%s" after %d attempts', $formIdentifier, $attempts),
             1764879439
         );
-    }
-
-    protected function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
-    {
-        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
-        $metaData = [];
-        foreach (explode(LF, $maybeRawFormDefinition) as $line) {
-            if (empty($line) || $line[0] === ' ') {
-                continue;
-            }
-            $parts = explode(':', $line, 2);
-            $key = trim($parts[0]);
-            if (!($parts[1] ?? null) || !in_array($key, $metaDataProperties, true)) {
-                continue;
-            }
-            if ($key === 'label') {
-                try {
-                    $parsedLabelLine = Yaml::parse($line);
-                    $value = $parsedLabelLine['label'] ?? '';
-                } catch (ParseException) {
-                    $value = '';
-                }
-            } else {
-                $value = trim($parts[1], " '\"\r");
-            }
-            $metaData[$key] = $value;
-        }
-        return $metaData;
     }
 
     /**
