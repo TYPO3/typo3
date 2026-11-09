@@ -1722,7 +1722,10 @@ class Import extends ImportExport
                     if (isset($this->importMapId[$tempTable][$tempUid])) {
                         $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
                         $tokenValue = (string)$softref['subst']['tokenValue'];
-                        if (str_contains($tokenValue, ':')) {
+                        if (str_starts_with($tokenValue, 't3://')) {
+                            // Record link, e.g. "t3://record?identifier=news&uid=42"
+                            $insertValue = preg_replace('/([?&](?:amp;)?uid=)\d+/', '${1}' . $insertValue, $tokenValue, 1);
+                        } elseif (str_contains($tokenValue, ':')) {
                             [$tokenKey] = explode(':', $tokenValue);
                             $insertValue = $tokenKey . ':' . $insertValue;
                         }

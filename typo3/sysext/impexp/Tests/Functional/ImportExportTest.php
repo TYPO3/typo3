@@ -87,4 +87,40 @@ final class ImportExportTest extends AbstractImportExportTestCase
 
         self::assertSame($bodytext, $importedBodytext);
     }
+
+    #[Test]
+    public function importExportMapsRecordLinksToImportedRecords(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-record-links.csv');
+
+        $export = $this->get(Export::class);
+        $export->setPid(1);
+        $export->setLevels(1);
+        $export->setTables(['_ALL']);
+        $export->process();
+
+        $exportFile = Environment::getPublicPath() . '/fileadmin/xml_exports/record-links.xml';
+        GeneralUtility::mkdir_deep(dirname($exportFile));
+        GeneralUtility::writeFile($exportFile, $export->render(), true);
+        $this->testFilesToDelete[] = $exportFile;
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile('fileadmin/xml_exports/record-links.xml');
+        $import->importData();
+
+        $importedRecords = array_column(
+            $this->getConnectionPool()
+                ->getConnectionForTable('tt_content')
+                ->executeQuery('SELECT uid, header, header_link, bodytext FROM tt_content WHERE uid > 2')
+                ->fetchAllAssociative(),
+            null,
+            'header'
+        );
+        $importedTargetUid = $importedRecords['Target']['uid'];
+        $importedLinks = $importedRecords['Links'];
+
+        self::assertSame('t3://record?identifier=content&uid=' . $importedTargetUid . ' _blank - Title', $importedLinks['header_link']);
+        self::assertSame('<p><a href="t3://record?identifier=content&amp;uid=' . $importedTargetUid . '#top">Read more</a></p>', $importedLinks['bodytext']);
+    }
 }
