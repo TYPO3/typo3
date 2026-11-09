@@ -35,6 +35,25 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormToolsTest extends FunctionalTestCase
 {
+    private const FLEXFORM_WITH_EMPTY_SECTIONS = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="settings.foo">
+                    <value index="vDEF">Foo-Value</value>
+                </field>
+                <field index="settings.items">
+                    <el index="el"></el>
+                </field>
+                <field index="items">
+                    <el index="el"></el>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>';
+
     protected bool $initializeDatabase = false;
 
     #[Test]
@@ -2527,6 +2546,34 @@ final class FlexFormToolsTest extends FunctionalTestCase
         ];
 
         self::assertSame($expected, $this->get(FlexFormTools::class)->convertFlexFormContentToArray($input));
+    }
+
+    #[Test]
+    public function convertFlexFormContentToArrayResolvesEmptySectionToEmptyArray(): void
+    {
+        $expected = [
+            'settings' => [
+                'foo' => 'Foo-Value',
+                'items' => [],
+            ],
+            'items' => [],
+        ];
+        self::assertSame($expected, $this->get(FlexFormTools::class)->convertFlexFormContentToArray(self::FLEXFORM_WITH_EMPTY_SECTIONS));
+    }
+
+    #[Test]
+    public function convertFlexFormContentToSheetsArrayResolvesEmptySectionToEmptyArray(): void
+    {
+        $expected = [
+            'sDEF' => [
+                'settings' => [
+                    'foo' => 'Foo-Value',
+                    'items' => [],
+                ],
+                'items' => [],
+            ],
+        ];
+        self::assertSame($expected, $this->get(FlexFormTools::class)->convertFlexFormContentToSheetsArray(self::FLEXFORM_WITH_EMPTY_SECTIONS));
     }
 
     #[Test]

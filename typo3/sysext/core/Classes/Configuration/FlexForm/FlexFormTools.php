@@ -861,7 +861,8 @@ readonly class FlexFormTools
                 return $nodeValue;
             }
             if (in_array($nodeKey, ['el', '_arrayContainer'])) {
-                return $this->walkFlexFormNode($nodeValue);
+                // A section without any element is stored as empty "el" node
+                return is_array($nodeValue) ? $this->walkFlexFormNode($nodeValue) : [];
             }
             if (($nodeKey[0] ?? '') === '_') {
                 continue;
