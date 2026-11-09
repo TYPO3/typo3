@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -130,6 +132,31 @@ final class ProcessedFileTest extends FunctionalTestCase
         self::assertTrue($reprocessedFile->usesOriginalFile());
         self::assertFalse($reprocessedFile->isDeleted());
         self::assertNotEmpty($reprocessedFile->getForLocalProcessing(false));
+    }
+
+    #[Test]
+    public function maskingAnImageLeavesNoTemporaryCopiesOfTheMaskImages(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+        if (!$this->get(GraphicalFunctions::class)->isProcessingEnabled()) {
+            self::markTestSkipped('Image processor (ImageMagick/GraphicsMagick) is not enabled.');
+        }
+        $originalFile = $this->retrieveTestImage();
+        $maskImage = $this->get(ResourceFactory::class)->retrieveFileOrFolderObject(self::TEST_IMAGE);
+        self::assertInstanceOf(File::class, $maskImage);
+        $temporaryFilePattern = Environment::getVarPath() . '/transient/fal-tempfile-*';
+        $temporaryFilesBefore = glob($temporaryFilePattern) ?: [];
+
+        $originalFile->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, [
+            'width' => '50c',
+            'height' => '50c',
+            'maskImages' => [
+                'maskImage' => $maskImage,
+                'backgroundImage' => $maskImage,
+            ],
+        ]);
+
+        self::assertSame([], array_values(array_diff(glob($temporaryFilePattern) ?: [], $temporaryFilesBefore)));
     }
 
     /**

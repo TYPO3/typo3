@@ -369,7 +369,7 @@ class LocalImageProcessor implements ResourceAwareProcessorInterface, LoggerAwar
     protected function getLocalPathOfMaskImage(FileInterface|ProcessedResourceInterface $maskImage, array &$temporaryFiles): string
     {
         if ($maskImage instanceof FileInterface) {
-            return $maskImage->getForLocalProcessing();
+            return $maskImage->getForLocalProcessing(false);
         }
         return $temporaryFiles[] = $this->createTemporaryLocalCopy($maskImage);
     }
