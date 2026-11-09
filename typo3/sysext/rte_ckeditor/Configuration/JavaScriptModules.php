@@ -54,7 +54,6 @@ return [
         '@ckeditor/ckeditor5-undo' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-undo.js',
         '@ckeditor/ckeditor5-upload' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-upload.js',
         '@ckeditor/ckeditor5-utils' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-utils.js',
-        '@ckeditor/ckeditor5-watchdog' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-watchdog.js',
         '@ckeditor/ckeditor5-widget' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-widget.js',
         '@ckeditor/ckeditor5-word-count' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-word-count.js',
     ],
