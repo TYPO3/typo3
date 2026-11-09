@@ -134,13 +134,13 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
                 't3://record?identifier=content&uid=400&_language=1',
                 '<a href="https://acme.fr/features-fr#c400">FR: Features</a>',
             ],
-            'Record not translated into the language of the language parameter' => [
+            'Record falling back to the default language of the language parameter' => [
                 't3://record?identifier=content&uid=310&L=1',
-                '',
+                '<a href="https://acme.fr/bienvenue#c310">FR: Bienvenue</a>',
             ],
-            'Record not translated into the language of the modern language parameter' => [
+            'Record falling back to the default language of the modern language parameter' => [
                 't3://record?identifier=content&uid=310&_language=1',
-                '',
+                '<a href="https://acme.fr/bienvenue#c310">FR: Bienvenue</a>',
             ],
             'Non-existent record' => [
                 't3://record?identifier=content&uid=400000',
