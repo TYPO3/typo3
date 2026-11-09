@@ -1,0 +1,7 @@
+"pages",,,,,,,,,
+,"uid","pid","title","doktype","deleted","perms_everybody","hidden","TSconfig",
+,1,0,"Root",1,0,15,0,"TCEMAIN.linkHandler.content.configuration.table = tt_content",
+"tt_content",,,,,,,,,
+,"uid","pid","CType","header","header_link","bodytext","deleted","sorting",
+,1,1,"text","Links","t3://record?identifier=content&uid=2 _blank - ""Title""","<p><a href=""t3://record?identifier=content&amp;uid=2#top"">Read more</a></p>",0,128
+,2,1,"text","Target","","",0,256

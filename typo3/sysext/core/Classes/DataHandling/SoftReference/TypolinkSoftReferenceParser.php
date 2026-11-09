@@ -103,6 +103,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                 case LinkService::TYPE_RECORD:
                     $finalTagParts['table'] = $this->resolveRecordLinkTable($linkData['identifier'], $referenceTable, $referenceUid);
                     $finalTagParts['uid'] = $linkData['uid'];
+                    $finalTagParts['recordLink'] = $link_param;
                     break;
                 case LinkService::TYPE_PAGE:
                     $linkData['pageuid'] = (int)($linkData['pageuid'] ?? 0);
@@ -270,7 +271,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                     'type' => 'db',
                     'recordRef' => $tLP['table'] . ':' . $tLP['uid'],
                     'tokenID' => $tokenID,
-                    'tokenValue' => (string)$content,
+                    'tokenValue' => (string)$tLP['recordLink'],
                 ];
 
                 $content = '{softref:' . $tokenID . '}';

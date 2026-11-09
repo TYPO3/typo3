@@ -59,4 +59,19 @@ final class TypolinkSoftReferenceParserRecordLinkTest extends FunctionalTestCase
         self::assertSame('db', $elements[0]['subst']['type']);
         self::assertSame($expectedRecordReference, $elements[0]['subst']['recordRef']);
     }
+
+    #[Test]
+    public function recordLinkIsTokenizedWithoutFurtherTypolinkParts(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLinkPages.csv');
+
+        $result = $this->get(TypolinkSoftReferenceParser::class)->parse('tt_content', 'header_link', 1, 't3://record?identifier=news&uid=99 _blank - "Title"');
+
+        $element = array_values($result->getMatchedElements())[0];
+        self::assertSame('t3://record?identifier=news&uid=99', $element['subst']['tokenValue']);
+        self::assertSame(
+            't3://record?identifier=news&uid=99 _blank - Title',
+            str_replace('{softref:' . $element['subst']['tokenID'] . '}', $element['subst']['tokenValue'], $result->getContent())
+        );
+    }
 }
