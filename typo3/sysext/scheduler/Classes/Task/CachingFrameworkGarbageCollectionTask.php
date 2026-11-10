@@ -60,6 +60,11 @@ class CachingFrameworkGarbageCollectionTask extends AbstractTask
         return true;
     }
 
+    public function getAdditionalInformation(): string
+    {
+        return implode(', ', $this->selectedBackends);
+    }
+
     public function getTaskParameters(): array
     {
         return [

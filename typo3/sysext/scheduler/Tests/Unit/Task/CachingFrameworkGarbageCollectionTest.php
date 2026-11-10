@@ -80,4 +80,15 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         $subject->selectedBackends = [NullBackend::class];
         $subject->execute();
     }
+
+    #[Test]
+    public function getAdditionalInformationReturnsSelectedBackends(): void
+    {
+        $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
+            ->onlyMethods([])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $subject->selectedBackends = [AbstractBackend::class, NullBackend::class];
+        self::assertSame(AbstractBackend::class . ', ' . NullBackend::class, $subject->getAdditionalInformation());
+    }
 }
