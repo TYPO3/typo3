@@ -478,6 +478,9 @@ readonly class RedirectService
         $matchResult = @preg_match($matchedRedirect['source_path'], $uriToCheck, $matches);
         if ($matchResult > 0) {
             foreach ($matches as $key => $val) {
+                if (!str_contains($linkDetails['url'], '$' . $key)) {
+                    continue;
+                }
                 // Unsafe regexp captching group may lead to adding query parameters to result url, which we need
                 // to prevent here, thus throwing everything beginning with ? away
                 if (str_contains($val, '?')) {
