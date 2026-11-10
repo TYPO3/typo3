@@ -174,22 +174,6 @@ return [
             ],
         ],
         'slug_8' => [
-            'label' => 'slug_8',
-            'description' => 'required',
-            'config' => [
-                'type' => 'slug',
-                'generatorOptions' => [
-                    'fields' => ['input_1'],
-                    'prefixParentPageSlug' => false,
-                ],
-                'fallbackCharacter' => '-',
-                'eval' => 'uniqueInPid',
-                'required' => true,
-                'default' => '',
-            ],
-        ],
-
-        'slug_8' => [
             'label' => 'slug_8 postModifiers',
             'description' => 'Prepends /jobs/ to the generated and stored slug. Compare the display-only appearance.prefix on slug_1.',
             'config' => [
@@ -211,14 +195,28 @@ return [
                 'eval' => 'uniqueInPid',
             ],
         ],
-
+        'slug_9' => [
+            'label' => 'slug_9',
+            'description' => 'required',
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['input_1'],
+                    'prefixParentPageSlug' => false,
+                ],
+                'fallbackCharacter' => '-',
+                'eval' => 'uniqueInPid',
+                'required' => true,
+                'default' => '',
+            ],
+        ],
     ],
 
     'types' => [
         '0' => [
             'showitem' => '
                 --div--;slug,
-                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7, slug_8,
+                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3, slug_6, slug_7, slug_8, slug_9,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',

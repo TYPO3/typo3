@@ -9,7 +9,7 @@ test.beforeEach(async ({ backend }) => {
 });
 
 test('required slug field is valid after recreating the slug', async ({ backend }) => {
-  const formSection = backend.formEngine.elementsBasicFormSection('slug_8');
+  const formSection = backend.formEngine.elementsBasicFormSection('slug_9');
   const slugInput = formSection.locator('.t3js-form-field-slug-input');
   const hiddenField = formSection.locator('.t3js-form-field-slug-hidden');
 
