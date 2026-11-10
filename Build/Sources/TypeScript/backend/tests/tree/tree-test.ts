@@ -14,7 +14,9 @@
 import { expect } from '@open-wc/testing';
 import { Tree } from '@typo3/backend/tree/tree.js';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node.js';
-import { spy, stub } from 'sinon';
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
+import Notification from '@typo3/backend/notification.js';
+import { spy, stub, type SinonStub } from 'sinon';
 import type { } from 'mocha';
 
 class TestTree extends Tree {
@@ -105,5 +107,37 @@ describe('tree filter reset', () => {
     await new Promise((resolve) => setTimeout(resolve));
 
     expect(filterReset.called).to.equal(false);
+  });
+});
+
+describe('tree data loading', () => {
+  let tree: TestTree;
+  let getStub: SinonStub;
+  let notificationStub: SinonStub;
+
+  beforeEach(() => {
+    tree = document.createElement('typo3-test-storage-tree') as TestTree;
+    tree.settings = { ...tree.settings, dataUrl: '/typo3/ajax/test/tree/fetchData' };
+    getStub = stub(AjaxRequest.prototype, 'get');
+    notificationStub = stub(Notification, 'error');
+  });
+
+  afterEach(() => {
+    getStub.restore();
+    notificationStub.restore();
+  });
+
+  it('does not show a notification when the data request has been aborted', async () => {
+    getStub.rejects(new DOMException('The user aborted a request.', 'AbortError'));
+
+    expect(await tree.fetchData()).to.deep.equal([]);
+    expect(notificationStub.called).to.equal(false);
+  });
+
+  it('shows a notification when the data request fails', async () => {
+    getStub.rejects(new TypeError('Failed to fetch'));
+
+    expect(await tree.fetchData()).to.deep.equal([]);
+    expect(notificationStub.calledOnce).to.equal(true);
   });
 });

@@ -535,7 +535,7 @@ export class Tree extends LitElement {
    * Displays a notification message and refresh nodes
    */
   public errorNotification(error: any = null): void {
-    if (this.muteErrorNotifications) {
+    if (this.muteErrorNotifications || (error instanceof DOMException && error.name === 'AbortError')) {
       return;
     }
     if (Array.isArray(error)) {
