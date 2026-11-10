@@ -1,0 +1,19 @@
+"be_groups"
+,"uid","pid","deleted","hidden","title","subgroup"
+,10,0,0,0,"Parent",""
+,11,0,0,0,"Child","10"
+,12,0,0,0,"Grandchild","11"
+,13,0,0,0,"Unrelated",""
+,14,0,0,0,"Loop A","15,12"
+,15,0,0,0,"Loop B","14"
+,16,0,0,1,"Hidden child","10"
+,17,0,1,0,"Deleted child","10"
+"be_users"
+,"uid","pid","usergroup","username","admin","disable","deleted"
+,10,0,"10","parent-user",0,0,0
+,11,0,"13,11","child-user",0,0,0
+,12,0,"12","grandchild-user",0,0,0
+,13,0,"13","unrelated-user",0,0,0
+,14,0,"15","loop-user",0,0,0
+,15,0,"16","hidden-child-user",0,0,0
+,16,0,"17","deleted-child-user",0,0,0

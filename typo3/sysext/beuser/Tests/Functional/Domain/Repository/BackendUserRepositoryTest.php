@@ -154,4 +154,52 @@ final class BackendUserRepositoryTest extends FunctionalTestCase
 
         self::assertCount(1, $queryResult);
     }
+
+    #[Test]
+    public function findDemandedWithBackendUserGroupFilterFindsUsersOfDirectlyAssignedGroup(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/NestedGroups.csv');
+        $demand = new Demand();
+        $demand->setBackendUserGroup(13);
+
+        $usernames = $this->getUsernames($this->subject->findDemanded($demand));
+
+        self::assertSame(['child-user', 'unrelated-user'], $usernames);
+    }
+
+    #[Test]
+    public function findDemandedWithBackendUserGroupFilterFindsUsersInheritingTheGroupThroughSubgroups(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/NestedGroups.csv');
+        $demand = new Demand();
+        $demand->setBackendUserGroup(10);
+
+        $usernames = $this->getUsernames($this->subject->findDemanded($demand));
+
+        self::assertSame(['child-user', 'grandchild-user', 'loop-user', 'parent-user'], $usernames);
+    }
+
+    #[Test]
+    public function findDemandedWithBackendUserGroupFilterFindsUsersOfHiddenGroup(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/NestedGroups.csv');
+        $demand = new Demand();
+        $demand->setBackendUserGroup(16);
+
+        $usernames = $this->getUsernames($this->subject->findDemanded($demand));
+
+        self::assertSame(['hidden-child-user'], $usernames);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getUsernames(iterable $backendUsers): array
+    {
+        $usernames = [];
+        foreach ($backendUsers as $backendUser) {
+            $usernames[] = $backendUser->getUserName();
+        }
+        return $usernames;
+    }
 }
