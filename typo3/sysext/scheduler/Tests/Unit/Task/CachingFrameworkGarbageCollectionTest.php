@@ -84,4 +84,15 @@ final class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         // execute() must not have resolved the CacheManager for a backend that is not selected
         self::assertSame($mockCacheManager, GeneralUtility::makeInstance(CacheManager::class));
     }
+
+    #[Test]
+    public function getAdditionalInformationReturnsSelectedBackends(): void
+    {
+        $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
+            ->onlyMethods([])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $subject->selectedBackends = [AbstractBackend::class, NullBackend::class];
+        self::assertSame(AbstractBackend::class . ', ' . NullBackend::class, $subject->getAdditionalInformation());
+    }
 }
