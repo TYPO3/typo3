@@ -1,23 +1,3 @@
-functional mariadb 10.4 php 8.5 pdo_mysql pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  artifacts:
-    when: always
-    expire_in: 1 week
-    paths:
-      - typo3temp/var/tests/junit-reports
-    reports:
-      junit: typo3temp/var/tests/junit-reports/functional-*.xml
-  parallel: 6
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mariadb -a pdo_mysql -i 10.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
-
 functional postgres 10 php 8.5 pre-merge:
   stage: main
   tags:
@@ -53,7 +33,7 @@ functional sqlite php 8.5 pre-merge:
       - typo3temp/var/tests/junit-reports
     reports:
       junit: typo3temp/var/tests/junit-reports/functional-*.xml
-  parallel: 4
+  parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml

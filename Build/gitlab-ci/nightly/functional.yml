@@ -33,7 +33,7 @@ functional mariadb 10.4 php 8.5 min:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
+    - Build/Scripts/runTests.sh -s functional -d mariadb -a pdo_mysql -i 10.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional mysql 8.4 php 8.5 max:
   stage: functional
