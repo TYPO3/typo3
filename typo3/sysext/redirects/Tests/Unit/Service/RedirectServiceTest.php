@@ -75,12 +75,15 @@ final class RedirectServiceTest extends UnitTestCase
 
     private MockObject&SiteFinder $siteFinder;
 
+    private MockObject&LoggerInterface $loggerMock;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->redirectCacheServiceMock = $this->getMockBuilder(RedirectCacheService::class)->disableOriginalConstructor()->getMock();
         $this->linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
         $this->siteFinder = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $this->loggerMock = $this->createMock(LoggerInterface::class);
 
         $this->redirectService = new RedirectService(
             $this->redirectCacheServiceMock,
@@ -114,7 +117,7 @@ final class RedirectServiceTest extends UnitTestCase
                 new ConditionVerdictAwareIncludeTreeTraverser(),
             ),
             $this->createMock(PhpFrontend::class),
-            $this->createMock(LoggerInterface::class),
+            $this->loggerMock,
             new TypoLinkCodecService(new NoopEventDispatcher())
         );
 
@@ -787,6 +790,60 @@ final class RedirectServiceTest extends UnitTestCase
 
         $uri = new Uri('https://anotherdomain.com/bar');
         self::assertEquals($uri, $result);
+    }
+
+    #[Test]
+    public function getTargetUrlDoesNotLogUnsafeCaptureGroupWarningForUnusedCaptureGroups(): void
+    {
+        $redirectTargetMatch = [
+            'uid' => 1,
+            'source_path' => '#^/partner\?tx_extension_clients.+client(?:%5D|\])=([A-Z0-9]+)#',
+            'target' => '/partner/$1',
+            'force_https' => '0',
+            'keep_query_parameters' => 0,
+            'is_regexp' => 1,
+            'respect_query_parameters' => 1,
+        ];
+        $linkDetails = [
+            'type' => LinkService::TYPE_URL,
+            'url' => '/partner/$1',
+        ];
+        $this->linkServiceMock->method('resolve')->willReturn($linkDetails);
+        $this->loggerMock->expects($this->never())->method('warning');
+
+        $source = new Uri('https://example.com/partner?tx_extension_clients[controller]=Clients&tx_extension_clients[client]=ACME1');
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
+
+        self::assertSame('/partner/ACME1', $result->getPath());
+    }
+
+    #[Test]
+    public function getTargetUrlLogsUnsafeCaptureGroupWarningForUsedCaptureGroupContainingQuery(): void
+    {
+        $redirectTargetMatch = [
+            'uid' => 1,
+            'source_path' => '#^/unsafe-(.*)#',
+            'target' => 'https://anotherdomain.com/$1',
+            'force_https' => '0',
+            'keep_query_parameters' => 0,
+            'is_regexp' => 1,
+            'respect_query_parameters' => 1,
+        ];
+        $linkDetails = [
+            'type' => LinkService::TYPE_URL,
+            'url' => 'https://anotherdomain.com/$1',
+        ];
+        $this->linkServiceMock->method('resolve')->willReturn($linkDetails);
+        $this->loggerMock->expects($this->once())->method('warning');
+
+        $source = new Uri('https://example.com/unsafe-others?option=com_content');
+        $request = new ServerRequest($source);
+        $request = $request->withAttribute('site', new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
+
+        self::assertEquals(new Uri('https://anotherdomain.com/others'), $result);
     }
 
     public static function getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider(): array
