@@ -23,7 +23,8 @@ machine-specific preferences do not belong here — put those in an untracked
 - When a bug is reported or reproduced, **do not start by fixing it**. First write a
   test that reproduces it, then fix and prove it with that test passing. The only
   exception is a purely mechanical fix with no testable behaviour, such as a typo
-  in a label, comment or documentation.
+  in a label, comment or documentation. Pick the test level as
+  described in the testing guidelines.
 - Only add code comments when they add meaning; otherwise leave them out.
 - Follow the TYPO3 Coding Guidelines (CGL), and run
   `./Build/Scripts/runTests.sh -s cglGit` after committing.
@@ -213,6 +214,28 @@ beuser, form, indexed_search, …) are Extbase-based backend modules.
   deleted at any time.
 - `importCSVDataSet()` and the `pathsToProvideInTestInstance` keys do **not** resolve
   `EXT:` paths — they are plain file lookups, so use `__DIR__`-relative paths.
+- Choose the test level by what the subject needs to run. A unit test fits when the
+  subject runs with real collaborators and at most a few stubs: pure logic, value
+  objects, parsers, resolvers. Write a functional test when the behaviour needs the
+  database, the DI container, TCA, a site or request set up by the framework, or
+  the interplay of several services. Every functional test runs on each supported
+  DBMS in CI, but a unit test that rebuilds that environment from mocks proves
+  little and breaks on every refactoring, so it is not the cheaper choice.
+- Test doubles in unit tests:
+  - Instantiate real objects (value objects, DTOs, services with cheap
+    dependencies) instead of doubling them.
+  - Double only what a unit test cannot run: database, filesystem, network,
+    clock, services with heavy dependencies.
+  - Use `createStub()` when a double only returns values. Use `createMock()` with
+    expectations only when the call itself is the behaviour under test.
+  - Do not partially mock the subject under test, and do not reach protected
+    members via `getAccessibleMock()`, `_call()` or `_set()`. Test through the
+    public API.
+  - Assert results, not the sequence of calls that produced them.
+  - If the subject needs more than a handful of doubles to run, the test is at
+    the wrong level: write or extend a functional test instead.
+- Extend an existing functional test case or data provider before adding a new
+  test case class; each class provisions its own instance.
 - Prefer small, focused tests. Filter with `-- --filter <TestName>`.
 
 ## Changelog (RST) requirements
