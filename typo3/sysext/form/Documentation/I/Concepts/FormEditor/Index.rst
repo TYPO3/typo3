@@ -147,7 +147,10 @@ infant" form element only and not the "Age spouse" form element.
 Translation of the form editor
 ==============================
 
-All option values below the following configuration keys can be translated:
+All option values below the following configuration keys can be translated,
+except the values of select options (:yaml:`selectOptions.*.value`). These are
+stored in the form definition and are used as configured, only their labels are
+translated:
 
 ..  code-block:: yaml
 

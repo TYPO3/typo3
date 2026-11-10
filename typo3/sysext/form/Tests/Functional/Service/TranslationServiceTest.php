@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Form\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
@@ -33,6 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class TranslationServiceTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
+    protected array $coreExtensionsToLoad = ['form'];
 
     private TranslationService $subject;
     protected array $testExtensionsToLoad = ['typo3/sysext/form/Tests/Functional/Fixtures/Extensions/form_labels'];
@@ -160,6 +163,17 @@ final class TranslationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function translateSingleValueTranslatesSingleValue(): void
+    {
+        $xlfPath = 'LLL:EXT:form_labels/Resources/Private/Language/locallang_form.xlf';
+
+        self::assertSame(
+            'FORM EN',
+            $this->subject->translateSingleValue('element.Page.renderingOptions.nextButtonLabel', [$xlfPath]),
+        );
+    }
+
+    #[Test]
     public function translateValuesRecursiveTranslateRecursive(): void
     {
         $xlfPaths = [
@@ -239,6 +253,197 @@ final class TranslationServiceTest extends FunctionalTestCase
         $formRuntimeStub->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->subject->translateFormElementValue($formElement, ['fluidAdditionalAttributes'], $formRuntimeStub));
+    }
+
+    #[Test]
+    public function translateFormEngineFinisherOptionsTranslatesSuitableFormEngineConfigAndExcludesOtherConfigFromTranslation(): void
+    {
+        $xlfPath = 'LLL:EXT:form_labels/Resources/Private/Language/locallang_form.xlf';
+
+        $input = [
+            'subject' => [
+                'label' => 'element.Page.renderingOptions.nextButtonLabel',
+                'description' => 'element.Page.renderingOptions.nextButtonLabel',
+                'config' => [
+                    'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                    'placeholder' => 'element.Page.renderingOptions.nextButtonLabel',
+                    'default' => 'element.Page.renderingOptions.nextButtonLabel',
+                ],
+            ],
+            'recipients' => [
+                'title' => 'element.Page.renderingOptions.nextButtonLabel',
+                'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                'section' => true,
+                'el' => [
+                    '_arrayContainer' => [
+                        'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                        'title' => 'element.Page.renderingOptions.nextButtonLabel',
+                        'el' => [
+                            'email' => [
+                                'label' => 'element.Page.renderingOptions.nextButtonLabel',
+                                'config' => [
+                                    'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'translation' => [
+                'language' => [
+                    'label' => 'element.Page.renderingOptions.nextButtonLabel',
+                    'config' => [
+                        'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                        'items' => [
+                            5 => [
+                                'label' => 'element.Page.renderingOptions.nextButtonLabel',
+                                'value' => 'element.Page.renderingOptions.nextButtonLabel',
+                                'group' => 'element.Page.renderingOptions.nextButtonLabel',
+                            ],
+                            10 => [
+                                'element.Page.renderingOptions.nextButtonLabel',
+                                'element.Page.renderingOptions.nextButtonLabel',
+                            ],
+                        ],
+                        'itemGroups' => [
+                            'group1' => 'element.Page.renderingOptions.nextButtonLabel',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'subject' => [
+                'label' => 'FORM EN',
+                'description' => 'FORM EN',
+                'config' => [
+                    'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                    'placeholder' => 'FORM EN',
+                    'default' => 'element.Page.renderingOptions.nextButtonLabel',
+                ],
+            ],
+            'recipients' => [
+                'title' => 'FORM EN',
+                'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                'section' => true,
+                'el' => [
+                    '_arrayContainer' => [
+                        'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                        'title' => 'FORM EN',
+                        'el' => [
+                            'email' => [
+                                'label' => 'FORM EN',
+                                'config' => [
+                                    'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'translation' => [
+                'language' => [
+                    'label' => 'FORM EN',
+                    'config' => [
+                        'type' => 'element.Page.renderingOptions.nextButtonLabel',
+                        'items' => [
+                            5 => [
+                                'label' => 'FORM EN',
+                                'value' => 'element.Page.renderingOptions.nextButtonLabel',
+                                'group' => 'element.Page.renderingOptions.nextButtonLabel',
+                            ],
+                            10 => [
+                                'FORM EN',
+                                'element.Page.renderingOptions.nextButtonLabel',
+                            ],
+                        ],
+                        'itemGroups' => [
+                            'group1' => 'FORM EN',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame(
+            $expected,
+            $this->subject->translateFormEngineFinisherOptions($input, [$xlfPath]),
+        );
+    }
+
+    #[Test]
+    public function translateFormEditorDefinitionsTranslatesSelectOptionLabelsButKeepsSelectOptionValues(): void
+    {
+        $xlfPath = 'LLL:EXT:form_labels/Resources/Private/Language/locallang_form.xlf';
+
+        $input = [
+            'label' => 'element.Page.renderingOptions.nextButtonLabel',
+            'editors' => [
+                100 => [
+                    'propertyPath' => 'options.foo',
+                    'selectOptions' => [
+                        10 => [
+                            'value' => 'element.Page.renderingOptions.nextButtonLabel',
+                            'label' => 'element.Page.renderingOptions.nextButtonLabel',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'label' => 'FORM EN',
+            'editors' => [
+                100 => [
+                    'propertyPath' => 'options.foo',
+                    'selectOptions' => [
+                        10 => [
+                            'value' => 'element.Page.renderingOptions.nextButtonLabel',
+                            'label' => 'FORM EN',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame(
+            $expected,
+            $this->subject->translateFormEditorDefinitions($input, [$xlfPath]),
+        );
+    }
+
+    #[Test]
+    public function translateFormEditorDefinitionsKeepsValuesOfLanguageSelectOptionsOfEmailFinishers(): void
+    {
+        $formConfiguration = Yaml::parseFile(
+            GeneralUtility::getFileAbsFileName('EXT:form/Configuration/Form/Base/FormElements/Form.yaml')
+        );
+
+        $definitions = $this->subject->translateFormEditorDefinitions(
+            $formConfiguration['prototypes']['standard']['formElementsDefinition']['Form']['formEditor'],
+            [10 => 'EXT:form/Resources/Private/Language/Database.xlf'],
+        );
+        $languageSelectOptions = [];
+        foreach ($definitions['propertyCollections']['finishers'] as $finisher) {
+            foreach ($finisher['editors'] ?? [] as $editor) {
+                if (($editor['propertyPath'] ?? '') === 'options.translation.language') {
+                    $languageSelectOptions[$finisher['identifier']] = array_values($editor['selectOptions']);
+                }
+            }
+        }
+
+        $expected = [
+            ['value' => '', 'label' => 'Auto'],
+            ['value' => 'default', 'label' => 'EN'],
+        ];
+        self::assertSame(
+            [
+                'EmailToSender' => $expected,
+                'EmailToReceiver' => $expected,
+            ],
+            $languageSelectOptions,
+        );
     }
 
     #[Test]

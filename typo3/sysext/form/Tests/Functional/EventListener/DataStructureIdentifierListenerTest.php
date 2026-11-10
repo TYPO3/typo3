@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\EventListener;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
@@ -404,7 +406,8 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             ],
         ]);
         $translationServiceStub = self::createStub(TranslationService::class);
-        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationServiceStub->method('translateSingleValue')->willReturnArgument(0);
+        $translationServiceStub->method('translateFormEngineFinisherOptions')->willReturnArgument(0);
         $subject = new DataStructureIdentifierListener(
             $formPersistenceManagerStub,
             $configurationServiceStub,
@@ -424,6 +427,70 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
                 'config' => ['type' => 'input', 'default' => 'Hello'],
             ],
             $event->getDataStructure()['sheets'][$sheetIdentifier]['ROOT']['el']['settings.finishers.EmailToReceiver.subject']
+        );
+    }
+
+    #[Test]
+    public function modifyDataStructureTranslatesFinisherOverrideLabelsButKeepsSelectItemValues(): void
+    {
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
+        $finisherConfiguration = Yaml::parseFile(
+            GeneralUtility::getFileAbsFileName('EXT:form/Configuration/Form/Base/Finishers/EmailToSender.yaml')
+        );
+        $persistenceIdentifier = '1:/form_definitions/contact.form.yaml';
+        $event = new AfterFlexFormDataStructureParsedEvent(
+            ['sheets' => ['sDEF' => ['ROOT' => ['el' => []]]]],
+            [
+                'ext-form-persistenceIdentifier' => $persistenceIdentifier,
+                'ext-form-overrideFinishers' => 'enabled',
+            ],
+        );
+        $formPersistenceManagerStub = self::createStub(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerStub->method('listForms')->willReturn([
+            new FormMetadata(
+                identifier: 'contact',
+                type: 'Form',
+                name: 'Contact',
+                prototypeName: 'standard',
+                persistenceIdentifier: $persistenceIdentifier,
+                storageType: 'filemount',
+            ),
+        ]);
+        $formPersistenceManagerStub->method('load')->willReturn([
+            'identifier' => 'contact',
+            'prototypeName' => 'standard',
+            'finishers' => [
+                ['identifier' => 'EmailToSender'],
+            ],
+        ]);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
+        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
+            'finishersDefinition' => $finisherConfiguration['prototypes']['standard']['finishersDefinition'],
+            'formEngine' => [
+                'translationFiles' => [
+                    10 => 'EXT:form/Resources/Private/Language/Database.xlf',
+                ],
+            ],
+        ]);
+        $subject = new DataStructureIdentifierListener(
+            $formPersistenceManagerStub,
+            $configurationServiceStub,
+            $this->get(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
+            $this->get(LanguageServiceFactory::class),
+        );
+
+        $subject->modifyDataStructure($event);
+
+        $sheetIdentifier = md5($persistenceIdentifier . 'standard' . 'contact' . 'EmailToSender');
+        self::assertSame(
+            [
+                5 => ['label' => 'Auto', 'value' => ''],
+                10 => ['label' => 'EN', 'value' => 'default'],
+            ],
+            $event->getDataStructure()['sheets'][$sheetIdentifier]['ROOT']['el']['settings.finishers.EmailToSender.translation.language']['config']['items'],
         );
     }
 }

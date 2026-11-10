@@ -377,7 +377,7 @@ class FormEditorController extends ActionController
         $formEditorDefinitions = $prototype->getFormEditorDefinitions();
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
         $formEditorDefinitions = $this->formEditorEnrichmentService->enrichFormEditorDefinitions($formEditorDefinitions);
-        return $this->translationService->translateValuesRecursive(
+        return $this->translationService->translateFormEditorDefinitions(
             $formEditorDefinitions,
             $prototype->formEditor->translationFiles,
         );

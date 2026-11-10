@@ -350,9 +350,14 @@ readonly class DataStructureIdentifierListener
 
     protected function translateFormEngineConfiguration(FormEngineDefinition $formEngineDefinition, array $translationFiles): FormEngineDefinition
     {
-        return FormEngineDefinition::fromArray(
-            $this->translationService->translateValuesRecursive($formEngineDefinition->getRaw(), $translationFiles)
-        );
+        $configuration = $formEngineDefinition->getRaw();
+        if (isset($configuration['label'])) {
+            $configuration['label'] = $this->translationService->translateSingleValue($configuration['label'], $translationFiles);
+        }
+        if (is_array($configuration['elements'] ?? null)) {
+            $configuration['elements'] = $this->translationService->translateFormEngineFinisherOptions($configuration['elements'], $translationFiles);
+        }
+        return FormEngineDefinition::fromArray($configuration);
     }
 
     /**
