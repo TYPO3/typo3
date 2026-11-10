@@ -59,8 +59,8 @@ options will be removed from the form plugin but not the form editor.
 Translation of form plugin
 ==========================
 
-All option values under the following configuration keys can be
-translated:
+Labels, descriptions, placeholders, section titles and item labels of the
+finisher options under the following configuration key can be translated:
 
 ..  code-block:: yaml
 
@@ -81,9 +81,12 @@ translated:
             # custom translation file
             20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
 
-Each option value is searched for in the defined
-translation files. If a translation is found, the translated option value
-will be used.
+The values of :yaml:`label`, :yaml:`description`,
+:yaml:`config.placeholder`, :yaml:`title`, :yaml:`items.*.0` and
+:yaml:`config.itemGroups.*` are searched
+for in the defined translation files. If a translation is found, the translated
+value will be used. All other values, for example the values of select items,
+are used as configured.
 
 Imagine that the following option value is defined:
 

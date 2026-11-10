@@ -104,33 +104,147 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * Recursively translate values.
+     * Translate a single value.
      *
-     * @return array the modified array
+     * @param mixed $value The value to be translated
+     * @param array<int, string> $translationFiles List of translation files
+     * @return mixed The translated value
+     * @internal
+     */
+    public function translateSingleValue(mixed $value, array $translationFiles = []): mixed
+    {
+        $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
+
+        if ($translationFiles === []) {
+            return $this->translate($value, null, null, null, $value);
+        }
+
+        foreach ($translationFiles as $translationFile) {
+            $translatedValue = $this->translate($value, null, $translationFile);
+
+            if (!empty($translatedValue)) {
+                return $translatedValue;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Recursively translate values of given array.
+     *
+     * @param array $array The array with values to be recursively translated
+     * @param array $translationFiles List of translation files
+     * @return array The modified array
      * @internal
      */
     public function translateValuesRecursive(array $array, array $translationFiles = []): array
     {
         $result = $array;
+
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $result[$key] = $this->translateValuesRecursive($value, $translationFiles);
             } else {
-                $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
+                $result[$key] = $this->translateSingleValue($value, $translationFiles);
+            }
+        }
 
-                if (!empty($translationFiles)) {
-                    foreach ($translationFiles as $translationFile) {
-                        $translatedValue = $this->translate($value, null, $translationFile, null);
-                        if (!empty($translatedValue)) {
-                            $result[$key] = $translatedValue;
-                            break;
-                        }
-                    }
-                } else {
-                    $result[$key] = $this->translate($value, null, null, null, $value);
+        return $result;
+    }
+
+    /**
+     * Recursively translate form editor definitions.
+     *
+     * Works like translateValuesRecursive(), but keeps the values of select
+     * options untranslated. These are technical values which are stored in
+     * form definitions, only their labels are meant to be translated.
+     *
+     * @param array $formEditorDefinitions The form editor definitions to be translated
+     * @param array<int, string> $translationFiles List of translation files
+     * @return array The translated form editor definitions
+     * @internal
+     */
+    public function translateFormEditorDefinitions(array $formEditorDefinitions, array $translationFiles = []): array
+    {
+        $result = $formEditorDefinitions;
+
+        foreach ($result as $key => $value) {
+            if (!is_array($value)) {
+                $result[$key] = $this->translateSingleValue($value, $translationFiles);
+                continue;
+            }
+            if ($key !== 'selectOptions') {
+                $result[$key] = $this->translateFormEditorDefinitions($value, $translationFiles);
+                continue;
+            }
+            foreach ($value as $optionKey => $option) {
+                if (!is_array($option)) {
+                    continue;
+                }
+                $optionValue = $option['value'] ?? null;
+                $option = $this->translateFormEditorDefinitions($option, $translationFiles);
+                if ($optionValue !== null) {
+                    $option['value'] = $optionValue;
+                }
+                $result[$key][$optionKey] = $option;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Translate finisher options rendered as FormEngine elements.
+     *
+     * Performs translation of all suitable finisher options being rendered as FormEngine
+     * elements. Rendering of those elements happens in FlexForm overrides.
+     *
+     * Since only a subset of FormEngine config can be translated in a meaningful way,
+     * the element config cannot be just traversed and translated. It's rather required
+     * to check each config path against a list of translatable config paths. This list
+     * consists of the following configs:
+     *
+     * - Element label
+     * - Element description
+     * - Element placeholder (config.placeholder)
+     * - Element title (used in sections, e.g. recipients in email finishers)
+     * - Labels of element items (used for multi-value elements, e.g. checkboxes or select elements)
+     * - Labels of item groups (config.itemGroups, used for select elements)
+     *
+     * @param array<string, array<string, mixed>> $elements Elements and their appropriate FormEngine config to be translated
+     * @param array<int, string> $translationFiles List of translation files
+     * @return array<string, array<string, mixed>> Translated elements
+     * @internal
+     */
+    public function translateFormEngineFinisherOptions(array $elements, array $translationFiles = []): array
+    {
+        $translatableConfigPaths = [
+            // Element label, including labels of associative items
+            '/\.label$/',
+            '/\.description$/',
+            '/\.config\.placeholder$/',
+            // Element title (used in sections)
+            '/\.title$/',
+            // Element items (checkboxes, single select, multi select)
+            '/\.items\.\d+\.0$/',
+            // Labels of item groups (select elements)
+            '/\.config\.itemGroups\.[^.]+$/',
+        ];
+
+        $flattenedConfig = ArrayUtility::flattenPlain($elements);
+        $result = $elements;
+
+        foreach ($flattenedConfig as $path => $value) {
+            foreach ($translatableConfigPaths as $pattern) {
+                if (preg_match($pattern, $path) === 1) {
+                    $translatedValue = $this->translateSingleValue($value, $translationFiles);
+                    $result = ArrayUtility::setValueByPath($result, $path, $translatedValue, '.');
+                    break;
                 }
             }
         }
+
         return $result;
     }
 

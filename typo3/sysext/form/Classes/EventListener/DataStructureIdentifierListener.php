@@ -342,10 +342,14 @@ readonly class DataStructureIdentifierListener
     protected function translateFinisherDefinitionByIdentifier(string $finisherIdentifier, array $finishersDefinition, array $prototypeConfiguration): array
     {
         $translationFiles = $finishersDefinition[$finisherIdentifier]['FormEngine']['translationFiles'] ?? $prototypeConfiguration['formEngine']['translationFiles'];
-        $finishersDefinition[$finisherIdentifier]['FormEngine'] = $this->translationService->translateValuesRecursive(
-            $finishersDefinition[$finisherIdentifier]['FormEngine'],
-            $translationFiles
-        );
+        $formEngineConfiguration = $finishersDefinition[$finisherIdentifier]['FormEngine'];
+        if (isset($formEngineConfiguration['label'])) {
+            $formEngineConfiguration['label'] = $this->translationService->translateSingleValue($formEngineConfiguration['label'], $translationFiles);
+        }
+        if (is_array($formEngineConfiguration['elements'] ?? null)) {
+            $formEngineConfiguration['elements'] = $this->translationService->translateFormEngineFinisherOptions($formEngineConfiguration['elements'], $translationFiles);
+        }
+        $finishersDefinition[$finisherIdentifier]['FormEngine'] = $formEngineConfiguration;
         return $finishersDefinition;
     }
 

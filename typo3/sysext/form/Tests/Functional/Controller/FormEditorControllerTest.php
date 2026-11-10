@@ -164,7 +164,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
     public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
         $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationServiceMock->method('translateFormEditorDefinitions')->willReturnArgument(0);
         $formEditorEnrichmentServiceMock = $this->createMock(FormEditorEnrichmentService::class);
         $formEditorEnrichmentServiceMock->method('enrichFormEditorDefinitions')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
@@ -559,7 +559,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
             ->createFromUserPreferences($GLOBALS['BE_USER']);
 
         $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationServiceMock->method('translateFormEditorDefinitions')->willReturnArgument(0);
 
         $subject = $this->getAccessibleMock(
             FormEditorController::class,
