@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Event\AfterBackendUserListConstraintsAssembledFromDemandEvent;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -34,6 +35,13 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class BackendUserRepository extends Repository
 {
+    protected GroupResolver $groupResolver;
+
+    public function injectGroupResolver(GroupResolver $groupResolver): void
+    {
+        $this->groupResolver = $groupResolver;
+    }
+
     /**
      * Finds Backend Users on a given list of uids
      */
@@ -112,14 +120,20 @@ class BackendUserRepository extends Repository
                 $constraints[] = $query->greaterThanOrEqual('lastlogin', time() - $sessionTimeout);
         }
 
-        // In backend user group
+        // In backend user group, directly or inherited through subgroups
         if ($demand->getBackendUserGroup()) {
-            $constraints[] = $query->logicalOr(
-                $query->equals('usergroup', $demand->getBackendUserGroup()),
-                $query->like('usergroup', $demand->getBackendUserGroup() . ',%'),
-                $query->like('usergroup', '%,' . $demand->getBackendUserGroup()),
-                $query->like('usergroup', '%,' . $demand->getBackendUserGroup() . ',%'),
-            );
+            $groupIds = [
+                $demand->getBackendUserGroup(),
+                ...$this->groupResolver->findAllParentGroupIds([$demand->getBackendUserGroup()], 'be_groups'),
+            ];
+            $groupConstraints = [];
+            foreach ($groupIds as $groupId) {
+                $groupConstraints[] = $query->equals('usergroup', $groupId);
+                $groupConstraints[] = $query->like('usergroup', $groupId . ',%');
+                $groupConstraints[] = $query->like('usergroup', '%,' . $groupId);
+                $groupConstraints[] = $query->like('usergroup', '%,' . $groupId . ',%');
+            }
+            $constraints[] = $query->logicalOr(...$groupConstraints);
         }
         $constraints = $this->eventDispatcher->dispatch(
             new AfterBackendUserListConstraintsAssembledFromDemandEvent(

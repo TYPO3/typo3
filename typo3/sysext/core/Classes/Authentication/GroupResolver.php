@@ -105,6 +105,20 @@ readonly class GroupResolver
     }
 
     /**
+     * Find the uids of all groups which include one of the given groups as subgroup,
+     * recursively. Members of these groups inherit the given groups.
+     *
+     * @param int[] $groupIds
+     * @param string $sourceTable e.g. be_groups or fe_groups
+     * @return int[] uids of the including groups, without the given groups
+     */
+    public function findAllParentGroupIds(array $groupIds, string $sourceTable): array
+    {
+        $groupIds = array_map(intval(...), $groupIds);
+        return $this->fetchParentGroupsRecursive($sourceTable, $groupIds, $groupIds);
+    }
+
+    /**
      * Load a list of group uids, and take into account if groups have been loaded before.
      *
      * @param int[] $groupIds
