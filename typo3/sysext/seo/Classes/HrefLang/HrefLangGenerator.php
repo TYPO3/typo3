@@ -56,8 +56,9 @@ class HrefLangGenerator
         $siteLanguage = $request->getAttribute('language', $site->getDefaultLanguage());
         $pageId = $pageInformation->getId();
 
+        $languageMenu = $languages['languagemenu'] ?? [];
         $hrefLangs = $event->getHrefLangs();
-        foreach ($languages['languagemenu'] as $language) {
+        foreach ($languageMenu as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
                 if ($language['languageId'] === LanguageMarker::DEFAULT_LANGUAGE) {
                     // No need to fetch default language
@@ -81,10 +82,9 @@ class HrefLangGenerator
                 $hrefLangs[$language['hreflang']] = $href;
             }
         }
-        if (count($hrefLangs) > 1) {
-            if (array_key_exists($languages['languagemenu'][0]['hreflang'], $hrefLangs)) {
-                $hrefLangs['x-default'] = $hrefLangs[$languages['languagemenu'][0]['hreflang']];
-            }
+        $defaultHrefLang = $languageMenu[0]['hreflang'] ?? null;
+        if (count($hrefLangs) > 1 && $defaultHrefLang !== null && array_key_exists($defaultHrefLang, $hrefLangs)) {
+            $hrefLangs['x-default'] = $hrefLangs[$defaultHrefLang];
         }
         $event->setHrefLangs($hrefLangs);
     }
