@@ -87,6 +87,9 @@ class DatabaseIntegrityCheck
         // Traverse the records selected
         while ($row = $result->fetchAssociative()) {
             $newID = $row['uid'];
+            if (isset($this->recStats['all_valid']['pages'][$newID])) {
+                continue;
+            }
             // Register various data for this item:
             if ($row['sys_language_uid'] === LanguageMarker::DEFAULT_LANGUAGE) {
                 $this->pageIdArray[$newID] = $row;
