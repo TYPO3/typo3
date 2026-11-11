@@ -220,8 +220,8 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                     $imageOperations->mask(
                         $tempFileInfo->getRealPath(),
                         $temporaryFileName,
-                        $maskImage->getForLocalProcessing(),
-                        $maskBackgroundImage->getForLocalProcessing(),
+                        $maskImage->getForLocalProcessing(false),
+                        $maskBackgroundImage->getForLocalProcessing(false),
                         $command,
                         $configuration
                     );
@@ -232,8 +232,8 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                         $imageOperations->mask(
                             $temporaryFileName,
                             $temporaryFileName,
-                            $maskBottomImage->getForLocalProcessing(),
-                            $maskBottomImageMask->getForLocalProcessing(),
+                            $maskBottomImage->getForLocalProcessing(false),
+                            $maskBottomImageMask->getForLocalProcessing(false),
                             $command,
                             $configuration
                         );
