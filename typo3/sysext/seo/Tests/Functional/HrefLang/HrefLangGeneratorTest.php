@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class HrefLangGeneratorTest extends FunctionalTestCase
@@ -215,6 +216,31 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
                 ],
             ],
         ];
+    }
+
+    #[Test]
+    public function noHrefLangTagsAreRenderedIfAllLanguagesAreDisabled(): void
+    {
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+            [
+                array_replace($this->buildDefaultLanguageConfiguration('EN', '/'), ['enabled' => false]),
+                array_replace($this->buildLanguageConfiguration('DE', '/de'), ['enabled' => false]),
+            ]
+        );
+        $this->setUpFrontendRootPage(
+            1000,
+            ['EXT:seo/Tests/Functional/Fixtures/HrefLang.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/hello'),
+            (new InternalRequestContext())->withBackendUserId(1)
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringNotContainsString('<link rel="alternate" hreflang="', (string)$response->getBody());
     }
 
     protected static function failIfArrayIsNotEmpty(array $items): void
