@@ -118,6 +118,8 @@ export default {
             'cropperjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropperjs.js',
             'css-tree': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/css-tree.js',
             'flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr.js',
+            'marked': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/marked.js',
+            'dompurify': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/dompurify.js',
             'flatpickr/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr/',
             'interactjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/interact.js',
             'intl-messageformat': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/intl-messageformat.js',

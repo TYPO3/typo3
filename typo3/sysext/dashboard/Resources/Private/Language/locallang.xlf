@@ -66,6 +66,9 @@
       <trans-unit id="widget.move">
         <source>Move Widget</source>
       </trans-unit>
+      <trans-unit id="widget.move.active">
+        <source>Place Widget</source>
+      </trans-unit>
       <trans-unit id="widget.remove">
         <source>Remove Widget</source>
       </trans-unit>
