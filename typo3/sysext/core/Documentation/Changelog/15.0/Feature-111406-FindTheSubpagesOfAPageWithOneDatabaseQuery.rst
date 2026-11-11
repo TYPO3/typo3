@@ -34,15 +34,24 @@ The pages are found as the backend sees the page tree:
     evaluated on the live page, as page permissions are not versioned. A page
     not matching them is left out together with its subpages.
 
+Queries restricted to the records of a page and the pages below it no longer
+collect the uids of these pages first and add them as :sql:`pid IN (...)`,
+which made queries slow and exceeded the number of placeholders a database
+accepts in one statement for large page trees. The database resolves the pages
+of the tree within the query as a subquery instead. If the queried table lives
+on another database connection than the :sql:`pages` table, a list of the page
+uids is used as before.
+
 The following parts of TYPO3 find subpages this way now:
 
 *   :php:`\TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository::getFlattenedPages()`,
-    used by the record list, the live search, the log module and the suggest
-    wizard
+    used by the live search and the suggest wizard
+*   the record list with search levels, the log module with a depth and the
+    recycler, which restrict their queries with
+    :php:`createPageTreeConstraint()`
 *   the workspaces module, to collect the versions below a page
 *   Extbase backend modules with :typoscript:`persistence.recursive`
 *   the query search in the "System > Database" module
-*   the recycler
 *   the indexed search administration
 *   the page trees of the "Permissions" module, the "Localization Overview",
     the export of :php:`EXT:impexp` and the indexed search administration, which
@@ -67,6 +76,11 @@ Workspaces module, versions below a page                    907         1
 Extbase :typoscript:`persistence.recursive` in backend      905         1
 "System > Reports > Record Statistics", per statistic       1561        1
 ==========================================================  ==========  =========
+
+The record list, the log module and the recycler need no query to restrict
+their queries to a page tree anymore, and their queries contain no list of page
+uids. The record list searches with search levels in the workspace of the
+backend user, so records on pages that only exist in this workspace are found.
 
 Extbase backend modules with :typoscript:`persistence.recursive` and the link
 validator no longer receive the uids of workspace versions as page ids.

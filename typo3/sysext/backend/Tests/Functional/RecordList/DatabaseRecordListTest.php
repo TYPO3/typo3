@@ -409,6 +409,33 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         self::assertSame([9002, 9003, 9004], $this->getMarkedRowUids($xpath, 'tt_content'));
     }
 
+    public static function searchLevelsIncludeThePagesBelowThePageDataProvider(): iterable
+    {
+        yield 'admin, live' => [1, 8300, 0, [8911, 8912]];
+        yield 'admin, workspace with a page only existing in it' => [1, 8300, 1, [8911, 8912, 8913]];
+        yield 'admin, page not shown to everybody' => [1, 8303, 0, [8914, 8915, 8916]];
+        yield 'editor, page tree root searches the web mounts without pages not shown' => [10, 0, 0, [8914]];
+        yield 'editor, page without pages not shown' => [10, 8303, 0, [8914]];
+    }
+
+    #[DataProvider('searchLevelsIncludeThePagesBelowThePageDataProvider')]
+    #[Test]
+    public function searchLevelsIncludeThePagesBelowThePage(int $backendUserId, int $pageId, int $workspaceId, array $expectedUids): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/search_levels_workspace.csv');
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $backendUser->workspace = $workspaceId;
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest('http://localhost/'));
+        $recordList->start($pageId, 'tt_content', 0, '', 99);
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->select('uid')->from('tt_content')->orderBy('uid');
+        new \ReflectionMethod($recordList, 'addPageIdConstraint')->invoke($recordList, 'tt_content', $queryBuilder, 99);
+
+        self::assertSame($expectedUids, array_map(intval(...), $queryBuilder->executeQuery()->fetchFirstColumn()));
+    }
+
     #[Test]
     public function pageTranslationInOrphanedLanguageIsListedAndMarked(): void
     {

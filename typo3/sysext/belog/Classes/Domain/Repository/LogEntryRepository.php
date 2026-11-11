@@ -18,13 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Belog\Domain\Repository;
 
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Log\LogLevel as Typo3LogLevel;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -113,23 +114,29 @@ readonly class LogEntryRepository
      */
     protected function addPageTreeConstraintsToQuery(Constraint $constraint, QueryBuilder $query): ?string
     {
-        $pageIds = [];
-        // Check if we should get a whole tree of pages and not only a single page
-        if ($constraint->getDepth() > 0) {
-            $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
-            $repository->setAdditionalWhereClause($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
-            $pages = $repository->getFlattenedPages([$constraint->getPageId()], $constraint->getDepth());
-            foreach ($pages as $page) {
-                $pageIds[] = (int)$page['uid'];
-            }
+        $pageId = (int)$constraint->getPageId();
+        $depth = max($constraint->getDepth(), 0);
+        if ($pageId === 0 && $depth === 0) {
+            return null;
         }
-        if (!empty($constraint->getPageId())) {
-            $pageIds[] = $constraint->getPageId();
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        // With a depth, the log entries of the pages below the page are found as well
+        $pageTreeConstraint = GeneralUtility::makeInstance(PageDescendantsRepository::class)->createPageTreeConstraint(
+            $query,
+            'event_pid',
+            [$pageId],
+            $depth,
+            0,
+            static fn(): string => $permsClause,
+        );
+        if ($pageId === 0) {
+            // The pages below the page tree root, without log entries not related to a page
+            return (string)$query->expr()->and(
+                $pageTreeConstraint,
+                $query->expr()->neq('event_pid', $query->createNamedParameter(0, Connection::PARAM_INT))
+            );
         }
-        if (!empty($pageIds)) {
-            return $query->expr()->in('event_pid', $query->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY));
-        }
-        return null;
+        return $pageTreeConstraint;
     }
 
     /**

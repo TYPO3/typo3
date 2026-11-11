@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","title","t3ver_oid","t3ver_wsid","t3ver_state","perms_userid","perms_groupid","perms_everybody"
+,8300,0,"Root",0,0,0,0,0,1
+,8301,8300,"Subpage",0,0,0,0,0,1
+,8302,8301,"New in workspace",0,1,1,0,0,1
+,8303,0,"Other root",0,0,0,0,0,1
+,8304,8303,"Not shown to everybody",0,0,0,0,0,0
+,8305,8304,"Below not shown to everybody",0,0,0,0,0,1
+"tt_content"
+,"uid","pid","header","t3ver_oid","t3ver_wsid","t3ver_state"
+,8911,8300,"On root",0,0,0
+,8912,8301,"On subpage",0,0,0
+,8913,8302,"On page new in workspace",0,1,1
+,8914,8303,"On other root",0,0,0
+,8915,8304,"On page not shown to everybody",0,0,0
+,8916,8305,"Below page not shown to everybody",0,0,0
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin"
+,10,0,"editor",10,0,0
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints"
+,10,0,"editors",0,8303

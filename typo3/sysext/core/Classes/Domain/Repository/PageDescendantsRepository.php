@@ -51,6 +51,8 @@ final readonly class PageDescendantsRepository
      */
     private const array STRUCTURE_FIELDS = ['uid', 'pid', 'sorting'];
 
+    private const array CTE_FIELDS = ['uid', 'pid', 'sorting', '_ORIG_uid', '__CTE_RECORD_UID__', '__CTE_LEVEL__', '__CTE_PATH__', '__CTE_IS_CYCLE__'];
+
     public function __construct(
         private ConnectionPool $connectionPool,
     ) {}
@@ -95,14 +97,7 @@ final readonly class PageDescendantsRepository
         }
         $cte = $this->connectionPool->getQueryBuilderForTable('pages');
         $cte->getRestrictions()->removeAll();
-        $cteFields = ['uid', 'pid', 'sorting', '_ORIG_uid', '__CTE_RECORD_UID__', '__CTE_LEVEL__', '__CTE_PATH__', '__CTE_IS_CYCLE__'];
-        $cte->typo3_withRecursive(
-            'cte',
-            false,
-            $this->createPartQueryBuilder($cte, $workspaceId, $liveConstraint, $restrictions, $pageIds, $depth, $includeDeleted, $includeDeletedInWorkspace),
-            $this->createPartQueryBuilder($cte, $workspaceId, $liveConstraint, $restrictions, null, $depth, $includeDeleted, $includeDeletedInWorkspace),
-            array_map($cte->quoteIdentifier(...), $cteFields),
-        );
+        $this->addCommonTableExpression($cte, $cte, 'cte', $pageIds, $depth, $workspaceId, $liveConstraint, $restrictions, $includeDeleted, $includeDeletedInWorkspace);
         // Fields are returned in the order of the table columns, like a page record
         $selectFields = [];
         foreach ($this->resolveFields($fields) as $field) {
@@ -116,11 +111,100 @@ final readonly class PageDescendantsRepository
                 $cte->expr()->eq('record.uid', $cte->quoteIdentifier('cte.__CTE_RECORD_UID__'))
             );
         }
-        foreach (array_diff($cteFields, self::STRUCTURE_FIELDS) as $field) {
+        foreach (array_diff(self::CTE_FIELDS, self::STRUCTURE_FIELDS) as $field) {
             $selectFields[] = 'cte.' . $field;
         }
         $rows = $cte->select(...$selectFields)->from('cte')->executeQuery()->fetchAllAssociative();
         return $this->sortDepthFirst($pageIds, $rows);
+    }
+
+    /**
+     * Returns a constraint for a field holding a page uid - for example the "pid" of the
+     * records of a table - to be one of the given pages or one of their descendants, down
+     * to $depth levels below the given pages.
+     *
+     * The descendants are resolved by the database within the query, as a subquery with a
+     * recursive common table expression, so no list of page uids is built. The descendants
+     * are resolved as by findDescendants(). If the query builder does not use the database
+     * connection of the pages table, the descendants are fetched first and the constraint
+     * holds their uids.
+     *
+     * @param QueryBuilder $queryBuilder Query the constraint is added to, its named parameters are used
+     * @param string $fieldName Field holding a page uid, e.g. "pid" or "tt_content.pid"
+     * @param list<int> $pageIds Pages, whose uids are always matched by the constraint
+     * @param int $depth Number of levels below the given pages, 0 for the given pages only
+     * @param (\Closure(ExpressionBuilder, string): string)|null $liveConstraint See findDescendants()
+     * @param list<QueryRestrictionInterface> $restrictions See findDescendants()
+     * @param bool $includeDeleted See findDescendants()
+     * @param bool $includeDeletedInWorkspace See findDescendants()
+     */
+    public function createPageTreeConstraint(
+        QueryBuilder $queryBuilder,
+        string $fieldName,
+        array $pageIds,
+        int $depth,
+        int $workspaceId,
+        ?\Closure $liveConstraint = null,
+        array $restrictions = [],
+        bool $includeDeleted = false,
+        bool $includeDeletedInWorkspace = false,
+    ): string {
+        $pageIds = array_values(array_unique(array_map(intval(...), $pageIds)));
+        $depth = min($depth, self::MAX_TRAVERSAL_LEVELS);
+        $expr = $queryBuilder->expr();
+        if ($pageIds === []) {
+            return '1 = 0';
+        }
+        $pageConstraint = $expr->in($fieldName, $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY));
+        if ($depth < 1) {
+            return $pageConstraint;
+        }
+        if ($queryBuilder->getConnection() !== $this->connectionPool->getConnectionForTable('pages')) {
+            $descendants = $this->findDescendants($pageIds, $depth, $workspaceId, $liveConstraint, $restrictions, [], $includeDeleted, $includeDeletedInWorkspace);
+            if ($descendants === []) {
+                return $pageConstraint;
+            }
+            return (string)$expr->or(
+                $pageConstraint,
+                $expr->in($fieldName, $queryBuilder->quoteArrayBasedValueListToIntegerList(array_column($descendants, 'uid')))
+            );
+        }
+        // A unique name, as the query may contain further common table expressions
+        $cteName = 'page_descendants_' . count($queryBuilder->getParameters());
+        $subQuery = $this->connectionPool->getQueryBuilderForTable('pages');
+        $subQuery->getRestrictions()->removeAll();
+        $this->addCommonTableExpression($subQuery, $queryBuilder, $cteName, $pageIds, $depth, $workspaceId, $liveConstraint, $restrictions, $includeDeleted, $includeDeletedInWorkspace);
+        $subQuery->select($cteName . '.uid')->from($cteName);
+        return (string)$expr->or(
+            $pageConstraint,
+            $queryBuilder->quoteIdentifier($fieldName) . ' IN (' . $subQuery->getSQL() . ')'
+        );
+    }
+
+    /**
+     * Adds the recursive common table expression resolving the descendants of the given pages
+     * to $queryBuilder. Its named parameters are created in $parameterQueryBuilder, which is the
+     * query the SQL is finally executed with.
+     */
+    private function addCommonTableExpression(
+        QueryBuilder $queryBuilder,
+        QueryBuilder $parameterQueryBuilder,
+        string $cteName,
+        array $pageIds,
+        int $depth,
+        int $workspaceId,
+        ?\Closure $liveConstraint,
+        array $restrictions,
+        bool $includeDeleted,
+        bool $includeDeletedInWorkspace,
+    ): void {
+        $queryBuilder->typo3_withRecursive(
+            $cteName,
+            false,
+            $this->createPartQueryBuilder($parameterQueryBuilder, $cteName, $workspaceId, $liveConstraint, $restrictions, $pageIds, $depth, $includeDeleted, $includeDeletedInWorkspace),
+            $this->createPartQueryBuilder($parameterQueryBuilder, $cteName, $workspaceId, $liveConstraint, $restrictions, null, $depth, $includeDeleted, $includeDeletedInWorkspace),
+            array_map($parameterQueryBuilder->quoteIdentifier(...), self::CTE_FIELDS),
+        );
     }
 
     /**
@@ -135,6 +219,7 @@ final readonly class PageDescendantsRepository
      */
     private function createPartQueryBuilder(
         QueryBuilder $cte,
+        string $cteName,
         int $workspaceId,
         ?\Closure $liveConstraint,
         array $restrictions,
@@ -190,7 +275,7 @@ final readonly class PageDescendantsRepository
             $constraints[] = $expr->in($pageAlias . '.pid', $cte->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY));
         } else {
             $queryBuilder
-                ->from('cte', 'c')
+                ->from($cteName, 'c')
                 ->innerJoin('c', 'pages', $pageAlias, $expr->eq($pageAlias . '.pid', $cte->quoteIdentifier('c.uid')));
             $constraints[] = $expr->eq('c.__CTE_IS_CYCLE__', $cte->createNamedParameter(0, Connection::PARAM_INT));
             $constraints[] = $expr->lt('c.__CTE_LEVEL__', $cte->createNamedParameter($depth, Connection::PARAM_INT));

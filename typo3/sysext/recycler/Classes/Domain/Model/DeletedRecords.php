@@ -16,13 +16,10 @@
 namespace TYPO3\CMS\Recycler\Domain\Model;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -54,8 +51,6 @@ class DeletedRecords
 
     public function __construct(
         private readonly TcaSchemaFactory $tcaSchemaFactory,
-        #[Autowire(service: 'cache.runtime')]
-        protected readonly FrontendInterface $runtimeCache,
         private readonly ConnectionPool $connectionPool,
         private readonly PageDescendantsRepository $pageDescendantsRepository,
     ) {}
@@ -139,7 +134,6 @@ class DeletedRecords
     protected function getFilteredQueryBuilder(TcaSchema $schema, int $pid, int $depth, string $filter): QueryBuilder
     {
         $table = $schema->getName();
-        $pidList = $this->getTreeList($pid, $depth);
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
@@ -171,18 +165,23 @@ class DeletedRecords
             }
         }
 
-        $maxBindParameters = PlatformInformation::getMaxBindParameters($queryBuilder->getConnection()->getDatabasePlatform());
-        $pidConstraints = [];
-        foreach (array_chunk($pidList, $maxBindParameters - 10) as $chunk) {
-            $pidConstraints[] = $queryBuilder->expr()->in(
-                'pid',
-                $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
-            );
-        }
+        $backendUser = $this->getBackendUser();
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        // Records on deleted pages are found as well
+        $pageTreeConstraint = $this->pageDescendantsRepository->createPageTreeConstraint(
+            $queryBuilder,
+            'pid',
+            [$pid],
+            $depth,
+            (int)$backendUser->workspace,
+            static fn(): string => $permsClause,
+            [],
+            true,
+        );
         $queryBuilder->where(
             $queryBuilder->expr()->and(
                 $filterConstraint,
-                $queryBuilder->expr()->or(...$pidConstraints)
+                $pageTreeConstraint
             )
         );
 
@@ -329,29 +328,6 @@ class DeletedRecords
     public function getDeletedRows(): array
     {
         return $this->deletedRows;
-    }
-
-    protected function getTreeList(int $id, int $depth): array
-    {
-        $identifier = md5($id . '_' . $depth);
-        $pageTree = $this->runtimeCache->get($identifier);
-        if ($pageTree === false) {
-            $backendUser = $this->getBackendUser();
-            $permsClause = QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
-            $descendants = $this->pageDescendantsRepository->findDescendants(
-                [abs($id)],
-                $depth,
-                (int)$backendUser->workspace,
-                static fn(): string => $permsClause,
-                [],
-                [],
-                true,
-            );
-            $pageTree = [$id, ...array_column($descendants, 'uid')];
-            $this->runtimeCache->set($identifier, $pageTree);
-        }
-
-        return $pageTree;
     }
 
     /**

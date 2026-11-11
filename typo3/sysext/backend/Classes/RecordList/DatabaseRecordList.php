@@ -42,14 +42,11 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\ComponentGroup;
 use TYPO3\CMS\Backend\Template\Components\ComponentInterface;
-use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForRecordListingEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -61,6 +58,7 @@ use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -3156,41 +3154,6 @@ class DatabaseRecordList
     }
 
     /**
-     * Get all allowed mount pages to be searched in.
-     *
-     * @param int $id Page id
-     * @param int $depth Depth to go down
-     * @return int[]
-     */
-    protected function getSearchableWebmounts(int $id, int $depth): array
-    {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $hash = 'webmounts_list' . HashAlgo::canonicalize()->hash($id . '-' . $depth . '-' . $this->perms_clause);
-        $idList = $runtimeCache->get($hash);
-        if ($idList === false) {
-            $backendUser = $this->getBackendUserAuthentication();
-
-            if (!$backendUser->isAdmin() && $id === 0) {
-                $mountPoints = $backendUser->getWebmounts();
-            } else {
-                $mountPoints = [$id];
-            }
-            // Add the initial mount points to the pids
-            $idList = $mountPoints;
-            $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
-            $repository->setAdditionalWhereClause($this->perms_clause);
-            $pages = $repository->getFlattenedPages($mountPoints, $depth);
-            foreach ($pages as $page) {
-                $idList[] = (int)$page['uid'];
-            }
-            $idList = array_unique($idList);
-            $runtimeCache->set($hash, $idList);
-        }
-
-        return $idList;
-    }
-
-    /**
      * Add conditions to the QueryBuilder object ($queryBuilder) to limit a
      * query to a list of page IDs based on the current search level setting.
      *
@@ -3222,11 +3185,17 @@ class DatabaseRecordList
                 )
             );
         } elseif ($searchLevels > 0) {
-            $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels);
+            $backendUser = $this->getBackendUserAuthentication();
+            $mountPoints = !$backendUser->isAdmin() && $this->id === 0 ? $backendUser->getWebmounts() : [$this->id];
+            $permsClause = QueryHelper::stripLogicalOperatorPrefix($this->perms_clause);
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
+                GeneralUtility::makeInstance(PageDescendantsRepository::class)->createPageTreeConstraint(
+                    $queryBuilder,
                     $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($allowedMounts, Connection::PARAM_INT_ARRAY)
+                    $mountPoints,
+                    $searchLevels,
+                    (int)$backendUser->workspace,
+                    $permsClause !== '' ? static fn(): string => $permsClause : null,
                 )
             );
         }
