@@ -337,6 +337,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdFirst);
     }
 
+    public function moveContentToTopOfDifferentColumn(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdThird, self::VALUE_PageId, ['colPos' => 1]);
+    }
+
     public function moveContentToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);

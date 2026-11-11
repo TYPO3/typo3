@@ -684,6 +684,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function moveContentToTopOfDifferentColumn(): void
+    {
+        parent::moveContentToTopOfDifferentColumn();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToTopOfDifferentColumn.csv');
+    }
+
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
