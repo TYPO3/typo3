@@ -21,6 +21,9 @@ $GLOBALS['TCA']['pages']['columns']['editlock']['l10n_mode'] = 'exclude';
 // 'sys_language_uid' has exclude=true by default, unset this for pages
 unset($GLOBALS['TCA']['pages']['columns']['sys_language_uid']['exclude']);
 
+// 'fe_group' has l10n_mode=exclude, frontend access is evaluated on the default language page
+$GLOBALS['TCA']['pages']['columns']['fe_group']['l10n_mode'] = 'exclude';
+
 // transOrigPointerField needs an adaptions on pages table, deviating from default:
 // sys_language_uid = -1 is not allowed.
 $GLOBALS['TCA']['pages']['columns']['l10n_parent']['config']['foreign_table_where'] = 'AND {#pages}.{#uid}=###CURRENT_PID### AND {#pages}.{#sys_language_uid} = ' . LanguageMarker::DEFAULT_LANGUAGE;
