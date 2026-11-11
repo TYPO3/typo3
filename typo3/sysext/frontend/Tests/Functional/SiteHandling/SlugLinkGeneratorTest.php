@@ -148,6 +148,41 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public static function linkTargetIsGeneratedDataProvider(): \Generator
+    {
+        yield 'same site' => [1200, false, '<a href="/features" target="internal">EN: Features</a>'];
+        yield 'same site with absolute URL' => [1200, true, '<a href="https://acme.us/features" target="internal">EN: Features</a>'];
+        yield 'different site' => [2100, false, '<a href="https://blog.acme.com/authors" target="external" rel="noreferrer">Authors</a>'];
+        yield 'nested sub-site' => [1300, false, '<a href="https://products.acme.com/products" target="external" rel="noreferrer">EN: Products</a>'];
+        yield 'link page to different site' => [2740, false, '<a href="https://blog.acme.com/jane/jane" target="external" rel="noreferrer">Jane Doe</a>'];
+        yield 'link page with target to different site' => [2750, false, '<a href="https://blog.acme.com/jane/jane?my-parameter=123&amp;cHash=bffc3d9f2604437744c0da1411665776f1d8e78599c6d795d0fb4532516c8287#c33" target="_blank" rel="noreferrer">Jane Doe</a>'];
+    }
+
+    #[DataProvider('linkTargetIsGeneratedDataProvider')]
+    #[Test]
+    public function linkTargetIsGenerated(int $targetPageId, bool $forceAbsoluteUrl, string $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.us/')
+                ->withPageId(1100)
+                ->withInstructions([
+                    new TypoScriptInstruction()
+                        ->withTypoScript([
+                            'config.' => [
+                                'intTarget' => 'internal',
+                                'extTarget' => 'external',
+                            ],
+                        ]),
+                    $this->createTypoLinkTagInstruction([
+                        'parameter' => $targetPageId,
+                        'forceAbsoluteUrl' => $forceAbsoluteUrl,
+                    ]),
+                ])
+        );
+
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     public static function linkIsGeneratedFromMountPointDataProvider(): array
     {
         $instructions = [
