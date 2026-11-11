@@ -1,0 +1,11 @@
+"pages",,,,,,,,,
+,"uid","pid","title","sys_language_uid","l10n_parent","fe_group","t3ver_wsid","t3ver_oid","deleted"
+,1,0,"Restricted page",0,0,"-2",0,0,0
+,2,0,"Restricted page - Dansk",1,1,"-2",0,0,0
+,3,0,"Restricted page - Deutsch",2,1,"-2",0,0,0
+,4,0,"Public page",0,0,"",0,0,0
+,5,0,"Public page - Dansk",1,4,"",0,0,0
+,6,0,"Synchronized page",0,0,"1",0,0,0
+,7,0,"Synchronized page - Dansk",1,6,"1",0,0,0
+,8,0,"Public page - Deutsch",2,4,"",0,0,1
+,9,0,"Public page - Dansk",1,4,"1",1,5,0

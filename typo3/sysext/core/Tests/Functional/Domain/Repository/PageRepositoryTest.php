@@ -315,6 +315,30 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals(new Page($orig2), $row['_TRANSLATION_SOURCE']);
     }
 
+    public static function getPageOverlayKeepsUserGroupsOfDefaultLanguageDataProvider(): array
+    {
+        return [
+            'restricted page with unrestricted translation' => ['-2', ''],
+            'unrestricted page with restricted translation' => ['', '-2'],
+            'translation restricted to other groups' => ['1', '2,3'],
+        ];
+    }
+
+    #[DataProvider('getPageOverlayKeepsUserGroupsOfDefaultLanguageDataProvider')]
+    #[Test]
+    public function getPageOverlayKeepsUserGroupsOfDefaultLanguage(string $defaultGroups, string $translationGroups): void
+    {
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
+        $connection->update('pages', ['fe_group' => $defaultGroups], ['uid' => 1]);
+        $connection->update('pages', ['fe_group' => $translationGroups], ['uid' => 901]);
+
+        $subject = new PageRepository();
+        $row = $subject->getPageOverlay($subject->getPage(1, true), 1);
+        $this->assertOverlayRow($row);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertSame($defaultGroups, $row['fe_group']);
+    }
+
     #[Test]
     public function getPagesOverlayByRowMultipleSomeNotOverlaid(): void
     {

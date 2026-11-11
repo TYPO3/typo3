@@ -581,6 +581,9 @@ readonly class PageRepository
         $languageUids = array_filter($languageUids);
         $languageField = $languageCapability->getLanguageField()->getName();
         $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
+        $userGroupField = $schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)
+            ? $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName()
+            : null;
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
@@ -630,8 +633,12 @@ readonly class PageRepository
                 if (is_array($row)) {
                     $row['_LOCALIZED_UID'] = (int)$row['uid'];
                     $row['_REQUESTED_OVERLAY_LANGUAGE'] = $languageUids[0];
-                    // Unset vital fields that are NOT allowed to be overlaid:
+                    // Unset vital fields that are NOT allowed to be overlaid. Frontend group access
+                    // is defined by the default language page, even if a translation has a stale value.
                     unset($row['uid'], $row['pid']);
+                    if ($userGroupField !== null) {
+                        unset($row[$userGroupField]);
+                    }
                     $overlays[$pageId] = $row;
 
                     // Language fallback found, stop querying further languages
