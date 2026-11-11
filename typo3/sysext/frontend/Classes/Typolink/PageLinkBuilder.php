@@ -293,9 +293,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                 // is on the same site pagetree. If this is the case, we'll treat it as internal
                 // @todo: currently this does not check if the target page is a mounted page in a different site,
                 // so it is treating this as an absolute URL, which is wrong
-                if ($currentSite && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
-                    $treatAsExternalLink = false;
-                }
+                $treatAsExternalLink = !$currentSite || $currentSite->getRootPageId() !== $siteOfTargetPage->getRootPageId();
             }
             $url = (string)$url;
         }
