@@ -24,25 +24,42 @@ export class EditablePageTitle extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      --input-border-color: #bebebe;
-      --input-hover-border-color: #bebebe;
-      --input-focus-border-color: #bebebe;
-      --button-border-radius: var(--typo3-input-border-radius);
-      --button-color: inherit;
-      --button-bg: transparent;
-      --button-border-color: transparent;
-      --button-hover-color: inherit;
-      --button-hover-bg: #cacaca;
-      --button-hover-border-color: #bebebe;
-      --button-focus-color: inherit;
-      --button-focus-bg: #cacaca;
-      --button-focus-border-color: #bebebe;
-      --button-padding-x: var(--typo3-input-padding-x);
-      --button-padding-y: var(--typo3-input-padding-y);
+      --input-color: var(--typo3-input-color);
+      --input-bg: var(--typo3-input-bg);
+      --input-border-width: var(--typo3-input-border-width);
+      --input-border-radius: calc(var(--button-size) / 3);
+      --input-border-color: var(--typo3-input-border-color);
+      --input-hover-border-color: var(--typo3-input-hover-border-color);
+      --input-focus-border-color: var(--typo3-input-focus-border-color);
+      --input-padding-x: .25em;
+      --button-size: calc(1lh + 2 * var(--input-border-width));
+      --button-border-radius: calc(var(--button-size) / 3);
+      --button-color: var(--typo3-state-default-color);
+      --button-bg: var(--typo3-state-default-bg);
+      --button-border-color: var(--typo3-state-default-border-color);
+      --button-hover-color: var(--typo3-state-default-hover-color);
+      --button-hover-bg: var(--typo3-state-default-hover-bg);
+      --button-hover-border-color: var(--typo3-state-default-hover-border-color);
+      --button-focus-color: var(--typo3-state-default-focus-color);
+      --button-focus-bg: var(--typo3-state-default-focus-bg);
+      --button-focus-border-color: var(--typo3-state-default-focus-border-color);
+    }
+
+    .wrapper {
+      position: relative;
+      margin: calc(-1 * var(--input-border-width)) 0;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: .25em;
+      min-width: 0;
     }
 
     h1 {
-      display: block;
+      flex: 0 1 auto;
+      min-width: 0;
       font-weight: inherit;
       font-size: inherit;
       font-family: inherit;
@@ -50,24 +67,43 @@ export class EditablePageTitle extends LitElement {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      padding: 1px 0;
+      padding: var(--input-border-width) 0;
       margin: 0;
     }
 
+    .wrapper:has(> form) .page-title {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .wrapper > form {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: calc(-1 * (var(--input-padding-x) + var(--input-border-width)));
+      inset-inline-end: 0;
+      display: flex;
+      align-items: center;
+      gap: .25em;
+    }
+
     input {
-      outline: none;
-      background: transparent;
+      flex: 1 1 auto;
+      min-width: 0;
+      box-sizing: border-box;
+      height: var(--button-size);
+      margin: 0;
+      padding: 0 var(--input-padding-x);
       font-weight: inherit;
       font-size: inherit;
       font-family: inherit;
       line-height: inherit;
-      padding: 0;
-      border: 0;
-      border-top: 1px solid transparent;
-      border-bottom: 1px dashed var(--input-border-color);
-      margin: 0;
-      width: 100%;
+      color: var(--input-color);
+      background-color: var(--input-bg);
+      border: var(--input-border-width) solid var(--input-border-color);
+      border-radius: var(--input-border-radius);
+      outline: none;
       outline-offset: 0;
+      transition: border-color .15s ease-in-out, outline-color .15s ease-in-out;
     }
 
     input:hover {
@@ -82,46 +118,33 @@ export class EditablePageTitle extends LitElement {
       outline: .25rem solid color-mix(in srgb, var(--input-border-color), transparent 25%);
     }
 
-    .wrapper {
-      position: relative;
-      margin: -1px 0;
-      padding-inline-end: 1.5em;
-    }
-
-    .wrapper:has(> form) .page-title {
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .wrapper > form {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding-inline-end: 2.5em;
-    }
-
     button {
       cursor: pointer;
       display: inline-flex;
+      flex: 0 0 auto;
       align-items: center;
       justify-content: center;
+      box-sizing: border-box;
+      width: var(--button-size);
+      height: var(--button-size);
+      padding: 0;
+      margin: 0;
       font-size: inherit;
       line-height: inherit;
-      padding: var(--button-padding-y) var(--button-padding-x);
-      height: 100%;
-      width: 1em;
-      position: absolute;
-      top: 0;
       border-radius: var(--button-border-radius);
       overflow: hidden;
       outline: none;
       color: var(--button-color);
       background: var(--button-bg);
-      border: 1px solid var(--button-border-color);
-      opacity: .8;
+      border: var(--input-border-width) solid var(--button-border-color);
       outline-offset: 0;
-      transition: all .2s ease-in-out;
+      transition: all .15s ease-in-out;
+    }
+
+    button[data-action="edit"] {
+      --button-bg: transparent;
+      --button-border-color: transparent;
+      opacity: .8;
     }
 
     button:hover {
@@ -140,18 +163,6 @@ export class EditablePageTitle extends LitElement {
 
     button:focus-visible {
       outline: .25rem solid color-mix(in srgb, var(--button-border-color), transparent 25%);
-    }
-
-    button[data-action="edit"] {
-      inset-inline-end: 0;
-    }
-
-    button[data-action="save"] {
-      inset-inline-end: calc(1em + 2px);
-    }
-
-    button[data-action="close"] {
-      inset-inline-end: 0;
     }
 
     .screen-reader {

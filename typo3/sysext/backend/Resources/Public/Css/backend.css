@@ -3341,7 +3341,7 @@ typo3-backend-draggable-resizable{display:inline-block;position:absolute;transit
 typo3-backend-draggable-resizable[reverting]{transition-duration:.25s;transition-property:left,top,width,height}
 .cropper typo3-backend-draggable-resizable .cropper-focus-area{height:100%;width:100%}
 typo3-backend-draggable-resizable .ui-resizable-handle{z-index:90}
-typo3-backend-editable-page-title{display:block;text-overflow:ellipsis;white-space:nowrap;--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
+typo3-backend-editable-page-title{display:block}
 typo3-backend-formengine-char-counter{display:flex;inset-inline-start:0;position:absolute;top:100%;z-index:5}
 typo3-backend-formengine-char-counter .form-hint{--typo3-formhint-box-shadow:var(--typo3-component-box-shadow-tooltip);margin-top:.5rem}
 typo3-backend-icon{height:var(--icon-size,1em);width:var(--icon-size,1em)}
