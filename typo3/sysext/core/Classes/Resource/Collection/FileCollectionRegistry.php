@@ -15,12 +15,13 @@
 
 namespace TYPO3\CMS\Core\Resource\Collection;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
  * Registry for FileCollection classes
  */
-class FileCollectionRegistry implements SingletonInterface
+#[Autoconfigure(public: true)]
+class FileCollectionRegistry
 {
     /**
      * Registered FileCollection types

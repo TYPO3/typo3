@@ -37,18 +37,29 @@ These classes do not implement :php-short:`\TYPO3\CMS\Core\SingletonInterface` a
 -   :php:`\TYPO3\CMS\Core\Cache\CacheManager`
 -   :php:`\TYPO3\CMS\Core\Console\CommandRegistry`
 -   :php:`\TYPO3\CMS\Core\Error\AbstractExceptionHandler`
+-   :php:`\TYPO3\CMS\Core\Html\DefaultSanitizerBuilder`
+-   :php:`\TYPO3\CMS\Core\Html\PreviewSanitizerBuilder`
+-   :php:`\TYPO3\CMS\Core\Imaging\IconRegistry`
 -   :php:`\TYPO3\CMS\Core\Localization\Locales`
 -   :php:`\TYPO3\CMS\Core\Messaging\FlashMessageService`
 -   :php:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`
+-   :php:`\TYPO3\CMS\Core\Page\ImportMapFactory`
 -   :php:`\TYPO3\CMS\Core\PageTitle\PageTitleProviderManager`
+-   :php:`\TYPO3\CMS\Core\Registry`
+-   :php:`\TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry`
+-   :php:`\TYPO3\CMS\Core\Resource\Driver\DriverRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry`
+-   :php:`\TYPO3\CMS\Core\Routing\SiteMatcher`
+-   :php:`\TYPO3\CMS\Core\Session\SessionManager`
 -   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory`
 -   :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter`
 -   :php:`\TYPO3\CMS\Extbase\Service\ExtensionService`
 -   :php:`\TYPO3\CMS\Extbase\Validation\ValidatorResolver`
+-   :php:`\TYPO3\CMS\Form\Slot\FilePersistenceSlot`
+-   :php:`\TYPO3\CMS\Form\Slot\ResourcePublicationSlot`
 -   :php:`\TYPO3\CMS\Install\Service\SessionService`
 -   :php:`\TYPO3\CMS\Scheduler\Scheduler`
 -   :php:`\TYPO3\CMS\Workspaces\Service\Dependency\CollectionService`
@@ -62,6 +73,13 @@ Every type converter extending :php-short:`\TYPO3\CMS\Extbase\Property\TypeConve
 well, since the marker was inherited. Converters registered with the
 :yaml:`extbase.type_converter` tag stay public, because the tag makes them
 public on its own.
+
+The same holds for custom HTML sanitizer builders extending
+:php-short:`\TYPO3\CMS\Core\Html\DefaultSanitizerBuilder`. They are resolved
+by class name through
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`, for
+example via :typoscript:`htmlSanitize.build`, and are not shared anymore
+unless they are declared public themselves.
 
 Some of these services are not public anymore either, so fetching them
 with :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` or :php:`$container->get()`

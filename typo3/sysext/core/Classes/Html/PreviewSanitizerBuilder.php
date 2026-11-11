@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
 use TYPO3\CMS\Core\Html\Visitor\UnwrapTagVisitor;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Builder\CommonBuilder;
 use TYPO3\HtmlSanitizer\Sanitizer;
@@ -29,7 +30,8 @@ use TYPO3\HtmlSanitizer\Visitor\CommonVisitor;
  *
  * @internal
  */
-class PreviewSanitizerBuilder extends CommonBuilder implements SingletonInterface
+#[Autoconfigure(public: true)]
+class PreviewSanitizerBuilder extends CommonBuilder
 {
     public function build(): Sanitizer
     {

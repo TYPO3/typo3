@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -26,7 +28,6 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -49,7 +50,8 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  *
  * @internal Please note that the site matcher will be probably cease to exist and adapted to the SiteFinder concept when Pseudo-Site handling will be removed.
  */
-readonly class SiteMatcher implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class SiteMatcher
 {
     public function __construct(
         protected Features $features,

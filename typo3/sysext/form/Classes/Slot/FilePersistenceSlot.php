@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Event\BeforeFileMovedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -35,7 +34,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  * @internal
  * @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
  */
-final class FilePersistenceSlot implements SingletonInterface
+final class FilePersistenceSlot
 {
     public const string COMMAND_FILE_ADD = 'fileAdd';
     public const string COMMAND_FILE_CREATE = 'fileCreate';

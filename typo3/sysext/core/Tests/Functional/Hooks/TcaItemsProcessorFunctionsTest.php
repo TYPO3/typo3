@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
@@ -46,7 +45,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceStub->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceStub;
-        GeneralUtility::setSingletonInstance(IconRegistry::class, self::createStub(IconRegistry::class));
+        $this->getContainer()->set(IconRegistry::class, self::createStub(IconRegistry::class)); // @phpstan-ignore-line
     }
 
     protected function tearDown(): void
@@ -599,7 +598,15 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $this->get(TcaItemsProcessorFunctions::class)->populateCustomPermissionOptions($fieldDefinition);
+        $subject = new TcaItemsProcessorFunctions(
+            $this->get(IconFactory::class),
+            self::createStub(IconRegistry::class),
+            $this->get(ModuleProvider::class),
+            $this->get(FlexFormTools::class),
+            $this->get(TcaSchemaFactory::class),
+            $this->get(PageDoktypeRegistry::class),
+        );
+        $subject->populateCustomPermissionOptions($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 

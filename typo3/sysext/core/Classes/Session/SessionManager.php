@@ -18,11 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Session;
 
 use Psr\Container\ContainerInterface;
+
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,7 +39,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * ```
  */
 #[AsAlias('session-manager', public: true)]
-class SessionManager implements SingletonInterface
+#[Autoconfigure(public: true)]
+class SessionManager
 {
     /**
      * @var SessionBackendInterface[]

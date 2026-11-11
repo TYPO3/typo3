@@ -15,12 +15,13 @@
 
 namespace TYPO3\CMS\Core\Resource\Driver;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
  * Registry for driver classes.
  */
-class DriverRegistry implements SingletonInterface
+#[Autoconfigure(public: true)]
+class DriverRegistry
 {
     /**
      * @var array

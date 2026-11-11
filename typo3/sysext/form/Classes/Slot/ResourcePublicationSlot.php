@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -36,7 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal will be renamed at some point.
  */
-class ResourcePublicationSlot implements SingletonInterface
+class ResourcePublicationSlot
 {
     /**
      * @var list<string>

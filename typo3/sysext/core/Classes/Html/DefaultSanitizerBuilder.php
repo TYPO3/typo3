@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Html;
 
 use Psr\Http\Message\ServerRequestInterface;
+
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\HtmlSanitizer\Behavior;
@@ -35,7 +36,8 @@ use TYPO3\HtmlSanitizer\Visitor\CommonVisitor;
  *
  * @internal
  */
-class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterface
+#[Autoconfigure(public: true)]
+class DefaultSanitizerBuilder extends CommonBuilder
 {
     private Behavior $behavior;
 

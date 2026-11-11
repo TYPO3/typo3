@@ -22,14 +22,13 @@ use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class which makes it possible to register custom icons
  * from within an extension.
  */
-class IconRegistry implements SingletonInterface
+class IconRegistry
 {
     /**
      * @var bool

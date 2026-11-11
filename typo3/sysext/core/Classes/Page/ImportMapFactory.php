@@ -24,10 +24,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
-use TYPO3\CMS\Core\SingletonInterface;
 
 #[Autoconfigure(public: true)]
-readonly class ImportMapFactory implements SingletonInterface
+readonly class ImportMapFactory
 {
     public function __construct(
         private HashService $hashService,

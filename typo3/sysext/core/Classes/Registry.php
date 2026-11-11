@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
@@ -29,7 +30,8 @@ use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
  * shouldn't expire like it would with a cache. You can actually think of it
  * being like the Windows Registry in some ways.
  */
-class Registry implements SingletonInterface
+#[Autoconfigure(public: true)]
+class Registry
 {
     /**
      * @var array
