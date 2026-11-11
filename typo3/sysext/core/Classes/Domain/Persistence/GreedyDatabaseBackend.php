@@ -72,38 +72,44 @@ readonly class GreedyDatabaseBackend
 
     public function getRows(string $tableName, array $uids, Context $context): array
     {
-        $cacheIdentifier = $this->createRuntimeCacheIdentifier($tableName, $uids, $context);
-        $allRows = $this->getRowsFromCache($cacheIdentifier, $tableName, $uids, $context);
-        if ($allRows === null) {
-            $allRows = $this->getRowsFromDatabase($tableName, $uids, $context);
-            $this->setCache($cacheIdentifier, $tableName, $context, $allRows);
+        $uids = array_values(array_unique(array_map(static fn(int|string $uid): int => (int)$uid, $uids)));
+        $uidsToResolve = array_values(array_filter(
+            $uids,
+            fn(int $uid): bool => !$this->isResolvableFromCache($tableName, $uid, $context)
+        ));
+        if ($uidsToResolve !== []) {
+            $this->setCache($tableName, $uidsToResolve, $context, $this->getRowsFromDatabase($tableName, $uidsToResolve, $context));
         }
         return $this->handleOverlays(
-            // Only use the records from the given UIDs
-            array_filter($allRows, static fn(array $row) => in_array((int)$row['uid'], $uids, true)),
+            $this->getRowsFromCache($tableName, $uids, $context),
             $tableName,
             $context
         );
     }
 
-    protected function setCache(string $cacheIdentifier, string $tableName, Context $context, array $allRows): void
+    /**
+     * The greedy result sets are stored per pid, and each uid points to the pid its row has been
+     * found on. A uid is answerable from the runtime cache if that pointer exists and the row set
+     * of the pid it points to is still cached. Requested uids without an accessible row are
+     * pointed to "false", so they do not trigger a database query over and over again.
+     */
+    protected function isResolvableFromCache(string $tableName, int $uid, Context $context): bool
     {
-        $resultUids = array_map(fn(array $row): int => (int)$row['uid'], $allRows);
-        foreach ($resultUids as $resultUid) {
-            $resultUidCacheIdentifier = $this->createRuntimeCacheIdentifier($tableName, [$resultUid], $context, 'pointer');
-            // Set pointer to actual rows cache entry.
-            $this->runtimeCache->set($resultUidCacheIdentifier, $cacheIdentifier);
+        $pointerCacheIdentifier = $this->createUidPointerCacheIdentifier($tableName, $uid, $context);
+        if (!$this->runtimeCache->has($pointerCacheIdentifier)) {
+            return false;
         }
-        $this->runtimeCache->set($cacheIdentifier, $allRows);
+        $pid = $this->runtimeCache->get($pointerCacheIdentifier);
+        return $pid === false || $this->runtimeCache->has($this->createRowsCacheIdentifier($tableName, (int)$pid, $context));
     }
 
     /**
-     * This method creates cache identifier pointers for each provided uid.
-     * These uids come from the same pid, so they will have the same result set.
-     * If at a later point in time one of these uids is requested again,
-     * the pointer will be used to retrieve the actual cache entry of the db row.
-     * Without this mechanism, the runtime cache would be filled quickly with the
-     * same database rows over and over again.
+     * Splits the greedy result set into one cache entry per pid, and creates a lightweight
+     * pointer from each uid to the pid its row belongs to.
+     *
+     * The rows of a pid are complete: the greedy query fetches all accessible records of the pids
+     * of the given uids, so a pid based cache entry can be reused for any later request of any
+     * record on that pid - no matter which uids that request combines.
      *
      * Example: Having 1000 records on the same pid with each having a relation to
      * a file reference. When RecordFactory is used to resolve all of these 1000 records
@@ -111,24 +117,62 @@ readonly class GreedyDatabaseBackend
      * file reference database rows (1000*1000 = 1.000.000 database rows).
      *
      * Instead, only 1 cache entry is created with 1000 database rows and in addition
-     * 1000 lightweight cache identifier pointers, pointing to the actual value of the
-     * cache identifier.
+     * 1000 lightweight cache identifier pointers, pointing to that pid.
      */
-    protected function getRowsFromCache(string $cacheIdentifier, string $tableName, array $uids, Context $context): ?array
+    protected function setCache(string $tableName, array $uids, Context $context, array $allRows): void
     {
-        if ($this->runtimeCache->has($cacheIdentifier)) {
-            return $this->runtimeCache->get($cacheIdentifier);
+        $rowsByPid = [];
+        foreach ($allRows as $row) {
+            $rowsByPid[(int)$row['pid']][] = $row;
         }
-        foreach ($uids as $uid) {
-            $cacheIdentifierPointer = $this->createRuntimeCacheIdentifier($tableName, [$uid], $context, 'pointer');
-            if ($this->runtimeCache->has($cacheIdentifierPointer)) {
-                $cacheIdentifier = $this->runtimeCache->get($cacheIdentifierPointer);
-                if ($this->runtimeCache->has($cacheIdentifier)) {
-                    return $this->runtimeCache->get($cacheIdentifier);
-                }
+        foreach ($rowsByPid as $pid => $rowsOfPid) {
+            $this->runtimeCache->set($this->createRowsCacheIdentifier($tableName, $pid, $context), $rowsOfPid);
+            foreach ($rowsOfPid as $row) {
+                $this->runtimeCache->set($this->createUidPointerCacheIdentifier($tableName, (int)$row['uid'], $context), $pid);
             }
         }
-        return null;
+        $resolvedUids = array_map(static fn(array $row): int => (int)$row['uid'], $allRows);
+        foreach (array_diff($uids, $resolvedUids) as $uid) {
+            // Remember that this uid has no accessible row in the current context.
+            $this->runtimeCache->set($this->createUidPointerCacheIdentifier($tableName, $uid, $context), false);
+        }
+    }
+
+    /**
+     * Collects the rows of the given uids from the pid based cache entries. The uids may be
+     * spread over any number of pids, so all pointed to result sets are taken into account.
+     * The rows are returned in the order of the given uids.
+     */
+    protected function getRowsFromCache(string $tableName, array $uids, Context $context): array
+    {
+        $pids = [];
+        foreach ($uids as $uid) {
+            $pointerCacheIdentifier = $this->createUidPointerCacheIdentifier($tableName, $uid, $context);
+            if (!$this->runtimeCache->has($pointerCacheIdentifier)) {
+                continue;
+            }
+            $pid = $this->runtimeCache->get($pointerCacheIdentifier);
+            if ($pid !== false) {
+                $pids[(int)$pid] = true;
+            }
+        }
+        $rowsByUid = [];
+        foreach (array_keys($pids) as $pid) {
+            $rowsCacheIdentifier = $this->createRowsCacheIdentifier($tableName, $pid, $context);
+            if (!$this->runtimeCache->has($rowsCacheIdentifier)) {
+                continue;
+            }
+            foreach ($this->runtimeCache->get($rowsCacheIdentifier) as $row) {
+                $rowsByUid[(int)$row['uid']] = $row;
+            }
+        }
+        $rows = [];
+        foreach ($uids as $uid) {
+            if (isset($rowsByUid[$uid])) {
+                $rows[] = $rowsByUid[$uid];
+            }
+        }
+        return $rows;
     }
 
     protected function getRowsFromDatabase(string $tableName, array $uids, Context $context): array
@@ -166,6 +210,7 @@ readonly class GreedyDatabaseBackend
         $queryBuilderForSubselect->setRestrictions($restrictions);
         $queryBuilderForSubselect
             ->select('pid')
+            ->distinct()
             ->from($tableName)
             ->where(
                 $queryBuilderForSubselect->expr()->in(
@@ -209,10 +254,26 @@ readonly class GreedyDatabaseBackend
         return $finalRows;
     }
 
-    protected function createRuntimeCacheIdentifier(string $tableName, array $uids, Context $context, string $suffix = ''): string
+    /**
+     * Identifier of the cache entry holding all accessible rows of one pid.
+     */
+    protected function createRowsCacheIdentifier(string $tableName, int $pid, Context $context): string
     {
-        sort($uids);
-        $cacheIdentifier = $tableName . '-' . md5(implode('_', $uids)) . '-';
+        return $this->createRuntimeCacheIdentifier($tableName, 'pid-' . $pid, $context);
+    }
+
+    /**
+     * Identifier of the pointer entry telling on which pid the row of a uid has been found,
+     * or "false" if the uid has no accessible row.
+     */
+    protected function createUidPointerCacheIdentifier(string $tableName, int $uid, Context $context): string
+    {
+        return $this->createRuntimeCacheIdentifier($tableName, 'uid-' . $uid, $context);
+    }
+
+    protected function createRuntimeCacheIdentifier(string $tableName, string $entryKey, Context $context): string
+    {
+        $cacheIdentifier = $tableName . '-' . $entryKey . '-';
         $cacheIdentifier .= $context->getAspect('workspace')->getId() . '-';
         /** @var LanguageAspect $languageAspect */
         $languageAspect = $context->getAspect('language');
@@ -232,7 +293,6 @@ readonly class GreedyDatabaseBackend
         $userAspect = $context->getAspect('frontend.user');
         $groupIds = $userAspect->getGroupIds();
         $cacheIdentifier .= '-' . implode('_', $groupIds);
-        $cacheIdentifier .= '-' . $suffix;
 
         return 'greedy_database_backend_' . hash('xxh3', $cacheIdentifier);
     }
