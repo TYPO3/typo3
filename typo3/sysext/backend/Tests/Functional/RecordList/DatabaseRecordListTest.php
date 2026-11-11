@@ -417,6 +417,45 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         self::assertSame([1202], $this->getMarkedRowUids($xpath, 'pages'));
     }
 
+    public static function pageTranslationIsListedDirectlyBelowItsDefaultLanguagePageDataProvider(): \Generator
+    {
+        yield 'current page only' => [
+            0,
+            [9012, 9011, 9022, 9021],
+        ];
+        yield 'with search levels across pids sharing sorting values' => [
+            2,
+            [9012, 9011, 9032, 9031, 9022, 9021, 9042, 9041],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('pageTranslationIsListedDirectlyBelowItsDefaultLanguagePageDataProvider')]
+    public function pageTranslationIsListedDirectlyBelowItsDefaultLanguagePage(int $searchLevels, array $expectedUids): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages_translations_same_sorting.csv');
+        $request = new ServerRequest('http://localhost/')
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+        $pageContext = $this->get(PageContextFactory::class)->createWithLanguages($request, 9000, [0, 1], $this->backendUser);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request->withAttribute('pageContext', $pageContext));
+        $recordList->start(9000, 'pages', 0, '', $searchLevels);
+
+        $listHtml = preg_replace('/(<svg.*<\/svg>)/Uui', '', $recordList->generateList());
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        $dom->loadHTML($listHtml);
+        $xpath = new \DOMXPath($dom);
+        $uids = [];
+        foreach ($xpath->query('//tr[@data-table="pages"]/@data-uid') as $uidAttribute) {
+            $uids[] = (int)$uidAttribute->nodeValue;
+        }
+
+        self::assertSame($expectedUids, $uids);
+    }
+
     private function renderListOfPageWithOrphanedLanguages(string $table, bool $showOnlyTranslatedRecords = false, string $searchString = '', int $searchLevels = 0): \DOMXPath
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content_orphaned_languages.csv');

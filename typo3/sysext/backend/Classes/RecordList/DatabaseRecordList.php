@@ -2696,6 +2696,13 @@ class DatabaseRecordList
                 foreach ($orderBys as $orderBy) {
                     $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
                 }
+                if ($table === 'pages' && $schema->isLanguageAware()) {
+                    // A page translation shares sorting and pid with its default language page,
+                    // so this lists translations directly below their default language page.
+                    $queryBuilder->addOrderBy('pid');
+                    $queryBuilder->addOrderBy($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName());
+                    $queryBuilder->addOrderBy('uid');
+                }
             }
         }
 
