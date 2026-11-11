@@ -1265,7 +1265,8 @@ export class DashboardWidget extends LitElement {
           ${widget?.refreshable ? refreshButton(loading) : nothing}
           <button
             type="button"
-            title=${labels.get('widget.move')}
+            title=${labels.get(this.moving ? 'widget.move.active' : 'widget.move')}
+            aria-pressed=${this.moving ? 'true' : 'false'}
             class="widget-action widget-action-move"
             @click=${this.handleMoveClick}
             @focusout=${this.handleMoveFocusOut}
