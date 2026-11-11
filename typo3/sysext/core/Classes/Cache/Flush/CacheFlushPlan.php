@@ -34,6 +34,8 @@ final class CacheFlushPlan
     private array $records = [];
     /** @var array<string, true> */
     private array $commands = [];
+    /** @var list<string> */
+    private array $errors = [];
 
     public function __construct(
         public readonly CacheFlushingContext $context,
@@ -161,5 +163,22 @@ final class CacheFlushPlan
     public function getCommands(): array
     {
         return array_map(strval(...), array_keys($this->commands));
+    }
+
+    /**
+     * An error reported while flushing, for example by a listener of
+     * CacheFlushEvent.
+     */
+    public function addError(string $error): void
+    {
+        $this->errors[] = $error;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 }

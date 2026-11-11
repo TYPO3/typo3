@@ -34,12 +34,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Flushes the caches affected by changed records, pages, cache tags and
- * cache commands, without the need of a DataHandler.
+ * Flushes the caches affected by changed records, pages, cache tags, cache
+ * groups and cache commands, without the need of a DataHandler.
  *
  * Cache tags are flushed in the cache group "pages", unless the demand names
- * another group or "all" for all caches. Cache groups are flushed
- * by dispatching CacheFlushEvent, like the "cache:flush" command does.
+ * another group or "all" for all caches. Cache groups are flushed by
+ * dispatching CacheFlushEvent; errors its listeners report are part of the
+ * result.
  * All events are dispatched here, callers only describe what to flush.
  * flush() resolves and executes a demand in one go, resolve() alone tells
  * what would be flushed.
@@ -86,8 +87,11 @@ readonly class CacheFlusher
         foreach ($demand->commands as $command) {
             $this->resolveCommand($command, $plan);
         }
+        foreach ($demand->groups as $group) {
+            $this->resolveGroup($group, $plan);
+        }
         $this->eventDispatcher->dispatch(new BeforeCacheFlushEvent($plan));
-        $this->skipTagsOfUnknownGroups($plan);
+        $this->skipUnknownGroups($plan);
         return $plan;
     }
 
@@ -97,15 +101,15 @@ readonly class CacheFlusher
     public function execute(CacheFlushPlan $plan): CacheFlushResult
     {
         if ($plan->hasGroup('all')) {
-            $this->eventDispatcher->dispatch(new CacheFlushEvent($this->cacheManager->getCacheGroups()));
+            $this->dispatchCacheFlushEvent($this->cacheManager->getCacheGroups(), $plan);
             $this->cacheManager->flushCachesWithoutGroup();
             $this->opcodeCacheService->clearAllActive();
             $this->flushDependencyInjectionCacheInDevelopment();
         } else {
+            $this->skipUnknownGroups($plan);
             if ($plan->getGroups() !== []) {
-                $this->eventDispatcher->dispatch(new CacheFlushEvent($plan->getGroups()));
+                $this->dispatchCacheFlushEvent($plan->getGroups(), $plan);
             }
-            $this->skipTagsOfUnknownGroups($plan);
             foreach ($plan->getTagsByGroup() as $group => $tags) {
                 if ($group === 'all') {
                     $this->cacheManager->flushCachesByTags($tags);
@@ -200,12 +204,7 @@ readonly class CacheFlusher
         }
         $lowerCaseCommand = strtolower($command);
         if ($lowerCaseCommand === 'pages' || $lowerCaseCommand === 'all') {
-            $isPermitted = $lowerCaseCommand === 'all' ? $plan->context->canFlushAllCaches : $plan->context->canFlushPagesGroup;
-            if ($isPermitted) {
-                $plan->addGroup($lowerCaseCommand);
-            } else {
-                $plan->skipGroup($lowerCaseCommand, CacheFlushSkipReason::NotPermitted);
-            }
+            $this->resolveGroup($lowerCaseCommand, $plan);
         } elseif (MathUtility::canBeInterpretedAsInteger($command)) {
             $plan->addTag('pageId_' . (int)$command);
         } elseif (str_starts_with($lowerCaseCommand, 'cachetag:')) {
@@ -213,17 +212,54 @@ readonly class CacheFlusher
         }
     }
 
-    private function skipTagsOfUnknownGroups(CacheFlushPlan $plan): void
+    /**
+     * "all" and "pages" need the permission of the context, other groups do not.
+     */
+    private function resolveGroup(string $group, CacheFlushPlan $plan): void
+    {
+        $isPermitted = match ($group) {
+            'all' => $plan->context->canFlushAllCaches,
+            'pages' => $plan->context->canFlushPagesGroup,
+            default => true,
+        };
+        if ($isPermitted) {
+            $plan->addGroup($group);
+        } else {
+            $plan->skipGroup($group, CacheFlushSkipReason::NotPermitted);
+        }
+    }
+
+    /**
+     * Skips cache groups and the tags of cache groups no cache belongs to.
+     */
+    private function skipUnknownGroups(CacheFlushPlan $plan): void
     {
         $cacheGroups = $this->cacheManager->getCacheGroups();
+        $isKnown = static fn(string $group): bool => $group === 'all' || in_array($group, $cacheGroups, true);
         foreach ($plan->getTagsByGroup() as $group => $tags) {
-            if ($group === 'all' || in_array($group, $cacheGroups, true)) {
+            if ($isKnown((string)$group)) {
                 continue;
             }
             foreach ($tags as $tag) {
-                $plan->removeTag($tag, $group);
+                $plan->removeTag($tag, (string)$group);
             }
-            $plan->skipGroup($group, CacheFlushSkipReason::UnknownGroup);
+            $plan->skipGroup((string)$group, CacheFlushSkipReason::UnknownGroup);
+        }
+        foreach ($plan->getGroups() as $group) {
+            if (!$isKnown($group)) {
+                $plan->skipGroup($group, CacheFlushSkipReason::UnknownGroup);
+            }
+        }
+    }
+
+    /**
+     * @param list<string> $groups
+     */
+    private function dispatchCacheFlushEvent(array $groups, CacheFlushPlan $plan): void
+    {
+        $event = $this->eventDispatcher->dispatch(new CacheFlushEvent($groups));
+        foreach ($event->getErrors() as $error) {
+            $plan->addError((string)$error);
         }
     }
 

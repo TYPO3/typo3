@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\MaintenanceController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestCacheFlushListener\RecordCacheFlushListener;
 
 /**
  * The database analyzer runs in the install tool, which is served from the
@@ -43,6 +44,10 @@ final class MaintenanceControllerTest extends FunctionalTestCase
     private const UNUSED_TABLE = 'tx_installtest_unused_table';
 
     protected array $coreExtensionsToLoad = ['install'];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_cache_flush_listener',
+    ];
 
     protected array $configurationToUseInTestInstance = [
         'BE' => [
@@ -99,6 +104,20 @@ final class MaintenanceControllerTest extends FunctionalTestCase
         $schemaManager = $this->getDefaultConnection()->createSchemaManager();
         self::assertFalse($schemaManager->tablesExist([self::UNUSED_TABLE]));
         self::assertTrue($schemaManager->tablesExist(['zzz_deleted_' . self::UNUSED_TABLE]));
+    }
+
+    #[Test]
+    public function cacheClearAllActionDispatchesAfterCacheFlushedEvent(): void
+    {
+        RecordCacheFlushListener::reset();
+
+        $response = $this->dispatchInstallToolAction('cacheClearAllAction');
+
+        $body = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertTrue($body['success']);
+        $results = RecordCacheFlushListener::readResults();
+        self::assertCount(1, $results);
+        self::assertSame(['all'], $results[0]['groups']);
     }
 
     private function createUnusedTableWithOneRow(): void

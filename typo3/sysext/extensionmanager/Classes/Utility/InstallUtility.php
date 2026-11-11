@@ -18,7 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -43,7 +44,7 @@ class InstallUtility
         private readonly FileHandlingUtility $fileHandlingUtility,
         private readonly ListUtility $listUtility,
         private readonly PackageManager $packageManager,
-        private readonly CacheManager $cacheManager,
+        private readonly CacheFlusher $cacheFlusher,
         private readonly OpcodeCacheService $opcodeCacheService,
         private readonly PackageActivationService $packageActivationService,
         LanguageServiceFactory $languageServiceFactory,
@@ -85,7 +86,7 @@ class InstallUtility
         }
         $this->packageManager->deactivatePackage($extensionKey);
         $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
-        $this->cacheManager->flushCachesInGroup('system');
+        $this->cacheFlusher->flush(CacheFlushDemand::forGroups('system'));
     }
 
     /**

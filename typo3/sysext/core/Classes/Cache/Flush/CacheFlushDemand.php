@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Cache\Flush;
 
 /**
- * Describes what should be flushed: changed records, pages, cache tags or
- * cache commands as known from "TCEMAIN.clearCacheCmd".
+ * Describes what should be flushed: changed records, pages, cache tags, cache
+ * groups or cache commands as known from "TCEMAIN.clearCacheCmd".
  */
 final readonly class CacheFlushDemand
 {
@@ -28,12 +28,14 @@ final readonly class CacheFlushDemand
      * @param list<int> $pageIds
      * @param array<string, list<string>> $tags cache group => tags, "all" for all caches
      * @param list<string> $commands
+     * @param list<string> $groups "all" for all caches
      */
     private function __construct(
         public array $records = [],
         public array $pageIds = [],
         public array $tags = [],
         public array $commands = [],
+        public array $groups = [],
     ) {}
 
     public static function create(): self
@@ -80,6 +82,14 @@ final readonly class CacheFlushDemand
     }
 
     /**
+     * Flushes all caches of cache groups, or all caches for the group "all".
+     */
+    public static function forGroups(string ...$groups): self
+    {
+        return self::create()->withGroups(...$groups);
+    }
+
+    /**
      * A cache command as known from "TCEMAIN.clearCacheCmd": "pages", "all",
      * a page id or "cacheTag:<tag>". Other commands are passed on untouched,
      * so event listeners can react to them.
@@ -100,7 +110,7 @@ final readonly class CacheFlushDemand
         if ($originalPageId !== null && !in_array($originalPageId, $records[$table][$uid], true)) {
             $records[$table][$uid][] = $originalPageId;
         }
-        return new self($records, $this->pageIds, $this->tags, $this->commands);
+        return new self($records, $this->pageIds, $this->tags, $this->commands, $this->groups);
     }
 
     /**
@@ -116,11 +126,26 @@ final readonly class CacheFlushDemand
         if ($groupTags === []) {
             return $this;
         }
-        return new self($this->records, $this->pageIds, [...$this->tags, $group => $groupTags], $this->commands);
+        return new self($this->records, $this->pageIds, [...$this->tags, $group => $groupTags], $this->commands, $this->groups);
+    }
+
+    /**
+     * Flushes all caches of cache groups, or all caches for the group "all".
+     */
+    public function withGroups(string ...$groups): self
+    {
+        $allGroups = array_values(array_unique(array_merge(
+            $this->groups,
+            array_filter($groups, static fn(string $group): bool => $group !== '')
+        )));
+        if ($allGroups === $this->groups) {
+            return $this;
+        }
+        return new self($this->records, $this->pageIds, $this->tags, $this->commands, $allGroups);
     }
 
     public function isEmpty(): bool
     {
-        return $this->records === [] && $this->pageIds === [] && $this->tags === [] && $this->commands === [];
+        return $this->records === [] && $this->pageIds === [] && $this->tags === [] && $this->commands === [] && $this->groups === [];
     }
 }

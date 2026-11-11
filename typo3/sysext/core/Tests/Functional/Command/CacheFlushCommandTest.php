@@ -17,15 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3Tests\TestCacheFlushListener\RecordCacheFlushListener;
 
 final class CacheFlushCommandTest extends AbstractCommandTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_cache_flush_listener',
+    ];
+
     protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
@@ -118,6 +124,37 @@ final class CacheFlushCommandTest extends AbstractCommandTestCase
         self::assertFileExists($diCacheFile);
         // but it must have been renewed (seem behaviour as in installtool).
         self::assertGreaterThan(0, filemtime($diCacheFile));
+    }
+
+    public static function flushDispatchesAfterCacheFlushedEventDataProvider(): array
+    {
+        return [
+            'all caches' => ['cache:flush', ['all']],
+            'a group' => ['cache:flush -g system', ['system']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('flushDispatchesAfterCacheFlushedEventDataProvider')]
+    public function flushDispatchesAfterCacheFlushedEvent(string $commandLine, array $expectedGroups): void
+    {
+        RecordCacheFlushListener::reset();
+
+        $result = $this->executeConsoleCommand($commandLine);
+
+        self::assertSame(0, $result['status']);
+        $flushes = RecordCacheFlushListener::readResults();
+        self::assertCount(1, $flushes);
+        self::assertSame($expectedGroups, $flushes[0]['groups']);
+    }
+
+    #[Test]
+    public function unknownGroupIsReported(): void
+    {
+        $result = $this->executeConsoleCommand('cache:flush -g unknown');
+
+        self::assertSame(1, $result['status']);
+        self::assertStringContainsString('Cache group "unknown" does not exist.', $result['stdout']);
     }
 
     #[Test]

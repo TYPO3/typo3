@@ -18,14 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Command;
 
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Event\CacheFlushEvent;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushSkipReason;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
@@ -92,15 +93,15 @@ class CacheFlushCommand extends Command
 
         $this->bootService->loadExtLocalconfDatabase(false, true);
 
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        $result = $container->get(CacheFlusher::class)->flush(CacheFlushDemand::forGroups($group));
 
-        $groups = $group === 'all' ? $container->get(CacheManager::class)->getCacheGroups() : [$group];
-        $event = new CacheFlushEvent($groups);
-        $eventDispatcher->dispatch($event);
-
-        if (count($event->getErrors()) > 0) {
+        if (($result->skippedGroups[$group] ?? null) === CacheFlushSkipReason::UnknownGroup) {
+            $io->error(sprintf('Cache group "%s" does not exist.', $group));
+            return Command::FAILURE;
+        }
+        if ($result->hasErrors()) {
             $io->error('Errors occurred while flushing caches.');
-            foreach ($event->getErrors() as $error) {
+            foreach ($result->errors as $error) {
                 $io->error($error);
             }
             return Command::FAILURE;

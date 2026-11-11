@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Cache\Flush;
 /**
  * What was flushed: cache tags per cache group, cache groups, and the
  * records and cache commands this was resolved from, including what was
- * skipped and why.
+ * skipped and why, and the errors reported while flushing.
  */
 final readonly class CacheFlushResult
 {
@@ -30,6 +30,7 @@ final readonly class CacheFlushResult
      * @param array<string, CacheFlushSkipReason> $skippedGroups
      * @param list<CacheFlushRecord> $records
      * @param list<string> $commands
+     * @param list<string> $errors
      */
     public function __construct(
         public CacheFlushingContext $context,
@@ -38,6 +39,7 @@ final readonly class CacheFlushResult
         public array $skippedGroups = [],
         public array $records = [],
         public array $commands = [],
+        public array $errors = [],
     ) {}
 
     public static function fromPlan(CacheFlushPlan $plan): self
@@ -49,7 +51,13 @@ final readonly class CacheFlushResult
             $plan->getSkippedGroups(),
             $plan->getRecords(),
             $plan->getCommands(),
+            $plan->getErrors(),
         );
+    }
+
+    public function hasErrors(): bool
+    {
+        return $this->errors !== [];
     }
 
     /**

@@ -14,7 +14,7 @@ Description
 The cache flushing logic of :php:`\TYPO3\CMS\Core\DataHandling\DataHandler`
 has been extracted into the new service
 :php:`\TYPO3\CMS\Core\Cache\Flush\CacheFlusher`. It flushes the caches of
-changed records, pages, cache tags and cache commands without a
+changed records, pages, cache tags, cache groups and cache commands without a
 :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` or a backend user.
 
 What to flush is described by a
@@ -37,6 +37,10 @@ What to flush is described by a
     caches, including caches without a group.
     :php:`withTagsInGroup()` adds cache tags of a group to a demand. Cache
     tags of a group that does not exist are skipped.
+*   :php:`CacheFlushDemand::forGroups('system')` flushes all caches of one or
+    more cache groups, the group "all" flushes all caches.
+    :php:`withGroups()` adds cache groups to a demand. Cache groups that do
+    not exist are skipped.
 *   :php:`CacheFlushDemand::forCommand('pages')` accepts the cache commands
     known from :typoscript:`TCEMAIN.clearCacheCmd`.
 
@@ -51,7 +55,10 @@ User TSconfig :typoscript:`options.clearCache.pages` and
 :php:`\TYPO3\CMS\Core\Cache\Flush\CacheFlushResult` with the flushed cache
 tags per cache group, the flushed groups, the records, and what was skipped
 and why. :php:`CacheFlushResult::getTags()` returns the cache tags of one
-group, or of all groups if none is given.
+group, or of all groups if none is given. Errors that listeners of
+:php:`\TYPO3\CMS\Core\Cache\Event\CacheFlushEvent` report with
+:php:`addError()` are part of the result as well, see
+:php:`CacheFlushResult::hasErrors()` and :php:`CacheFlushResult::$errors`.
 :php:`CacheFlusher::resolve()` returns the same information without flushing
 anything. It dispatches the two "Before" events described below as well, so
 their listeners must only change what is flushed and leave any follow-up
@@ -80,14 +87,18 @@ work to :php:`\TYPO3\CMS\Core\Cache\Event\AfterCacheFlushedEvent`.
 
 All events are dispatched by the service itself, so callers only describe
 what to flush. Cache groups are flushed by dispatching the existing
-:php:`\TYPO3\CMS\Core\Cache\Event\CacheFlushEvent`, like the
-:bash:`cache:flush` command does, so listeners of that event now also react
-to group flushes triggered in the backend. The "Clear cache" actions of the
-backend toolbar and page tree use the new service as well, and so do the
-:bash:`cache:flushtags` command and the flushing of cache tags of files,
+:php:`\TYPO3\CMS\Core\Cache\Event\CacheFlushEvent`, so listeners of that
+event now also react to group flushes triggered in the backend. The "Clear
+cache" actions of the backend toolbar and page tree use the new service as
+well, and so do "Flush cache" in the install tool, uninstalling an extension
+in the extension manager, the :bash:`cache:flush` and
+:bash:`cache:flushtags` commands and the flushing of cache tags of files,
 folders and file metadata by the automatic frontend cache tagging (feature
-toggle :php:`frontend.cache.autoTagging`). :bash:`cache:flushtags --groups`
-reports cache groups that do not exist instead of throwing an exception.
+toggle :php:`frontend.cache.autoTagging`). Listeners of
+:php:`\TYPO3\CMS\Core\Cache\Event\AfterCacheFlushedEvent` therefore learn
+about every flush. :bash:`cache:flush --group` and
+:bash:`cache:flushtags --groups` report cache groups that do not exist
+instead of throwing an exception.
 
 Three new PSR-14 events replace the removed
 :ref:`hooks <breaking-111263-1793181136>`:

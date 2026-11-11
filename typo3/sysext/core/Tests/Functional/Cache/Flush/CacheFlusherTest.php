@@ -485,6 +485,75 @@ final class CacheFlusherTest extends FunctionalTestCase
         self::assertSame(['pageTag', 'sharedTag', 'fileTag'], $result->getTags());
     }
 
+    public static function groupsAreFlushedDataProvider(): array
+    {
+        return [
+            'a group' => [['system'], ['cache_flusher_test_system_group']],
+            'the "pages" group' => [['pages'], ['pages', 'cache_flusher_test_pages_group']],
+            'several groups' => [['pages', 'system'], ['pages', 'cache_flusher_test_pages_group', 'cache_flusher_test_system_group']],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('groupsAreFlushedDataProvider')]
+    public function groupsAreFlushed(array $groups, array $expectedFlushedCaches): void
+    {
+        $caches = ['pages', 'cache_flusher_test_pages_group', 'cache_flusher_test_default_group', 'cache_flusher_test_system_group'];
+        $cacheManager = $this->get(CacheManager::class);
+        foreach ($caches as $cacheIdentifier) {
+            $cacheManager->getCache($cacheIdentifier)->set('entry', 'dummy');
+        }
+
+        $result = $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forGroups(...$groups));
+
+        $flushedCaches = array_values(array_filter($caches, static fn(string $cacheIdentifier): bool => !$cacheManager->getCache($cacheIdentifier)->has('entry')));
+        self::assertEqualsCanonicalizing($expectedFlushedCaches, $flushedCaches);
+        self::assertSame($groups, $result->groups);
+    }
+
+    #[Test]
+    public function unknownGroupIsSkipped(): void
+    {
+        $result = $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forGroups('unknown', 'system'));
+
+        self::assertSame(['system'], $result->groups);
+        self::assertSame(['unknown' => CacheFlushSkipReason::UnknownGroup], $result->skippedGroups);
+    }
+
+    public static function groupIsSkippedIfNotPermittedDataProvider(): array
+    {
+        return [
+            'all caches' => ['all', new CacheFlushingContext(canFlushAllCaches: false)],
+            'the "pages" group' => ['pages', new CacheFlushingContext(canFlushPagesGroup: false)],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('groupIsSkippedIfNotPermittedDataProvider')]
+    public function groupIsSkippedIfNotPermitted(string $group, CacheFlushingContext $context): void
+    {
+        $plan = $this->get(CacheFlusher::class)->resolve(CacheFlushDemand::forGroups($group), $context);
+
+        self::assertSame([], $plan->getGroups());
+        self::assertSame([$group => CacheFlushSkipReason::NotPermitted], $plan->getSkippedGroups());
+    }
+
+    #[Test]
+    public function errorsOfCacheFlushEventListenersAreReported(): void
+    {
+        $this->addListener(
+            CacheFlushEvent::class,
+            static function (CacheFlushEvent $event): void {
+                $event->addError('Proxy could not be purged');
+            }
+        );
+
+        $result = $this->get(CacheFlusher::class)->flush(CacheFlushDemand::forGroups('system'));
+
+        self::assertSame(['Proxy could not be purged'], $result->errors);
+        self::assertTrue($result->hasErrors());
+    }
+
     private function addListener(string $event, \Closure $listener): void
     {
         $identifier = 'cache-flusher-test-' . md5($event);

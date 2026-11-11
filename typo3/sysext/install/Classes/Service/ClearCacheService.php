@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 
@@ -41,7 +43,9 @@ readonly class ClearCacheService
      *
      * After that ext_localconf of extensions are loaded, those
      * may register additional caches in the caching framework with different
-     * backend, and will then clear them with the usual flush() method.
+     * backend. All caches are then flushed through the CacheFlusher, which
+     * dispatches the cache flush events, so that listeners (for example a CDN
+     * purge) also react to a flush from the install tool.
      */
     public function clearAll(): void
     {
@@ -73,9 +77,8 @@ readonly class ClearCacheService
         $extensionCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         // Loose comparison on purpose to allow changed ordering of the array
         if ($baseCaches != $extensionCaches) {
-            // When configuration has changed during loading of extensions (due to ext_localconf.php), flush all caches again
             $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-            $cacheManager->flushCaches();
         }
+        $container->get(CacheFlusher::class)->flush(CacheFlushDemand::forCommand('all'));
     }
 }

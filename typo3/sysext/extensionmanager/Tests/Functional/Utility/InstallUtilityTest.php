@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Utility;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\Event\AfterCacheFlushedEvent;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,5 +42,21 @@ final class InstallUtilityTest extends FunctionalTestCase
         $this->expectExceptionMessageIs('Test afterPackageActivation event');
 
         $this->get(InstallUtility::class)->install('test_install_package_activation');
+    }
+
+    #[Test]
+    public function uninstallFlushesSystemCachesThroughCacheFlusher(): void
+    {
+        $flushedGroups = [];
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set('install-utility-test', static function (AfterCacheFlushedEvent $event) use (&$flushedGroups): void {
+            $flushedGroups[] = $event->result->groups;
+        });
+        $this->get(ListenerProvider::class)->addListener(AfterCacheFlushedEvent::class, 'install-utility-test');
+
+        $this->get(InstallUtility::class)->uninstall('test_install_package_activation');
+
+        self::assertSame([['system']], $flushedGroups);
     }
 }
