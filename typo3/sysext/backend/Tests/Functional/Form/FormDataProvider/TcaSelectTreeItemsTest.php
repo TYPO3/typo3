@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithoutDatabaseFixture;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -138,6 +139,43 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         foreach ($expected as $key => $value) {
             self::assertEquals($value, $result[$key]);
         }
+    }
+
+    #[Test]
+    public function addDataKeepsDatabaseValuesForDataProviderWithoutForeignTable(): void
+    {
+        $input = [
+            'tableName' => 'tca_select_tree_items',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'uid' => 1,
+                'select_tree' => 'de,ch',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'select_tree' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'dataProvider' => TreeDataProviderWithoutDatabaseFixture::class,
+                            ],
+                            'items' => [],
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+            'selectTreeCompileItems' => false,
+        ];
+
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($this->addTcaSchemata($input));
+
+        self::assertSame(['de', 'ch'], $result['databaseRow']['select_tree']);
     }
 
     private function addTcaSchemata(array $result): array

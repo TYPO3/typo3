@@ -149,6 +149,65 @@ final class TcaColumnsRemoveEmptyRelationsTest extends UnitTestCase
     }
 
     #[Test]
+    public function selectTreeFieldWithDataProviderWithoutForeignTableAndEmptyItemsIsKept(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'dataProvider' => 'Vendor\\Extension\\TreeDataProvider',
+                            ],
+                            'items' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->subject->addData($input);
+        self::assertArrayHasKey('aField', $result['processedTca']['columns']);
+        self::assertArrayNotHasKey('readOnly', $result['processedTca']['columns']['aField']['config']);
+    }
+
+    #[Test]
+    public function selectTreeFieldWithDataProviderAndForeignTableAndEmptyItemsIsRemoved(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => [],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'foreign_table' => 'foreign_table',
+                            'treeConfig' => [
+                                'dataProvider' => 'Vendor\\Extension\\TreeDataProvider',
+                                'parentField' => 'parent',
+                            ],
+                            'items' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->subject->addData($input);
+        self::assertArrayNotHasKey('aField', $result['processedTca']['columns']);
+    }
+
+    #[Test]
     public function selectFieldWithExistingValueAndEmptyItemsIsStillRemoved(): void
     {
         $input = [

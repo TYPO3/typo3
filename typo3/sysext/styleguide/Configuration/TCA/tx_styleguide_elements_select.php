@@ -818,6 +818,22 @@ return [
             ],
         ],
 
+        'select_tree_8' => [
+            'label' => 'select_tree_8 treeConfig.dataProvider without foreign_table',
+            'description' => 'Tree data provider that does not read records from the database',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'size' => 10,
+                'treeConfig' => [
+                    'dataProvider' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\TypeSelectTree8DataProvider::class,
+                    'appearance' => [
+                        'expandAll' => true,
+                    ],
+                ],
+            ],
+        ],
+
         'category_11' => [
             'label' => 'category_11',
             'config' => [
@@ -1154,6 +1170,7 @@ return [
                     select_multiplesidebyside_10,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6, select_tree_7,
+                    select_tree_8,
                 --div--;type=category,
                     category_11, category_1n, category_mm,
                 --div--;in flex,
