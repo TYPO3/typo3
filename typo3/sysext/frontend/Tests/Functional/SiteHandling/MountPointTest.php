@@ -419,6 +419,30 @@ final class MountPointTest extends AbstractTestCase
                 10130,
                 '10100-1340',
             ],
+            'translated mounted page of untranslated mountpoint to a different site on global site' => [
+                'https://acme.com/fr/archive/produits',
+                1000,
+                10100,
+                '10000-1400',
+            ],
+            'translated subpage of untranslated mountpoint to a different site on global site' => [
+                'https://acme.com/fr/archive/produits/jeux-des-annees-1980',
+                1000,
+                10110,
+                '10000-1400',
+            ],
+            'translated subpage of untranslated mountpoint resolved via language fallback chain' => [
+                'https://acme.com/fr-ca/archive/produits/jeux-des-annees-1980',
+                1000,
+                10110,
+                '10000-1400',
+            ],
+            'untranslated subpage of untranslated mountpoint resolved via language fallback chain' => [
+                'https://acme.com/fr-ca/archive/products/games-of-the-1990s',
+                1000,
+                10120,
+                '10000-1400',
+            ],
         ];
     }
 
@@ -447,6 +471,8 @@ final class MountPointTest extends AbstractTestCase
         $scenarios = [
             'default language' => ['main', 1000, 0, '10100-1340', 'https://acme.com/products/archive/games-of-the-1980s'],
             'translation' => ['main', 1000, 1, '10100-1340', 'https://acme.com/fr/produits/archives/jeux-des-annees-1980'],
+            'translation, untranslated mount point' => ['main', 1000, 1, '10000-1400', 'https://acme.com/fr/archive/produits/jeux-des-annees-1980'],
+            'translation via fallback chain, untranslated mount point' => ['main', 1000, 2, '10000-1400', 'https://acme.com/fr-ca/archive/produits/jeux-des-annees-1980'],
             'recursive mount point' => ['acme-canada', 2000, 0, '1300-2300,10100-1340', 'https://acme.ca/products/archive/games-of-the-1980s'],
         ];
         $restrictions = [

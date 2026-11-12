@@ -47,6 +47,13 @@ class PageSlugCandidateProvider
     protected Context $context;
     protected EnhancerFactory $enhancerFactory;
 
+    /**
+     * The requested language followed by its fallback languages
+     *
+     * @var int[]
+     */
+    protected array $languageIdsOfFallbackChain = [];
+
     public function __construct(Context $context, Site $site, ?EnhancerFactory $enhancerFactory)
     {
         $this->context = $context;
@@ -67,6 +74,7 @@ class PageSlugCandidateProvider
         if (!empty($language->getFallbackLanguageIds())) {
             $languages = array_merge($languages, $language->getFallbackLanguageIds());
         }
+        $this->languageIdsOfFallbackChain = $languages;
         // Iterate all defined languages in their configured order to get matching page candidates somewhere in the language fallback chain
         foreach ($languages as $languageId) {
             $pageCandidatesFromSlugsAndLanguage = $this->getPagesFromDatabaseForCandidates($slugCandidates, $languageId);
@@ -302,12 +310,13 @@ class PageSlugCandidateProvider
             if (is_array($mountPageInformation)) {
                 /** @var array $mountedPage */
                 $siteOfMountedPage = $siteFinder->getSiteByPageId((int)$mountedPage['uid']);
-                $morePageCandidates = $this->findPageCandidatesOfMountPoint(
+                $morePageCandidates = $this->findPageCandidatesOfMountPointInFallbackChain(
                     $row,
                     $mountedPage,
                     $siteOfMountedPage,
                     $languageId,
-                    $slugCandidates
+                    $slugCandidates,
+                    $pageRepository
                 );
                 foreach ($morePageCandidates as $candidate) {
                     // When called previously this MountPoint page should be skipped
@@ -317,6 +326,51 @@ class PageSlugCandidateProvider
                     $pages[] = $candidate;
                 }
             }
+        }
+        return $pages;
+    }
+
+    /**
+     * A mount point page without a translation is only found in a fallback language of the
+     * requested language, while the pages of the mounted tree may be translated into the
+     * requested language. Their candidates are therefore looked up in all languages of the
+     * fallback chain, starting with the requested language.
+     *
+     * @param array $mountPointPage the page with doktype=7, in language $languageId
+     * @param array $mountedPage the target page of the mount point, in language $languageId
+     * @param int $languageId the language the mount point page was found in
+     */
+    protected function findPageCandidatesOfMountPointInFallbackChain(
+        array $mountPointPage,
+        array $mountedPage,
+        Site $siteOfMountedPage,
+        int $languageId,
+        array $slugCandidates,
+        PageRepository $pageRepository
+    ): array {
+        $languageIds = $this->languageIdsOfFallbackChain ?: [$languageId];
+        if (!in_array($languageId, $languageIds, true)) {
+            $languageIds[] = $languageId;
+        }
+        $mountedPageInDefaultLanguage = null;
+        $pages = [];
+        foreach ($languageIds as $languageIdOfMountedPages) {
+            $mountedPageInLanguage = $mountedPage;
+            if ($languageIdOfMountedPages !== $languageId) {
+                $mountedPageInDefaultLanguage ??= $pageRepository->getPage_noCheck((int)$mountedPage['uid']);
+                $mountedPageInLanguage = $pageRepository->getLanguageOverlay(
+                    'pages',
+                    $mountedPageInDefaultLanguage,
+                    new LanguageAspect($languageIdOfMountedPages, $languageIdOfMountedPages)
+                ) ?? $mountedPageInDefaultLanguage;
+            }
+            array_push($pages, ...$this->findPageCandidatesOfMountPoint(
+                $mountPointPage,
+                $mountedPageInLanguage,
+                $siteOfMountedPage,
+                $languageIdOfMountedPages,
+                $slugCandidates
+            ));
         }
         return $pages;
     }
@@ -378,6 +432,7 @@ class PageSlugCandidateProvider
         rsort($trimmedSlugPrefixes);
 
         $slugProviderForMountPage = GeneralUtility::makeInstance(static::class, $this->context, $siteOfMountedPage, $this->enhancerFactory);
+        $slugProviderForMountPage->languageIdsOfFallbackChain = $this->languageIdsOfFallbackChain;
         // Find the right pages for which have been matched
         $excludedPageIds = [(int)$mountPointPage['uid']];
         $pageCandidates = $slugProviderForMountPage->getPagesFromDatabaseForCandidates(
@@ -387,7 +442,7 @@ class PageSlugCandidateProvider
         );
         // The rootline is built with page IDs of the default language, so the mount point page ID
         // of the default language must be used for the connection check below
-        $mountPointPageIdInDefaultLanguage = (int)($languageId > LanguageMarker::DEFAULT_LANGUAGE ? $mountPointPage['l10n_parent'] : ($mountPointPage['t3ver_oid'] ?: $mountPointPage['uid']));
+        $mountPointPageIdInDefaultLanguage = (int)((int)$mountPointPage['sys_language_uid'] > LanguageMarker::DEFAULT_LANGUAGE ? $mountPointPage['l10n_parent'] : ($mountPointPage['t3ver_oid'] ?: $mountPointPage['uid']));
         // Depending on the "mount_pid_ol" parameter, the mountedPage or the mounted page is in the rootline
         $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPageIdInDefaultLanguage);
         foreach ($pageCandidates as $pageCandidate) {
