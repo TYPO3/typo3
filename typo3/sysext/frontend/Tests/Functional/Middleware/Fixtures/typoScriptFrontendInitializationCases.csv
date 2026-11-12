@@ -10,3 +10,7 @@
 ,8,1,1536,0,0,,4,1,0,0,0,0,0,0,"Shortcut","/shortcut/"
 ,9,1,1792,0,0,,1,0,0,0,0,0,0,0,"Direct id","/direct-id/"
 ,10,0,512,0,0,,1,0,0,0,0,0,0,0,"Root two","/"
+,12,1,2048,0,0,,254,0,0,0,0,0,0,0,"Folder sharing a slug","/shared-slug/"
+,11,1,2304,0,0,,1,0,0,0,0,0,0,0,"Page sharing a slug","/shared-slug/"
+,13,1,2560,0,0,,1,0,0,0,0,0,0,0,"First page with duplicate slug","/duplicate-slug/"
+,14,1,2816,0,0,,1,0,0,0,0,0,0,0,"Second page with duplicate slug","/duplicate-slug/"

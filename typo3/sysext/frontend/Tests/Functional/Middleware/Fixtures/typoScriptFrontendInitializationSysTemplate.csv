@@ -4,4 +4,7 @@
 page = PAGE
 page.10 = TEXT
 page.10.value = testing-typoScriptFrontendInitialization
+page.20 = TEXT
+page.20.data = page:uid
+page.20.wrap = <p>page-uid-|</p>
 ","",0,0
