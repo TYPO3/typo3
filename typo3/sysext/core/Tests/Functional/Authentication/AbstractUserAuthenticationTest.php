@@ -47,29 +47,31 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
     {
         parent::setUp();
         FixtureAuthenticationService::resetState();
-        $passwordHash = $this->get(PasswordHashFactory::class)
-            ->getDefaultHashInstance('BE')
-            ->getHashedPassword(self::PASSWORD);
-        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
-        $connection->insert('be_users', [
-            'uid' => 100,
-            'username' => 'testadmin',
-            'password' => $passwordHash,
-            'admin' => 1,
-        ]);
-        $connection->insert('be_users', [
-            'uid' => 101,
-            'username' => 'serviceuser',
-            'password' => 'invalid-hash-never-matches',
-            'admin' => 0,
-        ]);
-        $connection->insert('be_users', [
-            'uid' => 102,
-            'username' => 'mfauser',
-            'password' => $passwordHash,
-            'admin' => 1,
-            'mfa' => json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]),
-        ]);
+        $this->withDatabaseSnapshot(function (): void {
+            $passwordHash = $this->get(PasswordHashFactory::class)
+                ->getDefaultHashInstance('BE')
+                ->getHashedPassword(self::PASSWORD);
+            $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
+            $connection->insert('be_users', [
+                'uid' => 100,
+                'username' => 'testadmin',
+                'password' => $passwordHash,
+                'admin' => 1,
+            ]);
+            $connection->insert('be_users', [
+                'uid' => 101,
+                'username' => 'serviceuser',
+                'password' => 'invalid-hash-never-matches',
+                'admin' => 0,
+            ]);
+            $connection->insert('be_users', [
+                'uid' => 102,
+                'username' => 'mfauser',
+                'password' => $passwordHash,
+                'admin' => 1,
+                'mfa' => json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]),
+            ]);
+        });
     }
 
     protected function tearDown(): void

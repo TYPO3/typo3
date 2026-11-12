@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -41,14 +42,36 @@ final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $create = function (): void {
+            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+            $backendUser = $this->setUpBackendUser(1);
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+            $this->get(Generator::class)->create();
+            GeneralUtility::copyDirectory($this->instancePath . '/typo3conf/sites', $this->instancePath . '/typo3temp/var/styleguide-sites');
+            GeneralUtility::copyDirectory($this->instancePath . '/fileadmin/styleguide', $this->instancePath . '/typo3temp/var/styleguide-files');
+        };
+        $restore = function (): void {
+            // Database snapshots do not restore the files removed by delete().
+            GeneralUtility::copyDirectory($this->instancePath . '/typo3temp/var/styleguide-sites', $this->instancePath . '/typo3conf/sites');
+            GeneralUtility::copyDirectory($this->instancePath . '/typo3temp/var/styleguide-files', $this->instancePath . '/fileadmin/styleguide');
+        };
+        $connection = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        // shortcut: JSON snapshots are broken on server databases; share fixtures there once the testing framework fixes restoration.
+        if ($connection->getDatabasePlatform() instanceof SQLitePlatform) {
+            $this->withDatabaseSnapshot($create, $restore);
+        } else {
+            $create();
+        }
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+    }
+
     #[Test]
     public function generatedSlugWithPostModifierCanBeSaved(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $this->get(Generator::class)->create();
-
         $table = 'tx_styleguide_elements_slugs';
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable($table);
         $row = $connection->select(['*'], $table, ['sys_language_uid' => 0])->fetchAssociative();
@@ -68,11 +91,6 @@ final class GeneratorTest extends FunctionalTestCase
     #[Test]
     public function createGeneratesOptionalFieldControlsWithDefaultComparisons(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $this->get(Generator::class)->create();
-
         $examples = [
             'tx_styleguide_elements_basic' => ['input_1', 'input_44'],
             'tx_styleguide_elements_group' => ['group_db_1', 'group_db_16'],
@@ -124,11 +142,6 @@ final class GeneratorTest extends FunctionalTestCase
     #[Test]
     public function createGeneratesResolvableBrowserEntryPoints(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $this->get(Generator::class)->create();
-
         $recordFinder = $this->get(RecordFinder::class);
         $expectedEntryPoints = [
             ['tx_styleguide_elements_group', 'group_db_14', (string)$recordFinder->findPidOfMainTableRecord('tx_styleguide_elements_group')],
@@ -160,11 +173,6 @@ final class GeneratorTest extends FunctionalTestCase
     #[Test]
     public function createGeneratesFileExamplesWithConfiguredControls(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $this->get(Generator::class)->create();
-
         $uid = $this->get(ConnectionPool::class)->getConnectionForTable('tx_styleguide_file')
             ->select(['uid'], 'tx_styleguide_file', ['sys_language_uid' => 0])->fetchOne();
         $formData = $this->get(FormDataCompiler::class)->compile([
@@ -196,12 +204,6 @@ final class GeneratorTest extends FunctionalTestCase
     #[Test]
     public function createGeneratesTreeStartingPointsWithMatchingSubtrees(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-
-        $this->get(Generator::class)->create();
-
         $row = $this->get(ConnectionPool::class)->getConnectionForTable('tx_styleguide_elements_select')
             ->select(['uid', 'pid'], 'tx_styleguide_elements_select', ['sys_language_uid' => 0])
             ->fetchAssociative();
@@ -260,12 +262,6 @@ final class GeneratorTest extends FunctionalTestCase
     #[Test]
     public function createGeneratesDemoDataForStyleguideTables(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-
-        $this->get(Generator::class)->create();
-
         $connectionPool = $this->get(ConnectionPool::class);
 
         // A row for the "general" handled table exists with tstamp / crdate set

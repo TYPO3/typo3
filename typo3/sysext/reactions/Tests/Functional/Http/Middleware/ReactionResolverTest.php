@@ -55,6 +55,14 @@ final class ReactionResolverTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['reactions'];
 
+    protected array $configurationToUseInTestInstance = [
+        'BE' => [
+            'passwordHashing' => [
+                'options' => ['time_cost' => 4],
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
