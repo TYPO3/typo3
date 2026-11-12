@@ -361,10 +361,14 @@ const groups: { name: string, cases: ElementsBasicInputTestData[] }[] = [
   { name: 'format=timesec empty', cases: formatTimesecEmpty },
 ];
 
+// Opening the record takes most of the time of a case, so all cases of a
+// group share one opened record and run as steps of one test.
 for (const group of groups) {
-  for (const [index, data] of group.cases.entries()) {
-    test(`elements_basic ${group.name} [${index}] ${data.label}: ${data.inputValue || '<empty>'}`, async ({ backend }) => {
-      await backend.formEngine.runInputFieldTest(data, { datepicker: true });
-    });
-  }
+  test(`elements_basic ${group.name}`, async ({ backend }) => {
+    for (const [index, data] of group.cases.entries()) {
+      await test.step(`[${index}] ${data.label}: ${data.inputValue || '<empty>'}`, async () => {
+        await backend.formEngine.runInputFieldTest(data, { datepicker: true });
+      });
+    }
+  });
 }
