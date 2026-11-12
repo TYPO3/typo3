@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\Enhancer\DecoratingEnhancerInterface;
@@ -188,7 +189,7 @@ class PageSlugCandidateProvider
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId, true));
 
-        $statement = $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from('pages')
             ->where(
@@ -203,7 +204,17 @@ class PageSlugCandidateProvider
                         Connection::PARAM_STR_ARRAY
                     )
                 )
-            )
+            );
+        $nonViewableDoktypes = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->getNonViewableDoktypes();
+        if ($nonViewableDoktypes !== []) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn(
+                    'doktype',
+                    $queryBuilder->createNamedParameter($nonViewableDoktypes, Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+        $statement = $queryBuilder
             // Exact match will be first, that's important
             ->orderBy('slug', 'desc')
             // versioned records should be rendered before the live records
@@ -211,6 +222,8 @@ class PageSlugCandidateProvider
             // Sort pages that are not MountPoint pages before mount points
             ->addOrderBy('mount_pid_ol', 'asc')
             ->addOrderBy('mount_pid', 'asc')
+            // Pages sharing the same slug resolve deterministically on all DBMS
+            ->addOrderBy('uid', 'asc')
             ->executeQuery();
 
         $pages = [];

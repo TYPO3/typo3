@@ -205,7 +205,7 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
             new InternalRequest('https://acme.com/spacer/')
         );
         self::assertEquals(404, $response->getStatusCode());
-        self::assertStringContainsString('The requested page does not exist!', (string)$response->getBody());
+        self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
     }
 
     #[Test]
@@ -216,7 +216,31 @@ final class PrepareTypoScriptFrontendRenderingTest extends FunctionalTestCase
             new InternalRequest('https://acme.com/sysfolder/')
         );
         self::assertEquals(404, $response->getStatusCode());
-        self::assertStringContainsString('The requested page does not exist!', (string)$response->getBody());
+        self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function okFromPageSharingSlugWithSysFolder(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/shared-slug/')
+        );
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('page-uid-11', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function pageWithLowestUidIsResolvedForDuplicateSlug(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/duplicate-slug/')
+        );
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('page-uid-13', (string)$response->getBody());
     }
 
     #[Test]
