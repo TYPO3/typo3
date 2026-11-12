@@ -279,16 +279,20 @@ class SelectCheckBoxElement extends AbstractFormElement
         $text = $this->iconFactory->getIcon('actions-system-help-open', IconSize::SMALL)->render();
         $abbrClassAdd = ' help-teaser-icon';
         $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
-        $wrappedText = '<span class="help-link" data-bs-content="<p></p>"';
+        $wrappedText = '<button type="button" class="help-link btn btn-link" data-bs-content="<p></p>"';
         // The overload array may provide a title and a description
         // If either one is defined, add them to the "data" attributes
+        // and provide them as text for assistive technologies
+        $accessibleText = [];
         if (isset($overloadHelpText['title'])) {
             $wrappedText .= ' data-title="' . htmlspecialchars($overloadHelpText['title']) . '"';
+            $accessibleText[] = htmlspecialchars($overloadHelpText['title']);
         }
         if (isset($overloadHelpText['description'])) {
             $wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
+            $accessibleText[] = htmlspecialchars($overloadHelpText['description']);
         }
-        $wrappedText .= '>' . $text . '</span>';
+        $wrappedText .= '>' . $text . '<span class="visually-hidden">' . implode(': ', $accessibleText) . '</span></button>';
         return $wrappedText;
     }
 
