@@ -74,11 +74,11 @@
         max-width: min(24rem, 80vw);
         min-width: 0;
 
-        &-icon {
+        .ck-link-toolbar__preview-icon {
             flex: 0 0 auto;
         }
 
-        &-title {
+        .ck-link-toolbar__preview-title {
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
