@@ -19,10 +19,12 @@ use Composer\Autoload\ClassLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverDelegateRegistry;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
 use TYPO3Fluid\Fluid\Core\Component\ComponentDefinitionProviderInterface;
@@ -37,7 +39,7 @@ use TYPO3Fluid\Fluid\Schema\ViewHelperMetadataFactory;
  *
  * @internal: Specific command implementation, not API itself.
  */
-#[AsCommand('fluid:schema:generate', 'Generates XSD schema files for all available ViewHelpers in var/transient/.')]
+#[AsCommand('fluid:schema:generate', 'Generates XSD schema files for all available ViewHelpers in var/transient/fluid-schema/ or a given directory.')]
 final class SchemaCommand extends Command
 {
     public function __construct(
@@ -46,6 +48,15 @@ final class SchemaCommand extends Command
         private readonly ViewHelperResolverDelegateRegistry $viewHelperResolverDelegateRegistry,
     ) {
         parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument(
+            'path',
+            InputArgument::OPTIONAL,
+            'Dedicated directory to write the schema files to, absolute or relative to the project root. Existing schema_*.xsd files in it are removed. Defaults to var/transient/fluid-schema/.',
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -72,28 +83,42 @@ final class SchemaCommand extends Command
 
         $xsdFiles = $this->combineViewHelperNamespaces($allViewHelpers, $this->viewHelperResolverFactory->create()->getNamespaces());
 
-        // Create transient folder if necessary
-        $temporaryPath = Environment::getVarPath() . '/transient/';
-        if (!is_dir($temporaryPath)) {
-            GeneralUtility::mkdir_deep($temporaryPath);
+        $path = $input->getArgument('path');
+        if ($path === null) {
+            $path = Environment::getVarPath() . '/transient/fluid-schema';
+        } elseif (!PathUtility::isAbsolutePath($path)) {
+            $path = Environment::getProjectPath() . '/' . $path;
+        }
+        $targetPath = rtrim($path, '/') . '/';
+        try {
+            GeneralUtility::mkdir_deep($targetPath);
+        } catch (\RuntimeException) {
+            $output->writeln(sprintf('<error>Directory %s could not be created.</error>', $targetPath));
+            return Command::FAILURE;
         }
 
-        // Remove existing schema files in transient folder
-        $existingSchemaFiles = GeneralUtility::getFilesInDir($temporaryPath, 'xsd');
-        foreach ($existingSchemaFiles as $file) {
-            if (str_starts_with($file, 'schema_')) {
-                unlink($temporaryPath . $file);
-            }
-        }
+        // Schema files were written to var/transient/ directly before, remove these leftovers
+        $this->removeSchemaFiles(Environment::getVarPath() . '/transient/');
+        $this->removeSchemaFiles($targetPath);
 
-        // Write schema files to transient folder
+        $failedFiles = [];
         foreach ($xsdFiles as $xmlNamespace => $viewHelpers) {
             $schema = new SchemaGenerator()->generate($xmlNamespace, $viewHelpers);
             $fileName = str_replace('http://typo3.org/ns/', '', $xmlNamespace);
             $fileName = str_replace('/', '_', $fileName);
             $fileName = preg_replace('#[^0-9a-zA-Z_]#', '', $fileName);
-            GeneralUtility::writeFile($temporaryPath . 'schema_' . $fileName . '.xsd', $schema->asXml(), true);
-            $output->writeln(sprintf('Generated schema file <info>%s</info>', $temporaryPath . 'schema_' . $fileName . '.xsd'), OutputInterface::VERBOSITY_DEBUG);
+            $targetFile = $targetPath . 'schema_' . $fileName . '.xsd';
+            if (!GeneralUtility::writeFile($targetFile, $schema->asXml(), true)) {
+                $failedFiles[] = $targetFile;
+                continue;
+            }
+            $output->writeln(sprintf('Generated schema file <info>%s</info>', $targetFile), OutputInterface::VERBOSITY_DEBUG);
+        }
+        if ($failedFiles !== []) {
+            foreach ($failedFiles as $failedFile) {
+                $output->writeln(sprintf('<error>Schema file %s could not be written.</error>', $failedFile));
+            }
+            return Command::FAILURE;
         }
 
         if ($errors !== []) {
@@ -111,6 +136,15 @@ final class SchemaCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    private function removeSchemaFiles(string $directory): void
+    {
+        foreach (GeneralUtility::getFilesInDir($directory, 'xsd') as $file) {
+            if (str_starts_with($file, 'schema_')) {
+                unlink($directory . $file);
+            }
+        }
     }
 
     /**
