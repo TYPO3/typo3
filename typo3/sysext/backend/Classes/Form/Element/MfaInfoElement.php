@@ -66,7 +66,8 @@ class MfaInfoElement extends AbstractFormElement
         $targetUser->enablecolumns = ['deleted' => true];
         $targetUser->setBeUserByUid($userId);
 
-        $isDeactivationAllowed = true;
+        // Only admins are allowed to deactivate providers, see MfaAjaxController
+        $isDeactivationAllowed = $currentBackendUser->isAdmin();
         // Providers from system maintainers can only be deactivated by system maintainers.
         // However, this check is only necessary if the target is a backend user.
         if (($targetUser instanceof BackendUserAuthentication)
@@ -123,15 +124,18 @@ class MfaInfoElement extends AbstractFormElement
                 $childHtml = $this->buildProviderListHtml($activeProviders, $lockedProviders, false);
             }
 
-            $mfaSetupInfo[] = '<div class="form-description">' . nl2br(htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.description'))) . '</div>';
-            if (!$this->mfaProviderRegistry->hasProviders()) {
-                $mfaSetupInfo[] = '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.not_available')) . '</span>';
-            } else {
-                $mfaSetupInfo[] = '<div class="form-group"><div class="form-control-wrap t3js-file-controls">';
-                $mfaSetupInfo[] = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-default">';
-                $mfaSetupInfo[] =  htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.' . ($activeProviders !== [] ? 'manage_link_title' : 'setup_link_title')));
-                $mfaSetupInfo[] = '</a>';
-                $mfaSetupInfo[] = '</div></div>';
+            // The MFA module always operates on the current backend user
+            if ($targetUser instanceof BackendUserAuthentication && $userId === $currentBackendUser->getUserId()) {
+                $mfaSetupInfo[] = '<div class="form-description">' . nl2br(htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.description'))) . '</div>';
+                if (!$this->mfaProviderRegistry->hasProviders()) {
+                    $mfaSetupInfo[] = '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.not_available')) . '</span>';
+                } else {
+                    $mfaSetupInfo[] = '<div class="form-group"><div class="form-control-wrap t3js-file-controls">';
+                    $mfaSetupInfo[] = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-default">';
+                    $mfaSetupInfo[] =  htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.' . ($activeProviders !== [] ? 'manage_link_title' : 'setup_link_title')));
+                    $mfaSetupInfo[] = '</a>';
+                    $mfaSetupInfo[] = '</div></div>';
+                }
             }
         }
 
@@ -193,7 +197,7 @@ class MfaInfoElement extends AbstractFormElement
 
         $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';
         foreach ($activeProviders as $identifier => $activeProvider) {
-            $childHtml[] = '<li class="list-group-item" id="provider-' . htmlspecialchars((string)$identifier) . '">';
+            $childHtml[] = '<li class="list-group-item d-flex align-items-center gap-2" id="provider-' . htmlspecialchars((string)$identifier) . '">';
             $childHtml[] =  $this->iconFactory->getIcon($activeProvider->getIconIdentifier(), IconSize::SMALL);
             $childHtml[] =  htmlspecialchars($lang->sL($activeProvider->getTitle()));
             if (in_array($identifier, $lockedProviders, true)) {
@@ -203,7 +207,7 @@ class MfaInfoElement extends AbstractFormElement
             }
             if ($isDeactivationAllowed) {
                 $childHtml[] = '<button type="button"';
-                $childHtml[] =  ' class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"';
+                $childHtml[] =  ' class="btn btn-default btn-sm ms-auto t3js-deactivate-provider-button"';
                 $childHtml[] =  ' data-confirmation-title="' . htmlspecialchars(sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfaProvider'), $lang->sL($activeProvider->getTitle()))) . '"';
                 $childHtml[] =  ' data-confirmation-content="' . htmlspecialchars(sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfaProvider.confirmation.text'), $lang->sL($activeProvider->getTitle()))) . '"';
                 $childHtml[] =  ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
