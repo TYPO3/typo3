@@ -142,6 +142,29 @@ final class TcaSchemaTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function ignoreWebMountRestrictionCapabilityReflectsTcaOption(): void
+    {
+        $factory = $this->get(TcaSchemaFactory::class);
+        $pagesSchema = $factory->get('pages');
+        self::assertFalse($pagesSchema->hasCapability(TcaSchemaCapability::IgnoreWebMountRestriction));
+        $fileSchema = $factory->get('sys_file');
+        self::assertTrue($fileSchema->hasCapability(TcaSchemaCapability::IgnoreWebMountRestriction));
+    }
+
+    #[Test]
+    public function deprecatedRestrictionWebMountCapabilityMatchesIgnoreWebMountRestriction(): void
+    {
+        $factory = $this->get(TcaSchemaFactory::class);
+        foreach (['pages', 'sys_file'] as $table) {
+            $schema = $factory->get($table);
+            self::assertSame(
+                $schema->hasCapability(TcaSchemaCapability::IgnoreWebMountRestriction),
+                $schema->hasCapability(TcaSchemaCapability::RestrictionWebMount),
+            );
+        }
+    }
+
+    #[Test]
     public function labelsAreAddedToSchema(): void
     {
         $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'header';

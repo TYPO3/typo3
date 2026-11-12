@@ -31,6 +31,11 @@ return [
             'Breaking-82378-RemoveNamespacedJQuery.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability::RestrictionWebMount' => [
+        'restFiles' => [
+            'Deprecation-110086-TcaSchemaCapabilityRestrictionWebMount.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO' => [
         'restFiles' => [
             'Deprecation-52694-DeprecatedGeneralUtilitydevLog.rst',

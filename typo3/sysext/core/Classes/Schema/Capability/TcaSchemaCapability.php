@@ -88,8 +88,19 @@ enum TcaSchemaCapability
 
     case RestrictionRootLevel;
 
-    // TCA[ctrl][ignoreWebMountRestriction] inverted
+    /**
+     * TCA[ctrl][security][ignoreWebMountRestriction]
+     *
+     * Despite its name, this is not an inversion of the TCA option, but the
+     * option itself. Use IgnoreWebMountRestriction instead.
+     *
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Use TcaSchemaCapability::IgnoreWebMountRestriction instead.
+     */
     case RestrictionWebMount;
+
+    // TCA[ctrl][security][ignoreWebMountRestriction]
+    case IgnoreWebMountRestriction;
+
     private const SYSTEM_CAPABILITIES = [
         self::CreatedAt,
         self::UpdatedAt,

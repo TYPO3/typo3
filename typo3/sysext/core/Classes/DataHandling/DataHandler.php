@@ -7715,7 +7715,7 @@ class DataHandler
         }
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         try {
-            if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
+            if (!$pagesSchema->hasCapability(TcaSchemaCapability::IgnoreWebMountRestriction) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
                 return false;
             }
         } catch (InvalidPageRecordException) {
