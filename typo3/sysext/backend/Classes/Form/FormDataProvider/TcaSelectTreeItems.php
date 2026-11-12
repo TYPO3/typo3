@@ -90,7 +90,10 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             // Prepare the list of currently selected nodes using RelationHandler
             // This is needed to ensure a correct value initialization before the actual tree is loaded
             $result['databaseRow'][$fieldName] = $this->processDatabaseFieldValue($result['databaseRow'], $fieldName);
-            $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, []);
+            // A custom data provider without "foreign_table" knows its values, they can not be validated against records
+            if (empty($fieldConfig['config']['treeConfig']['dataProvider']) || !empty($fieldConfig['config']['foreign_table'])) {
+                $result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, []);
+            }
 
             // Preserve original TCA static items before overwriting with resolved items
             $originalTcaItems = $fieldConfig['config']['items'] ?? [];

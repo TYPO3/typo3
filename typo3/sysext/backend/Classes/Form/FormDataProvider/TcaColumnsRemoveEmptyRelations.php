@@ -55,7 +55,7 @@ readonly class TcaColumnsRemoveEmptyRelations implements FormDataProviderInterfa
                 if ($this->hasMultipleLanguageChoices($fieldConfig)) {
                     continue;
                 }
-            } elseif ($this->hasMeaningfulItems($fieldConfig)) {
+            } elseif ($this->hasMeaningfulItems($fieldConfig) || $this->hasItemsFromTreeDataProvider($fieldConfig)) {
                 continue;
             }
 
@@ -108,6 +108,17 @@ readonly class TcaColumnsRemoveEmptyRelations implements FormDataProviderInterfa
             }
         }
         return false;
+    }
+
+    /**
+     * A tree data provider without "foreign_table" fetches its items on its own when the tree
+     * is rendered. They are unknown when the form is built, so the field must not be considered empty.
+     */
+    private function hasItemsFromTreeDataProvider(array $fieldConfig): bool
+    {
+        return ($fieldConfig['config']['renderType'] ?? '') === 'selectTree'
+            && !empty($fieldConfig['config']['treeConfig']['dataProvider'])
+            && empty($fieldConfig['config']['foreign_table']);
     }
 
     /**

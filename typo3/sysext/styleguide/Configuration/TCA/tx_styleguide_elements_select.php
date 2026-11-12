@@ -818,6 +818,22 @@ return [
             ],
         ],
 
+        'select_tree_8' => [
+            'label' => 'select_tree_8 treeConfig.dataProvider without foreign_table',
+            'description' => 'Tree data provider that does not read records from the database',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'size' => 10,
+                'treeConfig' => [
+                    'dataProvider' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\TypeSelectTree8DataProvider::class,
+                    'appearance' => [
+                        'expandAll' => true,
+                    ],
+                ],
+            ],
+        ],
+
         'select_tree_static' => [
             'label' => 'select_tree_static',
             'description' => 'Numeric starting point from generated Page TSconfig selects branch A',
@@ -1460,6 +1476,7 @@ return [
                     shared_mm_primary, shared_mm_secondary,
                 --div--;renderType=selectTree,
                     select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6, select_tree_7,
+                    select_tree_8,
                 --div--;Tree starting points,
                     select_tree_static, select_tree_pid, select_tree_siteroot,
                     select_tree_tsconfig, select_tree_tsconfig_list,

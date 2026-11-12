@@ -24,6 +24,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
+use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithoutDatabaseFixture;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -145,6 +146,34 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
         ];
         $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, $table, $field, ['uid' => 1]);
 
+        self::assertInstanceOf(DatabaseTreeDataProvider::class, $dataProvider);
         self::assertSame($expected, $dataProvider->getUnselectableItemsIncludeDescendants());
+    }
+
+    #[Test]
+    public function configuredDataProviderNotBasedOnDatabaseDoesNotRequireDatabaseConfiguration(): void
+    {
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
+        $tcaConfiguration = [
+            'type' => 'select',
+            'renderType' => 'selectTree',
+            'treeConfig' => [
+                'dataProvider' => TreeDataProviderWithoutDatabaseFixture::class,
+                'startingPoints' => '3,5',
+                'appearance' => [
+                    'expandAll' => true,
+                    'maxLevels' => 4,
+                ],
+            ],
+        ];
+
+        $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
+
+        self::assertInstanceOf(TreeDataProviderWithoutDatabaseFixture::class, $dataProvider);
+        self::assertSame(md5('foo|bar'), $dataProvider->getTreeId());
+        self::assertSame([3, 5], $dataProvider->getStartingPoints());
+        self::assertTrue($dataProvider->getExpandAll());
+        self::assertSame(4, $dataProvider->getLevelMaximum());
+        self::assertSame('0', $dataProvider->getNonSelectableLevelList());
     }
 }
