@@ -100,11 +100,15 @@ const simpleCases: ElementsBasicInputTestData[] = [
   },
 ];
 
-for (const [index, data] of simpleCases.entries()) {
-  test(`elements_basic simple input field [${index}] ${data.label}: ${data.inputValue}`, async ({ backend }) => {
-    await backend.formEngine.runInputFieldTest(data);
-  });
-}
+// Opening the record takes most of the time of a case, so the cases share
+// one opened record and run as steps of one test.
+test('elements_basic simple input field', async ({ backend }) => {
+  for (const [index, data] of simpleCases.entries()) {
+    await test.step(`[${index}] ${data.label}: ${data.inputValue}`, async () => {
+      await backend.formEngine.runInputFieldTest(data);
+    });
+  }
+});
 
 // @todo: Implement special test for read-only field input_40, as it is not testable by runInputFieldValidationTest.
 const validationCases: (ElementsBasicInputValidationData & { comment: string })[] = [
@@ -179,8 +183,10 @@ const validationCases: (ElementsBasicInputValidationData & { comment: string })[
   },
 ];
 
-for (const data of validationCases) {
-  test(`elements_basic simple input validation: ${data.label} - ${data.comment}`, async ({ backend }) => {
-    await backend.formEngine.runInputFieldValidationTest(data);
-  });
-}
+test('elements_basic simple input validation', async ({ backend }) => {
+  for (const data of validationCases) {
+    await test.step(`${data.label} - ${data.comment}`, async () => {
+      await backend.formEngine.runInputFieldValidationTest(data);
+    });
+  }
+});
