@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\Element;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -81,6 +82,35 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertEmpty($result['javaScriptModules']);
     }
 
+    public static function renderShowsMfaSetupLinkOnlyForCurrentBackendUserDataProvider(): \Generator
+    {
+        yield 'user settings of current user' => ['be_users_settings', 1, true];
+        yield 'own backend user record' => ['be_users', 1, true];
+        yield 'other backend user record' => ['be_users', 3, false];
+        yield 'frontend user record' => ['fe_users', 1, false];
+    }
+
+    #[DataProvider('renderShowsMfaSetupLinkOnlyForCurrentBackendUserDataProvider')]
+    #[Test]
+    public function renderShowsMfaSetupLinkOnlyForCurrentBackendUser(string $tableName, int $userId, bool $expected): void
+    {
+        $result = $this->getFormElementResult([
+            'tableName' => $tableName,
+            'databaseRow' => [
+                'uid' => $userId,
+            ],
+            'parameterArray' => [
+                'itemFormElValue' => '',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
+            ],
+        ]);
+
+        self::assertSame($expected, str_contains($result['html'], 'user_profile.xlf:mfa_providers.setup_link_title'));
+        self::assertSame($expected, str_contains($result['html'], 'user_profile.xlf:mfa_providers.description'));
+    }
+
     #[Test]
     public function renderReturnsElementWithoutInvalidProviderTest(): void
     {
@@ -126,13 +156,13 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertDoesNotMatchRegularExpression('/<span.*class="badge badge-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
         self::assertMatchesRegularExpression('/<span.*class="badge badge-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exist
-        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-totp"/s', $result['html']);
         // Recovery codes item does NOT exist
         self::assertStringNotContainsString('id="provider-recovery-codes"', $result['html']);
         // No item is locked
         self::assertDoesNotMatchRegularExpression('/<span.*class="badge badge-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Item can be deactivated
-        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm ms-auto t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger mt-2"/s', $result['html']);
         // JavaScript is added and targets the real backend user table
@@ -168,6 +198,34 @@ final class MfaInfoElementTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderReturnsElementWithoutDeactivationButtonsForNonAdminInUserSettingsTest(): void
+    {
+        $GLOBALS['BE_USER']->setBeUserByUid(4);
+
+        $result = $this->getFormElementResult([
+            'tableName' => 'be_users_settings',
+            'databaseRow' => [
+                'uid' => 4,
+            ],
+            'parameterArray' => [
+                'itemFormElValue' => '',
+                'fieldConf' => [
+                    'label' => 'foo',
+                ],
+            ],
+        ]);
+
+        // Mfa is enabled
+        self::assertMatchesRegularExpression('/<span.*class="badge badge-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-totp"/s', $result['html']);
+        // Deactivation is only allowed for admins, the MFA module is linked instead
+        self::assertStringNotContainsString('t3js-deactivate-provider-button', $result['html']);
+        self::assertStringNotContainsString('t3js-deactivate-mfa-button', $result['html']);
+        self::assertStringContainsString('user_profile.xlf:mfa_providers.manage_link_title', $result['html']);
+        self::assertEmpty($result['javaScriptModules']);
+    }
+
+    #[Test]
     public function renderReturnsElementWithMfaActiveAndLockedProvidersTest(): void
     {
         $result = $this->getFormElementResult([
@@ -187,13 +245,13 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertDoesNotMatchRegularExpression('/<span.*class="badge badge-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
         self::assertMatchesRegularExpression('/<span.*class="badge badge-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exists
-        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-totp"/s', $result['html']);
         // Recovery codes item exists
-        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-recovery-codes"/s', $result['html']);
         // Item is locked
         self::assertMatchesRegularExpression('/<span.*class="badge badge-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Items can be deactivated
-        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm float-end t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm ms-auto t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger mt-2"/s', $result['html']);
         // JavaScript is added
@@ -225,9 +283,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
         self::assertDoesNotMatchRegularExpression('/<span.*class="badge badge-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
         self::assertMatchesRegularExpression('/<span.*class="badge badge-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exists
-        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-totp"/s', $result['html']);
         // Recovery codes item exists
-        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item d-flex align-items-center gap-2".*id="provider-recovery-codes"/s', $result['html']);
         // Item (recovery codes) is locked
         self::assertMatchesRegularExpression('/<span.*class="badge badge-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Items deactivation button is not shown
