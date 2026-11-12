@@ -368,7 +368,7 @@ abstract class AbstractItemProvider
                     'value' => $foreignRow['uid'],
                     'icon' => $icon,
                     'group' => $foreignRow[$itemGroupField] ?? null,
-                    // This line is part of the category tree performance hack, which should be used everywhere
+                    // Used by the select and category tree to avoid fetching each record again
                     '_row' => $foreignRow,
                 ];
                 $items[] = $item;

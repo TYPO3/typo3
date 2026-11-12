@@ -170,9 +170,13 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $dynamicItems = $this->removeItemsByDoktypeUserRestriction($result, $fieldName, $dynamicItems);
                 // Funnily, the only data needed for the tree code are the uids of the possible records (yuk!) - get them
                 $uidListOfAllDynamicItems = [];
+                $fullRowsOfDynamicItems = [];
                 foreach ($dynamicItems as $item) {
                     if ((int)$item['value'] > 0) {
                         $uidListOfAllDynamicItems[] = (int)$item['value'];
+                    }
+                    if (isset($item['_row'])) {
+                        $fullRowsOfDynamicItems[(int)$item['_row']['uid']] = $item['_row'];
                     }
                 }
                 // Now kick in this tree stuff
@@ -183,9 +187,10 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                     $result['databaseRow']
                 );
                 $treeDataProvider->setSelectedList(implode(',', $result['databaseRow'][$fieldName]));
-                // Basically the tree foo fetches all tree nodes again (aaargs), then verifies if
-                // a given rows uid is within this "list of allowed uids". It then creates an object
-                // tree representing the nested tree, just to collapse all that to a flat array again. Yay ...
+                // The tree is built from the already fetched rows, restricted to this "list of allowed uids".
+                // It then creates an object tree representing the nested tree, just to collapse all that
+                // to a flat array again.
+                $treeDataProvider->setAvailableItems($fullRowsOfDynamicItems);
                 $treeDataProvider->setItemWhiteList($uidListOfAllDynamicItems);
                 $treeDataProvider->initializeTreeData();
                 $treeRenderer = GeneralUtility::makeInstance(ArrayTreeRenderer::class);

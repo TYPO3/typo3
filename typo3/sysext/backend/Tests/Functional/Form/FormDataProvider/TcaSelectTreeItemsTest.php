@@ -418,6 +418,63 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         self::assertSame(['de', 'ch'], $result['databaseRow']['select_tree']);
     }
 
+    public static function addDataBuildsParentFieldTreeFromRecordsOfCurrentWorkspaceDataProvider(): \Generator
+    {
+        yield 'live workspace' => [
+            0,
+            ['1' => 1, '3' => 2, '2' => 1],
+        ];
+        yield 'category moved to another parent in workspace' => [
+            1,
+            ['1' => 1, '2' => 1, '3' => 2],
+        ];
+    }
+
+    #[DataProvider('addDataBuildsParentFieldTreeFromRecordsOfCurrentWorkspaceDataProvider')]
+    #[Test]
+    public function addDataBuildsParentFieldTreeFromRecordsOfCurrentWorkspace(int $workspaceId, array $expectedDepthByIdentifier): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectTreeItems/sys_category_moved_in_workspace.csv');
+        $GLOBALS['BE_USER']->workspace = $workspaceId;
+        $input = [
+            'tableName' => 'tca_select_tree_items',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'uid' => 1,
+                'select_tree' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'select_tree' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'parentField' => 'parent',
+                            ],
+                            'foreign_table' => 'sys_category',
+                            'foreign_table_where' => 'ORDER BY sys_category.sorting',
+                            'items' => [],
+                            'maxitems' => 99,
+                        ],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+            'selectTreeCompileItems' => true,
+        ];
+
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($this->addTcaSchemata($input));
+
+        $depthByIdentifier = array_column($result['processedTca']['columns']['select_tree']['config']['items'], 'depth', 'identifier');
+        unset($depthByIdentifier['0']);
+        self::assertSame($expectedDepthByIdentifier, $depthByIdentifier);
+    }
+
     private function addTcaSchemata(array $result): array
     {
         if (isset($result['tcaSchemata'])) {

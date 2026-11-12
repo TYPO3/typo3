@@ -85,6 +85,11 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected array $nodeSortValues = [];
 
+    /**
+     * @var array<string, array<int, list<int>>> uids of available items, grouped by field name and the uid they point to
+     */
+    private array $availableItemUidsByRelation = [];
+
     public function __construct(protected EventDispatcherInterface $eventDispatcher) {}
 
     /**
@@ -244,6 +249,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         $this->schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->getTableName());
         $this->nodeSortValues = array_flip($this->itemWhiteList);
+        $this->availableItemUidsByRelation = [];
         if ($this->schema->hasField($this->lookupField)) {
             $this->columnConfiguration = $this->schema->getField($this->lookupField)->getConfiguration();
         } else {
@@ -435,39 +441,44 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenUidsFromParentRelation(array $row): array
     {
         $uid = (int)$row['uid'];
+        $relationField = $this->lookupField;
         if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline', 'file'], true)) {
             if ($this->columnConfiguration['MM'] ?? null) {
                 $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                 // Dummy field for setting "look from other site"
                 $this->columnConfiguration['MM_opposite_field'] = 'children';
                 $dbGroup->start($row[$this->lookupField], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
-                $relatedUids = $dbGroup->tableArray[$this->getTableName()];
-            } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
-                $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
-            } else {
-                // Check available items
-                if ($this->availableItems !== [] && $this->columnConfiguration['type'] === 'category') {
-                    // @todo: This is part of the category tree performance hack
-                    $relatedUids = [];
-                    foreach ($this->availableItems as $item) {
-                        if ($item[$this->lookupField] === $uid) {
-                            $relatedUids[$item['uid']] = $item['sorting'];
-                        }
-                    }
-                    if ($relatedUids !== []) {
-                        // Ensure sorting is kept
-                        asort($relatedUids);
-                        $relatedUids = array_keys($relatedUids);
-                    }
-                } else {
-                    $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
+                return $dbGroup->tableArray[$this->getTableName()];
+            }
+            if ($this->columnConfiguration['foreign_field'] ?? null) {
+                $relationField = $this->columnConfiguration['foreign_field'];
+            }
+        }
+        if ($this->availableItems !== []) {
+            return $this->getAvailableItemUidsRelatedTo($relationField, $uid);
+        }
+        return $this->listFieldQuery($relationField, $uid);
+    }
+
+    /**
+     * Resolves related uids from the available items, which are already overlaid
+     * for the current workspace, instead of querying the database for each node.
+     *
+     * @return list<int>
+     */
+    private function getAvailableItemUidsRelatedTo(string $fieldName, int $uid): array
+    {
+        if (!isset($this->availableItemUidsByRelation[$fieldName])) {
+            $this->availableItemUidsByRelation[$fieldName] = [];
+            foreach ($this->availableItems as $item) {
+                $value = (string)($item[$fieldName] ?? '');
+                $relatedUids = $value === '' ? [0] : GeneralUtility::intExplode(',', $value, true);
+                foreach ($relatedUids as $relatedUid) {
+                    $this->availableItemUidsByRelation[$fieldName][$relatedUid][] = (int)$item['uid'];
                 }
             }
-        } else {
-            $relatedUids = $this->listFieldQuery($this->lookupField, $uid);
         }
-
-        return $relatedUids;
+        return $this->availableItemUidsByRelation[$fieldName][$uid] ?? [];
     }
 
     /**
@@ -495,6 +506,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                         $this->columnConfiguration
                     );
                     $relatedUids = $dbGroup->tableArray[$this->getTableName()];
+                } elseif (($this->columnConfiguration['foreign_field'] ?? false) && $this->availableItems !== []) {
+                    $relatedUids = $this->getAvailableItemUidsRelatedTo($this->columnConfiguration['foreign_field'], $uid);
                 } elseif ($this->columnConfiguration['foreign_field'] ?? false) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($this->getTableName());
