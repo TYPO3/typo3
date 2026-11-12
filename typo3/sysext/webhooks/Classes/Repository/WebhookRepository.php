@@ -48,7 +48,7 @@ class WebhookRepository
      */
     public function findAll(): array
     {
-        $cacheIdentifier = $this->cacheIdentifierPrefix . 'all';
+        $cacheIdentifier = $this->cacheIdentifierPrefix . 'all_' . ($this->applyDefaultRestrictions ? 'restricted' : 'unrestricted');
         if (!$this->runtimeCache->has($cacheIdentifier)) {
             $data = $this->map(
                 $this->getQueryBuilder()->executeQuery()->fetchAllAssociative()
@@ -111,6 +111,31 @@ class WebhookRepository
     {
         $webhooks = $this->getConfiguredWebhooks();
         return array_filter($webhooks, static fn($webhook) => $webhook->getWebhookType()?->getServiceName() === $type);
+    }
+
+    /**
+     * Returns the webhooks of a type that are active right now, keyed by identifier.
+     * Independent of setApplyDefaultRestrictions() and not cached, so long-running
+     * processes such as message workers see changes to webhook records.
+     *
+     * @return array<string, WebhookInstruction>
+     */
+    public function findActiveByType(string $type): array
+    {
+        $rows = $this->connectionPool->getQueryBuilderForTable('sys_webhook')
+            ->select('*')
+            ->from('sys_webhook')
+            ->orderBy('name', 'asc')
+            ->addOrderBy('uid', 'asc')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $webhooks = [];
+        foreach ($this->map($rows) as $webhook) {
+            if ($webhook->getWebhookType()?->getServiceName() === $type) {
+                $webhooks[$webhook->getIdentifier()] = $webhook;
+            }
+        }
+        return $webhooks;
     }
 
     protected function getQueryBuilderForDemand(WebhookDemand $demand, bool $addOrderBy = true): QueryBuilder
