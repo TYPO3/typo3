@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Webhooks\Repository\WebhookDemand;
+use TYPO3\CMS\Webhooks\Repository\WebhookRepository;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -151,6 +153,52 @@ final class WebhookExecutionTest extends FunctionalTestCase
         // Catch any requests, evaluate their payload
         new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
         self::assertEquals(0, $numberOfRequestsFired);
+    }
+
+    #[Test]
+    public function disabledWebhookIsNotSentAfterAnUnrestrictedRepositoryLookup(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_webhook')
+            ->update('sys_webhook', ['disabled' => 1], ['uid' => 3]);
+        $numberOfRequestsFired = 0;
+        $inspector = function () use (&$numberOfRequestsFired) {
+            $numberOfRequestsFired++;
+        };
+        $this->registerRequestInspector($inspector);
+
+        $this->get(WebhookRepository::class)->findAll();
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
+        self::assertSame(0, $numberOfRequestsFired);
+    }
+
+    #[Test]
+    public function webhookDisabledAfterAMessageIsNotSentForTheNextMessageInTheSameProcess(): void
+    {
+        $requests = new \ArrayObject();
+        $this->registerRequestInspector(static function (RequestInterface $request) use ($requests) {
+            $requests->append($request);
+        });
+
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
+        self::assertCount(1, $requests);
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_webhook')
+            ->update('sys_webhook', ['disabled' => 1], ['uid' => 3]);
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified again']);
+        self::assertCount(1, $requests);
+    }
+
+    #[Test]
+    public function handlingAMessageDoesNotHideDisabledWebhooksFromLaterRepositoryLookups(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_webhook')
+            ->update('sys_webhook', ['disabled' => 1], ['uid' => 2]);
+        $this->registerRequestInspector(static function () {});
+
+        new ActionService()->modifyRecord('pages', 10, ['title' => 'Dummy Modified']);
+        $repository = $this->get(WebhookRepository::class);
+        self::assertCount(3, $repository->findByDemand(new WebhookDemand()));
+        self::assertSame(3, $repository->countAll(new WebhookDemand()));
+        self::assertCount(3, $repository->findAll());
     }
 
     public static function verifyRecordWithJsonDataCanBeAddedDataSets(): \Generator

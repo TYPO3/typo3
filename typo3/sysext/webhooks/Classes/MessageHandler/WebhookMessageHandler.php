@@ -42,9 +42,7 @@ class WebhookMessageHandler
 
     public function __invoke(WebhookMessageInterface $message): void
     {
-        $configuredWebhooks = $this->repository
-            ->setApplyDefaultRestrictions(true)
-            ->getConfiguredWebhooksByType(get_class($message));
+        $configuredWebhooks = $this->repository->findActiveByType(get_class($message));
         foreach ($configuredWebhooks as $webhookInstruction) {
             $this->logger->info('Sending webhook', [
                 'webhook-identifier' => $webhookInstruction->getIdentifier(),
