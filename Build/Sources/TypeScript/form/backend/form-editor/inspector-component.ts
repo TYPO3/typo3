@@ -118,6 +118,8 @@ let configuration: Configuration = null;
 
 let formEditorApp: FormEditor = null;
 
+let renderedFormElementIdentifierPath: string | null = null;
+
 function getFormEditorApp(): FormEditor {
   return formEditorApp;
 }
@@ -722,6 +724,14 @@ export function renderEditors(
   }
 
   const inspectorEl = getInspectorDomElement();
+  const scrollContainer = inspectorEl?.closest<HTMLElement>('.formeditor-inspector-inner');
+  const formElementIdentifierPath = typeof formElement === 'string'
+    ? formElement
+    : formElement.get('__identifierPath');
+  const scrollTop = formElementIdentifierPath === renderedFormElementIdentifierPath
+    ? scrollContainer?.scrollTop ?? 0
+    : 0;
+  renderedFormElementIdentifierPath = formElementIdentifierPath;
   if (inspectorEl) { inspectorEl.replaceChildren(); }
 
   const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
@@ -756,6 +766,9 @@ export function renderEditors(
 
   if (typeof callback === 'function') {
     callback();
+  }
+  if (scrollContainer) {
+    scrollContainer.scrollTop = scrollTop;
   }
 }
 
@@ -2399,6 +2412,7 @@ export function bootstrap(
   customConfiguration?: Configuration
 ): typeof import('./inspector-component') {
   formEditorApp = _formEditorApp;
+  renderedFormElementIdentifierPath = null;
   configuration = merge({}, defaultConfiguration, customConfiguration ?? {});
   Helper.bootstrap(formEditorApp);
   return this;
