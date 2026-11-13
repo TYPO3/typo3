@@ -17,19 +17,23 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
+use Doctrine\DBAL\Types\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Domain\Repository\RecordDescendantsRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
@@ -285,6 +289,16 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 $processedUids[(int)$uid] = true;
             }
         }
+        if ($this->parentFieldHoldsSingleUid()) {
+            $descendantUids = GeneralUtility::makeInstance(RecordDescendantsRepository::class)->findDescendantUids(
+                $this->tableName,
+                $this->lookupField,
+                $uidsToProcess,
+                (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0),
+            );
+            $this->setItemUnselectableList(array_merge($this->getItemUnselectableList(), $descendantUids));
+            return;
+        }
         $descendantUids = [];
         while ($uidsToProcess !== []) {
             $uid = array_shift($uidsToProcess);
@@ -311,6 +325,35 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             }
         }
         $this->setItemUnselectableList(array_merge($this->getItemUnselectableList(), $descendantUids));
+    }
+
+    /**
+     * Whether each record stores the uid of a single parent in an integer column,
+     * which allows resolving all descendants with one recursive query. The lookup
+     * field without TCA is e.g. "pid".
+     */
+    private function parentFieldHoldsSingleUid(): bool
+    {
+        if ($this->columnConfiguration !== []) {
+            if (($this->columnConfiguration['MM'] ?? false) || ($this->columnConfiguration['foreign_field'] ?? false)) {
+                return false;
+            }
+            $holdsSingleUid = match ($this->columnConfiguration['type'] ?? '') {
+                'number' => true,
+                'select', 'category' => RelationshipType::fromTcaConfiguration($this->columnConfiguration)->hasOne(),
+                default => false,
+            };
+            if (!$holdsSingleUid) {
+                return false;
+            }
+        }
+        // A column declared as string cannot be compared with the uid on all platforms, e.g. PostgreSQL
+        $columnInfo = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->tableName)
+            ->getSchemaInformation()
+            ->getTableInfo($this->tableName)
+            ->getColumnInfo($this->lookupField);
+        return in_array($columnInfo?->typeName, [Types::INTEGER, Types::SMALLINT, Types::BIGINT], true);
     }
 
     /**

@@ -1,0 +1,6 @@
+"foreign_table"
+,"uid","pid","title","parent_as_string"
+,21,1,"Item 21",""
+,22,1,"Item 22","21"
+,23,1,"Item 23","22"
+,24,1,"Item 24",""

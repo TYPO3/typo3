@@ -475,6 +475,82 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         self::assertSame($expectedDepthByIdentifier, $depthByIdentifier);
     }
 
+    #[Test]
+    public function addDataMarksDescendantsAsUnselectableForParentFieldWithSeveralParents(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectTreeItems/several_parents.csv');
+        $input = [
+            'tableName' => 'foreign_table',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'uid' => 11,
+                'parents' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parents' => [
+                        'config' => $GLOBALS['TCA']['foreign_table']['columns']['parents']['config'],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+            'selectTreeCompileItems' => true,
+        ];
+
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($this->addTcaSchemata($input));
+
+        $selectable = array_intersect_key(
+            array_column($result['processedTca']['columns']['parents']['config']['items'], 'selectable', 'identifier'),
+            array_flip([11, 12, 13, 14, 15])
+        );
+        ksort($selectable);
+        self::assertSame([11 => false, 12 => false, 13 => false, 14 => true, 15 => false], $selectable);
+    }
+
+    /**
+     * A single parent stored in a string column cannot be joined with the integer uid
+     * on every platform, so its descendants are resolved without the recursive query.
+     */
+    #[Test]
+    public function addDataMarksDescendantsAsUnselectableForSingleParentInStringColumn(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectTreeItems/parent_as_string.csv');
+        $input = [
+            'tableName' => 'foreign_table',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'uid' => 21,
+                'parent_as_string' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'parent_as_string' => [
+                        'config' => $GLOBALS['TCA']['foreign_table']['columns']['parent_as_string']['config'],
+                    ],
+                ],
+            ],
+            'rootline' => [],
+            'site' => null,
+            'selectTreeCompileItems' => true,
+        ];
+
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($this->addTcaSchemata($input));
+
+        $selectable = array_intersect_key(
+            array_column($result['processedTca']['columns']['parent_as_string']['config']['items'], 'selectable', 'identifier'),
+            array_flip([21, 22, 23, 24])
+        );
+        ksort($selectable);
+        self::assertSame([21 => false, 22 => false, 23 => false, 24 => true], $selectable);
+    }
+
     private function addTcaSchemata(array $result): array
     {
         if (isset($result['tcaSchemata'])) {

@@ -1,0 +1,18 @@
+"sys_category"
+,"uid","pid","title","parent","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,0,"A",0,0,0,0,0,0,0
+,2,0,"A.A",1,0,0,0,0,0,0
+,3,0,"A.A.A",2,0,0,0,0,0,0
+,4,0,"A.B deleted",1,1,0,0,0,0,0
+,5,0,"A.B.A below deleted parent",4,0,0,0,0,0,0
+,6,0,"B",0,0,0,0,0,0,0
+,7,0,"B.A",6,0,0,0,0,0,0
+,8,0,"Cycle 1",9,0,0,0,0,0,0
+,9,0,"Cycle 2",8,0,0,0,0,0,0
+,10,0,"B.A moved below A.A.A in workspace",3,0,0,0,1,7,0
+,11,0,"A.A.B new in workspace",2,0,0,0,1,0,1
+,12,0,"A.A.C",2,0,0,0,0,0,0
+,13,0,"A.A.C deleted in workspace",2,0,0,0,1,12,2
+,14,0,"A.C in all languages",1,0,-1,0,0,0,0
+,15,0,"A.C.A",14,0,0,0,0,0,0
+,16,0,"A.A translated",1,0,1,2,0,0,0
