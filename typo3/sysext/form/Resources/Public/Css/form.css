@@ -25,7 +25,7 @@ body:has(.formeditor-inspector-expanded){max-height:100dvh;overflow:hidden}}
 .formeditor-inspector{border:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);color:var(--formeditor-inspector-color);display:flex;flex-direction:column;height:calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y));inset-inline-end:calc(var(--module-body-padding-x)*-1);position:absolute;top:calc((var(--module-body-padding-y) + var(--formeditor-inspector-border-width))*-1);width:calc(100% + var(--module-body-padding-x));z-index:var(--typo3-zindex-header);-webkit-border-end:0;background:var(--formeditor-inspector-bg);border-inline-end:0;border-radius:var(--formeditor-inspector-border-radius) 0 0 var(--formeditor-inspector-border-radius);box-shadow:var(--typo3-component-box-shadow-flyout);isolation:isolate;overflow:hidden;transform:translateX(100%);transition:transform .3s ease-out}
 .formeditor-inspector.formeditor-inspector-expanded{transform:translateX(0)}
 .formeditor-inspector-inner{flex-grow:1;min-height:0;overflow:auto;padding:var(--module-body-padding)}
-.formeditor-inspector-collapse{display:flex;justify-content:flex-end;margin-bottom:calc(var(--typo3-spacing)/2)}
+.formeditor-inspector-collapse{border-bottom:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);display:flex;flex-shrink:0;justify-content:flex-end;padding:calc(var(--typo3-spacing)/2) var(--module-body-padding-x)}
 .formeditor-inspector-expand{display:inline-flex}
 .formeditor-inspector-content .input-group{flex-wrap:nowrap}
 .formeditor-inspector-content .input-group>:first-child{flex-grow:1}

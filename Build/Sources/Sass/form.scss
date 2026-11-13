@@ -147,8 +147,10 @@
 
 .formeditor-inspector-collapse {
     display: flex;
+    flex-shrink: 0;
     justify-content: flex-end;
-    margin-bottom: calc(var(--typo3-spacing) / 2);
+    padding: calc(var(--typo3-spacing) / 2) var(--module-body-padding-x);
+    border-bottom: var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);
 }
 
 .formeditor-inspector-expand {

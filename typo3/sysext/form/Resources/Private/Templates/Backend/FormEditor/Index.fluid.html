@@ -24,17 +24,17 @@
                 </section>
             </div>
             <section class="formeditor-inspector hidden" data-identifier="inspectorSection">
+                <div class="formeditor-inspector-collapse">
+                    <button
+                        type="button"
+                        class="btn btn-default btn-sm"
+                        data-identifier="formeditorInspectorCollapse"
+                    >
+                        <core:icon identifier="actions-panel-expand-start" size="small" />
+                        {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_collapse_inspector')}
+                    </button>
+                </div>
                 <div class="formeditor-inspector-inner">
-                    <div class="formeditor-inspector-collapse">
-                        <button
-                            type="button"
-                            class="btn btn-default btn-sm"
-                            title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_collapse_inspector')}"
-                            data-identifier="formeditorInspectorCollapse"
-                        >
-                            <core:icon identifier="actions-panel-expand-start" size="small" />
-                        </button>
-                    </div>
                     <f:render section="Inspector" />
                 </div>
             </section>
