@@ -32,6 +32,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\Event\AfterFileListRowPreparedEvent;
 use TYPO3\CMS\Filelist\FileList;
+use TYPO3\CMS\Filelist\Matcher\Matcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFileTypeMatcher;
+use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -78,14 +81,44 @@ final class FileListTest extends FunctionalTestCase
         $listenerProvider->addListener(AfterFileListRowPreparedEvent::class, 'after-file-list-row-prepared-event-listener');
         $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
+        $listHtml = $this->renderListView($this->createFileList());
+
+        self::assertStringContainsString('NEW NAME', $listHtml);
+        self::assertStringContainsString('custom-marker-value', $listHtml);
+    }
+
+    #[Test]
+    public function selectionCheckboxIsLabelledWithResourceName(): void
+    {
+        $selectableMatcher = new Matcher();
+        $selectableMatcher->addMatcher(new ResourceFileTypeMatcher());
+        $selectableMatcher->addMatcher(new ResourceFolderTypeMatcher());
+
+        $listHtml = $this->renderListView($this->createFileList(), $selectableMatcher);
+
+        self::assertMatchesRegularExpression(
+            '/<input [^>]*type="checkbox"[^>]*value="1:\/textfile\.txt"[^>]*aria-label="textfile\.txt"/',
+            $listHtml
+        );
+    }
+
+    private function createFileList(): FileList
+    {
         $request = new ServerRequest('http://localhost/');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $request = $request->withAttribute('route', new Route('/module/file/list', ['_identifier' => 'media_management']));
-        $folder = $this->get(StorageRepository::class)->findByUid(1)->getFolder('/');
-
         $fileList = GeneralUtility::makeInstance(FileList::class, $request);
         $fileList->viewMode = ViewMode::LIST;
+        return $fileList;
+    }
+
+    private function renderListView(FileList $fileList, ?Matcher $selectableMatcher = null): string
+    {
+        $folder = $this->get(StorageRepository::class)->findByUid(1)->getFolder('/');
         $fileList->start($folder, 1, 'name', SortDirection::ASCENDING);
+        if ($selectableMatcher !== null) {
+            $fileList->setResourceSelectableMatcher($selectableMatcher);
+        }
 
         $view = new class implements ViewInterface {
             private array $values = [];
@@ -108,9 +141,6 @@ final class FileListTest extends FunctionalTestCase
             }
         };
 
-        $listHtml = $fileList->render(null, $view);
-
-        self::assertStringContainsString('NEW NAME', $listHtml);
-        self::assertStringContainsString('custom-marker-value', $listHtml);
+        return $fileList->render(null, $view);
     }
 }
