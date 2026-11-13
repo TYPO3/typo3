@@ -12,7 +12,7 @@
                 <input type="date" id="{name}-date-hr" class="typo3-adminPanel-form-datetime-input" data-bs-target="{name}"/>
                 <input type="time" id="{name}-time-hr" class="typo3-adminPanel-form-datetime-input" data-bs-target="{name}"/>
             </div>
-            <input type="hidden" name="TSFE_ADMIN_PANEL[{name}]" id="{name}" value="{value}" />
+            <input type="hidden" name="TSFE_ADMIN_PANEL[{name}]" id="{name}" value="{f:if(condition: value, then: value)}" />
         </div>
     </div>
 </f:if>
