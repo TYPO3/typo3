@@ -1,0 +1,7 @@
+"sys_file"
+"","uid","storage","identifier","name"
+"","1","1","/test.jpg","test.jpg"
+"sys_file_reference"
+"","uid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title","hidden","deleted","sys_language_uid","l10n_parent","t3ver_oid","t3ver_wsid","t3ver_state"
+"","30","1","30","tt_content","image","10","Moved in workspace","0","0","0","0","0","0","0"
+"","130","1","30","tt_content","image","10","Moved in workspace","0","0","0","0","30","1","4"

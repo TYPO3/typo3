@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Repository for accessing file objects.
@@ -94,7 +95,7 @@ readonly class FileRepository
 
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
             $res = $queryBuilder
-                ->select('uid')
+                ->select('uid', 't3ver_state')
                 ->from('sys_file_reference')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -114,6 +115,10 @@ readonly class FileRepository
                 ->executeQuery();
 
             while ($row = $res->fetchAssociative()) {
+                // The live record is overlaid with its workspace version, so the move pointer would be a duplicate
+                if ((int)($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER->value) {
+                    continue;
+                }
                 $referenceUids[] = $row['uid'];
             }
         } else {
