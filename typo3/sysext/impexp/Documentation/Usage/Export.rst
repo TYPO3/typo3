@@ -103,6 +103,12 @@ useful when handling large file sets that would otherwise bloat the
 export file and potentially exhaust memory. The folder is named
 "{filename}.files".
 
+Checking :guilabel:`Include site configurations for exported root pages`
+embeds the :ref:`site configuration <t3coreapi:sitehandling>` of every
+exported page that is the root page of a site. Pages without a site
+configuration are not affected. The option is disabled by default and is
+only available to administrators.
+
 Apply your changes via the :guilabel:`Update` button (2) and then switch
 to the :guilabel:`File & Preset` tab (3) to proceed.
 

@@ -85,6 +85,7 @@ With these options available:
                                              Examples: "news", "powermail", etc. (multiple values allowed)
         --save-files-outside-export-file     Save files in a separate folder named "{filename}.files"
                                              instead of embedding them in the export file.
+        --include-site-configurations        Include site configurations for exported root pages.
 
 ..  _command_line-import:
 
