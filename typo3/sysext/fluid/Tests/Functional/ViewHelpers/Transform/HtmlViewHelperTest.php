@@ -69,7 +69,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
             ],
             'empty' => [
                 '<a href>visit</a>',
-                '<a href>visit</a>',
+                '<a href="">visit</a>',
             ],
             'invalid' => [
                 '<a href="#">visit</a>',

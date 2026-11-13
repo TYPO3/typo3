@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
-use Masterminds\HTML5;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
@@ -101,10 +100,10 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $content = (string)$response->getBody();
         self::assertNotEmpty($content);
 
-        $document = new HTML5()->loadHTML($content);
+        $document = \Dom\HTMLDocument::createFromString($content, LIBXML_NOERROR);
         $titles = $document->getElementsByTagName('title');
         $images = $document->getElementsByTagName('img');
-        self::assertSame($expectedTitle, $titles->item(0)->nodeValue);
+        self::assertSame($expectedTitle, $titles->item(0)->textContent);
         self::assertSame($expectedSource, $images->item(0)->getAttribute('src'));
         self::assertSame($expectedTitle, $images->item(0)->getAttribute('title'));
         self::assertSame($expectedAlternative, $images->item(0)->getAttribute('alt'));
@@ -163,7 +162,7 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest(new InternalRequest((string)$uri));
 
         self::assertSame(200, $response->getStatusCode());
-        $images = new HTML5()->loadHTML((string)$response->getBody())->getElementsByTagName('img');
+        $images = \Dom\HTMLDocument::createFromString((string)$response->getBody(), LIBXML_NOERROR)->getElementsByTagName('img');
         self::assertStringContainsString('typo3temp/assets/images/system/', $images->item(0)->getAttribute('src'));
         self::assertSame('119', $images->item(0)->getAttribute('width'));
         self::assertSame('50', $images->item(0)->getAttribute('height'));

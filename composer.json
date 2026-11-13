@@ -78,7 +78,6 @@
 		"guzzlehttp/promises": "^3.1.0",
 		"guzzlehttp/psr7": "^3.2.0",
 		"lolli42/finediff": "^1.1.2",
-		"masterminds/html5": "^2.11.0",
 		"nikic/php-parser": "^5.4.0",
 		"phpdocumentor/type-resolver": "^2.0.0",
 		"phpstan/phpdoc-parser": "^2.1",

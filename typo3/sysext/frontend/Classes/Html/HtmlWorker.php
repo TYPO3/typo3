@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Html;
 
-use Masterminds\HTML5;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,29 +47,22 @@ class HtmlWorker
      */
     public const REMOVE_ENCLOSURE_ON_FAILURE = 4;
 
-    protected ?\DOMNode $mount = null;
-    protected ?\DOMDocument $document = null;
+    protected ?\Dom\Element $mount = null;
 
     public function __construct(
         protected readonly LinkFactory $linkFactory,
-        protected readonly HTML5 $parser
     ) {}
 
     public function __toString(): string
     {
-        if (!$this->mount instanceof \DOMNode || !$this->document instanceof \DOMDocument) {
-            return '';
-        }
-        return $this->parser->saveHTML($this->mount->childNodes);
+        return $this->mount === null ? '' : $this->mount->innerHTML;
     }
 
     public function parse(string $html): self
     {
-        // use document fragment to separate markup from default structure (html, body, ...)
-        $fragment = $this->parser->parseFragment($html);
-        // mount fragment to make it accessible in current document
-        $this->mount = $this->mountFragment($fragment);
-        $this->document = $this->mount->ownerDocument;
+        // fragment parsing with a `<div>` context element, keeps markup apart from the default structure (html, body, ...)
+        $this->mount = \Dom\HTMLDocument::createEmpty()->createElement('div');
+        $this->mount->innerHTML = $html;
         return $this;
     }
 
@@ -80,15 +72,14 @@ class HtmlWorker
      */
     public function addNonceAttribute(string|ConsumableNonce $nonce, string ...$nodeNames): self
     {
-        if ($nodeNames === []) {
+        if ($nodeNames === [] || $this->mount === null) {
             return $this;
         }
-        $xpath = new \DOMXPath($this->document);
         foreach ($nodeNames as $nodeName) {
-            $expression = sprintf('//%s[not(@*)]', $nodeName);
-            /** @var \DOMElement $element */
-            foreach ($xpath->query($expression, $this->mount) as $element) {
-                $element->setAttribute('nonce', (string)$nonce);
+            foreach ($this->findElements($nodeName) as $element) {
+                if ($element->attributes->length === 0) {
+                    $element->setAttribute('nonce', (string)$nonce);
+                }
             }
         }
         return $this;
@@ -96,18 +87,16 @@ class HtmlWorker
 
     public function transformUri(string $selector, int $flags = 0): self
     {
-        if (!$this->mount instanceof \DOMNode || !$this->document instanceof \DOMDocument) {
+        if ($this->mount === null) {
             return $this;
         }
-        $subjects = $this->parseSelector($selector);
-        // use xpath to traverse potential candidates having "links"
-        $xpath = new \DOMXPath($this->document);
-        foreach ($subjects as $subject) {
+        foreach ($this->parseSelector($selector) as $subject) {
             $attrName = $subject['attr'];
-            $expression = sprintf('//%s[@%s]', $subject['node'], $attrName);
-            /** @var \DOMElement $element */
-            foreach ($xpath->query($expression, $this->mount) as $element) {
-                $elementAttrValue = $element->getAttribute($attrName);
+            foreach ($this->findElements($subject['node']) as $element) {
+                if (!$element->hasAttribute($attrName)) {
+                    continue;
+                }
+                $elementAttrValue = (string)$element->getAttribute($attrName);
                 $scheme = parse_url($elementAttrValue, PHP_URL_SCHEME);
                 // skip values not having a URI-scheme
                 if (empty($scheme)) {
@@ -115,7 +104,7 @@ class HtmlWorker
                 }
                 try {
                     $linkResult = $this->linkFactory->createUri($elementAttrValue);
-                } catch (UnableToLinkException $exception) {
+                } catch (UnableToLinkException) {
                     $this->onTransformUriFailure($element, $subject, $flags);
                     continue;
                 }
@@ -135,29 +124,21 @@ class HtmlWorker
     }
 
     /**
-     * @param \DOMElement $element current element encountered failure
+     * @param \Dom\Element $element current element encountered failure
      * @param array{node: string, attr: string} $subject node-attr combination
      */
-    protected function onTransformUriFailure(\DOMElement $element, array $subject, int $flags): void
+    protected function onTransformUriFailure(\Dom\Element $element, array $subject, int $flags): void
     {
         if (($flags & self::REMOVE_TAG_ON_FAILURE) === self::REMOVE_TAG_ON_FAILURE) {
-            $element->parentNode->removeChild($element);
+            $element->remove();
         } elseif (($flags & self::REMOVE_ATTR_ON_FAILURE) === self::REMOVE_ATTR_ON_FAILURE) {
-            $attrName = $subject['attr'];
-            $element->removeAttribute($attrName);
+            $element->removeAttribute($subject['attr']);
         } elseif (($flags & self::REMOVE_ENCLOSURE_ON_FAILURE) === self::REMOVE_ENCLOSURE_ON_FAILURE) {
-            // moves children out of element's enclosure, then removes (empty) element
-            // eg `<ELEMENT><a><b><c></ELEMENT><NEXT>`
-            // 1) `<ELEMENT><b><c></ELEMENT><a><NEXT>`
-            // 2) `<ELEMENT><c></ELEMENT><a><b><NEXT>`
-            // 3) `<ELEMENT></ELEMENT><a><b><c><NEXT>`
-            // rm `<a><b><c><NEXT>`
-            $parentNode = $element->parentNode;
+            // copies children in front of the element, then removes the element
             foreach ($element->childNodes as $child) {
-                $cloned = $child->cloneNode(true);
-                $parentNode->insertBefore($cloned, $element);
+                $element->before($child->cloneNode(true));
             }
-            $parentNode->removeChild($element);
+            $element->remove();
         }
     }
 
@@ -183,14 +164,17 @@ class HtmlWorker
         return array_filter($items);
     }
 
-    protected function mountFragment(\DOMDocumentFragment $fragment): \DOMNode
+    /**
+     * Elements are collected upfront, since modifications during
+     * iteration would affect the live `HTMLCollection`.
+     *
+     * @return list<\Dom\Element>
+     */
+    protected function findElements(string $nodeName): array
     {
-        $document = $fragment->ownerDocument;
-        $mount = $document->createElement('div');
-        $document->appendChild($mount);
-        if ($fragment->hasChildNodes()) {
-            $mount->appendChild($fragment);
+        if ($this->mount === null) {
+            return [];
         }
-        return $mount;
+        return iterator_to_array($this->mount->getElementsByTagName($nodeName), false);
     }
 }

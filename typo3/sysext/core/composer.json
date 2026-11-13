@@ -60,7 +60,6 @@
 		"guzzlehttp/promises": "^3.1.0",
 		"guzzlehttp/psr7": "^3.2.0",
 		"lolli42/finediff": "^1.1.2",
-		"masterminds/html5": "^2.11.0",
 		"psr/clock": "^1.0",
 		"psr/container": "^2.0",
 		"psr/event-dispatcher": "^1.0",
