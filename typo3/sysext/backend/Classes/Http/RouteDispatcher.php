@@ -42,6 +42,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RouteDispatcher extends Dispatcher
 {
+    public const REQUEST_TOKEN_HEADER = 'X-CSRF-Token';
+
     public function __construct(
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -119,8 +121,8 @@ class RouteDispatcher extends Dispatcher
         if (!$route->getAccess()->requiresRequestToken()) {
             return;
         }
-        $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token'] ?? '');
-        if (empty($token)) {
+        $token = $this->getRequestToken($request);
+        if ($token === '') {
             throw new MissingRequestTokenException(
                 sprintf('Invalid request for route "%s"', $route->getPath()),
                 1627905246
@@ -133,6 +135,24 @@ class RouteDispatcher extends Dispatcher
                 1425389455
             );
         }
+    }
+
+    /**
+     * The token is generated into the URL by the UriBuilder. It is read from there first,
+     * as a body field named "token" may be form data of the module, e.g. of an Extbase form.
+     */
+    protected function getRequestToken(ServerRequestInterface $request): string
+    {
+        $token = $request->getQueryParams()['token'] ?? null;
+        if (is_string($token) && $token !== '') {
+            return $token;
+        }
+        $token = $request->getHeaderLine(self::REQUEST_TOKEN_HEADER);
+        if ($token !== '') {
+            return $token;
+        }
+        $token = $request->getParsedBody()['token'] ?? null;
+        return is_string($token) ? $token : '';
     }
 
     /**
