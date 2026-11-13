@@ -76,9 +76,45 @@ reload this preview with the :guilabel:`Preview` button (3).
 
 ..  include:: /Images/AutomaticScreenshots/CheckAndPerformImport.rst.txt
 
+If the export file contains site configurations, they are listed below
+the meta data in the section :guilabel:`Site Configurations`. For each
+site the preview shows the identifier, the title of the root page, the
+website title, the dependencies and the languages.
+
+Site configurations are only imported for administrators. Other backend
+users see a warning that the embedded site configurations are skipped.
+
 ..  _import-execute:
 
 Execute the import
 ==================
 
 Click the :guilabel:`Import` button to execute the import process.
+
+..  _import-site-configurations:
+
+Import of site configurations
+-----------------------------
+
+Embedded site configurations are written after all records have been
+imported. For each of them:
+
+-   The root page is replaced by the UID of the imported page.
+-   If the imported root page already has a site configuration, the
+    embedded one is skipped.
+-   If the site identifier is already used by another site, a numeric
+    suffix is appended, for example `my-site-1`.
+-   The base of the site is set to `/<identifier>/`, using the final
+    identifier. Adjust it in the site management afterwards.
+-   If the configuration cannot be written, the import continues without
+    it and does not report an error.
+
+Page UIDs that are referenced elsewhere in the configuration, for example
+in error handling or routes, are not remapped. Review the imported site
+configuration in the :guilabel:`Sites` module.
+
+..  note::
+    If an extension ships both an import file and an `Initialisation/Site`
+    folder, the site configurations embedded in its import file are not
+    imported during the extension initialization. The ones in
+    `Initialisation/Site` are used instead.
