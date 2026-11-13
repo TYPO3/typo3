@@ -857,6 +857,7 @@ class FileList
             'name' => $checkboxConfig['name'],
             'value' => $checkboxConfig['value'],
             'checked' => $checkboxConfig['checked'],
+            'aria-label' => $resourceView->getName(),
         ];
 
         return '<span class="form-check form-check-type-toggle">'
