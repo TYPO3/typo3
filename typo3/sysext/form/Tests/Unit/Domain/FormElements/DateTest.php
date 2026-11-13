@@ -35,7 +35,7 @@ final class DateTest extends UnitTestCase
         $propertyMappingConfiguration
             ->expects($this->once())
             ->method('setTypeConverterOption')
-            ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT, 'Y-m-d');
+            ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT, '!Y-m-d');
 
         $processingRule = $this->createMock(ProcessingRule::class);
         $processingRule
@@ -54,5 +54,22 @@ final class DateTest extends UnitTestCase
 
         self::assertSame('BirthDate', $subject->getType());
         $subject->initializeFormElement();
+    }
+
+    #[Test]
+    public function submittedDateIsConvertedToMidnight(): void
+    {
+        $propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $processingRule = self::createStub(ProcessingRule::class);
+        $processingRule->method('getPropertyMappingConfiguration')->willReturn($propertyMappingConfiguration);
+        GeneralUtility::addInstance(ProcessingRule::class, $processingRule);
+        $subject = new Date('date', 'Date');
+        $subject->setParentRenderable(new FormDefinition('root'));
+        $subject->initializeFormElement();
+
+        $result = new DateTimeConverter()->convertFrom('2026-11-20', \DateTime::class, [], $propertyMappingConfiguration);
+
+        self::assertInstanceOf(\DateTime::class, $result);
+        self::assertSame('2026-11-20 00:00:00', $result->format('Y-m-d H:i:s'));
     }
 }

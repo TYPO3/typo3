@@ -42,7 +42,8 @@ class Date extends AbstractFormElement implements StringableFormElementInterface
         $propertyMappingConfiguration = $this->getRootForm()->getProcessingRule($this->getIdentifier())->getPropertyMappingConfiguration();
         // @see https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html#input.date.attrs.value
         // 'Y-m-d' = https://tools.ietf.org/html/rfc3339#section-5.6 -> full-date
-        $propertyMappingConfiguration->setTypeConverterOption(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT, 'Y-m-d');
+        // '!' resets the time to midnight instead of the time of the request
+        $propertyMappingConfiguration->setTypeConverterOption(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT, '!Y-m-d');
     }
 
     /**
