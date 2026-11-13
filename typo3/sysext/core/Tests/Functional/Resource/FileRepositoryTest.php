@@ -166,6 +166,15 @@ final class FileRepositoryTest extends FunctionalTestCase
         self::assertSame([], $this->get(FileRepository::class)->findByRelation('tt_content', 'image', $parentUid));
     }
 
+    #[Test]
+    public function findByRelationReturnsReferenceOfMovedRecordOnlyOnceInWorkspace(): void
+    {
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $references = $this->get(FileRepository::class)->findByRelation('tt_content', 'image', 30);
+
+        self::assertCount(1, $references);
+    }
+
     private function getReferenceUids(array $references): array
     {
         return array_values(array_map(static fn(FileReference $reference): int => $reference->getUid(), $references));

@@ -20,6 +20,8 @@
 "","102","1","10","tt_content","image","50","Workspace second","0","0","0","0","2","1","0"
 "","110","1","20","tt_content","image","10","Workspace deleted","0","0","0","0","10","1","2"
 "","111","1","21","tt_content","image","10","Workspace hidden","1","0","0","0","11","1","0"
+"","30","1","30","tt_content","image","10","Moved in workspace","0","0","0","0","0","0","0"
+"","130","1","30","tt_content","image","10","Moved in workspace","0","0","0","0","30","1","4"
 "be_users"
 ,"uid","username","admin"
 ,1,"admin",1
