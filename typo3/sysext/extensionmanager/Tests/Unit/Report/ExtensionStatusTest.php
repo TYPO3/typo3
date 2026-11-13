@@ -27,6 +27,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote;
 use TYPO3\CMS\Extensionmanager\Report\ExtensionStatus;
+use TYPO3\CMS\Extensionmanager\Service\UnrecognizedExtensionFolderFinder;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -34,13 +35,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ExtensionStatusTest extends UnitTestCase
 {
     #[Test]
-    public function getStatusReturnArrayContainsFiveEntries(): void
+    public function getStatusReturnArrayContainsSixEntries(): void
     {
         $report = $this->getMockBuilder(ExtensionStatus::class)
-            ->onlyMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
+            ->onlyMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus', 'getUnrecognizedExtensionFoldersStatus'])
             ->disableOriginalConstructor()
             ->getMock();
-        self::assertCount(5, $report->getStatus());
+        self::assertCount(6, $report->getStatus());
     }
 
     #[Test]
@@ -50,7 +51,7 @@ final class ExtensionStatusTest extends UnitTestCase
             ->setConstructorArgs(['title', 'value'])
             ->getMock();
         $report = $this->getMockBuilder(ExtensionStatus::class)
-            ->onlyMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
+            ->onlyMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus', 'getUnrecognizedExtensionFoldersStatus'])
             ->disableOriginalConstructor()
             ->getMock();
         $report->method('getMainRepositoryStatus')->willReturn($statusObject);
@@ -77,7 +78,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $subject->getStatus();
     }
@@ -95,7 +97,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
@@ -130,7 +133,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
@@ -151,7 +155,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
@@ -172,7 +177,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
@@ -193,7 +199,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
@@ -215,7 +222,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
@@ -236,7 +244,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
@@ -257,7 +266,8 @@ final class ExtensionStatusTest extends UnitTestCase
         $subject = new ExtensionStatus(
             $remoteRegistryMock,
             $listUtilityMock,
-            $languageServiceFactoryMock
+            $languageServiceFactoryMock,
+            self::createStub(UnrecognizedExtensionFolderFinder::class),
         );
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
