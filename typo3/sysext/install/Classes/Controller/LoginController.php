@@ -36,6 +36,27 @@ class LoginController extends AbstractController
     ) {}
 
     /**
+     * Render the "No Install Tool password set" error message.
+     */
+    public function showNoInstallToolPasswordAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initializeView($request);
+        $view->assignMultiple([
+            'configFile' => $this->configurationManager->getSystemConfigurationFileLocation(true),
+            'isBackendContext' => ($request->getQueryParams()['install']['context'] ?? '') === 'backend',
+        ]);
+
+        return new JsonResponse(
+            [
+                'success' => true,
+                'installToolPasswordMissing' => true,
+                'html' => $view->render('Login/ShowNoInstallToolPassword'),
+            ],
+            200
+        );
+    }
+
+    /**
      * Render the "Create an "enable install tool file" action
      */
     public function showEnableInstallToolFileAction(ServerRequestInterface $request): ResponseInterface

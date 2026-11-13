@@ -83,9 +83,6 @@ class Maintenance implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        if (($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? '') === '') {
-            return new HtmlResponse('$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] must not be empty.', 500);
-        }
         // This is required for icon API, that still has no way to pass
         // a request/ normalizedParams to the icon URL generation
         $GLOBALS['TYPO3_REQUEST'] = $request;
@@ -103,6 +100,10 @@ class Maintenance implements MiddlewareInterface
         if ($actionName === 'init') {
             $controller = $this->container->get(LayoutController::class);
             return $controller->initAction($request);
+        }
+        if (($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] ?? '') === '') {
+            $controller = $this->container->get(LoginController::class);
+            return $controller->showNoInstallToolPasswordAction($request);
         }
         if ($actionName === 'checkEnableInstallToolFile') {
             return new JsonResponse([

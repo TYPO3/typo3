@@ -428,7 +428,9 @@ class Router {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          if (data.installToolLocked) {
+          if (data.installToolPasswordMissing) {
+            this.rootContainer.innerHTML = data.html;
+          } else if (data.installToolLocked) {
             this.checkEnableInstallToolFile();
           } else if (!data.isAuthorized) {
             this.showLogin();
