@@ -143,10 +143,10 @@ class MfaInfoElement extends AbstractFormElement
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-item-element">';
         $html[] =               implode(PHP_EOL, $childHtml);
-        if ($isDeactivationAllowed) {
+        if ($isDeactivationAllowed && $activeProviders !== []) {
             $html[] = '<div class="form-wizards-item-bottom">';
             $html[] =     '<button type="button"';
-            $html[] =         ' class="t3js-deactivate-mfa-button btn btn-danger mt-2 ' . ($activeProviders === [] ? 'disabled" disabled="disabled' : '') . '"';
+            $html[] =         ' class="t3js-deactivate-mfa-button btn btn-danger mt-2"';
             $html[] =         ' data-confirmation-title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa')) . '"';
             $html[] =         ' data-confirmation-content="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa.confirmation.text')) . '"';
             $html[] =         ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
