@@ -453,6 +453,39 @@
       <trans-unit id="task.updateExtensionListTask.description">
         <source>Makes regular updates to TER extension list. Recommended interval is once a day.</source>
       </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.title">
+        <source>Folders not recognized as extensions</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.message">
+        <source>The following folders in "%s" are not loaded as extensions. Every extension needs a composer.json with the type "typo3-cms-extension", the extension key, the version and "providesPackages" in the section "extra/typo3/cms".</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.documentation">
+        <source>Read more about the required composer.json</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.reason.missingComposerJson">
+        <source>no composer.json</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.reason.invalidComposerJson">
+        <source>composer.json is not valid JSON</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.reason.noTypo3PackageType">
+        <source>composer.json declares no TYPO3 package type such as "typo3-cms-extension"</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.reason.missingExtensionKey">
+        <source>composer.json declares no "extension-key" in the section "extra/typo3/cms"</source>
+      </trans-unit>
+      <trans-unit id="unrecognizedExtensionFolder.reason.missingPackageMetadata">
+        <source>composer.json declares no version or no "providesPackages" in the section "extra/typo3/cms"</source>
+      </trans-unit>
+      <trans-unit id="report.status.unrecognizedExtensionFolders.title">
+        <source>Folders in the extension directory</source>
+      </trans-unit>
+      <trans-unit id="report.status.unrecognizedExtensionFolders.none.value">
+        <source>OK</source>
+      </trans-unit>
+      <trans-unit id="report.status.unrecognizedExtensionFolders.found.value">
+        <source>%s folder(s) not recognized as extension</source>
+      </trans-unit>
       <trans-unit id="report.status.mainRepository.title">
         <source>Update status of typo3.org main repository extension list</source>
       </trans-unit>

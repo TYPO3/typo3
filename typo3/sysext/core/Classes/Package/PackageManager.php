@@ -444,7 +444,16 @@ class PackageManager implements SingletonInterface, LoggerAwareInterface
                 $path = dirname($fileInfo->getPathname());
                 // Fix Windows backslashes
                 $currentPath = GeneralUtility::fixWindowsFilePath($path) . '/';
-                $packageKey = $this->getPackageKeyFromManifest($composerManifest, $currentPath);
+                try {
+                    $packageKey = $this->getPackageKeyFromManifest($composerManifest, $currentPath);
+                } catch (InvalidPackageManifestException $exception) {
+                    $this->logger?->warning('Skipping package without extension key "{file}": {reason}', [
+                        'file' => $fileInfo->getPathname(),
+                        'reason' => $exception->getMessage(),
+                        'exception' => $exception,
+                    ]);
+                    continue;
+                }
                 if (!isset($collectedExtensionPaths[$packageKey])) {
                     $collectedExtensionPaths[$packageKey] = $currentPath;
                 }

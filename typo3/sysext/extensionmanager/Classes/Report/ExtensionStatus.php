@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Report;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
+use TYPO3\CMS\Extensionmanager\Service\UnrecognizedExtensionFolderFinder;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -42,6 +44,7 @@ class ExtensionStatus implements StatusProviderInterface
         protected readonly RemoteRegistry $remoteRegistry,
         protected readonly ListUtility $listUtility,
         protected readonly LanguageServiceFactory $languageServiceFactory,
+        protected readonly UnrecognizedExtensionFolderFinder $unrecognizedExtensionFolderFinder,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
@@ -57,6 +60,7 @@ class ExtensionStatus implements StatusProviderInterface
 
         if (!Environment::isComposerMode()) {
             $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
+            $status['unrecognizedExtensionFolders'] = $this->getUnrecognizedExtensionFoldersStatus();
         }
 
         $extensionStatus = $this->getSecurityStatusOfExtensions();
@@ -102,6 +106,39 @@ class ExtensionStatus implements StatusProviderInterface
         );
 
         return $status;
+    }
+
+    protected function getUnrecognizedExtensionFoldersStatus(): Status
+    {
+        $title = $this->languageService->sL('extensionmanager.messages:report.status.unrecognizedExtensionFolders.title');
+        $unrecognizedFolders = $this->unrecognizedExtensionFolderFinder->find();
+        if ($unrecognizedFolders === []) {
+            return new Status(
+                $title,
+                $this->languageService->sL('extensionmanager.messages:report.status.unrecognizedExtensionFolders.none.value')
+            );
+        }
+        $folderList = '';
+        foreach ($unrecognizedFolders as $folderName => $reason) {
+            $folderList .= '<li><strong>' . htmlspecialchars($folderName) . '</strong>: '
+                . htmlspecialchars($this->languageService->sL('extensionmanager.messages:' . $reason->getLabelKey())) . '</li>';
+        }
+        $message = '<p>' . htmlspecialchars(sprintf(
+            $this->languageService->sL('extensionmanager.messages:unrecognizedExtensionFolder.message'),
+            Environment::getExtensionsPath()
+        )) . '</p>'
+            . '<ul>' . $folderList . '</ul>'
+            . '<p><a href="' . htmlspecialchars(Typo3Information::getDocsLink('changelog:breaking-108310-1732545123')) . '" target="_blank" rel="noreferrer">'
+            . htmlspecialchars($this->languageService->sL('extensionmanager.messages:unrecognizedExtensionFolder.documentation')) . '</a></p>';
+        return new Status(
+            $title,
+            sprintf(
+                $this->languageService->sL('extensionmanager.messages:report.status.unrecognizedExtensionFolders.found.value'),
+                count($unrecognizedFolders)
+            ),
+            $message,
+            ContextualFeedbackSeverity::WARNING
+        );
     }
 
     /**

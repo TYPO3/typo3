@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -32,9 +33,11 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
+use TYPO3\CMS\Extensionmanager\Enum\UnrecognizedExtensionFolderReason;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Pagination\ExtensionListPaginator;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
+use TYPO3\CMS\Extensionmanager\Service\UnrecognizedExtensionFolderFinder;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
@@ -53,6 +56,7 @@ class ListController extends AbstractController
         protected readonly RemoteRegistry $remoteRegistry,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly PackageManager $packageManager,
+        protected readonly UnrecognizedExtensionFolderFinder $unrecognizedExtensionFolderFinder,
     ) {}
 
     /**
@@ -85,12 +89,19 @@ class ListController extends AbstractController
             $isComposerMode
         );
         ksort($availableAndInstalledExtensions);
+        $unrecognizedExtensionFolders = array_map(
+            static fn(UnrecognizedExtensionFolderReason $reason): string => $reason->getLabelKey(),
+            $this->unrecognizedExtensionFolderFinder->find()
+        );
         $view = $this->initializeModuleTemplate($this->request);
         $view = $this->registerDocHeaderButtons($view);
         $view->assignMultiple([
             'extensions' => $availableAndInstalledExtensions,
             'isComposerMode' => $isComposerMode,
             'typeFilter' => $filter ?: 'All',
+            'unrecognizedExtensionFolders' => $unrecognizedExtensionFolders,
+            'unrecognizedExtensionFoldersDocumentationLink' => Typo3Information::getDocsLink('changelog:breaking-108310-1732545123'),
+            'extensionsPath' => Environment::getExtensionsPath(),
             // Sort extension by update state. This is only automatically set for non-composer
             // mode and only takes effect if at least one extension can be updated.
             'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode,
