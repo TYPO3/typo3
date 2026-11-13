@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Http;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherStaticClassFixture
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -313,5 +315,70 @@ final class RouteDispatcherTest extends UnitTestCase
             $containerMock
         );
         $subject->dispatch($request);
+    }
+
+    public static function dispatchAcceptsRouteTokenDataProvider(): \Generator
+    {
+        yield 'route token in query, form data named "token" in body' => [
+            ['token' => 'route-token'],
+            ['token' => ['pin' => '1234']],
+        ];
+        yield 'route token in query, other string "token" in body' => [
+            ['token' => 'route-token'],
+            ['token' => 'form-value'],
+        ];
+        yield 'route token in body only' => [
+            [],
+            ['token' => 'route-token'],
+        ];
+        yield 'route token in header, form data named "token" in body' => [
+            [],
+            ['token' => ['pin' => '1234']],
+            ['X-CSRF-Token' => 'route-token'],
+        ];
+        yield 'route token in header, other string "token" in body' => [
+            [],
+            ['token' => 'form-value'],
+            ['X-CSRF-Token' => 'route-token'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('dispatchAcceptsRouteTokenDataProvider')]
+    public function dispatchAcceptsRouteToken(array $queryParams, array $parsedBody, array $headers = []): void
+    {
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturnCallback(
+            static fn(?string $token): bool => $token === 'route-token'
+        );
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
+
+        $expectedResponse = new Response();
+        $route = new Route('not important', [
+            'access' => 'authenticated',
+            '_identifier' => 'test_route',
+            'target' => static fn(): Response => $expectedResponse,
+        ]);
+        $request = (new ServerRequest('https://example.com/typo3/test', 'POST'))
+            ->withAttribute('route', $route)
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            self::createStub(EventDispatcherInterface::class),
+            self::createStub(AccessFactory::class),
+            self::createStub(AccessStorage::class),
+            new Features(),
+            new ReferrerEnforcer(new BackendEntryPointResolver()),
+            $containerStub
+        );
+        self::assertSame($expectedResponse, $subject->dispatch($request));
     }
 }
