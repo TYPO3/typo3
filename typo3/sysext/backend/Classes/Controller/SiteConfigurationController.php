@@ -912,6 +912,7 @@ readonly class SiteConfigurationController
      */
     protected function configureEditViewDocHeader(ModuleTemplate $view, ?string $siteIdentifier, string $documentTitle = ''): void
     {
+        $view->getDocHeaderComponent()->disableAutomaticReloadButton();
         $lang = $this->getLanguageService();
         $closeButton = $this->componentFactory->createCloseButton('#')
             ->setClasses('t3js-editform-close');

@@ -1029,6 +1029,7 @@ class EditDocumentController
      */
     protected function getButtons(ModuleTemplate $view, ServerRequestInterface $request, ?FormElementData $mainFormElement, UriInterface $currentEditingUrl, string $documentTitle): void
     {
+        $view->getDocHeaderComponent()->disableAutomaticReloadButton();
         if ($mainFormElement !== null) {
             $record = $mainFormElement->record;
             $schema = $this->tcaSchemaFactory->get($mainFormElement->table);

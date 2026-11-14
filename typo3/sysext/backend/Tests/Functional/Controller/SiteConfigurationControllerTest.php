@@ -44,6 +44,28 @@ final class SiteConfigurationControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SiteConfigurationControllerPages.csv');
     }
 
+    #[Test]
+    public function detailDocHeaderContainsReloadButton(): void
+    {
+        $this->writeSiteWithLanguages([0]);
+
+        $response = $this->get(SiteConfigurationController::class)->detailAction($this->createModuleRequest('detail', ['site' => 'main']));
+
+        self::assertStringContainsString('title="Reload"', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function editDocHeaderDoesNotContainReloadButton(): void
+    {
+        $this->writeSiteWithLanguages([0]);
+
+        $response = $this->get(SiteConfigurationController::class)->editAction($this->createModuleRequest('edit', ['site' => 'main']));
+
+        $body = (string)$response->getBody();
+        self::assertStringContainsString('name="_savedok"', $body);
+        self::assertStringNotContainsString('title="Reload"', $body);
+    }
+
     public static function overviewTilesDataProvider(): array
     {
         return [
