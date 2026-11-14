@@ -190,6 +190,24 @@ readonly class TranslationDomainMapper
     }
 
     /**
+     * Whether the given string is a reference to a label: either prefixed with "LLL:"
+     * or a "domain:key" string, whose domain resolves to an existing label resource.
+     * Any other string, like a plain message, is not a reference.
+     */
+    public function isLabelReference(string $value): bool
+    {
+        if (str_starts_with($value, 'LLL:')) {
+            return true;
+        }
+        if (!str_contains($value, ':')) {
+            return false;
+        }
+        $domain = explode(':', $value, 2)[0];
+        return $this->translationDomainResolver->isValidDomainName($domain)
+            && $this->mapDomainToFileName($domain) !== $domain;
+    }
+
+    /**
      * Maps a translation domain to a label resource file reference.
      *
      * Examples:

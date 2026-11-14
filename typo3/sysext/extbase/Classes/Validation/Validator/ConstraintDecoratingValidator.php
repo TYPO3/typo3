@@ -22,6 +22,8 @@ use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -94,11 +96,11 @@ final readonly class ConstraintDecoratingValidator implements ValidatorInterface
      */
     private function translateErrorMessage(string $translateKey, array $arguments = []): string
     {
-        if (!str_starts_with($translateKey, 'LLL:')) {
+        if (!GeneralUtility::makeInstance(TranslationDomainMapper::class)->isLabelReference($translateKey)) {
             return $translateKey;
         }
 
-        return LocalizationUtility::translate($translateKey, null, $arguments) ?? '';
+        return LocalizationUtility::translate($translateKey, null, $arguments) ?? $translateKey;
     }
 
     public function setOptions(array $options): void

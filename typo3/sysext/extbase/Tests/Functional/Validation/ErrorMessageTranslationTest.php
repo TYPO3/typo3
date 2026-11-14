@@ -71,4 +71,40 @@ final class ErrorMessageTranslationTest extends FunctionalTestCase
         self::assertTrue($validationResult->hasErrors());
         self::assertEquals('Custom message as string.', $validationResult->getFirstError()->getMessage());
     }
+
+    #[Test]
+    public function validatorTranslatesCustomMessageGivenAsTranslationDomainReference(): void
+    {
+        $subject = new TranslateErrorMessageWithoutExtensionNameValidator();
+        $subject->setOptions([
+            'message' => 'test_validators.messages:validator.translateerrormessagewithoutextensionname.custom_message',
+        ]);
+        $validationResult = $subject->validate('value');
+        self::assertTrue($validationResult->hasErrors());
+        self::assertEquals('Expected custom translated error message.', $validationResult->getFirstError()->getMessage());
+    }
+
+    #[Test]
+    public function validatorKeepsCustomMessageAsStringIfItLooksLikeTranslationDomainReferenceOfUnknownDomain(): void
+    {
+        $subject = new TranslateErrorMessageWithoutExtensionNameValidator();
+        $subject->setOptions([
+            'message' => 'unknown_package.messages:some.key',
+        ]);
+        $validationResult = $subject->validate('value');
+        self::assertTrue($validationResult->hasErrors());
+        self::assertEquals('unknown_package.messages:some.key', $validationResult->getFirstError()->getMessage());
+    }
+
+    #[Test]
+    public function validatorReturnsReferenceAsMessageIfLabelOfExistingDomainIsMissing(): void
+    {
+        $subject = new TranslateErrorMessageWithoutExtensionNameValidator();
+        $subject->setOptions([
+            'message' => 'test_validators.messages:missing.key',
+        ]);
+        $validationResult = $subject->validate('value');
+        self::assertTrue($validationResult->hasErrors());
+        self::assertEquals('test_validators.messages:missing.key', $validationResult->getFirstError()->getMessage());
+    }
 }
