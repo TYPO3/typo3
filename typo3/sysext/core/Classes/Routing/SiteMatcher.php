@@ -151,9 +151,9 @@ readonly class SiteMatcher
 
             $uri = $site->getBase();
             $route = new Route(
-                (rawurldecode($uri->getPath()) ?: '/') . '{tail}',
+                $this->getBasePath($uri) . '{tail}',
                 ['site' => $site, 'language' => null, 'tail' => ''],
-                array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
+                array_filter(['tail' => $this->getTailRequirement($uri), 'port' => (string)$uri->getPort()]),
                 ['utf8' => true, 'fallback' => true],
                 // @todo Verify if host should here covered with idn_to_ascii() to be consistent with preparation for languages.
                 $uri->getHost() ?: '',
@@ -166,9 +166,9 @@ readonly class SiteMatcher
             foreach ($site->getAllLanguages() as $siteLanguage) {
                 $uri = $siteLanguage->getBase();
                 $route = new Route(
-                    (rawurldecode($uri->getPath()) ?: '/') . '{tail}',
+                    $this->getBasePath($uri) . '{tail}',
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
-                    array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
+                    array_filter(['tail' => $this->getTailRequirement($uri), 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
                     $uri->getHost() ? (string)idn_to_ascii($uri->getHost()) : '',
                     $uri->getScheme() === '' ? [] : [$uri->getScheme()]
@@ -178,6 +178,20 @@ readonly class SiteMatcher
             }
         }
         return $collection;
+    }
+
+    private function getBasePath(UriInterface $uri): string
+    {
+        return rawurldecode($uri->getPath()) ?: '/';
+    }
+
+    /**
+     * A base path without trailing slash, e.g. "/en", must only match complete
+     * path segments, so "/en" and "/en/page" match, but "/engage" does not.
+     */
+    private function getTailRequirement(UriInterface $uri): string
+    {
+        return str_ends_with($this->getBasePath($uri), '/') ? '.*' : '(?:/.*)?';
     }
 
     /**
