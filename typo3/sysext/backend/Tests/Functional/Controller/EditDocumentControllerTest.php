@@ -320,6 +320,22 @@ final class EditDocumentControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function docHeaderDoesNotContainReloadButton(): void
+    {
+        $request = new ServerRequest('https://www.example.com/typo3/record/edit', 'GET')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams(['edit' => ['tt_content' => [1 => 'edit']]]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $html = (string)$this->subject->mainAction($request)->getBody();
+
+        self::assertStringContainsString('name="_savedok"', $html);
+        self::assertStringNotContainsString('title="Reload"', $html);
+    }
+
+    #[Test]
     public function recordIdentityOfRecordWithTypeFromRelatedRecordIsRendered(): void
     {
         $this->getConnectionPool()->getConnectionForTable('sys_file')
