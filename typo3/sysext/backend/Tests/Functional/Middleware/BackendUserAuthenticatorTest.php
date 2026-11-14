@@ -63,15 +63,17 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $passwordHash = $this->get(PasswordHashFactory::class)
-            ->getDefaultHashInstance('BE')
-            ->getHashedPassword(self::PASSWORD);
-        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->insert('be_users', [
-            'uid' => 100,
-            'username' => 'testadmin',
-            'password' => $passwordHash,
-            'admin' => 1,
-        ]);
+        $this->withDatabaseSnapshot(function (): void {
+            $passwordHash = $this->get(PasswordHashFactory::class)
+                ->getDefaultHashInstance('BE')
+                ->getHashedPassword(self::PASSWORD);
+            $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->insert('be_users', [
+                'uid' => 100,
+                'username' => 'testadmin',
+                'password' => $passwordHash,
+                'admin' => 1,
+            ]);
+        });
         $this->subject = new BackendUserAuthenticator(
             $this->get(Context::class),
             $this->get(LanguageServiceFactory::class),

@@ -52,22 +52,24 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $passwordHash = $this->get(PasswordHashFactory::class)
-            ->getDefaultHashInstance('FE')
-            ->getHashedPassword(self::PASSWORD);
-        $connectionPool = $this->get(ConnectionPool::class);
-        $connectionPool->getConnectionForTable('fe_groups')->insert('fe_groups', [
-            'uid' => 5,
-            'pid' => 0,
-            'title' => 'Members',
-        ]);
-        $connectionPool->getConnectionForTable('fe_users')->insert('fe_users', [
-            'uid' => 10,
-            'pid' => 0,
-            'username' => 'feuser',
-            'password' => $passwordHash,
-            'usergroup' => '5',
-        ]);
+        $this->withDatabaseSnapshot(function (): void {
+            $passwordHash = $this->get(PasswordHashFactory::class)
+                ->getDefaultHashInstance('FE')
+                ->getHashedPassword(self::PASSWORD);
+            $connectionPool = $this->get(ConnectionPool::class);
+            $connectionPool->getConnectionForTable('fe_groups')->insert('fe_groups', [
+                'uid' => 5,
+                'pid' => 0,
+                'title' => 'Members',
+            ]);
+            $connectionPool->getConnectionForTable('fe_users')->insert('fe_users', [
+                'uid' => 10,
+                'pid' => 0,
+                'username' => 'feuser',
+                'password' => $passwordHash,
+                'usergroup' => '5',
+            ]);
+        });
         $this->subject = new FrontendUserAuthenticator(
             $this->get(Context::class),
             $this->get(AuthenticatorManager::class),
