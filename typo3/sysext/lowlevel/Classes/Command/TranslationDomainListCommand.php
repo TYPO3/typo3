@@ -79,6 +79,13 @@ class TranslationDomainListCommand extends Command
                 InputOption::VALUE_NONE,
                 'List resource override files, configured via resourceOverrides for each domain.'
             );
+        $this
+            ->addOption(
+                'json',
+                null,
+                InputOption::VALUE_NONE,
+                'Output the result as JSON.'
+            );
     }
 
     /**
@@ -91,20 +98,25 @@ class TranslationDomainListCommand extends Command
         $specificExtension = $input->getOption('extension');
         $includeDeprecated = $input->getOption('deprecated');
         $showOverrides = $input->getOption('show-overrides');
+        $asJson = $input->getOption('json');
 
         // Determine which packages to scan
         if ($specificExtension) {
             try {
                 $package = $this->packageManager->getPackage($specificExtension);
                 $packages = [$package];
-                $io->title('Translation domains in extension: ' . $specificExtension);
+                if (!$asJson) {
+                    $io->title('Translation domains in extension: ' . $specificExtension);
+                }
             } catch (\Exception $e) {
                 $io->error('Extension "' . $specificExtension . '" not found.');
                 return Command::FAILURE;
             }
         } else {
             $packages = $this->packageManager->getActivePackages();
-            $io->title('Translation domains in active extensions');
+            if (!$asJson) {
+                $io->title('Translation domains in active extensions');
+            }
         }
 
         // Collect all language resource files with their translations and label counts
@@ -131,12 +143,32 @@ class TranslationDomainListCommand extends Command
         }
 
         if (empty($labelData)) {
+            if ($asJson) {
+                $output->writeln('[]');
+                return Command::SUCCESS;
+            }
             $io->warning('No language resource files found.');
             return Command::SUCCESS;
         }
 
         // Sort by domain name
         usort($labelData, fn($a, $b) => strcmp($a['domain'], $b['domain']));
+
+        if ($asJson) {
+            foreach ($labelData as &$data) {
+                $data['overrides'] = array_map(
+                    static fn(array $override): array => [
+                        'resource' => ltrim($override['label'], ' +'),
+                        'labelCount' => $override['count'],
+                        'locale' => $override['locale'],
+                    ],
+                    $data['overrides']
+                );
+            }
+            unset($data);
+            $output->writeln(json_encode($labelData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
+            return Command::SUCCESS;
+        }
 
         // Display as table
         $table = new Table($output);
