@@ -221,10 +221,43 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
             '<p><a href="tel:0123456789">Click here</a></p>',
             '<p><a href="tel:{softref:###TOKEN###}">Click here</a></p>',
         ];
+        yield 'page uid of a page link' => [
+            '<p><a href="t3://page?uid=42">Click here</a></p>',
+            '<p><a href="t3://page?uid={softref:###TOKEN###}">Click here</a></p>',
+        ];
+        yield 'page uid of a page link with parameters and fragment' => [
+            '<p><a href="t3://page?uid=42&amp;L=1#top">Click here</a></p>',
+            '<p><a href="t3://page?uid={softref:###TOKEN###}&amp;L=1#top">Click here</a></p>',
+        ];
+        yield 'page uid of a page link with parameters before the uid' => [
+            '<p><a href="t3://page?my-uid=5&amp;uid=42">Click here</a></p>',
+            '<p><a href="t3://page?my-uid=5&amp;uid={softref:###TOKEN###}">Click here</a></p>',
+        ];
+        yield 'page uid of a page link with a parameter ending in uid after the uid' => [
+            '<p><a href="t3://page?uid=42&amp;my-uid=5">Click here</a></p>',
+            '<p><a href="t3://page?uid={softref:###TOKEN###}&amp;my-uid=5">Click here</a></p>',
+        ];
         yield 'external url is tokenized as a whole' => [
             '<p><a href="https://example.org/foo">Click here</a></p>',
             '<p><a href="{softref:###TOKEN###}">Click here</a></p>',
         ];
+    }
+
+    #[Test]
+    public function findRefTokenizesPageUidAndContentElementOfPageLinkWithNumericFragment(): void
+    {
+        GeneralUtility::setSingletonInstance(LinkService::class, new LinkService());
+        $result = $this->getParserByKey('typolink_tag')->parse('tt_content', 'bodytext', 1, '<p><a href="t3://page?uid=42&amp;L=1#953">Click here</a></p>');
+
+        $matchedElements = $result->getMatchedElements();
+        $pageToken = $matchedElements[1]['subst']['tokenID'];
+        unset($matchedElements[1]);
+        $contentElement = reset($matchedElements);
+        self::assertSame('tt_content:953', $contentElement['subst']['recordRef']);
+        self::assertSame(
+            '<p><a href="t3://page?uid={softref:' . $pageToken . '}&amp;L=1#{softref:' . $contentElement['subst']['tokenID'] . '}">Click here</a></p>',
+            $result->getContent()
+        );
     }
 
     #[DataProvider('findRefKeepsLinkSchemeOutsideOfTokenDataProvider')]

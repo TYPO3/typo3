@@ -1,0 +1,8 @@
+"pages",,,,,,,
+,"uid","pid","title","doktype","deleted","perms_everybody","hidden"
+,1,0,"Root",1,0,15,0
+,2,1,"Target",1,0,15,0
+"tt_content",,,,,,,,
+,"uid","pid","CType","header","bodytext","deleted","sorting"
+,1,1,"text","Links","<p><a href=""t3://page?uid=2&amp;L=1#top"">Read more</a> <a href=""t3://page?uid=2&amp;L=1#2"">Target element</a></p>",0,128
+,2,2,"text","Target element","",0,256

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * TypoLink tag processing.
@@ -61,9 +60,11 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'tokenID' => $token,
                             'tokenValue' => $matches[1],
                         ];
-                    } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?[^#]*\buid=(\d+)(?:[^#]*#(\d+))?/', $matches[1], $pageAndAnchorMatches)) {
+                    } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?(?:[^#]*?&(?:amp;)?)?uid=(\d+)[^#]*(?:#(\d+)$)?/', $matches[1], $pageAndAnchorMatches, PREG_OFFSET_CAPTURE)) {
                         $token = $this->makeTokenID((string)$key);
-                        $content = '{softref:' . $token . '}';
+                        // Only the page uid and a content element uid in the fragment are tokenized,
+                        // the link keeps its scheme, parameters and fragment
+                        $tokenizedHref = $matches[1];
                         $elements[$key]['matchString'] = $foundValue;
                         $elements[$key]['subst'] = [
                             'type' => 'db',
@@ -71,26 +72,24 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'tokenID' => $token,
                             'tokenValue' => $linkDetails['pageuid'] ?? '',
                         ];
-                        if (isset($pageAndAnchorMatches[2])) {
-                            // Anchor is assumed to point to a content elements:
-                            if (MathUtility::canBeInterpretedAsInteger($pageAndAnchorMatches[2])) {
-                                // Initialize a new entry because we have a new relation:
-                                $newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $key);
-                                $elements[$newTokenID . ':' . $key] = [];
-                                $elements[$newTokenID . ':' . $key]['matchString'] = 'Anchor Content Element: ' . $pageAndAnchorMatches[2];
-                                $content .= '#{softref:' . $newTokenID . '}';
-                                $elements[$newTokenID . ':' . $key]['subst'] = [
-                                    'type' => 'db',
-                                    'recordRef' => 'tt_content:' . $pageAndAnchorMatches[2],
-                                    'tokenID' => $newTokenID,
-                                    'tokenValue' => $pageAndAnchorMatches[2],
-                                ];
-                            } else {
-                                // Anchor is a hardcoded string
-                                $content .= '#' . $pageAndAnchorMatches[2];
-                            }
+                        if (isset($pageAndAnchorMatches[2]) && $pageAndAnchorMatches[2][1] >= 0) {
+                            // Anchor is assumed to point to a content element:
+                            [$contentElementUid, $contentElementUidOffset] = $pageAndAnchorMatches[2];
+                            // Initialize a new entry because we have a new relation:
+                            $newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $key);
+                            $elements[$newTokenID . ':' . $key] = [];
+                            $elements[$newTokenID . ':' . $key]['matchString'] = 'Anchor Content Element: ' . $contentElementUid;
+                            $tokenizedHref = substr_replace($tokenizedHref, '{softref:' . $newTokenID . '}', $contentElementUidOffset, strlen($contentElementUid));
+                            $elements[$newTokenID . ':' . $key]['subst'] = [
+                                'type' => 'db',
+                                'recordRef' => 'tt_content:' . $contentElementUid,
+                                'tokenID' => $newTokenID,
+                                'tokenValue' => $contentElementUid,
+                            ];
                         }
-                        $linkTags[$key] = str_replace($matches[1], $content, $foundValue);
+                        [$pageUid, $pageUidOffset] = $pageAndAnchorMatches[1];
+                        $tokenizedHref = substr_replace($tokenizedHref, '{softref:' . $token . '}', $pageUidOffset, strlen($pageUid));
+                        $linkTags[$key] = str_replace($matches[1], $tokenizedHref, $foundValue);
                     } elseif ($linkDetails['type'] === LinkService::TYPE_RECORD) {
                         $token = $this->makeTokenID((string)$key);
                         $elements[$key]['matchString'] = $foundValue;
