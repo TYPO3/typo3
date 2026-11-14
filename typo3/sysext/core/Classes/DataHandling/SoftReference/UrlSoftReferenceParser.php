@@ -45,7 +45,8 @@ class UrlSoftReferenceParser extends AbstractSoftReferenceParser
             // Process each match
             foreach ($matches as $idx => $match) {
                 $prefix = $match[1];
-                $url = $match[2];
+                // HTML entities such as &nbsp; at the end are not part of the URL
+                $url = preg_replace('/(&[a-zA-Z0-9#]{2,8};)+$/', '', $match[2]);
 
                 $tokenID = $this->makeTokenID((string)$idx);
                 $elements[$idx] = [];

@@ -181,6 +181,16 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                     ],
                 ],
             ],
+            'Standalone URL followed by non-breaking space entities and links with URL as anchor text' => [
+                'content' => '<p>lorem https://example.com&nbsp; &nbsp; dolor</p><p>Fonts (<a class="external" href="https://www.example.org">https://www.example.org</a>)<br /> Icons (<a class="external" href="https://example.net">https://example.net</a>) (CC BY-SA 4.0) by (<a class="external" href="https://example.edu">https://example.edu</a>)</p>',
+                'expectedContent' => '<p>lorem https://example.com&nbsp; &nbsp; dolor</p><p>Fonts (<a class="external" href="https://www.example.org">https://www.example.org</a>)<br /> Icons (<a class="external" href="https://example.net">https://example.net</a>) (CC BY-SA 4.0) by (<a class="external" href="https://example.edu">https://example.edu</a>)</p>',
+                'expectedElements' => [
+                    0 => ['matchString' => 'https://example.com'],
+                    1 => ['matchString' => 'https://www.example.org'],
+                    2 => ['matchString' => 'https://example.net'],
+                    3 => ['matchString' => 'https://example.edu'],
+                ],
+            ],
         ];
     }
 
