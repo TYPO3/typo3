@@ -1,0 +1,26 @@
+"pages",,,,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","l10n_parent","slug","TSconfig"
+,1,0,0,0,0,0,"/",""
+,10,1,0,0,0,0,"/a-page",""
+,2,0,0,0,0,0,"/","TCEMAIN.linkHandler.content.configuration.table = tt_content"
+,20,2,0,0,0,0,"/b-page",""
+,50,0,0,0,0,0,"/outside",""
+,51,50,0,0,0,0,"/outside-page",""
+"tt_content",,,,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","CType","header",
+,100,20,0,0,0,"text","Content in site B",
+,101,51,0,0,0,"text","Content outside of any site",
+,102,20,0,1,0,"text","Deleted content in site B",
+,103,10,0,0,0,"text","Content in site A",
+"sys_category",,,,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","title",,
+,100,20,0,0,0,"Category in site B",,
+,103,20,0,0,0,"Category in site B",,
+"sys_redirect",,,,,,,,
+,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target",
+,1,0,301,0,0,"non-configured.domain.tld","/record-in-site-b","t3://record?identifier=content&uid=100",
+,2,0,301,0,0,"non-configured.domain.tld","/record-outside-of-sites","t3://record?identifier=content&uid=101",
+,3,0,301,0,0,"non-configured.domain.tld","/deleted-record","t3://record?identifier=content&uid=102",
+,4,0,301,0,0,"non-configured.domain.tld","/record-in-other-site-than-mapping","t3://record?identifier=content&uid=103",
+,5,0,301,0,0,"non-configured.domain.tld","/detail-record-outside-of-sites","t3://record?identifier=detail&uid=101",
+,6,0,301,0,0,"non-configured.domain.tld","/unmapped-identifier","t3://record?identifier=unmapped&uid=100",
