@@ -10,6 +10,12 @@ config.recordLinks.content {
     }
 }
 
+config.recordLinks.detail {
+    typolink {
+        parameter = 10
+    }
+}
+
 page = PAGE
 page {
     typeNum = 0

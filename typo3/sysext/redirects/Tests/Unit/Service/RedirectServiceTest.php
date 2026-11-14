@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -55,6 +56,8 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeFromLineStreamBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -128,6 +131,9 @@ final class RedirectServiceTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new Locales(),
             new Context(),
+            $this->createPageTsConfigFactory(),
+            self::createStub(ConnectionPool::class),
+            self::createStub(TcaSchemaFactory::class),
         );
     }
 
@@ -743,6 +749,9 @@ final class RedirectServiceTest extends UnitTestCase
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new Locales(),
                 new Context(),
+                $this->createPageTsConfigFactory(),
+                self::createStub(ConnectionPool::class),
+                self::createStub(TcaSchemaFactory::class),
             ])
             ->getMock();
 
@@ -1012,5 +1021,21 @@ final class RedirectServiceTest extends UnitTestCase
 
         $uri = new Uri($expectedRedirectUri);
         self::assertEquals($uri, $result);
+    }
+
+    private function createPageTsConfigFactory(): PageTsConfigFactory
+    {
+        return new PageTsConfigFactory(
+            self::createStub(ContainerInterface::class),
+            new LossyTokenizer(),
+            new TsConfigTreeBuilder(
+                new TreeFromLineStreamBuilder(new FileNameValidator()),
+                self::createStub(PackageManager::class),
+                self::createStub(EventDispatcher::class),
+                self::createStub(SiteFinder::class),
+                self::createStub(SetRegistry::class),
+            ),
+            self::createStub(PhpFrontend::class),
+        );
     }
 }

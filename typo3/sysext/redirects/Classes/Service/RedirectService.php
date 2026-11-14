@@ -24,6 +24,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -34,12 +38,15 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
+use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -68,6 +75,9 @@ readonly class RedirectService
         private TypoLinkCodecService $typoLinkCodecService,
         private Locales $locales,
         private Context $context,
+        private PageTsConfigFactory $pageTsConfigFactory,
+        private ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -317,18 +327,95 @@ readonly class RedirectService
     }
 
     /**
-     * If no site is given, try to find a valid site for the target page
+     * If no site is given, try to find a valid site for the target page or record
      */
     protected function resolveSite(array $linkDetails, ?SiteInterface $site): ?SiteInterface
     {
-        if (($site === null || $site instanceof NullSite) && ($linkDetails['type'] ?? '') === LinkService::TYPE_PAGE) {
+        if ($site !== null && !$site instanceof NullSite) {
+            return $site;
+        }
+        $linkType = $linkDetails['type'] ?? '';
+        if ($linkType === LinkService::TYPE_PAGE) {
             try {
                 return $this->siteFinder->getSiteByPageId((int)$linkDetails['pageuid']);
             } catch (SiteNotFoundException $e) {
                 return new NullSite();
             }
         }
+        if ($linkType === LinkService::TYPE_RECORD) {
+            return $this->resolveSiteOfRecord((string)($linkDetails['identifier'] ?? ''), (int)($linkDetails['uid'] ?? 0));
+        }
         return $site;
+    }
+
+    /**
+     * The frontend for the redirect is booted on the site root page, so DatabaseRecordLinkBuilder
+     * resolves the table of a record link with the page TSconfig of that page. A site qualifies
+     * if its linkHandler configuration points to a table containing the record within that site.
+     * A record outside of any site, like in a shared storage folder, is linked by the only site
+     * mapping the identifier to its table, and by none if several sites do.
+     */
+    private function resolveSiteOfRecord(string $identifier, int $uid): SiteInterface
+    {
+        if ($identifier === '' || $uid <= 0) {
+            return new NullSite();
+        }
+        $recordPidsByTable = [];
+        $sitesMappingRecordOutsideOfSites = [];
+        foreach ($this->siteFinder->getAllSites() as $candidateSite) {
+            $table = $this->getRecordLinkTable($candidateSite, $identifier);
+            if ($table === null) {
+                continue;
+            }
+            if (!array_key_exists($table, $recordPidsByTable)) {
+                $recordPidsByTable[$table] = $this->getPidOfRecord($table, $uid);
+            }
+            if ($recordPidsByTable[$table] === null) {
+                continue;
+            }
+            try {
+                $recordSite = $this->siteFinder->getSiteByPageId($recordPidsByTable[$table]);
+            } catch (SiteNotFoundException) {
+                $sitesMappingRecordOutsideOfSites[] = $candidateSite;
+                continue;
+            }
+            if ($recordSite->getIdentifier() === $candidateSite->getIdentifier()) {
+                return $recordSite;
+            }
+        }
+        if (count($sitesMappingRecordOutsideOfSites) === 1) {
+            return $sitesMappingRecordOutsideOfSites[0];
+        }
+        return new NullSite();
+    }
+
+    private function getRecordLinkTable(SiteInterface $site, string $identifier): ?string
+    {
+        try {
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $site->getRootPageId())->get();
+        } catch (PageNotFoundException) {
+            return null;
+        }
+        ksort($rootLine);
+        $pageTsConfig = $this->pageTsConfigFactory->create($rootLine, $site)->getPageTsConfigArray();
+        $table = (string)($pageTsConfig['TCEMAIN.']['linkHandler.'][$identifier . '.']['configuration.']['table'] ?? '');
+        if ($table === '' || !$this->tcaSchemaFactory->has($table)) {
+            return null;
+        }
+        return $table;
+    }
+
+    private function getPidOfRecord(string $table, int $uid): ?int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $pid = $queryBuilder
+            ->select('pid')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchOne();
+        return $pid === false ? null : (int)$pid;
     }
 
     /**

@@ -8,3 +8,4 @@
 "sys_redirect",,,,,,,,
 ,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target",
 ,1,0,301,0,0,"acme.com","/record-source","t3://record?identifier=content&uid=100",
+,2,0,301,0,0,"non-configured.domain.tld","/record-source","t3://record?identifier=content&uid=100",

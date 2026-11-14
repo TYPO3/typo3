@@ -37,9 +37,11 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
+use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -136,6 +138,9 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(TypoLinkCodecService::class),
             $this->get(Locales::class),
             $this->get(Context::class),
+            $this->get(PageTsConfigFactory::class),
+            $this->get(ConnectionPool::class),
+            $this->get(TcaSchemaFactory::class),
         );
 
         // Assert correct redirect is matched
@@ -558,14 +563,28 @@ final class RedirectServiceTest extends FunctionalTestCase
         }
     }
 
+    public static function targetOfRecordLinkTypeIsResolvedDataProvider(): \Generator
+    {
+        yield 'source host of the site containing the record' => [
+            'url' => 'https://acme.com/record-source',
+            'expectedRedirectUid' => 1,
+        ];
+        // The site is derived from the page of the linked record
+        yield 'source host without site configuration' => [
+            'url' => 'https://non-configured.domain.tld/record-source',
+            'expectedRedirectUid' => 2,
+        ];
+    }
+
     /*
      * Regression test for https://forge.typo3.org/issues/109912
      * A redirect pointing to a database record is resolved by DatabaseRecordLinkBuilder,
      * which needs the page information and the TypoScript setup that
      * RedirectService::bootFrontendController() assembles.
      */
+    #[DataProvider('targetOfRecordLinkTypeIsResolvedDataProvider')]
     #[Test]
-    public function targetOfRecordLinkTypeIsResolved(): void
+    public function targetOfRecordLinkTypeIsResolved(string $url, int $expectedRedirectUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_recordTarget.csv');
         $this->writeSiteConfiguration(
@@ -578,14 +597,86 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest('https://acme.com/record-source'),
+            new InternalRequest($url),
             null,
             false
         );
 
         self::assertEquals(301, $response->getStatusCode());
-        self::assertEquals('TYPO3 Redirect 1', $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals('https://acme.com/target-page', $response->getHeader('location')[0]);
+    }
+
+    public static function targetOfRecordLinkTypeIsResolvedFromHostWithoutSiteAndMultipleSitesDataProvider(): \Generator
+    {
+        yield 'record in site B, only site B maps the identifier' => [
+            'url' => 'https://non-configured.domain.tld/record-in-site-b',
+            'siteARootTsConfig' => '',
+            'expectedStatusCode' => 301,
+            'expectedLocation' => 'https://b.com/b-page',
+        ];
+        yield 'record in site B, site A maps the identifier to another table' => [
+            'url' => 'https://non-configured.domain.tld/record-in-site-b',
+            'siteARootTsConfig' => 'TCEMAIN.linkHandler.content.configuration.table = sys_category',
+            'expectedStatusCode' => 301,
+            'expectedLocation' => 'https://b.com/b-page',
+        ];
+        yield 'record outside of any site, only site A maps the identifier' => [
+            'url' => 'https://non-configured.domain.tld/detail-record-outside-of-sites',
+            'siteARootTsConfig' => 'TCEMAIN.linkHandler.detail.configuration.table = tt_content',
+            'expectedStatusCode' => 301,
+            'expectedLocation' => 'https://a.com/a-page',
+        ];
+        yield 'record outside of any site, several sites map the identifier' => [
+            'url' => 'https://non-configured.domain.tld/record-outside-of-sites',
+            'siteARootTsConfig' => 'TCEMAIN.linkHandler.content.configuration.table = tt_content',
+            'expectedStatusCode' => 404,
+            'expectedLocation' => null,
+        ];
+        yield 'no site maps the identifier' => [
+            'url' => 'https://non-configured.domain.tld/unmapped-identifier',
+            'siteARootTsConfig' => '',
+            'expectedStatusCode' => 404,
+            'expectedLocation' => null,
+        ];
+        yield 'deleted record' => [
+            'url' => 'https://non-configured.domain.tld/deleted-record',
+            'siteARootTsConfig' => 'TCEMAIN.linkHandler.content.configuration.table = tt_content',
+            'expectedStatusCode' => 404,
+            'expectedLocation' => null,
+        ];
+        // Each site maps the identifier to a table whose record lives in the other site
+        yield 'record of each site mapping lives in the other site' => [
+            'url' => 'https://non-configured.domain.tld/record-in-other-site-than-mapping',
+            'siteARootTsConfig' => 'TCEMAIN.linkHandler.content.configuration.table = sys_category',
+            'expectedStatusCode' => 404,
+            'expectedLocation' => null,
+        ];
+    }
+
+    #[DataProvider('targetOfRecordLinkTypeIsResolvedFromHostWithoutSiteAndMultipleSitesDataProvider')]
+    #[Test]
+    public function targetOfRecordLinkTypeIsResolvedFromHostWithoutSiteAndMultipleSites(
+        string $url,
+        string $siteARootTsConfig,
+        int $expectedStatusCode,
+        ?string $expectedLocation,
+    ): void {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_recordTargetMultipleSites.csv');
+        $this->getConnectionPool()->getConnectionForTable('pages')->update(
+            'pages',
+            ['TSconfig' => $siteARootTsConfig],
+            ['uid' => 1]
+        );
+        $this->writeSiteConfiguration('site-a', $this->buildSiteConfiguration(1, 'https://a.com/'));
+        $this->writeSiteConfiguration('site-b', $this->buildSiteConfiguration(2, 'https://b.com/'));
+        $this->setUpFrontendRootPage(1, ['EXT:redirects/Tests/Functional/Service/Fixtures/RedirectsRecordLinks.typoscript']);
+        $this->setUpFrontendRootPage(2, ['EXT:redirects/Tests/Functional/Service/Fixtures/RedirectsRecordLinks.typoscript']);
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($url), null, false);
+
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedLocation, $response->getHeader('location')[0] ?? null);
     }
 
     public static function samePathWithSameDomainAndRelativeTargetDataProvider(): array
@@ -939,6 +1030,9 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(TypoLinkCodecService::class),
             $this->get(Locales::class),
             $this->get(Context::class),
+            $this->get(PageTsConfigFactory::class),
+            $this->get(ConnectionPool::class),
+            $this->get(TcaSchemaFactory::class),
         );
 
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());
