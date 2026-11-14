@@ -6949,8 +6949,17 @@ class DataHandler
                     $newData = [];
                     $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
                     $theUidToUpdate_saveTo = BackendUtility::wsMapId($table, $theUidToUpdate);
+                    $newRecord = [];
+                    if ($theUidToUpdate
+                        && ($this->tcaSchemaFactory->get($table)->supportsSubSchema() || in_array('FlexForm_reference', $fields, true))
+                    ) {
+                        $newRecord = BackendUtility::getRecord($table, $theUidToUpdate, '*', '', false) ?? [];
+                    }
                     foreach ($fields as $fieldName => $value) {
-                        $fieldType = $this->tcaSchemaFactory->get($table)->getField($fieldName);
+                        $fieldType = $this->resolveFieldAndRespectColumnsOverrides($table, $fieldName, $newRecord);
+                        if ($fieldType === null) {
+                            continue;
+                        }
                         switch ($fieldType->getType()) {
                             case 'group':
                             case 'select':
@@ -6962,9 +6971,8 @@ class DataHandler
                                 break;
                             case 'flex':
                                 if ($value === 'FlexForm_reference') {
-                                    // This will fetch the new row for the element
-                                    $origRecordRow = BackendUtility::getRecord($table, $theUidToUpdate, '*', '', false);
-                                    if (is_array($origRecordRow)) {
+                                    $origRecordRow = $newRecord;
+                                    if ($origRecordRow !== []) {
                                         BackendUtility::workspaceOL($table, $origRecordRow, $this->BE_USER->workspace);
                                         // Get current data structure and value array:
                                         $schema = $this->tcaSchemaFactory->get($table);
