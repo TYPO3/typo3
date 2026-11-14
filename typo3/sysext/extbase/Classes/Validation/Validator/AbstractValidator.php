@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -141,15 +142,16 @@ abstract class AbstractValidator implements ValidatorInterface
     }
 
     /**
-     * Translates an error message using LocalizationUtility::translate() method. If the translate key does not
-     * start with 'LLL:' and if no extension name is provided, the original translate key is returned.
+     * Translates an error message using LocalizationUtility::translate() method. If the translate key is
+     * no label reference ("LLL:" or translation domain) and if no extension name is provided, the original
+     * translate key is returned.
      */
     protected function translateErrorMessage(
         string $translateKey,
         string $extensionName = '',
         array $arguments = []
     ): string {
-        if ($extensionName === '' && !str_starts_with($translateKey, 'LLL:')) {
+        if ($extensionName === '' && !GeneralUtility::makeInstance(TranslationDomainMapper::class)->isLabelReference($translateKey)) {
             return $translateKey;
         }
 
@@ -157,7 +159,7 @@ abstract class AbstractValidator implements ValidatorInterface
             $translateKey,
             $extensionName,
             $arguments
-        ) ?? '';
+        ) ?? $translateKey;
     }
 
     /**

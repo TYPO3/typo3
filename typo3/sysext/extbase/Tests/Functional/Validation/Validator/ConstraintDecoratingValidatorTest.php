@@ -79,6 +79,10 @@ final class ConstraintDecoratingValidatorTest extends FunctionalTestCase
             'LLL:EXT:test_validators/Resources/Private/Language/locallang.xlf:validator.regex.message',
             'The value "foo" does not match the expected pattern /^[A-Z]+$/.',
         ];
+        yield 'message with translation domain syntax' => [
+            'test_validators.messages:validator.regex.message',
+            'The value "foo" does not match the expected pattern /^[A-Z]+$/.',
+        ];
     }
 
     #[DataProvider('validateReturnsResultWithConstraintViolationsAsErrorsDataProvider')]
