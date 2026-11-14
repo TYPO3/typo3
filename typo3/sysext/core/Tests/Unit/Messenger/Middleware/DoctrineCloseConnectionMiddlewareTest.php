@@ -74,14 +74,14 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
 
     private function cacheManagerWithRuntimeCache(FrontendInterface $runtimeCache): CacheManager
     {
-        $cacheManager = $this->createMock(CacheManager::class);
+        $cacheManager = self::createStub(CacheManager::class);
         $cacheManager->method('getCache')->willReturnMap([['runtime', $runtimeCache]]);
         return $cacheManager;
     }
 
     private function cacheManager(): CacheManager
     {
-        return $this->cacheManagerWithRuntimeCache($this->createMock(FrontendInterface::class));
+        return $this->cacheManagerWithRuntimeCache(self::createStub(FrontendInterface::class));
     }
 
     #[Test]
@@ -145,7 +145,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $envelope = new Envelope(new \stdClass(), [new ConsumedByWorkerStamp()]);
 
         $middleware = new DoctrineCloseConnectionMiddleware(
-            $this->connectionPoolWith($this->connection()),
+            $this->connectionPoolWith(self::createStub(Connection::class)),
             $this->passThroughDispatcher(),
             $this->cacheManagerWithRuntimeCache($runtimeCache),
         );
@@ -160,7 +160,7 @@ final class DoctrineCloseConnectionMiddlewareTest extends UnitTestCase
         $envelope = new Envelope(new \stdClass());
 
         $middleware = new DoctrineCloseConnectionMiddleware(
-            $this->connectionPoolWith($this->connection()),
+            $this->connectionPoolWith(self::createStub(Connection::class)),
             $this->passThroughDispatcher(),
             $this->cacheManagerWithRuntimeCache($runtimeCache),
         );
