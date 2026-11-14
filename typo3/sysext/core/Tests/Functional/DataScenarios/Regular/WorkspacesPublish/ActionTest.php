@@ -131,10 +131,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
@@ -147,7 +149,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsSource, (new HasRecordConstraint())
@@ -156,10 +158,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(0)
         );
         $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsTarget, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
+        self::assertThat($responseSectionsTarget, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
     }
 
