@@ -156,6 +156,39 @@ key that was used for encryption:
 Decryption will fail if the wrong key is used, the data has been tampered with,
 or the ciphertext format is invalid.
 
+Shortcut methods
+----------------
+
+If the key is derived from the TYPO3 encryption key and the cipher value is
+stored as string, the methods
+:php-short:`\TYPO3\CMS\Core\Crypto\Cipher\CipherService::encryptToSerialized()` and
+:php-short:`\TYPO3\CMS\Core\Crypto\Cipher\CipherService::decryptFromSerialized()`
+combine the steps shown above. They derive the key from the given seed and work
+directly with the serialized cipher value:
+
+..  code-block:: php
+
+    use TYPO3\CMS\Core\Crypto\Cipher\CipherService;
+
+    // Get the service via dependency injection
+    public function __construct(
+        private readonly CipherService $cipherService
+    ) {}
+
+    public function encryptApiToken(string $apiToken): string
+    {
+        return $this->cipherService->encryptToSerialized($apiToken, 'api-tokens');
+    }
+
+    public function decryptApiToken(string $encryptedToken): string
+    {
+        // Throws a CipherDecryptionFailedException on failure
+        return $this->cipherService->decryptFromSerialized($encryptedToken, 'api-tokens');
+    }
+
+Both methods accept the optional arguments :php:`$additionalData` and
+:php:`$subKeyId`, which have to be identical for encryption and decryption.
+
 Impact
 ======
 

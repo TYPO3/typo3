@@ -62,4 +62,31 @@ final readonly class CipherService
         }
         return $result;
     }
+
+    /**
+     * Encrypts the plain text with a key derived from the encryption key and returns
+     * the serialized cipher value, see {@see KeyFactory::deriveSharedKeyFromEncryptionKey()}.
+     *
+     * @param string $seed (non-secret) value used to derive the key (e.g. classname)
+     * @throws CipherException
+     */
+    public function encryptToSerialized(string $plainText, string $seed, string $additionalData = '', int $subKeyId = 1): string
+    {
+        $key = new KeyFactory()->deriveSharedKeyFromEncryptionKey($seed, $subKeyId);
+        return $this->encrypt($plainText, $key, $additionalData)->encode();
+    }
+
+    /**
+     * Decrypts a serialized cipher value with a key derived from the encryption key,
+     * see {@see KeyFactory::deriveSharedKeyFromEncryptionKey()}.
+     *
+     * @param string $seed (non-secret) value used to derive the key (e.g. classname)
+     * @throws CipherException
+     * @throws CipherDecryptionFailedException If decryption fails or the integrity check is invalid.
+     */
+    public function decryptFromSerialized(string $serialized, string $seed, string $additionalData = '', int $subKeyId = 1): string
+    {
+        $key = new KeyFactory()->deriveSharedKeyFromEncryptionKey($seed, $subKeyId);
+        return $this->decrypt(CipherValue::fromSerialized($serialized), $key, $additionalData);
+    }
 }
