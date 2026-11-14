@@ -1,0 +1,4 @@
+form_definition,,,,,,
+,uid,pid,identifier,label,configuration,deleted
+,1,0,editable-form,"Editable Form","{""identifier"":""editable-form"",""type"":""Form"",""label"":""Editable Form"",""prototypeName"":""standard"",""renderingOptions"":[],""finishers"":[],""renderables"":[{""identifier"":""page-1"",""type"":""Page"",""label"":""Page 1"",""renderables"":[]}],""variants"":[]}",0
+,2,0,deleted-form,"Deleted Form","{""identifier"":""deleted-form"",""type"":""Form"",""label"":""Deleted Form"",""prototypeName"":""standard"",""renderingOptions"":[],""finishers"":[],""renderables"":[{""identifier"":""page-1"",""type"":""Page"",""label"":""Page 1"",""renderables"":[]}],""variants"":[]}",1

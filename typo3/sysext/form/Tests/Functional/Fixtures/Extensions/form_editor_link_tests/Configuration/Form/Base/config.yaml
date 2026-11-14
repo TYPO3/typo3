@@ -1,0 +1,4 @@
+persistenceManager:
+  allowedExtensionPaths:
+    10: EXT:form_editor_link_tests/Resources/Private/Forms/
+  allowSaveToExtensionPaths: true

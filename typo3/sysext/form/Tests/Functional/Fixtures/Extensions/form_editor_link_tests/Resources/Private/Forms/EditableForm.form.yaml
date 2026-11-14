@@ -1,0 +1,9 @@
+identifier: editable-extension-form
+type: Form
+label: 'Editable Extension Form'
+prototypeName: standard
+renderables:
+  -
+    identifier: page-1
+    type: Page
+    label: 'Page 1'

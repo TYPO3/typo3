@@ -1,0 +1,15 @@
+be_users,,,,,,,,,,,,,,,,,
+,uid,pid,tstamp,username,password,admin,disable,starttime,endtime,options,crdate,workspace_perms,deleted,TSconfig,lastlogin,workspace_id,usergroup
+# Admin user (password: "password")
+,1,0,1366642540,admin,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0,
+# Form editor module, read and write access to form_definition
+,2,0,1366642540,editor_full,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0,1
+# Read and write access to form_definition, no form editor module
+,3,0,1366642540,editor_no_module,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0,2
+# Form editor module, read-only access to form_definition
+,4,0,1366642540,editor_read_only,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0,3
+be_groups,,,,,,,,,
+,uid,pid,title,tables_select,tables_modify,non_exclude_fields,groupMods,workspace_perms
+,1,0,"Form editor, full form access","pages,form_definition","pages,form_definition","","web_FormFormbuilder,form_manager,form_editor",1
+,2,0,"No form editor module","pages,form_definition","pages,form_definition","","",1
+,3,0,"Form editor, read-only form access","pages,form_definition","","","web_FormFormbuilder,form_manager,form_editor",1
