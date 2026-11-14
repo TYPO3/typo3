@@ -258,4 +258,46 @@ final class ImportExportTest extends AbstractImportExportTestCase
                 ->fetchFirstColumn()
         );
     }
+
+    #[Test]
+    public function importExportKeepsParametersAndFragmentOfPageLinks(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-page-links.csv');
+
+        $export = $this->get(Export::class);
+        $export->setPid(1);
+        $export->setLevels(1);
+        $export->setTables(['_ALL']);
+        $export->process();
+
+        $exportFile = Environment::getPublicPath() . '/fileadmin/xml_exports/page-links.xml';
+        GeneralUtility::mkdir_deep(dirname($exportFile));
+        GeneralUtility::writeFile($exportFile, $export->render(), true);
+        $this->testFilesToDelete[] = $exportFile;
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile('fileadmin/xml_exports/page-links.xml');
+        $import->importData();
+
+        $importedPageUid = $this->getConnectionPool()
+            ->getConnectionForTable('pages')
+            ->executeQuery('SELECT uid FROM pages WHERE uid > 2 AND title = \'Target\'')
+            ->fetchOne();
+        $importedRecords = array_column(
+            $this->getConnectionPool()
+                ->getConnectionForTable('tt_content')
+                ->executeQuery('SELECT uid, header, bodytext FROM tt_content WHERE uid > 2')
+                ->fetchAllAssociative(),
+            null,
+            'header'
+        );
+        $importedContentElementUid = $importedRecords['Target element']['uid'];
+
+        self::assertSame(
+            '<p><a href="t3://page?uid=' . $importedPageUid . '&amp;L=1#top">Read more</a>'
+            . ' <a href="t3://page?uid=' . $importedPageUid . '&amp;L=1#' . $importedContentElementUid . '">Target element</a></p>',
+            $importedRecords['Links']['bodytext']
+        );
+    }
 }
