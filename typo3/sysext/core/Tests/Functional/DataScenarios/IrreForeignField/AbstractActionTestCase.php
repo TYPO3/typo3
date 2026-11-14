@@ -580,6 +580,24 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['copiedHotelId'] = $copiedTableIds[self::TABLE_Hotel][$this->recordIds['newHotelId']];
     }
 
+    public function createAndCopyParentContentWithTypeSpecificForeignMatchFields(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['types']['textpic']['columnsOverrides'][self::FIELD_ContentHotel]['config']['foreign_match_fields']['parentidentifier'] = '1nff.textpic.hotels';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', 'CType' => 'textpic', self::FIELD_ContentHotel => '__nextUid'],
+                self::TABLE_Hotel => ['title' => 'Hotel #1'],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+        $this->recordIds['copiedHotelId'] = $copiedTableIds[self::TABLE_Hotel][$this->recordIds['newHotelId']];
+    }
+
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         $newTableIds = $this->actionService->createNewRecords(

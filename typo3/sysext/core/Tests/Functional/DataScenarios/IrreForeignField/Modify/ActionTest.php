@@ -450,6 +450,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function createAndCopyParentContentWithTypeSpecificForeignMatchFields(): void
+    {
+        parent::createAndCopyParentContentWithTypeSpecificForeignMatchFields();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNCopyParentContentWTypeSpecificForeignMatchFields.csv');
+    }
+
+    #[Test]
     public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
