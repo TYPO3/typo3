@@ -121,6 +121,45 @@ final class SiteMatcherTest extends UnitTestCase
         self::assertSame($secondSite, $result->getSite());
     }
 
+    public static function languageBaseWithoutTrailingSlashOnlyMatchesCompletePathSegmentsDataProvider(): \Generator
+    {
+        yield 'language base without trailing slash' => ['https://example.com/en', 1, ''];
+        yield 'language base with trailing slash' => ['https://example.com/en/', 1, '/'];
+        yield 'page below language base' => ['https://example.com/en/engage', 1, '/engage'];
+        yield 'default language page starting with language base' => ['https://example.com/engage', 0, 'engage'];
+        yield 'default language page starting with language base and trailing slash' => ['https://example.com/engage/', 0, 'engage/'];
+    }
+
+    #[DataProvider('languageBaseWithoutTrailingSlashOnlyMatchesCompletePathSegmentsDataProvider')]
+    #[Test]
+    public function languageBaseWithoutTrailingSlashOnlyMatchesCompletePathSegments(string $requestUri, int $expectedLanguageId, string $expectedTail): void
+    {
+        $site = new Site('main', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'base' => '/',
+                    'locale' => 'de_DE.UTF-8',
+                ],
+                1 => [
+                    'languageId' => 1,
+                    'base' => '/en',
+                    'locale' => 'en_US.UTF-8',
+                ],
+            ],
+        ]);
+        $subject = new SiteMatcher(
+            $this->createFeaturesMock(),
+            $this->createSiteFinder($site),
+            new RequestContextFactory(new BackendEntryPointResolver())
+        );
+        /** @var SiteRouteResult $result */
+        $result = $subject->matchRequest(new ServerRequest($requestUri));
+        self::assertSame($expectedLanguageId, $result->getLanguage()->getLanguageId());
+        self::assertSame($expectedTail, $result->getTail());
+    }
+
     #[Test]
     public function unknownHostDoesNotMatchSiteWithAbsoluteBase(): void
     {
