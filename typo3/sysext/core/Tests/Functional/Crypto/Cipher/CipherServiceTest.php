@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Crypto\Cipher;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\Cipher\CipherDecryptionFailedException;
 use TYPO3\CMS\Core\Crypto\Cipher\CipherException;
 use TYPO3\CMS\Core\Crypto\Cipher\CipherService;
 use TYPO3\CMS\Core\Crypto\Cipher\CipherValue;
@@ -263,6 +264,46 @@ final class CipherServiceTest extends FunctionalTestCase
         $deserialized = CipherValue::fromSerialized($encoded);
         self::assertSame(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES, strlen($deserialized->nonce));
         self::assertNotEmpty($deserialized->cipher);
+    }
+
+    #[Test]
+    public function serializedShortcutsRoundTrip(): void
+    {
+        $cipherService = $this->createCipherService();
+
+        $serialized = $cipherService->encryptToSerialized('secret', 'api-tokens');
+
+        self::assertSame('secret', $cipherService->decryptFromSerialized($serialized, 'api-tokens'));
+    }
+
+    #[Test]
+    public function decryptFromSerializedReadsValueEncryptedWithDerivedKey(): void
+    {
+        $cipherService = $this->createCipherService();
+        $key = $this->createKeyFactory()->deriveSharedKeyFromEncryptionKey('api-tokens', 3);
+        $serialized = $cipherService->encrypt('secret', $key, 'context')->encode();
+
+        self::assertSame('secret', $cipherService->decryptFromSerialized($serialized, 'api-tokens', 'context', 3));
+    }
+
+    #[Test]
+    public function decryptFromSerializedFailsForDifferentSeed(): void
+    {
+        $cipherService = $this->createCipherService();
+        $serialized = $cipherService->encryptToSerialized('secret', 'api-tokens');
+
+        $this->expectException(CipherDecryptionFailedException::class);
+        $cipherService->decryptFromSerialized($serialized, 'other');
+    }
+
+    #[Test]
+    public function decryptFromSerializedFailsForDifferentAdditionalData(): void
+    {
+        $cipherService = $this->createCipherService();
+        $serialized = $cipherService->encryptToSerialized('secret', 'api-tokens', 'context');
+
+        $this->expectException(CipherDecryptionFailedException::class);
+        $cipherService->decryptFromSerialized($serialized, 'api-tokens', 'other');
     }
 
     private function createCipherService(): CipherService
