@@ -21,6 +21,9 @@ import '@typo3/backend/element/icon-element';
  *
  * Standalone toolbar web component form element stage templates.
  *
+ * The edit button has no handler of its own: its click bubbles to the stage,
+ * which selects the element and opens it in the inspector.
+ *
  * Dispatches (bubbling):
  *   - toolbar-new-element-before
  *   - toolbar-new-element-after
@@ -61,6 +64,12 @@ export class FormElementStageItemToolbar extends LitElement {
         <div class="formeditor-element-toolbar-right">
           <div class="btn-toolbar">
             <div class="btn-group btn-group-sm" role="group">
+              <button
+                  type="button"
+                  class="btn btn-default btn-borderless formeditor-element-toolbar-edit"
+                  title="${labels.get('formEditor.stage.toolbar.edit')}">
+                <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+              </button>
               <a
                   class="btn btn-default btn-borderless"
                   href="#"
