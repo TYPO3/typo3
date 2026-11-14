@@ -83,3 +83,11 @@
 ,48,1,"Dummy 1-48",1,0,0,0
 ,49,1,"Dummy 1-49",1,0,0,0
 ,50,1,"Dummy 1-50",1,0,0,0
+"sys_log"
+,"uid","tstamp","userid","type","action","details"
+,100001,1452944920,2,255,1,"User %s logged in from ###IP###"
+,100002,1452944930,3,255,1,"User %s logged in from ###IP###"
+,100003,1452944940,2,255,1,"User %s logged in from ###IP###"
+"form_definition"
+,"uid","pid","identifier","label","configuration"
+,1,0,"stageAccessibility","Stage accessibility","{""type"":""Form"",""identifier"":""stageAccessibility"",""label"":""Stage accessibility"",""prototypeName"":""standard"",""renderables"":[{""type"":""Page"",""identifier"":""page-1"",""label"":""Step"",""renderables"":[{""type"":""Text"",""identifier"":""text-1"",""label"":""Name""},{""type"":""Fieldset"",""identifier"":""fieldset-1"",""label"":""Address"",""renderables"":[{""type"":""Text"",""identifier"":""text-2"",""label"":""Street""}]}]}]}"

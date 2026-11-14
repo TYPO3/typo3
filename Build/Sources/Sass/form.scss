@@ -360,6 +360,7 @@ typo3-form-form-element-stage-item-toolbar {
     border-radius: var(--formeditor-stage-element-border-radius);
     overflow: hidden;
     color: var(--formeditor-stage-element-color);
+    cursor: pointer;
 
     &.formeditor-element-hidden:not(&.selected) {
         opacity: .5;

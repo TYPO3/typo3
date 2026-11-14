@@ -234,7 +234,7 @@ function renderNestedSortableListItem(formElement: FormElement): HTMLElement {
   } else {
     templateEl.classList.add('formeditor-element');
     templateEl.setAttribute('tabindex', '0');
-    templateEl.setAttribute('role', 'button');
+    templateEl.setAttribute('role', 'group');
     templateEl.setAttribute('aria-label', (formElement.get('label') || formElement.get('identifier')) + ' (' + getFormElementDefinition(formElement, 'label') + ')');
   }
   if (formElement.get('renderingOptions.enabled') === false) {
@@ -649,7 +649,10 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
   stageDomElement!.replaceChildren(renderFormDefinitionPageAsSortableList(pageIndex!));
 
   stageDomElement!.addEventListener('click', function(e) {
-    if ((e.target as Element).closest('.formeditor-element-toolbar-right')) {
+    if (
+      (e.target as Element).closest('.formeditor-element-toolbar-right')
+      && !(e.target as Element).closest('.formeditor-element-toolbar-edit')
+    ) {
       return;
     }
     const formElementIdentifierPath = (e.target as Element)
@@ -665,8 +668,8 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
   });
 
   stageDomElement!.addEventListener('keydown', function(e: KeyboardEvent) {
-    const target = (e.target as Element).closest<HTMLElement>('.formeditor-element[tabindex]');
-    if (!target) {
+    const target = e.target as HTMLElement;
+    if (!target.matches('.formeditor-element[tabindex]')) {
       return;
     }
     if (e.key === 'Enter' || e.key === ' ') {

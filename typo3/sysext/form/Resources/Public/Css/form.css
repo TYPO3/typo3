@@ -60,7 +60,7 @@ typo3-form-form-element-stage-item-toolbar{display:block}
 .formeditor-stage-heading{margin-bottom:var(--formeditor-stage-spacing)}
 .formeditor-stage-area{padding:var(--formeditor-stage-spacing)}
 .formeditor-list,.formeditor-stage-list{display:grid;gap:var(--formeditor-stage-spacing);grid-template-columns:minmax(0,1fr);list-style:none;margin:0;padding:0}
-.formeditor-element{background-color:var(--formeditor-stage-element-bg);border:var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state,var(--formeditor-stage-element-border-color));border-radius:var(--formeditor-stage-element-border-radius);color:var(--formeditor-stage-element-color);display:flex;flex-direction:column;overflow:hidden}
+.formeditor-element{background-color:var(--formeditor-stage-element-bg);border:var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state,var(--formeditor-stage-element-border-color));border-radius:var(--formeditor-stage-element-border-radius);color:var(--formeditor-stage-element-color);cursor:pointer;display:flex;flex-direction:column;overflow:hidden}
 .formeditor-element.formeditor-element-hidden:not(.formeditor-element.selected){background-color:var(--formeditor-stage-element-hidden-bg);border:var(--formeditor-stage-element-border-width) dashed var(--formeditor-stage-element-hidden-border-color);opacity:.5;transition:opacity .3s ease-in-out}
 .formeditor-element.formeditor-element-hidden:not(.formeditor-element.selected):focus-within,.formeditor-element.formeditor-element-hidden:not(.formeditor-element.selected):hover{opacity:1}
 .formeditor-element typo3-form-form-element-stage-item,.formeditor-element typo3-form-form-element-stage-item-toolbar{display:block}
