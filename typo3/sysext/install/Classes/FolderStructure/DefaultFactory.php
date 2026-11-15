@@ -302,25 +302,6 @@ final readonly class DefaultFactory
                     'targetContentFile' => self::TEMPLATE_PATH . '/resources-root-htaccess',
                 ],
                 [
-                    'name' => '_temp_',
-                    'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission,
-                    'children' => [
-                        [
-                            'name' => '.htaccess',
-                            'type' => FileNode::class,
-                            'targetPermission' => $filePermission,
-                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-temp-htaccess',
-                        ],
-                        [
-                            'name' => 'index.html',
-                            'type' => FileNode::class,
-                            'targetPermission' => $filePermission,
-                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-temp-index.html',
-                        ],
-                    ],
-                ],
-                [
                     'name' => 'user_upload',
                     'type' => LinkOrDirectoryNode::class,
                     'targetPermission' => $directoryPermission,

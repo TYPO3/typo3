@@ -92,7 +92,6 @@ final readonly class InstallStatusReport implements StatusProviderInterface
             $varPath . '/lock/' => 2,
             Environment::getLabelsPath() => 0,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
-            $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
         ];
 
         // Check for writable extension folder files in non-composer mode only

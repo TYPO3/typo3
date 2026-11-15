@@ -1,6 +1,7 @@
 import { test, expect } from '../../fixtures/setup-fixtures';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
+import * as os from 'node:os';
 
 test.describe('File Operations', () => {
   test.beforeEach(async ({ backend }) => {
@@ -103,12 +104,7 @@ test.describe('File Operations', () => {
     // verifies that the upload flow works, not the file's content, so create
     // an empty placeholder rather than shipping a fixture binary.
     const randomUploadFileName = 'blue_mountains' + Date.now() + '.jpg';
-    // The instance differs per installation mode - a composer instance keeps fileadmin
-    // below public/, a classic instance is its own document root - so runTests.sh passes
-    // the document root in rather than the spec assuming one.
-    const documentRoot = process.env.PLAYWRIGHT_DOCUMENT_ROOT
-      || path.join(__dirname, '../../../../../typo3temp/var/tests/playwright-composer/public');
-    const randomUploadFile = path.join(documentRoot, 'fileadmin/_temp_', randomUploadFileName);
+    const randomUploadFile = path.join(os.tmpdir(), randomUploadFileName);
     fs.writeFileSync(randomUploadFile, '');
 
     const alertContainer = '#alert-container';
