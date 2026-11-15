@@ -29,17 +29,15 @@ export async function setUserTsConfig(page: Page, backend: BackendPage, userId: 
   const formEngineLoaded = await backend.formEngine.formEngineLoaded();
   await backend.formEngine.saveButton.click();
 
-  // Editing other users' TSconfig may require sudo-mode verification
-  const sudoModal = page.locator('typo3-backend-modal > dialog');
-  try {
-    await expect(sudoModal).toBeVisible({ timeout: 5000 });
-    await expect(sudoModal).toContainText('Verify with user password');
+  const sudoModal = page.getByRole('dialog', { name: 'Verify with user password' });
+  const savedForm = contentFrame.locator('#EditDocumentController:not(:has(.has-change, .is-new))');
+  await expect.poll(async () => await sudoModal.isVisible() || await savedForm.isVisible()).toBe(true);
+  if (await sudoModal.isVisible()) {
     await sudoModal.locator('input[type="password"]').fill('password');
     await backend.modal.click({ name: 'verify' });
     await expect(sudoModal).not.toBeVisible();
-  } catch {
-    // No sudo verification required
   }
+  await expect(savedForm).toBeVisible();
   await formEngineLoaded();
 
   await backend.formEngine.close();
