@@ -1,0 +1,6 @@
+form_definition,,,,,,
+,uid,pid,identifier,label,configuration,deleted
+,4,0,single-use-form,"Single Use Form","{""identifier"":""single-use-form"",""type"":""Form"",""label"":""Single Use Form"",""prototypeName"":""standard"",""renderingOptions"":[],""finishers"":[],""renderables"":[{""identifier"":""page-1"",""type"":""Page"",""label"":""Page 1"",""renderables"":[]}],""variants"":[]}",0
+sys_refindex,,,,,,,
+,hash,tablename,recuid,field,softref_key,ref_uid,ref_string
+,a0000000000000000000000000000005,tt_content,14,pi_flexform,formPersistenceIdentifier,0,4

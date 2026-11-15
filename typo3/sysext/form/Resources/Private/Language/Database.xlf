@@ -27,6 +27,15 @@
       <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty">
         <source>There are no finishers or finisher options in the current form definition.</source>
       </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.editInFormEditor">
+        <source>Edit in form editor</source>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.usage">
+        <source>This form is used by %d content elements. Changes affect all of them.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.workspaceNotice">
+        <source>Forms are not versioned. Changes in the form editor are live immediately.</source>
+      </trans-unit>
       <trans-unit id="tt_content.preview.noPersistenceIdentifier">
         <source>No form selected.</source>
       </trans-unit>

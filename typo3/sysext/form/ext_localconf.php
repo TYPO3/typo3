@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier;
+use TYPO3\CMS\Form\FormEngine\FieldWizard\EditFormInFormEditor;
 use TYPO3\CMS\Form\Hooks\FormDefinitionDataHandlerHook;
 use TYPO3\CMS\Form\Hooks\ImportExportHook;
 
@@ -32,6 +33,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 
 // Add validation call for input which contains email or form element identifier
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][EmailOrFormElementIdentifier::class] = '';
+
+// Button below the form selection of the form content element
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1794680500] = [
+    'nodeName' => 'formEditorEditForm',
+    'priority' => 40,
+    'class' => EditFormInFormEditor::class,
+];
 
 // Register FE plugin
 ExtensionUtility::configurePlugin('Form', 'Formframework', [FormFrontendController::class => ['render', 'perform']], [FormFrontendController::class => ['perform']]);

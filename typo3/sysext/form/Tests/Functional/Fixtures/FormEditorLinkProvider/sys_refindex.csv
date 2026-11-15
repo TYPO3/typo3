@@ -1,0 +1,6 @@
+sys_refindex,,,,,,,
+,hash,tablename,recuid,field,softref_key,ref_uid,ref_string
+,a0000000000000000000000000000001,tt_content,10,pi_flexform,formPersistenceIdentifier,0,1
+,a0000000000000000000000000000002,tt_content,11,pi_flexform,formPersistenceIdentifier,0,1
+,a0000000000000000000000000000003,tt_content,12,pi_flexform,formPersistenceIdentifier,0,1
+,a0000000000000000000000000000004,tt_content,13,pi_flexform,formPersistenceIdentifier,0,3

@@ -18,6 +18,11 @@
                                 </numIndex>
                             </items>
                             <softref>formPersistenceIdentifier</softref>
+                            <fieldWizard>
+                                <formEditorEditForm>
+                                    <renderType>formEditorEditForm</renderType>
+                                </formEditorEditForm>
+                            </fieldWizard>
                         </config>
                     </settings.persistenceIdentifier>
                 </el>
