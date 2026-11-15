@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e409c398b21ed54540c47fc1db3c15c1",
+    "content-hash": "0cb5e5fecf56fc0692accd0767302f65",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5428,21 +5428,21 @@
         },
         {
             "name": "typo3/html-sanitizer",
-            "version": "v2.3.2",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/html-sanitizer.git",
-                "reference": "8b5d0be44ded457ca993ec9ca93d859941c63764"
+                "reference": "f44e6cafa58404936bdfc00966367c629711bd55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/8b5d0be44ded457ca993ec9ca93d859941c63764",
-                "reference": "8b5d0be44ded457ca993ec9ca93d859941c63764",
+                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/f44e6cafa58404936bdfc00966367c629711bd55",
+                "reference": "f44e6cafa58404936bdfc00966367c629711bd55",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
-                "masterminds/html5": "^2.7.6",
+                "masterminds/html5": "^2.11.0",
                 "php": "^7.2 || ^8.0",
                 "psr/log": "^1.0 || ^2.0 || ^3.0"
             },
@@ -5473,9 +5473,9 @@
             "description": "HTML sanitizer aiming to provide XSS-safe markup based on explicitly allowed tags, attributes and values.",
             "support": {
                 "issues": "https://github.com/TYPO3/html-sanitizer/issues",
-                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.3.2"
+                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.4.0"
             },
-            "time": "2026-06-08T15:19:36+00:00"
+            "time": "2026-11-15T09:13:12+00:00"
         },
         {
             "name": "typo3fluid/fluid",
