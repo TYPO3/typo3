@@ -105,6 +105,42 @@ final class CropVariantCollectionTest extends UnitTestCase
     }
 
     #[Test]
+    public function cropVariantConfiguredAfterPersistingKeepsTcaCropArea(): void
+    {
+        $fullImage = ['x' => 0.0, 'y' => 0.0, 'width' => 1.0, 'height' => 1.0];
+        $tcaConfig = [
+            'default' => [
+                'cropArea' => $fullImage,
+                'allowedAspectRatios' => ['16:9' => ['title' => '16:9', 'value' => 1.777777777777777]],
+            ],
+            'mobile' => [
+                'cropArea' => $fullImage,
+                'allowedAspectRatios' => ['4:5' => ['title' => '4:5', 'value' => 0.8]],
+            ],
+            // Added to the crop tool after the editor cropped the image reference
+            'square' => [
+                'cropArea' => $fullImage,
+                'allowedAspectRatios' => ['1:1' => ['title' => '1:1', 'value' => 1.0]],
+            ],
+        ];
+        $persistedCropAreas = [
+            'default' => ['x' => 0.1, 'y' => 0.1, 'width' => 0.5, 'height' => 0.5],
+            'mobile' => ['x' => 0.2, 'y' => 0.2, 'width' => 0.3, 'height' => 0.3],
+        ];
+        $persistedCrop = json_encode([
+            'default' => ['cropArea' => $persistedCropAreas['default'], 'selectedRatio' => '16:9'],
+            'mobile' => ['cropArea' => $persistedCropAreas['mobile'], 'selectedRatio' => '4:5'],
+        ]);
+
+        $cropVariants = CropVariantCollection::create((string)$persistedCrop, $tcaConfig)->asArray();
+
+        self::assertSame($persistedCropAreas['default'], $cropVariants['default']['cropArea']);
+        self::assertSame($persistedCropAreas['mobile'], $cropVariants['mobile']['cropArea']);
+        self::assertSame($fullImage, $cropVariants['square']['cropArea']);
+        self::assertSame('1:1', $cropVariants['square']['selectedRatio']);
+    }
+
+    #[Test]
     public function castToStringReturnsJsonArrayOnEmptyInput(): void
     {
         $variants = new CropVariantCollection([]);
