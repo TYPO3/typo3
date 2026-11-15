@@ -256,6 +256,43 @@ this:
 You can now search for the affected redirects in the redirects module, e.g.
 by filtering with *Source Path* `/test-1`.
 
+..  versionchanged:: 14.3.10
+    :changelog: important-89325-1792047896
+
+The command also finds redirects that are never used. A redirect is
+shadowed when another enabled redirect always matches first: for every
+request that the redirect would match, and at any time that it is active.
+The command sets the integrity status of such a redirect to `shadowed`
+(:php:`\TYPO3\CMS\Redirects\Utility\RedirectConflict::SHADOWED`). The
+redirects module shows it as **Shadowed by another redirect**, and you can
+filter the list by this status.
+
+The check compares:
+
+*   **Source Domain**, where an empty domain is the same as `*`,
+*   **Source Path**, ignoring a trailing slash,
+*   :guilabel:`Is regular expression?` and :guilabel:`Respect GET Parameters`,
+    where regular expressions are only compared as text,
+*   the start and end time of both redirects.
+
+Disabled redirects are never reported. Neither are redirects that overlap
+with another redirect for only a part of their active time. A redirect for
+a specific domain is not shadowed by a redirect for all domains (`*`),
+because TYPO3 matches the specific domain first.
+
+After an update, the command can therefore report redirects that already
+existed. Remove or change them. The next run of the command resets their
+status.
+
+..  versionchanged:: 14.3.11
+
+    Before, only the command updated the shadowed status.
+
+Saving, changing or deleting a redirect also updates the shadowed status
+of every redirect with the same source domain. The backend then warns
+about a redirect that shadows another one or is shadowed itself. It does
+not prevent saving, since a shadowed redirect can be intended.
+
 ..  _editor-permission:
 
 Configure editor permission
