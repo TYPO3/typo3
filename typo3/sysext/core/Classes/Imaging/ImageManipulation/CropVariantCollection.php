@@ -49,19 +49,19 @@ class CropVariantCollection
                     $persistedCollectionConfig = [];
                 }
                 // Merge selected areas with crop tool configuration
-                reset($persistedCollectionConfig);
                 foreach ($tcaConfig as $id => &$cropVariantConfig) {
                     if (!isset($persistedCollectionConfig[$id])) {
-                        $id = key($persistedCollectionConfig);
-                        next($persistedCollectionConfig);
+                        // A crop variant configured after the reference was cropped keeps
+                        // the crop area of the crop tool configuration (the full image)
+                        continue;
                     }
-                    if (isset($persistedCollectionConfig[$id ?? '']['cropArea'])) {
+                    if (isset($persistedCollectionConfig[$id]['cropArea'])) {
                         $cropVariantConfig['cropArea'] = $persistedCollectionConfig[$id]['cropArea'];
                     }
-                    if (isset($persistedCollectionConfig[$id ?? '']['focusArea'], $cropVariantConfig['focusArea'])) {
+                    if (isset($persistedCollectionConfig[$id]['focusArea'], $cropVariantConfig['focusArea'])) {
                         $cropVariantConfig['focusArea'] = $persistedCollectionConfig[$id]['focusArea'];
                     }
-                    if (isset($persistedCollectionConfig[$id ?? '']['selectedRatio'], $cropVariantConfig['allowedAspectRatios'][$persistedCollectionConfig[$id ?? '']['selectedRatio']])) {
+                    if (isset($persistedCollectionConfig[$id]['selectedRatio'], $cropVariantConfig['allowedAspectRatios'][$persistedCollectionConfig[$id]['selectedRatio']])) {
                         $cropVariantConfig['selectedRatio'] = $persistedCollectionConfig[$id]['selectedRatio'];
                     }
                 }
