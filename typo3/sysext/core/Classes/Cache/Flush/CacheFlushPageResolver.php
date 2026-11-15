@@ -101,6 +101,28 @@ readonly class CacheFlushPageResolver
     }
 
     /**
+     * The default language record of a translated record, 0 for a record in the
+     * default language. Pages are left out, their translations are handled by
+     * the page ids of the default language page.
+     */
+    public function getTranslationParentUid(string $table, int $uid): int
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($table === 'pages' || !$schema->isLanguageAware()) {
+            return 0;
+        }
+        $translationParentFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        return (int)$queryBuilder
+            ->select($translationParentFieldName)
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchOne();
+    }
+
+    /**
      * For "pages", the page itself, its siblings and its parent page are
      * affected, for other tables the page the record is located on.
      * "TCEMAIN.clearCache_pageSiblings = 0" limits the siblings to the

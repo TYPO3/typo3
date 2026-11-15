@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -35,6 +37,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\BeforeDatabaseRecordLinkResolvedEvent;
 
@@ -50,6 +53,8 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
         private TypoLinkCodecService $typoLinkCodecService,
         private EventDispatcherInterface $eventDispatcher,
         private PageRepository $pageRepository,
+        private Features $features,
+        private CacheLifetimeCalculator $cacheLifetimeCalculator,
     ) {}
 
     public function buildLink(
@@ -90,6 +95,7 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
             parse_str(ltrim((string)$linkDetails['parameters'], '?&'), $queryParameters);
         }
         $record = $event->record;
+        $translation = null;
         if ($record === null) {
             if ($typoScriptLinkHandlerConfiguration[$configurationKey]['forceLink'] ?? false) {
                 $record = $this->pageRepository->getRawRecord($databaseTable, (int)$linkDetails['uid']);
@@ -116,12 +122,15 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                             );
                             if ($overlay === null) {
                                 $record = null;
+                            } elseif (isset($overlay['_LOCALIZED_UID'])) {
+                                $translation = array_replace($overlay, ['uid' => (int)$overlay['_LOCALIZED_UID']]);
                             }
                         }
                     }
                 }
             }
         }
+        $this->addCacheTagsOfRecord($request, $databaseTable, (int)$linkDetails['uid'], $record, $translation);
         if ($record === null) {
             throw new UnableToLinkException(
                 'Record not found for "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.',
@@ -158,6 +167,28 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
         $localContentObjectRenderer->start($record, $databaseTable);
         $localContentObjectRenderer->parameters = $request->getAttribute('currentContentObject')->parameters ?? [];
         return $localContentObjectRenderer->createLink($linkText, $typoScriptConfiguration);
+    }
+
+    /**
+     * Tags the page with the linked record, so it is flushed when the record changes, also if it can not be linked right now.
+     * ContentObjectRenderer::start() does not cover this: it is not reached for records that
+     * can not be linked, gets the record in the default language and skips the table "pages".
+     */
+    private function addCacheTagsOfRecord(ServerRequestInterface $request, string $table, int $uid, ?array $record, ?array $translation): void
+    {
+        if ($table === '' || !$this->features->isFeatureEnabled('frontend.cache.autoTagging')) {
+            return;
+        }
+        $row = $record ?? ($this->schemaFactory->has($table) ? $this->pageRepository->getRawRecord($table, $uid) : null);
+        $lifetime = is_array($row) ? $this->cacheLifetimeCalculator->calculateLifetimeForRow($table, $row) : PHP_INT_MAX;
+        $cacheTags = [new CacheTag($table . '_' . $uid, $lifetime)];
+        if ($translation !== null) {
+            $cacheTags[] = new CacheTag(
+                $table . '_' . $translation['uid'],
+                min($lifetime, $this->cacheLifetimeCalculator->calculateLifetimeForRow($table, $translation))
+            );
+        }
+        $request->getAttribute('frontend.cache.collector')?->addCacheTags(...$cacheTags);
     }
 
     /**

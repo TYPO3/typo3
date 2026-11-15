@@ -78,6 +78,11 @@ final class CacheFlusherTest extends FunctionalTestCase
                 1,
                 ['pageId_3', 'tt_content', 'tt_content_1', 'tt_content_pid_3'],
             ],
+            'translated content element flushes the tag of its default language record' => [
+                'tt_content',
+                8,
+                ['pageId_4', 'tt_content', 'tt_content_8', 'tt_content_7', 'tt_content_pid_4'],
+            ],
             'page flushes itself, its siblings and its parent' => [
                 'pages',
                 3,

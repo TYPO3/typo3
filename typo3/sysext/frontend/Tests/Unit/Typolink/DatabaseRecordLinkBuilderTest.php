@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -184,6 +186,8 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new NoopEventDispatcher(),
                 $pageRepositoryMock,
+                new Features(),
+                self::createStub(CacheLifetimeCalculator::class),
             ])
             ->getMock();
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);

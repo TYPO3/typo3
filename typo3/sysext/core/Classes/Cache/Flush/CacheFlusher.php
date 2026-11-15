@@ -155,6 +155,11 @@ readonly class CacheFlusher
                 $pageId = $this->pageResolver->getPageIdOfRecord($table, $uid);
                 $pageIds = $this->pageResolver->getAffectedPageIds($table, $pageId, $pageTsConfig);
                 $tags = [$table, $table . '_' . $uid];
+                $translationParentUid = $this->pageResolver->getTranslationParentUid($table, $uid);
+                if ($translationParentUid > 0) {
+                    // Pages render translations under the cache tag of the default language record
+                    $tags[] = $table . '_' . $translationParentUid;
+                }
                 if ($table !== 'pages') {
                     $storagePageIds = array_unique([$pageId, (int)$originalPageId]);
                     foreach ($storagePageIds as $storagePageId) {
