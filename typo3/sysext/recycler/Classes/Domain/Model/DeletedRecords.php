@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
@@ -56,6 +57,7 @@ class DeletedRecords
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         private readonly ConnectionPool $connectionPool,
+        private readonly PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     /**
@@ -334,37 +336,22 @@ class DeletedRecords
         $identifier = md5($id . '_' . $depth);
         $pageTree = $this->runtimeCache->get($identifier);
         if ($pageTree === false) {
-            $pageTree = $this->resolveTree($id, $depth, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-            $pageTree = array_merge([$id], $pageTree);
+            $backendUser = $this->getBackendUser();
+            $permsClause = QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+            $descendants = $this->pageDescendantsRepository->findDescendants(
+                [abs($id)],
+                $depth,
+                (int)$backendUser->workspace,
+                static fn(): string => $permsClause,
+                [],
+                [],
+                true,
+            );
+            $pageTree = [$id, ...array_column($descendants, 'uid')];
             $this->runtimeCache->set($identifier, $pageTree);
         }
 
         return $pageTree;
-    }
-
-    protected function resolveTree(int $id, int $depth, string $permsClause): array
-    {
-        $id = abs($id);
-        $theList = [];
-        if ($depth > 0) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $statement = $queryBuilder->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                    QueryHelper::stripLogicalOperatorPrefix($permsClause)
-                )
-                ->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                $theList[] = $row['uid'];
-                if ($depth > 1) {
-                    $theList = array_merge($theList, $this->resolveTree($row['uid'], $depth - 1, $permsClause));
-                }
-            }
-        }
-        return $theList;
     }
 
     /**

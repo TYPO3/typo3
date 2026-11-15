@@ -23,13 +23,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
@@ -67,7 +64,7 @@ final readonly class BackendConfigurationManager
         private SysTemplateRepository $sysTemplateRepository,
         private SiteFinder $siteFinder,
         private FrontendTypoScriptFactory $frontendTypoScriptFactory,
-        private ConnectionPool $connectionPool,
+        private PageDescendantsRepository $pageDescendantsRepository,
         private SetRegistry $setRegistry,
         private PageAncestryResolver $pageAncestryResolver,
         private Context $context,
@@ -285,49 +282,23 @@ final readonly class BackendConfigurationManager
         $permsClause = QueryHelper::stripLogicalOperatorPrefix(
             $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
         );
+        $pendingStoragePids = array_map(static fn(int $storagePid): int => abs($storagePid), $storagePids);
+        // The root page 0 is kept as storage pid, but its subpages are not collected
+        $descendants = $this->pageDescendantsRepository->findDescendants(
+            array_values(array_filter($pendingStoragePids)),
+            $recursionDepth,
+            (int)$this->context->getPropertyFromAspect('workspace', 'id', 0),
+            static fn(): string => $permsClause,
+        );
+        // Each storage pid is followed by its subpages
         $recursiveStoragePids = [];
-        foreach ($storagePids as $startPid) {
-            $startPid = abs($startPid);
-            $recursiveStoragePids = array_merge(
-                $recursiveStoragePids,
-                [ $startPid ],
-                $this->getPageChildrenRecursive($startPid, $recursionDepth, 0, $permsClause)
-            );
-        }
-        return array_unique($recursiveStoragePids);
-    }
-
-    /**
-     * Recursively fetch all children of a given page
-     *
-     * @return int[] List of child row $uid's
-     */
-    private function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
-    {
-        $children = [];
-        if ($pid && $depth > 0) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $statement = $queryBuilder->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
-                    $permsClause
-                )
-                ->orderBy('uid')
-                ->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                if ($begin <= 0) {
-                    $children[] = (int)$row['uid'];
-                }
-                if ($depth > 1) {
-                    $theSubList = $this->getPageChildrenRecursive((int)$row['uid'], $depth - 1, $begin - 1, $permsClause);
-                    $children = array_merge($children, $theSubList);
-                }
+        foreach ($descendants as $page) {
+            while ($page['_LEVEL'] === 1 && $pendingStoragePids !== [] && !in_array($page['pid'], $recursiveStoragePids, true)) {
+                $recursiveStoragePids[] = array_shift($pendingStoragePids);
             }
+            $recursiveStoragePids[] = $page['uid'];
         }
-        return $children;
+        return array_values(array_unique([...$recursiveStoragePids, ...$pendingStoragePids]));
     }
 
     private function getBackendUser(): BackendUserAuthentication

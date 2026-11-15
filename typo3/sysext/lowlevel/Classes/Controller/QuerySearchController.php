@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -42,7 +43,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -222,6 +222,7 @@ class QuerySearchController
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ConnectionPool $connectionPool,
         protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -529,40 +530,22 @@ class QuerySearchController
         if ($id < 0) {
             $id = abs($id);
         }
-        if ($begin === 0) {
-            $theList = (string)$id;
-        } else {
-            $theList = '';
-        }
+        $pageIds = $begin === 0 ? [$id] : [];
         if ($id && $depth > 0) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $queryBuilder->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE)
-                )
-                ->orderBy('uid');
-            if ($permsClause !== '') {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permsClause));
-            }
-            $statement = $queryBuilder->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                if ($begin <= 0) {
-                    $theList .= ',' . $row['uid'];
-                }
-                if ($depth > 1) {
-                    $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause);
-                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
-                        $theList .= ',';
-                    }
-                    $theList .= $theSubList;
+            $permsClause = QueryHelper::stripLogicalOperatorPrefix($permsClause);
+            $descendants = $this->pageDescendantsRepository->findDescendants(
+                [$id],
+                $depth,
+                (int)$this->getBackendUserAuthentication()->workspace,
+                $permsClause !== '' ? static fn(): string => $permsClause : null,
+            );
+            foreach ($descendants as $page) {
+                if ($page['_LEVEL'] >= $begin) {
+                    $pageIds[] = $page['uid'];
                 }
             }
         }
-
-        return $theList;
+        return implode(',', $pageIds);
     }
 
     /**

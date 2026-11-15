@@ -71,6 +71,19 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function versionsBelowAPageDeletedInTheWorkspaceAreFoundRecursive(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $GLOBALS['BE_USER']->workspace = 91;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(91));
+        new ActionService()->deleteRecord('pages', 3);
+
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 1, 99);
+        $livePageIds = array_map(intval(...), array_column($result['pages'], 't3ver_oid'));
+        sort($livePageIds);
+        self::assertSame([2, 3, 4, 6, 6], $livePageIds);
+    }
+    #[Test]
     public function versionsCanBeRequestedForAPageThatWasCreatedAndDeletedInTheWorkspace(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');

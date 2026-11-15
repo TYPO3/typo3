@@ -388,7 +388,7 @@ class Export extends ImportExport
             }
         }
         if (!empty($pageIds)) {
-            return ' AND uid NOT IN (' . implode(',', $pageIds) . ')';
+            return ' AND pages.uid NOT IN (' . implode(',', $pageIds) . ')';
         }
         return '';
     }

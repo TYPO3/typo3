@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
+use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -80,7 +82,9 @@ class PagesRepository
 
     /**
      * Generates a list of page uids from $id. List does not include $id itself.
-     * The only pages excluded from the list are deleted pages.
+     * Deleted pages are excluded, hidden pages unless $considerHidden is set. The subpages of
+     * hidden pages are included, unless the hidden page extends to its subpages.
+     * Translated pages are included as well.
      *
      * Formerly called extGetTreeList
      *
@@ -96,42 +100,60 @@ class PagesRepository
         string $permsClause,
         bool $considerHidden = false
     ): array {
-        $subPageIds = [];
-        if ($depth === 0) {
-            return $subPageIds;
+        if ($depth <= 0) {
+            return [];
         }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $result = $queryBuilder
-            ->select('uid', 'title', 'hidden', 'extendToSubpages')
-            ->from(self::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
-                ),
-                QueryHelper::stripLogicalOperatorPrefix($permsClause)
-            )
-            ->executeQuery();
-
-        while ($row = $result->fetchAssociative()) {
-            $subpageId = (int)$row['uid'];
-            $isHidden = (bool)$row['hidden'];
-            if (!$isHidden || $considerHidden) {
-                $subPageIds[] = $subpageId;
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix($permsClause);
+        $pages = GeneralUtility::makeInstance(PageDescendantsRepository::class)->findDescendants(
+            [$id],
+            $depth,
+            0,
+            $permsClause !== '' ? static fn(): string => $permsClause : null,
+            [],
+            ['hidden', 'extendToSubpages'],
+        );
+        $subPageIds = [];
+        // Pages whose subpages were looked up, as their translations are subpages as well
+        $parentPageIds = [$id];
+        $skippedLevel = null;
+        foreach ($pages as $page) {
+            if ($skippedLevel !== null && $page['_LEVEL'] > $skippedLevel) {
+                continue;
             }
-            if ($depth > 1 && (!($isHidden && $row['extendToSubpages'] == 1) || $considerHidden)) {
-                $subPageIds = array_merge($subPageIds, $this->getAllSubpagesForPage(
-                    $subpageId,
-                    $depth - 1,
-                    $permsClause,
-                    $considerHidden
-                ));
+            $skippedLevel = null;
+            $isHidden = (bool)$page['hidden'];
+            if (!$isHidden || $considerHidden) {
+                $subPageIds[] = $page['uid'];
+            }
+            if ($isHidden && $page['extendToSubpages'] && !$considerHidden) {
+                $skippedLevel = $page['_LEVEL'];
+            } elseif ($page['_LEVEL'] < $depth) {
+                $parentPageIds[] = $page['uid'];
+            }
+        }
+        foreach (array_chunk($parentPageIds, 1000) as $parentPageIdsChunk) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            if (!$considerHidden) {
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+            }
+            $constraints = [
+                $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($parentPageIdsChunk, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->gt('sys_language_uid', $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+            ];
+            if ($permsClause !== '') {
+                $constraints[] = $permsClause;
+            }
+            $result = $queryBuilder
+                ->select('uid')
+                ->from(self::TABLE)
+                ->where(...$constraints)
+                ->executeQuery();
+            while ($translatedPageId = $result->fetchOne()) {
+                $subPageIds[] = (int)$translatedPageId;
             }
         }
         return $subPageIds;

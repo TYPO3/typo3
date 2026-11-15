@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -171,7 +171,6 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->get(SiteFinder::class)->getAllSites(false);
         $subject = new SlugService(
             $this->get(Context::class),
-            $this->get(PageRepository::class),
             $this->get(LinkService::class),
             $this->get(RedirectCacheService::class),
             $this->get(SlugRedirectChangeItemFactory::class),
@@ -180,6 +179,7 @@ final class SlugServiceTest extends FunctionalTestCase
             $this->get(TcaSchemaFactory::class),
             $this->get(TemporaryPermissionMutationService::class),
             new NullLogger(),
+            $this->get(PageDescendantsRepository::class),
         );
         return $subject;
     }

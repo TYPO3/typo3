@@ -19,38 +19,117 @@ namespace TYPO3\CMS\Reports\Tests\Functional\Integrity;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Tests\Functional\Domain\Repository\Fixtures\QueryCountingMiddleware;
 use TYPO3\CMS\Reports\Integrity\DatabaseIntegrityCheck;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DatabaseIntegrityCheckTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['reports'];
+
+    protected array $configurationToUseInTestInstance = [
+        'DB' => [
+            'globalDriverMiddlewares' => [
+                'typo3-tests/query-counting' => [
+                    'target' => QueryCountingMiddleware::class,
+                ],
+            ],
+        ],
+    ];
+
     #[Test]
     public function genTreeVisitsEachPageOnlyOnceWithCircularVersionReferences(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/CircularPages.csv');
-        // Bound the recursion depth, so a missing cycle guard ends in a failing
-        // assertion instead of exhausting memory or prepared statements.
-        $subject = new class ($this->get(TcaSchemaFactory::class), $this->get(ConnectionPool::class)) extends DatabaseIntegrityCheck {
-            private int $depth = 0;
-
-            public function genTree(int $theID, bool $versions = false): void
-            {
-                if ($this->depth >= 50) {
-                    return;
-                }
-                $this->depth++;
-                try {
-                    parent::genTree($theID, $versions);
-                } finally {
-                    $this->depth--;
-                }
-            }
-        };
-
+        $subject = $this->get(DatabaseIntegrityCheck::class);
         $subject->genTree(0);
 
         self::assertSame([1, 2, 3, 4], array_keys($subject->getPageIdArray()));
         self::assertSame([1 => 4], $subject->getRecStats()['doktype']);
+    }
+
+    #[Test]
+    public function genTreeCollectsEachPageConnectedToTheRootOnce(): void
+    {
+        $subject = $this->createSubjectForPageTree();
+        $pageIds = array_keys($subject->getPageIdArray());
+        sort($pageIds);
+        self::assertSame([1, 2, 3, 4, 6, 7, 8, 9], $pageIds);
+        self::assertSame([5], array_keys($subject->getPageTranslatedPageIDArray()));
+    }
+
+    #[Test]
+    public function genTreeCountsEachPageOnce(): void
+    {
+        $subject = $this->createSubjectForPageTree();
+        $statistics = $subject->getRecStats();
+        self::assertCount(9, $statistics['all_valid']['pages']);
+        self::assertSame([3 => 3], $statistics['deleted']['pages']);
+        self::assertSame(1, $statistics['hidden']);
+        self::assertSame([1 => 8, 254 => 1], $statistics['doktype']);
+    }
+
+    #[Test]
+    public function genTreeCountsEachPageOnceWhenCalledAgain(): void
+    {
+        $subject = $this->createSubjectForPageTree();
+        $subject->genTree(0);
+        $statistics = $subject->getRecStats();
+        self::assertCount(9, $statistics['all_valid']['pages']);
+        self::assertSame(1, $statistics['hidden']);
+        self::assertSame([1 => 8, 254 => 1], $statistics['doktype']);
+    }
+    #[Test]
+    public function genTreeUsesOneQuery(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
+        QueryCountingMiddleware::$count = 0;
+        $this->get(DatabaseIntegrityCheck::class)->genTree(0);
+        self::assertSame(1, QueryCountingMiddleware::$count);
+    }
+
+    #[Test]
+    public function recordsAreCountedAndLostRecordsAreFoundForManyPages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
+        // More pages than any supported database accepts as placeholders in one statement
+        foreach (array_chunk(range(100, 70099), 1000) as $pageIds) {
+            $connection->bulkInsert('pages', array_map(static fn(int $pageId): array => [$pageId, 1, 'Page ' . $pageId], $pageIds), ['uid', 'pid', 'title']);
+        }
+        $subject = $this->get(DatabaseIntegrityCheck::class);
+        $subject->genTree(0);
+        $pageIds = [0, ...array_keys($subject->getPageIdArray())];
+
+        $counts = $subject->countRecords($pageIds);
+        $lostRecords = $subject->lostRecords($pageIds);
+
+        // 70000 new pages and the 9 pages of the fixture on a page connected to the root, one of them deleted
+        self::assertSame(70009, (int)$counts['all']['pages']);
+        self::assertSame(70008, (int)$counts['non_deleted']['pages']);
+        $lostPageIds = array_keys($lostRecords['pages']);
+        sort($lostPageIds);
+        self::assertSame([10, 11, 12], $lostPageIds);
+    }
+
+    #[Test]
+    public function pagesNotConnectedToTheRootAreLost(): void
+    {
+        $subject = $this->createSubjectForPageTree();
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $lostRecords = $subject->lostRecords([0, ...array_keys($subject->getPageIdArray()), ...array_keys($subject->getPageTranslatedPageIDArray())]);
+        $lostPageIds = array_keys($lostRecords['pages'] ?? []);
+        sort($lostPageIds);
+        self::assertSame([10, 11, 12], $lostPageIds);
+    }
+
+    private function createSubjectForPageTree(): DatabaseIntegrityCheck
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PageTree.csv');
+        $subject = $this->get(DatabaseIntegrityCheck::class);
+        $subject->genTree(0);
+        return $subject;
     }
 }

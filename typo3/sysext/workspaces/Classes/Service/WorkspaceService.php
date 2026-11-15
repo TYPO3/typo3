@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -64,6 +65,7 @@ readonly class WorkspaceService
         private TcaSchemaFactory $tcaSchemaFactory,
         private ConnectionPool $connectionPool,
         private ResourceFactory $resourceFactory,
+        private PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     /**
@@ -665,140 +667,27 @@ readonly class WorkspaceService
             $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
         );
         if ($pageId > 0) {
-            $pageList = array_merge(
-                [$pageId],
-                $this->getPageChildrenRecursive($pageId, $recursionLevel, 0, $permsClause)
-            );
+            $pageIds = [$pageId];
         } else {
-            $mountPoints = $backendUser->uc['pageTree_temporaryMountPoint'];
-            if (!is_array($mountPoints) || empty($mountPoints)) {
-                $mountPoints = $backendUser->getWebmounts();
+            $pageIds = $backendUser->uc['pageTree_temporaryMountPoint'];
+            if (!is_array($pageIds) || empty($pageIds)) {
+                $pageIds = $backendUser->getWebmounts();
             }
-            $pageList = [];
-            foreach ($mountPoints as $mountPoint) {
-                $pageList = array_merge(
-                    $pageList,
-                    [ (int)$mountPoint ],
-                    $this->getPageChildrenRecursive((int)$mountPoint, $recursionLevel, 0, $permsClause)
-                );
-            }
+            $pageIds = array_map(intval(...), $pageIds);
         }
-        $pageList = array_unique($pageList);
-
-        if ($this->tcaSchemaFactory->get('pages')->isWorkspaceAware() && !empty($pageList)) {
-            // Remove the "subbranch" if a page was moved away
-            $pageIds = $pageList;
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $result = $queryBuilder
-                ->select('uid', 'pid', 't3ver_oid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->in(
-                        't3ver_oid',
-                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($wsid, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
-                    )
-                )
-                ->orderBy('uid')
-                ->executeQuery();
-
-            $movedAwayPages = [];
-            while ($row = $result->fetchAssociative()) {
-                $movedAwayPages[$row['t3ver_oid']] = $row;
-            }
-
-            // move all pages away
-            $newList = array_diff($pageIds, array_keys($movedAwayPages));
-            // keep current page in the list
-            $newList[] = $pageId;
-            // move back in if still connected to the "remaining" pages
-            do {
-                $changed = false;
-                foreach ($movedAwayPages as $uid => $rec) {
-                    if (in_array($rec['pid'], $newList) && !in_array($uid, $newList)) {
-                        $newList[] = $uid;
-                        $changed = true;
-                    }
-                }
-            } while ($changed);
-
-            // In case moving pages is enabled we need to replace all move-to pointer with their origin
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $result = $queryBuilder->select('uid', 't3ver_oid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->in(
-                        'uid',
-                        $queryBuilder->createNamedParameter($newList, Connection::PARAM_INT_ARRAY)
-                    )
-                )
-                ->orderBy('uid')
-                ->executeQuery();
-
-            $pages = [];
-            while ($row = $result->fetchAssociative()) {
-                $pages[$row['uid']] = $row;
-            }
-
-            $pageIds = $newList;
-            if (!in_array($pageId, $pageIds)) {
-                $pageIds[] = $pageId;
-            }
-
-            $newList = [];
-            foreach ($pageIds as $pageId) {
-                if ((int)($pages[$pageId]['t3ver_oid'] ?? 0) > 0) {
-                    $newList[] = (int)$pages[$pageId]['t3ver_oid'];
-                } else {
-                    $newList[] = $pageId;
-                }
-            }
-            $pageList = $newList;
-        }
-
-        return implode(',', $pageList);
-    }
-
-    /**
-     * Recursively fetch all children of a given page
-     *
-     * @param int $pid uid of the page
-     * @return int[] List of child row $uid's
-     */
-    protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
-    {
-        $children = [];
-        if ($pid && $depth > 0) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $statement = $queryBuilder->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', LanguageMarker::DEFAULT_LANGUAGE),
-                    $permsClause
-                )
-                ->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                if ($begin <= 0) {
-                    $children[] = (int)$row['uid'];
-                }
-                if ($depth > 1) {
-                    $theSubList = $this->getPageChildrenRecursive((int)$row['uid'], $depth - 1, $begin - 1, $permsClause);
-                    $children = array_merge($children, $theSubList);
-                }
-            }
-        }
-        return $children;
+        // Pages moved in the workspace are found at their position in the workspace, pages deleted in
+        // the workspace are kept, as their deletion and the changes below them are versions as well
+        $descendants = $this->pageDescendantsRepository->findDescendants(
+            $pageIds,
+            $recursionLevel,
+            $this->tcaSchemaFactory->get('pages')->isWorkspaceAware() ? max($wsid, 0) : 0,
+            static fn(): string => $permsClause,
+            [],
+            [],
+            false,
+            true,
+        );
+        return implode(',', array_unique([...$pageIds, ...array_column($descendants, 'uid')]));
     }
 
     /**

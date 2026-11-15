@@ -17,12 +17,42 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PagesRepositoryTest extends FunctionalTestCase
 {
+    public static function getAllSubpagesForPageReturnsSubpagesDataProvider(): iterable
+    {
+        yield 'hidden pages are left out, but not their subpages' => [99, false, [2, 3, 5, 10, 12, 14, 15]];
+        yield 'hidden pages are included on request' => [99, true, [2, 3, 4, 5, 6, 7, 10, 11, 12, 14, 15]];
+        yield 'first level only' => [1, false, [2, 10, 14]];
+        yield 'no level' => [0, false, []];
+    }
+
+    #[DataProvider('getAllSubpagesForPageReturnsSubpagesDataProvider')]
+    #[Test]
+    public function getAllSubpagesForPageReturnsSubpages(int $depth, bool $considerHidden, array $expectedPageIds): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PagesRepositoryTest/subpages.csv');
+        $pageIds = new PagesRepository()->getAllSubpagesForPage(1, $depth, '', $considerHidden);
+        sort($pageIds);
+        self::assertSame($expectedPageIds, $pageIds);
+    }
+
+    #[Test]
+    public function getAllSubpagesForPageRespectsPermissionClause(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/PagesRepositoryTest/subpages.csv');
+        $permsClause = $this->setUpBackendUser(2)->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageIds = new PagesRepository()->getAllSubpagesForPage(1, 99, $permsClause);
+        sort($pageIds);
+        self::assertSame([2, 3, 5, 10, 12], $pageIds);
+    }
+
     #[Test]
     public function doesRootLineContainHiddenPagesReturnsCorrectResultWith(): void
     {

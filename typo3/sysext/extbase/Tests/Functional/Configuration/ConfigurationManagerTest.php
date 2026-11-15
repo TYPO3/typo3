@@ -77,6 +77,17 @@ final class ConfigurationManagerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function subpagesOfRootPageAreNotAddedToStoragePids(): void
+    {
+        $this->subject->setConfiguration([
+            'extensionName' => 'CurrentExtensionName',
+            'pluginName' => 'CurrentPluginName',
+            'persistence' => ['storagePid' => '0,3'],
+        ]);
+        self::assertSame('0,3,4', $this->getStoragePid());
+    }
+
+    #[Test]
     public function changedRequestResetsBackendConfigurationCache(): void
     {
         self::assertSame('2,3,4', $this->getStoragePid());
@@ -120,6 +131,6 @@ final class ConfigurationManagerTest extends FunctionalTestCase
     private function addStorageSubPage(): void
     {
         $this->get(ConnectionPool::class)->getConnectionForTable('pages')
-            ->insert('pages', ['uid' => 5, 'pid' => 2, 'title' => 'Added storage sub', 'doktype' => 254]);
+            ->insert('pages', ['uid' => 5, 'pid' => 2, 'sorting' => 512, 'title' => 'Added storage sub', 'doktype' => 254]);
     }
 }

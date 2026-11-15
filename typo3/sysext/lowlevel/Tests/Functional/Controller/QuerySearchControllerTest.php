@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -64,6 +65,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
             $this->get(ResponseFactoryInterface::class),
+            $this->get(PageDescendantsRepository::class),
         ];
     }
 
@@ -203,22 +205,22 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             [
                 1, // id
                 1, // depth
-                ',2', // expectation
+                '2', // expectation
             ],
             [
                 1,
                 2,
-                ',2,3',
+                '2,3',
             ],
             [
                 1,
                 99,
-                ',2,3,4,5,6',
+                '2,3,4,5,6',
             ],
             [
                 2,
                 1,
-                ',3',
+                '3',
             ],
         ];
     }
@@ -346,6 +348,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
             $this->get(ResponseFactoryInterface::class),
+            $this->get(PageDescendantsRepository::class),
         ]);
         $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
@@ -420,6 +423,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
             $this->get(ConnectionPool::class),
             $this->get(ResponseFactoryInterface::class),
+            $this->get(PageDescendantsRepository::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

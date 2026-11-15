@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -42,6 +42,7 @@ class AdministrationRepository
     public function __construct(
         private readonly ExternalMediaTypes $externalMediaTypes,
         private readonly CacheFlusher $cacheFlusher,
+        private readonly PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     /**
@@ -616,48 +617,8 @@ class AdministrationRepository
      */
     protected function extGetTreeList(int $id): array
     {
-        $pageIds = $this->getPageTreeIds($id, 100, 0);
+        $pageIds = array_column($this->pageDescendantsRepository->findDescendants([$id], 100, 0), 'uid');
         $pageIds[] = $id;
-        return $pageIds;
-    }
-
-    /**
-     * Generates a list of Page-uid's from $id. List does not include $id itself
-     * The only pages excluded from the list are deleted pages.
-     *
-     * @param int $id Start page id
-     * @param int $depth Depth to traverse down the page tree.
-     * @param int $begin Determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-     * @return array Returns the list of pages
-     */
-    protected function getPageTreeIds(int $id, int $depth, int $begin): array
-    {
-        if (!$id || $depth <= 0) {
-            return [];
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $result = $queryBuilder
-            ->select('uid', 'title')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT))
-            )
-            ->executeQuery();
-
-        $pageIds = [];
-        while ($row = $result->fetchAssociative()) {
-            if ($begin <= 0) {
-                $pageIds[] = (int)$row['uid'];
-            }
-            if ($depth > 1) {
-                $pageIds = array_merge($pageIds, $this->getPageTreeIds((int)$row['uid'], $depth - 1, $begin - 1));
-            }
-        }
         return $pageIds;
     }
 

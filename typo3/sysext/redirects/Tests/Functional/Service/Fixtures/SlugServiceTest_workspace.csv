@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","sorting","title","slug","t3ver_oid","t3ver_wsid","t3ver_state"
+,1,0,256,"Root","/",0,0,0
+,2,1,256,"Parent","/parent",0,0,0
+,3,2,256,"Child","/parent/child",0,0,0
+,4,1,512,"Other","/other",0,0,0
+,5,4,256,"Moved","/other/moved",0,0,0
+,10,2,256,"Child","/parent/child-in-workspace",3,1,0
+,11,2,512,"Moved","/parent/moved",5,1,4
+"sys_workspace"
+,"uid","pid","title"
+,1,0,"Workspace"

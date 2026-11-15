@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
-use TYPO3\CMS\Core\Schema\LanguageMarker;
-
 /**
  * Generate a page-tree, non-browsable.
  *
@@ -37,7 +35,8 @@ class PageTreeView extends AbstractTreeView
      */
     public function init($clause = '', $orderByFields = '')
     {
-        parent::init(' AND deleted=0 AND sys_language_uid=' . LanguageMarker::DEFAULT_LANGUAGE . ' ' . $clause, $orderByFields);
+        // Deleted pages and translations are never part of the tree
+        parent::init($clause, $orderByFields);
     }
 
     /**

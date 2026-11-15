@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -226,17 +227,16 @@ class PageTreeRepository
      */
     public function getFlattenedPages(array $entryPointIds, int $depth): array
     {
-        $allPageRecords = $this->getPageRecords($entryPointIds);
-        $parentPageIds = $entryPointIds;
-        for ($i = 0; $i < $depth; $i++) {
-            if (empty($parentPageIds)) {
-                break;
-            }
-            $pageRecords = $this->getChildPageRecords($parentPageIds);
-            $parentPageIds = array_column($pageRecords, 'uid');
-            $allPageRecords = array_merge($allPageRecords, $pageRecords);
-        }
-        return $allPageRecords;
+        $additionalWhereClause = QueryHelper::stripLogicalOperatorPrefix((string)$this->additionalWhereClause);
+        $descendants = GeneralUtility::makeInstance(PageDescendantsRepository::class)->findDescendants(
+            $entryPointIds,
+            $depth,
+            $this->currentWorkspace,
+            $additionalWhereClause !== '' ? static fn(): string => $additionalWhereClause : null,
+            $this->additionalQueryRestrictions,
+            $this->fields,
+        );
+        return array_merge($this->getPageRecords($entryPointIds), $descendants);
     }
 
     protected function getChildPageRecords(array $parentPageIds): array

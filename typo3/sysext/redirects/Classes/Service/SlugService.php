@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -76,7 +76,6 @@ class SlugService
 
     public function __construct(
         private readonly Context $context,
-        private readonly PageRepository $pageRepository,
         private readonly LinkService $linkService,
         private readonly RedirectCacheService $redirectCacheService,
         private readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
@@ -85,6 +84,7 @@ class SlugService
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly TemporaryPermissionMutationService $temporaryPermissionMutationService,
         private readonly LoggerInterface $logger,
+        private readonly PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     /**
@@ -260,45 +260,46 @@ class SlugService
         return $sourceHosts;
     }
 
+    /**
+     * Returns the sub pages of a page in the current workspace, in the given language,
+     * with the values of their workspace version.
+     *
+     * @param int $id Page id in the default language
+     */
     protected function resolveSubPages(int $id, int $languageUid): array
     {
-        // First resolve all sub-pages in default language
-        $queryBuilder = $this->getQueryBuilderForPages();
-        $subPages = $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT))
-            )
-            ->orderBy('uid', 'ASC')
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        // if the language is not the default language, resolve the language related records.
-        if ($languageUid > LanguageMarker::DEFAULT_LANGUAGE) {
+        $workspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
+        $subPages = [];
+        foreach ($this->pageDescendantsRepository->findDescendants([$id], PageDescendantsRepository::MAX_TRAVERSAL_LEVELS, $workspaceId, null, [], ['*']) as $subPage) {
+            unset($subPage['_LEVEL']);
+            $subPages[] = $subPage;
+        }
+        if ($languageUid === LanguageMarker::DEFAULT_LANGUAGE || $subPages === []) {
+            return $subPages;
+        }
+        // Translations of the sub pages, in the order of their default language pages
+        $translations = [];
+        foreach (array_chunk(array_column($subPages, 'uid'), 1000) as $pageIds) {
             $queryBuilder = $this->getQueryBuilderForPages();
-            $subPages = $queryBuilder
+            $result = $queryBuilder
                 ->select('*')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->in('l10n_parent', $queryBuilder->createNamedParameter(array_column($subPages, 'uid'), Connection::PARAM_INT_ARRAY)),
+                    $queryBuilder->expr()->in('l10n_parent', $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)),
                     $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageUid, Connection::PARAM_INT))
                 )
-                ->orderBy('uid', 'ASC')
-                ->executeQuery()
-                ->fetchAllAssociative();
+                ->executeQuery();
+            while ($translation = $result->fetchAssociative()) {
+                BackendUtility::workspaceOL('pages', $translation, $workspaceId);
+                if (is_array($translation)) {
+                    $translations[(int)$translation['l10n_parent']] = $translation;
+                }
+            }
         }
         $results = [];
-        if (!empty($subPages)) {
-            $subPages = $this->pageRepository->getPagesOverlay($subPages, $languageUid);
-            foreach ($subPages as $subPage) {
-                $results[] = $subPage;
-                // resolveSubPages needs the page id of the default language
-                $pageId = $languageUid === LanguageMarker::DEFAULT_LANGUAGE ? (int)$subPage['uid'] : (int)$subPage['l10n_parent'];
-                foreach ($this->resolveSubPages($pageId, $languageUid) as $page) {
-                    $results[] = $page;
-                }
+        foreach ($subPages as $subPage) {
+            if (isset($translations[$subPage['uid']])) {
+                $results[] = $translations[$subPage['uid']];
             }
         }
         return $results;

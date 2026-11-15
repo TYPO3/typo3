@@ -32,9 +32,11 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -65,6 +67,7 @@ readonly class PageInformationController
         protected ConnectionPool $connectionPool,
         protected LocalizationRepository $localizationRepository,
         protected PageAncestryResolver $pageAncestryResolver,
+        protected PageDescendantsRepository $pageDescendantsRepository,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -403,67 +406,57 @@ readonly class PageInformationController
     protected function getPageRecordsRecursive(int $pid, int $depth, int $language, string $iconPrefix = '', array $rows = []): array
     {
         $backendUser = $this->getBackendUser();
-        $pagesSchema = $this->tcaSchemaFactory->get('pages');
-        $languageFieldName = $pagesSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-
-        $depth--;
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
-
-        $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq($languageFieldName, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
-                $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
-            );
-
-        if ($pagesSchema->hasCapability(TcaSchemaCapability::SortByField)) {
-            $queryBuilder->orderBy($pagesSchema->getCapability(TcaSchemaCapability::SortByField)->getFieldName());
+        $permsClause = QueryHelper::stripLogicalOperatorPrefix($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        $subpages = [];
+        $pages = $this->pageDescendantsRepository->findDescendants(
+            [$pid],
+            $depth,
+            (int)$backendUser->workspace,
+            static fn(): string => $permsClause,
+            [],
+            ['*'],
+            false,
+            true,
+        );
+        foreach ($pages as $page) {
+            unset($page['_LEVEL']);
+            $subpages[$page['pid']][] = $page;
         }
+        return $this->addPageRecordsOfBranch($subpages, $pid, $language, $iconPrefix, $rows);
+    }
 
-        if ($depth >= 0) {
-            $countQueryBuilder = clone $queryBuilder;
-            $countQueryBuilder->resetOrderBy()->count('uid');
-            $rowCount = $countQueryBuilder->executeQuery()->fetchOne();
-            $result = $queryBuilder->executeQuery();
-            $count = 0;
-            while ($row = $result->fetchAssociative()) {
-                BackendUtility::workspaceOL('pages', $row);
-                $uid = (int)$row['uid'];
-                if (is_array($row)) {
-                    if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
-                        $localizedPageRecord = $this->localizationRepository->getPageTranslations($uid, [$language], $this->getBackendUser()->workspace);
-                        if ($localizedPageRecord === []) {
-                            continue;
-                        }
-                        $row = reset($localizedPageRecord)->toArray();
-                    }
-                    $count++;
-                    $row['treeIcons'] = $iconPrefix
-                        . '<span class="treeline-icon treeline-icon-join'
-                        . ($rowCount === $count ? 'bottom' : '')
-                        . '"></span>';
-                    $rows[] = $row;
-                    // Get the branch
-                    $spaceOutIcons = '<span class="treeline-icon treeline-icon-'
-                        . ($rowCount === $count ? 'clear' : 'line')
-                        . '"></span>';
-                    $rows = $this->getPageRecordsRecursive(
-                        $uid,
-                        $row['php_tree_stop'] ? 0 : $depth,
-                        $language,
-                        $iconPrefix . $spaceOutIcons,
-                        $rows
-                    );
+    /**
+     * @param array<int, list<array<string, mixed>>> $subpages Page records by parent page id
+     */
+    private function addPageRecordsOfBranch(array $subpages, int $pid, int $language, string $iconPrefix, array $rows): array
+    {
+        $branchRows = [];
+        foreach ($subpages[$pid] ?? [] as $page) {
+            $row = $page;
+            if ($language > LanguageMarker::DEFAULT_LANGUAGE) {
+                $localizedPageRecord = $this->localizationRepository->getPageTranslations((int)$page['uid'], [$language], $this->getBackendUser()->workspace);
+                if ($localizedPageRecord === []) {
+                    continue;
                 }
+                $row = reset($localizedPageRecord)->toArray();
+            }
+            $branchRows[(int)$page['uid']] = $row;
+        }
+        $count = 0;
+        foreach ($branchRows as $uid => $row) {
+            $isLast = ++$count === count($branchRows);
+            $row['treeIcons'] = $iconPrefix
+                . '<span class="treeline-icon treeline-icon-join'
+                . ($isLast ? 'bottom' : '')
+                . '"></span>';
+            $rows[] = $row;
+            if (!$row['php_tree_stop']) {
+                $spaceOutIcons = '<span class="treeline-icon treeline-icon-'
+                    . ($isLast ? 'clear' : 'line')
+                    . '"></span>';
+                $rows = $this->addPageRecordsOfBranch($subpages, $uid, $language, $iconPrefix . $spaceOutIcons, $rows);
             }
         }
-
         return $rows;
     }
 

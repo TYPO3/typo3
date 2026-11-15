@@ -17,14 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
-use Doctrine\DBAL\Result;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageDescendantsRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -39,18 +34,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractTreeView
 {
     /**
-     * Database table to get the tree data from.
-     * Leave blank if data comes from an array.
+     * Table of the tree records, used for their icons. The tree is always built from "pages".
      */
     protected string $table = 'pages';
 
     /**
-     * Defines the field of $table which is the parent id field (like pid for table pages).
-     */
-    protected string $parentField = 'pid';
-
-    /**
      * WHERE clause used for selecting records for the tree. Is set by function init.
+     * It is evaluated on the live page, columns may be qualified with "pages".
      *
      * @see init()
      */
@@ -58,6 +48,7 @@ abstract class AbstractTreeView
 
     /**
      * Field for ORDER BY. Is set by function init.
+     * Pages are ordered in PHP, the fields must be part of $fieldArray.
      *
      * @see init()
      */
@@ -124,6 +115,11 @@ abstract class AbstractTreeView
     // For both types
     // Tree is accumulated in this variable
     public array $tree = [];
+
+    /**
+     * @var array<int, list<array<string, mixed>>>|null Pages by parent page id while the tree is built
+     */
+    private ?array $subpages = null;
 
     /**
      * @param string $clause Record WHERE clause
@@ -251,6 +247,9 @@ abstract class AbstractTreeView
     /**
      * Fetches the data for the tree
      *
+     * The pages of all levels are fetched with one query on the first call, the recursive
+     * calls for the levels below work on these pages.
+     *
      * @param int $uid item id for which to select subitems (parent id)
      * @param int $depth Max depth (recursivity limit)
      * @param string $depthData HTML-code prefix for recursive calls.
@@ -258,28 +257,40 @@ abstract class AbstractTreeView
      */
     public function getTree(int $uid, int $depth = 999, string $depthData = ''): int
     {
+        $isFirstCall = $this->subpages === null;
+        if ($isFirstCall) {
+            $this->subpages = $this->fetchSubpages($uid, $depth);
+        }
+        try {
+            return $this->renderSubtree($uid, $depth, $depthData, $isFirstCall);
+        } finally {
+            if ($isFirstCall) {
+                $this->subpages = null;
+            }
+        }
+    }
+
+    /**
+     * @return int<0, max>
+     */
+    private function renderSubtree(int $uid, int $depth, string $depthData, bool $checkWebMount): int
+    {
         // Buffer for id hierarchy is reset:
         $this->buffer_idH = [];
         // Init vars
         $HTML = '';
         $a = 0;
-        $res = $this->getDataInit($uid);
-        $c = $res->rowCount();
-        $crazyRecursionLimiter = 9999;
+        $rows = $this->subpages[$uid] ?? [];
+        if ($checkWebMount) {
+            // Subpages of a page within a web mount are within the web mount as well
+            $rows = array_values(array_filter($rows, fn(array $row): bool => $this->getBackendUser()->isInWebMount($row) !== null));
+        }
+        $c = count($rows);
         $idH = [];
         // Traverse the records:
-        while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
-            if (!$this->getBackendUser()->isInWebMount($this->table === 'pages' ? $row : $row['pid'])) {
-                // Current record is not within web mount => skip it
-                continue;
-            }
-
+        foreach ($rows as $row) {
             $a++;
-            $crazyRecursionLimiter--;
             $newID = $row['uid'];
-            if ($newID == 0) {
-                throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value. See https://forge.typo3.org/issues/16150 to get more information about a possible cause.', 1294586383);
-            }
             // Reserve space.
             $this->tree[] = [];
             end($this->tree);
@@ -294,14 +305,14 @@ abstract class AbstractTreeView
             $nextLevelDepthData = $depthData . '<span class="treeline-icon treeline-icon-' . ($a === $c ? 'clear' : 'line') . '"></span>';
             $hasSub = $this->expandNext($newID) && !($row['php_tree_stop'] ?? false);
             if ($depth > 1 && $hasSub) {
-                $nextCount = $this->getTree($newID, $depth - 1, $nextLevelDepthData);
+                $nextCount = $this->renderSubtree($newID, $depth - 1, $nextLevelDepthData, false);
                 if (!empty($this->buffer_idH)) {
                     $idH[$row['uid']]['subrow'] = $this->buffer_idH;
                 }
                 // Set "did expand" flag
                 $isOpen = true;
             } else {
-                $nextCount = $this->getCount((int)$newID);
+                $nextCount = count($this->subpages[$newID] ?? []);
                 // Clear "did expand" flag
                 $isOpen = false;
             }
@@ -322,7 +333,6 @@ abstract class AbstractTreeView
             ];
         }
 
-        $res->free();
         $this->buffer_idH = $idH;
         return $c;
     }
@@ -334,77 +344,51 @@ abstract class AbstractTreeView
      *
      ********************************/
     /**
-     * Returns the number of records having the parent id, $uid
+     * Fetches the workspace-resolved subpages of a page down to the given depth, and one
+     * level more to know whether the pages on the last level have subpages.
      *
-     * @param int $uid Id to count subitems for
+     * @return array<int, list<array<string, mixed>>> Pages by parent page id, in the order of $this->orderByFields
      */
-    protected function getCount(int $uid): int
+    protected function fetchSubpages(int $uid, int $depth): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $count = $queryBuilder
-                ->count('uid')
-                ->from($this->table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $this->parentField,
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    ),
-                    QueryHelper::stripLogicalOperatorPrefix($this->clause)
-                )
-                ->executeQuery()
-                ->fetchOne();
-
-        return (int)$count;
-    }
-
-    /**
-     * Getting the tree data: Selecting/Initializing data pointer to items for a certain parent id.
-     * For tables: This will make a database query to select all children to "parent"
-     */
-    protected function getDataInit(int $parentId): Result
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $queryBuilder
-                ->select(...$this->fieldArray)
-                ->from($this->table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $this->parentField,
-                        $queryBuilder->createNamedParameter($parentId, Connection::PARAM_INT)
-                    ),
-                    QueryHelper::stripLogicalOperatorPrefix($this->clause)
-                );
-
-        foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
-            [$fieldName, $order] = $orderPair;
-            $queryBuilder->addOrderBy($fieldName, $order);
+        $clause = QueryHelper::stripLogicalOperatorPrefix($this->clause);
+        $pages = GeneralUtility::makeInstance(PageDescendantsRepository::class)->findDescendants(
+            [$uid],
+            min($depth, PageDescendantsRepository::MAX_TRAVERSAL_LEVELS - 1) + 1,
+            (int)$this->getBackendUser()->workspace,
+            $clause !== '' ? static fn(): string => $clause : null,
+            [],
+            $this->fieldArray,
+            false,
+            true,
+        );
+        $subpages = [];
+        foreach ($pages as $page) {
+            $subpages[$page['pid']][] = $page;
         }
-
-        return $queryBuilder->executeQuery();
-    }
-
-    /**
-     * Getting the tree data: next entry
-     *
-     * @see getDataInit()
-     */
-    protected function getDataNext(Result $res): array|false
-    {
-        while ($row = $res->fetchAssociative()) {
-            BackendUtility::workspaceOL($this->table, $row, $this->getBackendUser()->workspace, true);
-            if (is_array($row)) {
-                break;
+        $orderBy = array_map(
+            static fn(array $orderByField): array => [preg_replace('/^pages\./', '', $orderByField[0]), $orderByField[1]],
+            QueryHelper::parseOrderBy($this->orderByFields)
+        );
+        if ($orderBy !== [['sorting', null]]) {
+            foreach ($subpages as &$pagesOfParent) {
+                usort($pagesOfParent, static function (array $a, array $b) use ($orderBy): int {
+                    foreach ($orderBy as [$fieldName, $order]) {
+                        $valueA = $a[$fieldName] ?? null;
+                        $valueB = $b[$fieldName] ?? null;
+                        $result = is_string($valueA) && is_string($valueB) && !(is_numeric($valueA) && is_numeric($valueB))
+                            ? strnatcasecmp($valueA, $valueB)
+                            : $valueA <=> $valueB;
+                        if ($result !== 0) {
+                            return strtoupper((string)$order) === 'DESC' ? -$result : $result;
+                        }
+                    }
+                    return 0;
+                });
             }
+            unset($pagesOfParent);
         }
-        return $row;
+        return $subpages;
     }
 
     protected function getLanguageService(): LanguageService
