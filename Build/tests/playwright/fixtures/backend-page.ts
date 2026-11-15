@@ -5,7 +5,7 @@ import { DocHeader } from './doc-header';
 import { Modal } from './modal';
 import { FileTree } from './file-tree';
 import { Sidebar } from './sidebar';
-import { moduleLoaded } from './module-loaded';
+import { javaScriptItemsProcessed, moduleLoaded } from './module-loaded';
 
 export enum ViewportSize {
   Desktop = 'desktop',
@@ -43,13 +43,12 @@ export class BackendPage {
   }
 
   async gotoModule(identifier: string) {
-    await this.page.goto('module/web/layout');
-    const moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
-    const moduleLoaded = await this.moduleLoaded(identifier);
-    await moduleLink.click();
-    await moduleLoaded();
-
-    await expect(moduleLink).toHaveClass(/modulemenu-action-active/);
+    await this.page.goto(`?redirect=${encodeURIComponent(identifier)}`);
+    const activeModule = this.page.locator(`a[data-modulemenu-identifier="${identifier}"].modulemenu-action-active`);
+    // Protected modules request sudo verification before becoming active.
+    const verificationDialog = this.page.getByRole('dialog', { name: 'Verify with user password' });
+    await expect(activeModule.or(verificationDialog).first()).toBeAttached();
+    await javaScriptItemsProcessed(this.page);
   }
 
   /**

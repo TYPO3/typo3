@@ -99,4 +99,20 @@ test.describe('Module Menu', () => {
 
     await expect(recordsLink).toHaveClass(/modulemenu-action-active/);
   });
+
+  test('shared module navigation opens the requested module directly', async ({ page, backend }) => {
+    const pageModuleRequests: string[] = [];
+    page.on('request', request => {
+      if (request.resourceType() === 'document' && new URL(request.url()).pathname.endsWith('/module/web/layout')) {
+        pageModuleRequests.push(request.url());
+      }
+    });
+
+    await backend.gotoModule('records');
+    await expect.poll(() => page.frame({ name: 'list_frame' })?.url()).toContain('/module/content/records');
+    await backend.gotoModule('scheduler');
+    await expect.poll(() => page.frame({ name: 'list_frame' })?.url()).toContain('/module/scheduler');
+
+    expect(pageModuleRequests).toEqual([]);
+  });
 });

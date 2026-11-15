@@ -39,7 +39,7 @@ export async function moduleLoaded(page: Page): Promise<() => Promise<void>> {
   };
 }
 
-async function javaScriptItemsProcessed(page: Page): Promise<void> {
+export async function javaScriptItemsProcessed(page: Page): Promise<void> {
   const frame = page.frame({ name: 'list_frame' });
   if (frame === null) {
     return;
