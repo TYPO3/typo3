@@ -24,8 +24,7 @@ your TYPO3 core and the extensions up to date.
 
 * Subscribe to the announcement mailing list. This will inform you about
   new releases of the TYPO3 core and security bulletins of core and
-  community extensions.
-  http://lists.typo3.org/cgi-bin/mailman/listinfo/typo3-announce
+  community extensions. https://announce.typo3.org
 
 * Please refer to official TYPO3 Security Guide for further information
   about security-related topics of TYPO3 CMS and the resources compiled
