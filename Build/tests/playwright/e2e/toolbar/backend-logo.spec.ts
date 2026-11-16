@@ -29,7 +29,8 @@ test.describe('Backend logo', () => {
     // The install tool session survives locking, so the login form only shows up
     // on the first call, consecutive calls reuse the established session.
     const loginForm = page.locator('#t3-install-form-password');
-    if (await loginForm.waitFor({ state: 'visible', timeout: 5000 }).then(() => true, () => false)) {
+    await expect(loginForm.or(page.getByRole('menuitem', { name: 'Settings', exact: true }))).toBeVisible();
+    if (await loginForm.isVisible()) {
       await installTool.login();
     }
     await installTool.navigateTo('Settings');
