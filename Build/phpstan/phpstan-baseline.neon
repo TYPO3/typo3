@@ -4099,6 +4099,18 @@ parameters:
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
 
 		-
+			message: '#^Loose comparison using \!\= between Memcache and null will always evaluate to true\.$#'
+			identifier: notEqual.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
+
+		-
+			message: '#^Variable \$failedConnections in empty\(\) always exists and is always falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
+
+		-
 			message: '#^Instanceof between TYPO3\\CMS\\Reports\\Task\\SystemStatusUpdateTask and TYPO3\\CMS\\Reports\\Task\\SystemStatusUpdateTask will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
