@@ -517,7 +517,7 @@ FE:
             compareValuesWithCurrentConfiguration: false
         enable_mount_pids:
             type: bool
-            description: 'If enabled, the mount_pid feature allowing ''symlinks'' in the page tree (for frontend operation) is allowed.'
+            description: 'If enabled, mount points (page type "Mount point") are resolved in the frontend: in rootlines, menus and links. This setting does not affect the backend, editors can still create pages of this type. To hide the page type, use the Page TSconfig <code>TCEFORM.pages.doktype.removeItems = 7</code> or the allowed page types of the backend user groups.'
         hidePagesIfNotTranslatedByDefault:
             type: bool
             description: 'If enabled, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"'
