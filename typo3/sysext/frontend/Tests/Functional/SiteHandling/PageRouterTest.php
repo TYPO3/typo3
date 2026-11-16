@@ -19,16 +19,13 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\Event\AfterPageUriGeneratedEvent;
 use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 
@@ -107,8 +104,6 @@ final class PageRouterTest extends AbstractTestCase
         );
         $listenerProvider = $this->get(ListenerProvider::class);
         $listenerProvider->addListener(AfterPageUriGeneratedEvent::class, 'after-page-uri-generated-test-listener');
-
-        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
         $pageRouter = new PageRouter($this->siteFinder->getSiteByIdentifier('acme-com'));
         $result = $pageRouter->generateUri(1000, [], 'my-fragment');

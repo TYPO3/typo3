@@ -797,9 +797,7 @@ class MaintenanceController extends AbstractController
 
         // The cache manager is already instantiated in the install tool
         // with some hacked settings to disable caching of extbase and fluid.
-        // We want a "fresh" object here to operate on a different cache setup.
-        // cacheManager implements SingletonInterface, so the only way to get a "fresh"
-        // instance is by circumventing makeInstance and using new directly!
+        // A separate instance with the real cache configuration is needed to flush l10n.
         $cacheManager = new CacheManager();
         $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
         $cacheManager->getCache('l10n')->flush();

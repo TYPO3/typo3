@@ -19,11 +19,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
@@ -64,7 +63,7 @@ final class PageRouterLimitToPagesTest extends UnitTestCase
     private function callMatchesPageLimitation(Site $site, array $limitToPages, int $pageId, array $page, SiteLanguage $language): bool
     {
         GeneralUtility::addInstance(RequestContextFactory::class, new RequestContextFactory(new BackendEntryPointResolver()));
-        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher(self::createStub(ListenerProviderInterface::class)));
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
         $router = new class ($site) extends PageRouter {
             public function publicMatchesPageLimitation(array $limitToPages, int $pageId, array $page, SiteLanguage $language, ?Resolver &$resolver): bool
             {

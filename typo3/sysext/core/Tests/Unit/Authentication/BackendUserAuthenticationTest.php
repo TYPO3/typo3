@@ -23,7 +23,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -83,7 +82,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
         GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);
-        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher(self::createStub(ListenerProviderInterface::class)));
+        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
 
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
         $sessionBackendMock->expects($this->atMost(PHP_INT_MAX))->method('remove')->with(self::anything())->willReturn(true);

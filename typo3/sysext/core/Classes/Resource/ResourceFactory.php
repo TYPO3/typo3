@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -33,7 +34,6 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -41,7 +41,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Factory class for FAL objects
  */
-readonly class ResourceFactory implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class ResourceFactory
 {
     public function __construct(
         protected StorageRepository $storageRepository,

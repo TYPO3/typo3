@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -31,7 +32,6 @@ use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Main UrlGenerator for creating URLs for the Backend. Generates a URL based on
@@ -41,7 +41,8 @@ use TYPO3\CMS\Core\SingletonInterface;
  * Currently only available and useful when called from Router->generate() as the information
  * about possible routes needs to be handed over.
  */
-class UriBuilder implements SingletonInterface
+#[Autoconfigure(public: true)]
+class UriBuilder
 {
     /**
      * Generates an absolute URL

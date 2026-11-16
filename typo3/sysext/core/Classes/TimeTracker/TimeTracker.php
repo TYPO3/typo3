@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TimeTracker;
 
 use Psr\Log\LogLevel;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,7 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Note: Only push() (with first argument only), pull() and setTSlogMessage()
  *       are considered API, everything else is internal.
  */
-class TimeTracker implements SingletonInterface
+#[Autoconfigure(public: true)]
+class TimeTracker
 {
     /**
      * If set to true (see constructor) then timetracking is enabled

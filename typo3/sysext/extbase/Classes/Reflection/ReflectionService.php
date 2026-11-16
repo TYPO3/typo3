@@ -15,17 +15,18 @@
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
 /**
  * Reflection service for acquiring reflection based information.
  * Originally based on the TYPO3.Flow reflection service.
  */
-class ReflectionService implements SingletonInterface
+#[Autoconfigure(public: true)]
+class ReflectionService
 {
     /**
      * Indicates whether the Reflection cache needs to be updated.

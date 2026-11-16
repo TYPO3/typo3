@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Locking;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Factory class to retrieve a locking method
  */
-class LockFactory implements SingletonInterface
+#[Autoconfigure(public: true)]
+class LockFactory
 {
     /**
      * @var array<class-string, bool>

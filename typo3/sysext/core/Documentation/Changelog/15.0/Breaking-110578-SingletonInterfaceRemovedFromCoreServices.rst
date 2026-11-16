@@ -33,14 +33,18 @@ These classes do not implement :php-short:`\TYPO3\CMS\Core\SingletonInterface` a
 
 -   :php:`\TYPO3\CMS\Adminpanel\Service\ConfigurationService`
 -   :php:`\TYPO3\CMS\Adminpanel\Service\ProcessedImageCollector`
+-   :php:`\TYPO3\CMS\Backend\Routing\UriBuilder`
 -   :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection`
 -   :php:`\TYPO3\CMS\Core\Cache\CacheManager`
 -   :php:`\TYPO3\CMS\Core\Console\CommandRegistry`
 -   :php:`\TYPO3\CMS\Core\Error\AbstractExceptionHandler`
+-   :php:`\TYPO3\CMS\Core\EventDispatcher\EventDispatcher`
 -   :php:`\TYPO3\CMS\Core\Html\DefaultSanitizerBuilder`
 -   :php:`\TYPO3\CMS\Core\Html\PreviewSanitizerBuilder`
 -   :php:`\TYPO3\CMS\Core\Imaging\IconRegistry`
+-   :php:`\TYPO3\CMS\Core\LinkHandling\LinkService`
 -   :php:`\TYPO3\CMS\Core\Localization\Locales`
+-   :php:`\TYPO3\CMS\Core\Locking\LockFactory`
 -   :php:`\TYPO3\CMS\Core\Messaging\FlashMessageService`
 -   :php:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`
 -   :php:`\TYPO3\CMS\Core\Page\ImportMapFactory`
@@ -51,11 +55,15 @@ These classes do not implement :php-short:`\TYPO3\CMS\Core\SingletonInterface` a
 -   :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry`
 -   :php:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry`
+-   :php:`\TYPO3\CMS\Core\Resource\ResourceFactory`
 -   :php:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry`
 -   :php:`\TYPO3\CMS\Core\Routing\SiteMatcher`
 -   :php:`\TYPO3\CMS\Core\Session\SessionManager`
+-   :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker`
+-   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager`
 -   :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory`
 -   :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter`
+-   :php:`\TYPO3\CMS\Extbase\Reflection\ReflectionService`
 -   :php:`\TYPO3\CMS\Extbase\Service\ExtensionService`
 -   :php:`\TYPO3\CMS\Extbase\Validation\ValidatorResolver`
 -   :php:`\TYPO3\CMS\Form\Slot\FilePersistenceSlot`

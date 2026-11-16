@@ -30,12 +30,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
+    private Container $container;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $container = new Container();
-        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
-        GeneralUtility::setContainer($container);
+        $this->container = new Container();
+        $this->container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($this->container);
     }
 
     public static function findRefReturnsParsedElementsDataProvider(): array
@@ -184,7 +186,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement, int $amountOfMatches = 1): void
     {
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
         $result = $subject->parse(
@@ -266,7 +268,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     #[Test]
     public function findRefKeepsLinkSchemeOutsideOfToken(string $content, string $expectedContent): void
     {
-        GeneralUtility::setSingletonInstance(LinkService::class, new LinkService(new NoopEventDispatcher()));
+        $this->container->set(LinkService::class, new LinkService(new NoopEventDispatcher()));
         $result = $this->getParserByKey('typolink_tag')->parse('tt_content', 'bodytext', 1, $content);
 
         $token = $result->getMatchedElements()[1]['subst']['tokenID'];
@@ -309,9 +311,9 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         // For `file:42` handling
         $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('retrieveFileOrFolderObject')->with('42')->willReturn($fileObject);
 
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $this->container->set(ResourceFactory::class, $resourceFactory);
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
 
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
@@ -357,9 +359,9 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/foo/bar/baz')->willReturn($folderObject);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $this->container->set(ResourceFactory::class, $resourceFactory);
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
 
         $result = $this->getParserByKey('typolink_tag')->parse(
             'tt_content',

@@ -32,13 +32,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTestCase
 {
+    private Container $container;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $container = new Container();
-        $container->set(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
-        $container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
-        GeneralUtility::setContainer($container);
+        $this->container = new Container();
+        $this->container->set(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
+        $this->container->set(EventDispatcherInterface::class, new NoopEventDispatcher());
+        GeneralUtility::setContainer($this->container);
     }
 
     public static function findRefReturnsParsedElementsDataProvider(): array
@@ -170,7 +172,7 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
         $subject = $this->getParserByKey('typolink');
         $subject->setParserKey('typolink', $softrefConfiguration);
         $result = $subject->parse(
@@ -275,9 +277,9 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
             ['42', $fileObject],
             ['fileadmin/download.jpg', $fileObject],
         ]);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $this->container->set(ResourceFactory::class, $resourceFactory);
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
 
         $subject = $this->getParserByKey('typolink');
         $subject->setParserKey('typolink', $softrefConfiguration);
@@ -318,9 +320,9 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/foo/bar/baz')->willReturn($folderObject);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $this->container->set(ResourceFactory::class, $resourceFactory);
         $linkService = new LinkService(new NoopEventDispatcher());
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
+        $this->container->set(LinkService::class, $linkService);
 
         $result = $this->getParserByKey('typolink')->parse(
             'tt_content',

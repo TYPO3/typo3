@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -65,7 +66,9 @@ final class UriBuilderTest extends UnitTestCase
         $router->addRoute('', new Route('', []));
         $formProtectionFactory = self::createStub(FormProtectionFactory::class);
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
-        GeneralUtility::setSingletonInstance(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
+        $container = new Container();
+        $container->set(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
+        GeneralUtility::setContainer($container);
     }
 
     private function getRequestWithRouteAttribute(string $routeIdentifier = 'module_key', string $baseUri = ''): ServerRequestInterface

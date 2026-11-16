@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\LinkHandling\FolderLinkHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -81,7 +82,9 @@ final class FolderLinkHandlerTest extends UnitTestCase
         $factory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
             ->willReturn($folderObject);
         $expected['folder'] = $folderObject;
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $factory);
+        $container = new Container();
+        $container->set(ResourceFactory::class, $factory);
+        GeneralUtility::setContainer($container);
 
         $subject = new FolderLinkHandler();
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\View;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -158,7 +159,9 @@ final class JsonViewTest extends UnitTestCase
     #[Test]
     public function transformValue(object|array $object, array $configuration, array|string $expected, string $description): void
     {
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        $container = new Container();
+        $container->set(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        GeneralUtility::setContainer($container);
 
         $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
 
@@ -316,7 +319,9 @@ final class JsonViewTest extends UnitTestCase
     #[Test]
     public function recursive(object|array $object, array $configuration, object|array $expected, string $variableToRender, string $description): void
     {
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        $container = new Container();
+        $container->set(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        GeneralUtility::setContainer($container);
 
         $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $jsonView->_set('configuration', $configuration);
@@ -425,7 +430,9 @@ final class JsonViewTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        $container = new Container();
+        $container->set(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
+        GeneralUtility::setContainer($container);
 
         $jsonView = $this->getAccessibleMock(JsonView::class, null, [], '', false);
         $actual = $jsonView->_call('transformValue', $object, $configuration);

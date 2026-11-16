@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\LinkHandling\FileLinkHandler;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -101,7 +102,9 @@ final class FileLinkHandlerTest extends UnitTestCase
         $factory->method('getFileObject')->willReturnCallback($returnFileObject);
         $factory->method('getFileObjectFromCombinedIdentifier')->willReturnCallback($returnFileObject);
         $expected['file'] = $fileObject;
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $factory);
+        $container = new Container();
+        $container->set(ResourceFactory::class, $factory);
+        GeneralUtility::setContainer($container);
 
         $subject = new FileLinkHandler();
 

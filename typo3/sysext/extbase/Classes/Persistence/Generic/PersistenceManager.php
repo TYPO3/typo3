@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * The Extbase Persistence Manager
  */
-class PersistenceManager implements PersistenceManagerInterface, SingletonInterface
+#[Autoconfigure(public: true)]
+class PersistenceManager implements PersistenceManagerInterface
 {
     protected array $newObjects = [];
     protected ObjectStorage $changedObjects;

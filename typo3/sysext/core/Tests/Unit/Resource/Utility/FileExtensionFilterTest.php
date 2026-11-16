@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -35,7 +36,9 @@ final class FileExtensionFilterTest extends UnitTestCase
     {
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $resourceFactoryMock->expects($this->never())->method('getFileReferenceObject');
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
+        $container = new Container();
+        $container->set(ResourceFactory::class, $resourceFactoryMock);
+        GeneralUtility::setContainer($container);
         new FileExtensionFilter()->filter([0, '', null, false], '', '');
     }
 

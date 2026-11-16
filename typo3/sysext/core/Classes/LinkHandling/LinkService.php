@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\LinkHandling;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -31,7 +31,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * with the possibility to get a system-wide understandable "urn" to identify
  * what type it actually is, based on the scheme or prefix.
  */
-class LinkService implements SingletonInterface
+#[Autoconfigure(public: true)]
+class LinkService
 {
     public const TYPE_PAGE = 'page';
     public const TYPE_INPAGE = 'inpage';
