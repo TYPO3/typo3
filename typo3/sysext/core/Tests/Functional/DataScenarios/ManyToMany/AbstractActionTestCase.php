@@ -35,6 +35,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_TestMMIdSecond = 29;
     protected const VALUE_TestMMIdThird = 30;
     protected const VALUE_TestMMIdFourth = 31;
+    protected const VALUE_TestMMIdWithInlineChild = 32;
+    protected const VALUE_TestMMIdWithInlineChildren = 33;
 
     protected const TABLE_Page = 'pages';
     protected const TABLE_Content = 'tt_content';
@@ -199,6 +201,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function modifyContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Surfing #1']);
+    }
+
+    public function modifyTestMMWithInlineMM1Children(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportInlineMM1Children.csv');
+        $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdWithInlineChild, ['title' => 'Surfing #5']);
+        $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdWithInlineChildren, ['title' => 'Surfing #6']);
     }
 
     public function modifyTestMMAndContent(): void

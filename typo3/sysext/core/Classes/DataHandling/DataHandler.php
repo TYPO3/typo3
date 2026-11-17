@@ -2507,7 +2507,10 @@ class DataHandler
         // Example for received data:
         // $value = 45,NEW4555fdf59d154,12,123
         // We need to decide whether we use the stack or can save the relation directly.
-        if (!empty($value) && (str_contains($value, 'NEW') || !MathUtility::canBeInterpretedAsInteger($id))) {
+        // A new record waits for its uid, except with an MM table: checkValue_group_select_processDBdata()
+        // writes those relations once the record exists, and returns their number for the field
+        $waitsForTheUidOfTheRecord = !MathUtility::canBeInterpretedAsInteger($id) && $this->getRelationFieldType($tcaFieldConf) !== 'mm';
+        if (!empty($value) && (str_contains($value, 'NEW') || $waitsForTheUidOfTheRecord)) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
             $this->remapStack[] = [
                 'func' => 'checkValue_inline_processDBdata',
