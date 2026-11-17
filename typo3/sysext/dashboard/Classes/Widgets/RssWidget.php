@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\RejectionException;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\Utils;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -211,7 +213,16 @@ readonly class RssWidget implements WidgetRendererInterface
     {
         GeneralUtility::makeInstance(LogManager::class)
             ->getLogger(self::class)
-            ->warning('Could not fetch feed content from {url}', ['url' => $feedUrl, 'exception' => $exception]);
+            ->warning('Could not fetch feed content from {url}', ['url' => $this->redactFeedUrl($feedUrl), 'exception' => $exception]);
+    }
+
+    protected function redactFeedUrl(string $feedUrl): string
+    {
+        try {
+            return (string)Utils::redactUserInfo(new Uri($feedUrl));
+        } catch (\InvalidArgumentException) {
+            return '(malformed URL)';
+        }
     }
 
     protected function determineFeedType(\SimpleXMLElement $feedXml): string

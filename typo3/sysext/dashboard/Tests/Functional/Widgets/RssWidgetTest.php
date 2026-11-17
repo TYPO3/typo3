@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Tests\Functional\Widgets;
 
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Promise\FulfilledPromise;
+use GuzzleHttp\Promise\RejectedPromise;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\AbstractLogger;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -30,7 +33,9 @@ use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Settings\Settings;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\RssWidget;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
@@ -122,6 +127,29 @@ final class RssWidgetTest extends FunctionalTestCase
 
         self::assertStringContainsString('Feed error', $result);
         self::assertSame([], $this->requestedUrls);
+    }
+
+    #[Test]
+    public function passwordOfFeedUrlIsNotLoggedOnFetchError(): void
+    {
+        $logger = new class extends AbstractLogger {
+            public array $records = [];
+            public function log($level, string|\Stringable $message, array $context = []): void
+            {
+                $this->records[] = $context;
+            }
+        };
+        $logManager = self::createStub(LogManager::class);
+        $logManager->method('getLogger')->willReturn($logger);
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['feed'] = static fn() => static fn(RequestInterface $request) => new RejectedPromise(
+            new ConnectException('Connection refused', $request)
+        );
+
+        $result = $this->render(['feedUrl' => 'https://john:secret@typo3.org/rss']);
+
+        self::assertStringContainsString('Feed error', $result);
+        self::assertSame(['https://***@typo3.org/rss'], array_column($logger->records, 'url'));
     }
 
     #[Test]
