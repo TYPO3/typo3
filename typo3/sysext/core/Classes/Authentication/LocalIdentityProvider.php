@@ -91,6 +91,31 @@ final class LocalIdentityProvider
         return $this->fetchUnique($queryBuilder);
     }
 
+    public function updateBackendUserPasswordHash(int $uid, string $passwordHash): void
+    {
+        $this->updateRecord('be_users', $uid, ['password' => $passwordHash]);
+    }
+
+    public function updateFrontendUserPasswordHash(int $uid, string $passwordHash): void
+    {
+        $this->updateRecord('fe_users', $uid, ['password' => $passwordHash]);
+    }
+
+    public function updateBackendUserLastLogin(int $uid, int $timestamp): void
+    {
+        $this->updateRecord('be_users', $uid, ['lastlogin' => $timestamp]);
+    }
+
+    public function updateFrontendUserLastLogin(int $uid, int $timestamp): void
+    {
+        $this->updateRecord('fe_users', $uid, ['lastlogin' => $timestamp]);
+    }
+
+    private function updateRecord(string $table, int $uid, array $fields): void
+    {
+        $this->connectionPool->getConnectionForTable($table)->update($table, $fields, ['uid' => $uid]);
+    }
+
     /**
      * @param list<int>|null $storagePageIds
      */

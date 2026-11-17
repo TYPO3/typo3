@@ -23,7 +23,6 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Attribute\AsAuthenticator;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
 use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\LocalIdentityProvider;
 use TYPO3\CMS\Core\Authentication\LoginType;
@@ -36,12 +35,8 @@ use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
 use TYPO3\CMS\Core\Authentication\Pipeline\LoginRateLimiterGuard;
 use TYPO3\CMS\Core\Authentication\Pipeline\NotApplicable;
 use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\SecurityAspect;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Security\RequestToken;
+use TYPO3\CMS\Core\Security\PasswordCredentialVerifier;
+use TYPO3\CMS\Core\Security\PasswordVerification;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -70,9 +65,7 @@ final class PasswordAuthenticator implements AuthenticatorInterface
         private readonly LegacyUserPrincipalFactory $principalFactory,
         private readonly MfaChallengeResponseFactory $mfaChallengeResponseFactory,
         private readonly LoginRateLimiterGuard $rateLimiterGuard,
-        private readonly PasswordHashFactory $passwordHashFactory,
-        private readonly ConnectionPool $connectionPool,
-        private readonly Context $context,
+        private readonly PasswordCredentialVerifier $credentialVerifier,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
     ) {}
@@ -120,7 +113,7 @@ final class PasswordAuthenticator implements AuthenticatorInterface
         $user->initializeFromPipeline($session, null);
         $rateLimiter = $this->rateLimiterGuard->ensureLoginRateLimit($user, $request);
 
-        if (!$this->requestTokenMatchesScope($user, $request)) {
+        if (!$this->credentialVerifier->requestTokenMatches($user, $request)) {
             $this->logger->warning('Missing or invalid request token during login');
             // Announce the failed login attempt, since the credentials are never
             // evaluated when the request token is missing or invalid
@@ -154,13 +147,11 @@ final class PasswordAuthenticator implements AuthenticatorInterface
             ]);
             // Mimic password hashing to mitigate observable timing discrepancies
             // @link https://cwe.mitre.org/data/definitions/208.html
-            $this->mimicPasswordHashing();
+            $this->credentialVerifier->mimicPasswordHashing($user);
             return $this->createFailure($user, $session, $request, 'unknown-username');
         }
-        $passwordHashInDatabase = (string)($userRecord['password'] ?? '');
-        try {
-            $hashInstance = $this->passwordHashFactory->get($passwordHashInDatabase, 'BE');
-        } catch (InvalidPasswordHashException) {
+        $verification = $this->credentialVerifier->verify($user, (string)($userRecord['password'] ?? ''), $password);
+        if ($verification === PasswordVerification::NoSuitableHashMethod) {
             $this->writeAttemptLog($user, 'Login-attempt from ###IP###, username \'%s\', no suitable hash method found!', $username);
             $this->logger->warning('Login-attempt from {ip}, username "{username}", no suitable hash method found!', [
                 'ip' => $request->getAttribute('normalizedParams')->getRemoteAddress(),
@@ -168,7 +159,7 @@ final class PasswordAuthenticator implements AuthenticatorInterface
             ]);
             return $this->createFailure($user, $session, $request, 'no-suitable-hash-method');
         }
-        if (!$hashInstance->checkPassword($password, $passwordHashInDatabase)) {
+        if ($verification === PasswordVerification::Invalid) {
             $this->writeAttemptLog($user, 'Login-attempt from ###IP###, username \'%s\', password not accepted!', $username);
             $this->logger->warning('Login-attempt from {ip}, username "{username}", password not accepted!', [
                 'ip' => $request->getAttribute('normalizedParams')->getRemoteAddress(),
@@ -176,12 +167,9 @@ final class PasswordAuthenticator implements AuthenticatorInterface
             ]);
             return $this->createFailure($user, $session, $request, 'invalid-credentials');
         }
-        // Don't catch InvalidPasswordHashException here: Only install tool should handle those configuration failures
-        $defaultHashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
-        if ($hashInstance->isHashUpdateNeeded($passwordHashInDatabase) || $defaultHashInstance != $hashInstance) {
-            // Lax object comparison intended: Rehash if old and new salt objects are not
-            // instances of the same class.
-            $this->updatePasswordHashInDatabase((int)$userRecord['uid'], $defaultHashInstance->getHashedPassword($password));
+        if ($verification === PasswordVerification::VerifiedWithOutdatedHash) {
+            $this->identityProvider->updateBackendUserPasswordHash((int)$userRecord['uid'], $this->credentialVerifier->hashPassword($user, $password));
+            $this->logger->notice('Automatic password update for backend user', ['userId' => (int)$userRecord['uid']]);
         }
 
         // Elevate the session to the authenticated user, preserving collected session data
@@ -190,7 +178,8 @@ final class PasswordAuthenticator implements AuthenticatorInterface
         if ($sessionData !== []) {
             $session->overrideData($sessionData);
         }
-        $userRecord = $this->updateLoginTimestamp($userRecord);
+        $this->identityProvider->updateBackendUserLastLogin((int)$userRecord['uid'], $GLOBALS['EXEC_TIME']);
+        $userRecord['lastlogin'] = $GLOBALS['EXEC_TIME'];
         $user->initializeFromPipeline($session, $userRecord, true);
 
         if ($user->writeStdLog) {
@@ -219,31 +208,6 @@ final class PasswordAuthenticator implements AuthenticatorInterface
             return new NotApplicable();
         }
         return new Authenticated($principal, ['legacyUser' => $user]);
-    }
-
-    /**
-     * Validates the submitted request token (nonce) for the backend user
-     * authentication scope, mirroring the legacy chain behavior including
-     * the possibility to adjust the token via event.
-     */
-    private function requestTokenMatchesScope(BackendUserAuthentication $user, ServerRequestInterface $request): bool
-    {
-        $securityAspect = SecurityAspect::provideIn($this->context);
-        $requestToken = $securityAspect->getReceivedRequestToken();
-
-        $event = new BeforeRequestTokenProcessedEvent($user, $request, $requestToken);
-        $this->eventDispatcher->dispatch($event);
-        $requestToken = $event->getRequestToken();
-
-        if (($requestToken->scope ?? null) !== 'core/user-auth/be') {
-            return false;
-        }
-        if ($requestToken instanceof RequestToken && $requestToken->getSigningSecretIdentifier() !== null) {
-            $securityAspect->getSigningSecretResolver()->revokeIdentifier(
-                $requestToken->getSigningSecretIdentifier()
-            );
-        }
-        return true;
     }
 
     private function createFailure(
@@ -279,39 +243,5 @@ final class PasswordAuthenticator implements AuthenticatorInterface
     private function getSubmittedUsername(ServerRequestInterface $request): string
     {
         return trim(StringUtility::filter($request->getParsedBody()['username'] ?? null, ''));
-    }
-
-    /**
-     * Mimics password hashing for invalid authentication requests to mitigate
-     * @link https://cwe.mitre.org/data/definitions/208.html: CWE-208: Observable Timing Discrepancy
-     */
-    private function mimicPasswordHashing(): void
-    {
-        try {
-            $this->passwordHashFactory->getDefaultHashInstance('BE')->getHashedPassword(random_bytes(10));
-        } catch (\Exception) {
-            // no further processing here
-        }
-    }
-
-    private function updatePasswordHashInDatabase(int $uid, string $newPasswordHash): void
-    {
-        $this->connectionPool->getConnectionForTable('be_users')->update(
-            'be_users',
-            ['password' => $newPasswordHash],
-            ['uid' => $uid]
-        );
-        $this->logger->notice('Automatic password update for backend user', ['userId' => $uid]);
-    }
-
-    private function updateLoginTimestamp(array $userRecord): array
-    {
-        $this->connectionPool->getConnectionForTable('be_users')->update(
-            'be_users',
-            ['lastlogin' => $GLOBALS['EXEC_TIME']],
-            ['uid' => (int)$userRecord['uid']]
-        );
-        $userRecord['lastlogin'] = $GLOBALS['EXEC_TIME'];
-        return $userRecord;
     }
 }

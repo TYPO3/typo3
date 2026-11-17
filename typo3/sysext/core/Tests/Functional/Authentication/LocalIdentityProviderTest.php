@@ -156,4 +156,36 @@ final class LocalIdentityProviderTest extends FunctionalTestCase
         self::assertNull($this->subject->findFrontendUserByUsername('', null));
         self::assertNull($this->subject->findFrontendUserByUid(-1));
     }
+
+    #[Test]
+    public function updatesPasswordHashOfBackendUser(): void
+    {
+        $this->subject->updateBackendUserPasswordHash(100, 'new-backend-hash');
+        self::assertSame('new-backend-hash', $this->subject->findBackendUserByUid(100)['password'] ?? null);
+        self::assertSame('', $this->subject->findFrontendUserByUid(200)['password'] ?? null);
+    }
+
+    #[Test]
+    public function updatesPasswordHashOfFrontendUser(): void
+    {
+        $this->subject->updateFrontendUserPasswordHash(200, 'new-frontend-hash');
+        self::assertSame('new-frontend-hash', $this->subject->findFrontendUserByUid(200)['password'] ?? null);
+        self::assertSame('', $this->subject->findBackendUserByUid(100)['password'] ?? null);
+    }
+
+    #[Test]
+    public function updatesLastLoginOfBackendUser(): void
+    {
+        $this->subject->updateBackendUserLastLogin(100, 1763372400);
+        self::assertSame(1763372400, $this->subject->findBackendUserByUid(100)['lastlogin'] ?? null);
+        self::assertSame(0, $this->subject->findFrontendUserByUid(200)['lastlogin'] ?? null);
+    }
+
+    #[Test]
+    public function updatesLastLoginOfFrontendUser(): void
+    {
+        $this->subject->updateFrontendUserLastLogin(200, 1763372400);
+        self::assertSame(1763372400, $this->subject->findFrontendUserByUid(200)['lastlogin'] ?? null);
+        self::assertSame(0, $this->subject->findBackendUserByUid(100)['lastlogin'] ?? null);
+    }
 }
