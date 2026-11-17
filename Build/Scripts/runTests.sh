@@ -283,17 +283,14 @@ runPlaywright() {
     # forwarded to Playwright as-is, same as e.g. "-s functional path/to/fileTest.php".
     # They must come before "--project", which Playwright parses as a variadic
     # option that would otherwise swallow a following file path as another project name.
-    PLAYWRIGHT_TEST_ARGS=""
-    if [ $# -gt 0 ]; then
-        PLAYWRIGHT_TEST_ARGS="$* "
-    fi
-    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_TEST_ARGS}${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD}"
-    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_TEST_ARGS}${PLAYWRIGHT_PROJECT}"
+    # Arrays keep an argument containing spaces, e.g. --grep "a pattern", in one piece.
+    COMMAND=(npm "--prefix=${CORE_ROOT}/Build" run playwright:run -- "$@" ${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD})
+    COMMAND_UI=(npm "--prefix=${CORE_ROOT}/Build" run playwright:open -- "$@" ${PLAYWRIGHT_PROJECT})
     PLAYWRIGHT_GUI_PORT=43837
 
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
         PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/typo3/"
-        ${CONTAINER_BIN} run -d ${CONTAINER_COMMON_PARAMS} --name ac-browser-${SUFFIX} -p $PLAYWRIGHT_GUI_PORT -e CHROME_SANDBOX=false -e PLAYWRIGHT_BASE_URL=http://web:80/typo3/ ${IMAGE_PLAYWRIGHT} ${COMMAND} --ui --ui-port=$PLAYWRIGHT_GUI_PORT --ui-host=0.0.0.0 > /dev/null 2>&1
+        ${CONTAINER_BIN} run -d ${CONTAINER_COMMON_PARAMS} --name ac-browser-${SUFFIX} -p $PLAYWRIGHT_GUI_PORT -e CHROME_SANDBOX=false -e PLAYWRIGHT_BASE_URL=http://web:80/typo3/ ${IMAGE_PLAYWRIGHT} "${COMMAND[@]}" --ui --ui-port=$PLAYWRIGHT_GUI_PORT --ui-host=0.0.0.0 > /dev/null 2>&1
         SUITE_EXIT_CODE=$?
         PLAYWRIGHT_BROWSER_URL="http://127.0.0.1:$(${CONTAINER_BIN} port ac-browser-${SUFFIX} ${PLAYWRIGHT_GUI_PORT}/tcp | head -n 1 | cut -d: -f2)"
 
@@ -318,7 +315,7 @@ runPlaywright() {
         fi
         done </dev/tty
     elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} "${COMMAND[@]}"
         SUITE_EXIT_CODE=$?
         if [[ ${SUITE_EXIT_CODE} -ne 0 ]]; then
             dumpWebContainerLogs "${CORE_ROOT}/typo3temp/var/tests/playwright-composer/var/log"
@@ -331,16 +328,16 @@ runPlaywright() {
         echo
         echo "  Run with local playwright (headless):"
         echo -n "    "
-        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ ${COMMAND}"
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ $(printf "%q " "${COMMAND[@]}")"
         echo
         echo "  Open local playwright UI:"
         echo -n "    "
-        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ ${COMMAND_UI}"
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ $(printf "%q " "${COMMAND_UI[@]}")"
         echo
         echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
         # maybe use https://stackoverflow.com/a/58508884/4223467
         while read -r _; do
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} "${COMMAND[@]}"
             SUITE_EXIT_CODE=$?
             echo
             echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests in container)"
@@ -1462,8 +1459,8 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     lintTypescript)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint $@"
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-typescript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
+        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint \"\$@\""
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-typescript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}" sh "$@"
         SUITE_EXIT_CODE=$?
         ;;
     lintYaml)
@@ -1495,8 +1492,8 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     phpstanGenerateBaseline)
-        COMMAND="php -dxdebug.mode=off bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --verbose --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon $@"
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name phpstan-baseline-${SUFFIX} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
+        COMMAND=(php -dxdebug.mode=off bin/phpstan analyse -c Build/phpstan/${PHPSTAN_CONFIG_FILE} --verbose --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon "$@")
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name phpstan-baseline-${SUFFIX} ${IMAGE_PHP} "${COMMAND[@]}"
         SUITE_EXIT_CODE=$?
         ;;
     unit)
