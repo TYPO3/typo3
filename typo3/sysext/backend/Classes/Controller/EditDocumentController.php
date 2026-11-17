@@ -98,6 +98,11 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class EditDocumentController
 {
     /**
+     * Parameters taken from the body of a POST request that the redirect to the form keeps, besides "edit" and "returnUrl"
+     */
+    private const PARAMETERS_KEPT_FROM_THE_BODY = ['columnsOnly', 'defVals', 'overrideVals', 'returnEditConf'];
+
+    /**
      * An array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit".
      *
      * @var array<string,mixed>
@@ -275,6 +280,11 @@ class EditDocumentController
         // Contains $request query parameters. This array is the foundation for creating
         // the $currentEditingUrl var which becomes the url to which forms are submitted.
         $queryParamsForGeneratingCurrentUrl = $queryParams;
+        foreach (self::PARAMETERS_KEPT_FROM_THE_BODY as $parameter) {
+            if (isset($parsedBody[$parameter])) {
+                $queryParamsForGeneratingCurrentUrl[$parameter] = $parsedBody[$parameter];
+            }
+        }
         $queryParamsForGeneratingCurrentUrl['edit'] = $this->editconf;
         $queryParamsForGeneratingCurrentUrl['returnUrl'] = $this->retUrl;
         if ($requestAction->shouldProcessData()) {

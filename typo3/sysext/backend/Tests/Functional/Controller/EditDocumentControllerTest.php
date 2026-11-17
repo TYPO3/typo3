@@ -319,6 +319,54 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertStringContainsString('display-name="Sample text &amp; media · ', $html);
     }
 
+    public static function parametersOfTheBodyDataProvider(): \Generator
+    {
+        yield 'columnsOnly' => ['columnsOnly', ['pages' => ['title']], []];
+        yield 'defVals' => ['defVals', ['pages' => ['title' => 'Default']], []];
+        yield 'overrideVals' => ['overrideVals', ['pages' => ['nav_title' => 'Override']], []];
+        yield 'returnEditConf' => ['returnEditConf', '1', []];
+        yield 'columnsOnly of the body before the query' => ['columnsOnly', ['pages' => ['title']], ['columnsOnly' => ['pages' => ['nav_title']]]];
+        yield 'defVals of the body before the query' => ['defVals', ['pages' => ['title' => 'Default']], ['defVals' => ['pages' => ['title' => 'Query']]]];
+        yield 'overrideVals of the body before the query' => ['overrideVals', ['pages' => ['nav_title' => 'Override']], ['overrideVals' => ['pages' => ['nav_title' => 'Query']]]];
+        yield 'returnEditConf of the body before the query' => ['returnEditConf', '1', ['returnEditConf' => '0']];
+    }
+
+    #[DataProvider('parametersOfTheBodyDataProvider')]
+    #[Test]
+    public function redirectAfterAPostKeepsAParameterOfTheBody(string $parameter, array|string $value, array $queryParams): void
+    {
+        $query = $this->getQueryOfTheRedirectAfterAPost($queryParams, ['edit' => ['pages' => [1 => 'edit']], $parameter => $value]);
+
+        self::assertSame($value, $query[$parameter] ?? null);
+    }
+
+    #[Test]
+    public function redirectAfterAPostKeepsNoOtherParameterOfTheBody(): void
+    {
+        $query = $this->getQueryOfTheRedirectAfterAPost([], ['edit' => ['pages' => [1 => 'edit']], 'noView' => '1', 'unknown' => 'value']);
+
+        self::assertSame(['pages' => [1 => 'edit']], $query['edit'] ?? null);
+        self::assertArrayNotHasKey('noView', $query);
+        self::assertArrayNotHasKey('unknown', $query);
+    }
+
+    private function getQueryOfTheRedirectAfterAPost(array $queryParams, array $parsedBody): array
+    {
+        $request = new ServerRequest('https://www.example.com/typo3/record/edit', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $response = $this->subject->mainAction($request);
+
+        self::assertSame(302, $response->getStatusCode());
+        parse_str((string)parse_url($response->getHeaderLine('Location'), PHP_URL_QUERY), $query);
+        return $query;
+    }
+
     private function getParsedBody(array $additionalData = []): array
     {
         return [
