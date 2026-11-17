@@ -21,8 +21,8 @@ mkdir -p "config/system/"
 cat > "config/system/additional.php" <<\EOF
 <?php
 $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = true;
-// "Temporary Password - 123"
-$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] = '$argon2i$v=19$m=65536,t=16,p=1$c3hCMGVXOHhRd0M3MzhSVw$WPQHpElapKMxsxfSkkXw5YQxGKN+rGmjM8vQv3g79YY';
+// Use a lower time cost for the fixed e2e password "Temporary Password - 123".
+$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] = '$argon2i$v=19$m=65536,t=4,p=1$VUxTSFQ2ZThKejRNWEdxbw$ESM93J8FlUddX6TpX+igA3BvpZaGo8/dfPpB+bC5g6s';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = true;
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'] = E_ALL;
