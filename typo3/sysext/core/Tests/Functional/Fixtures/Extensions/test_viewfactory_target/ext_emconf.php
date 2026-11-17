@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension uses the ViewFactoryInterface in a Service to render a view',
     'description' => 'This extension uses the ViewFactoryInterface in a Service to render a view',
     'category' => 'example',
-    'version' => '13.4.40',
+    'version' => '13.4.41',
     'state' => 'beta',
     'author' => '',
     'author_email' => '',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.40',
+            'typo3' => '13.4.41',
         ],
         'conflicts' => [],
         'suggests' => [],
