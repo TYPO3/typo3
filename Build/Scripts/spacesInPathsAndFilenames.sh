@@ -3,11 +3,11 @@
 RESULT=0
 
 TMP=""
-QUOTE="'"
 
+# Tracked, staged and new files not yet added; ignored folders such as caches of the test containers are left out
 function scanForInvalidFilesAndPaths() {
-    find . -name "* *" | while read line; do
-        echo " - '${line}${QUOTE}'"
+    git ls-files --cached --others --exclude-standard -z | tr '\0' '\n' | grep ' ' | while read -r line; do
+        echo " - '${line}'"
     done
 }
 
