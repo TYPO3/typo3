@@ -197,6 +197,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyTestMMWithInlineMM1Children(): void
+    {
+        parent::modifyTestMMWithInlineMM1Children();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTestMMWithInlineMM1Children.csv');
+    }
+
+    #[Test]
     public function modifyTestMMAndContent(): void
     {
         parent::modifyTestMMAndContent();

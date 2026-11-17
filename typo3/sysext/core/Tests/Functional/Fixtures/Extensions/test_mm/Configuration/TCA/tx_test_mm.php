@@ -35,7 +35,7 @@ return [
         '1' => [
             'showitem' => '
                 --div--;core.form.tabs:general,
-                    title, parent, group_mm_1_local, select_mm_1_local,
+                    title, parent, group_mm_1_local, select_mm_1_local, inline_mm_1_local,
                 --div--;core.form.tabs:language,
                     --palette--;;language,
                 --div--;core.form.tabs:access,
@@ -106,6 +106,15 @@ return [
                 'foreign_table' => 'tt_content',
                 'foreign_table_where' => 'AND {#tt_content}.{#sys_language_uid} IN (-1,0)',
                 'MM' => 'select_mm_1_relations_mm',
+            ],
+        ],
+        'inline_mm_1_local' => [
+            'label' => 'Inline MM 1 - Local side',
+            'description' => 'Inline relation with only uid_local / uid_foreign in MM table',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tt_content',
+                'MM' => 'inline_mm_1_relations_mm',
             ],
         ],
     ],
