@@ -315,6 +315,26 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertStringContainsString('display-name="Sample text &amp; media · ', $html);
     }
 
+    #[Test]
+    public function recordIdentityOfRecordWithTypeFromRelatedRecordIsRendered(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('sys_file')
+            ->insert('sys_file', ['uid' => 1, 'pid' => 0, 'storage' => 0, 'type' => 2, 'identifier' => '/image.png', 'name' => 'image.png']);
+        $this->getConnectionPool()->getConnectionForTable('sys_file_reference')
+            ->insert('sys_file_reference', ['uid' => 1, 'pid' => 1, 'uid_local' => 1, 'uid_foreign' => 1, 'tablenames' => 'tt_content', 'fieldname' => 'image']);
+
+        $request = (new ServerRequest('https://www.example.com/typo3/record/edit', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams(['edit' => ['sys_file_reference' => [1 => 'edit']]]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $html = (string)$this->subject->mainAction($request)->getBody();
+
+        self::assertMatchesRegularExpression('#<span class="recordidentity-type">.*File Reference</span>#s', $html);
+    }
+
     public static function parametersOfTheBodyDataProvider(): \Generator
     {
         yield 'columnsOnly' => ['columnsOnly', ['pages' => ['title']], []];
