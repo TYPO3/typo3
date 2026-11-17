@@ -250,7 +250,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     #[Test]
     public function findRefTokenizesPageUidAndContentElementOfPageLinkWithNumericFragment(): void
     {
-        GeneralUtility::setSingletonInstance(LinkService::class, new LinkService(new NoopEventDispatcher()));
+        $this->container->set(LinkService::class, new LinkService(new NoopEventDispatcher()));
         $result = $this->getParserByKey('typolink_tag')->parse('tt_content', 'bodytext', 1, '<p><a href="t3://page?uid=42&amp;L=1#953">Click here</a></p>');
 
         $matchedElements = $result->getMatchedElements();
