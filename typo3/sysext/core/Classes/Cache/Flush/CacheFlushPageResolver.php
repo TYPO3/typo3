@@ -103,8 +103,10 @@ readonly class CacheFlushPageResolver
     /**
      * For "pages", the page itself, its siblings and its parent page are
      * affected, for other tables the page the record is located on.
-     * "TCEMAIN.clearCache_pageSiblingChildren" adds the subpages of the
-     * siblings, "TCEMAIN.clearCache_pageGrandParent" the next page upwards.
+     * "TCEMAIN.clearCache_pageSiblings = 0" limits the siblings to the
+     * translations of the page, "TCEMAIN.clearCache_pageSiblingChildren"
+     * adds the subpages of the siblings, "TCEMAIN.clearCache_pageGrandParent"
+     * the next page upwards.
      *
      * @param array $pageTsConfig Page TSconfig "TCEMAIN."
      * @return list<int>
@@ -134,7 +136,7 @@ readonly class CacheFlushPageResolver
     {
         $pageIds = [];
         $queryBuilder = $this->getQueryBuilderForPages();
-        $siblings = $queryBuilder
+        $queryBuilder
             ->select('A.pid AS pid', 'B.uid AS uid')
             ->from('pages', 'A')
             ->from('pages', 'B')
@@ -142,8 +144,18 @@ readonly class CacheFlushPageResolver
                 $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid')),
                 $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            )
-            ->executeQuery();
+            );
+        if (!($pageTsConfig['clearCache_pageSiblings'] ?? true)) {
+            $localizationParentFieldName = $this->tcaSchemaFactory->get('pages')
+                ->getCapability(TcaSchemaCapability::Language)
+                ->getTranslationOriginPointerField()
+                ->getName();
+            $queryBuilder->andWhere($queryBuilder->expr()->or(
+                $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('A.uid')),
+                $queryBuilder->expr()->eq('B.' . $localizationParentFieldName, $queryBuilder->quoteIdentifier('A.uid'))
+            ));
+        }
+        $siblings = $queryBuilder->executeQuery();
         $parentPageId = 0;
         while ($sibling = $siblings->fetchAssociative()) {
             $pageIds[] = (int)$sibling['uid'];

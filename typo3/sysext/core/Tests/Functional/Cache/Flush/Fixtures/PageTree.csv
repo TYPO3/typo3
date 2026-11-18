@@ -13,6 +13,10 @@ TCEMAIN.clearCache_pageSiblingChildren = 1"
 ,10,9,128,"Option child A",0,0,0,
 ,11,9,256,"Option child B",0,0,0,
 ,12,10,128,"Option grandchild",0,0,0,
+,13,1,1024,"Without siblings",0,0,0,"TCEMAIN.clearCache_pageSiblings = 0"
+,14,13,128,"Without siblings child A",0,0,0,
+,15,13,256,"Without siblings child B",0,0,0,
+,16,13,128,"Without siblings child A translated",1,14,0,
 "tt_content"
 ,"uid","pid","header","sys_language_uid","t3ver_wsid","t3ver_oid","t3ver_state","CType"
 ,1,3,"Content on page A",0,0,0,0,"header"

@@ -98,6 +98,16 @@ final class CacheFlusherTest extends FunctionalTestCase
                 10,
                 ['pageId_10', 'pageId_12', 'pageId_11', 'pageId_9', 'pageId_1', 'pages', 'pages_10'],
             ],
+            'page with clearCache_pageSiblings disabled flushes itself, its translation and its parent' => [
+                'pages',
+                14,
+                ['pageId_14', 'pageId_16', 'pageId_13', 'pages', 'pages_14'],
+            ],
+            'translated page with clearCache_pageSiblings disabled flushes the pages of its default language page' => [
+                'pages',
+                16,
+                ['pageId_14', 'pageId_16', 'pageId_13', 'pages', 'pages_16'],
+            ],
             'content element with clearCacheCmd flushes the configured pages and tags' => [
                 'tt_content',
                 4,

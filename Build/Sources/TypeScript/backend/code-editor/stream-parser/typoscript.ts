@@ -223,6 +223,7 @@ export class TypoScriptStreamParserFactory {
         'clearCache_disable': kw('clearCache_disable'),
         'clearCache_pageGrandParent': kw('clearCache_pageGrandParent'),
         'clearCache_pageSiblingChildren': kw('clearCache_pageSiblingChildren'),
+        'clearCache_pageSiblings': kw('clearCache_pageSiblings'),
         'clearCacheCmd': kw('clearCacheCmd'),
         'clearCacheLevels': kw('clearCacheLevels'),
         'clearCacheOfPages': kw('clearCacheOfPages'),
