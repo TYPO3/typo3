@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -52,6 +53,9 @@ final readonly class TcaTtContentCtypeItemsRestrictionByBackendLayout implements
             $currentColPosValue = (int)($result['databaseRow']['colPos'][0] ?? $result['processedTca']['columns']['colPos']['config']['default'] ?? 0);
         } else {
             $currentColPosValue = (int)($result['databaseRow']['colPos'] ?? $result['processedTca']['columns']['colPos']['config']['default'] ?? 0);
+        }
+        if ($this->hasColumnWithContentTypeRestrictions($result, $backendLayout, $pageId)) {
+            $result['processedTca']['columns']['colPos']['onChange'] = 'reload';
         }
         $columnConfiguration = $this->backendLayoutView->getColPosConfigurationForPage($backendLayout, $currentColPosValue, $pageId, $result['request']);
         $currentRecordType = $result['databaseRow']['CType'][0] ?? '';
@@ -90,6 +94,24 @@ final readonly class TcaTtContentCtypeItemsRestrictionByBackendLayout implements
             }
         }
         return $result;
+    }
+
+    /**
+     * The CType items depend on colPos only if a column the record can be put in
+     * restricts content types. Without such a column, changing colPos needs no reload.
+     */
+    private function hasColumnWithContentTypeRestrictions(array $result, BackendLayout $backendLayout, int $pageId): bool
+    {
+        if (!is_array($result['processedTca']['columns']['colPos']['config']['items'] ?? null)) {
+            return false;
+        }
+        foreach ($result['processedTca']['columns']['colPos']['config']['items'] as $item) {
+            $columnConfiguration = $this->backendLayoutView->getColPosConfigurationForPage($backendLayout, (int)$item['value'], $pageId, $result['request']);
+            if (!empty($columnConfiguration['allowedContentTypes']) || !empty($columnConfiguration['disallowedContentTypes'])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function getLanguageService(): LanguageService

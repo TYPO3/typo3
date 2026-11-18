@@ -1,0 +1,23 @@
+"pages"
+,"uid","pid","sorting","deleted","title","doktype","backend_layout","TSconfig"
+,10,0,512,0,"Restricted",1,"pagets__restricted","mod.web_layout.BackendLayouts.restricted {
+  title = Restricted
+  config.backend_layout {
+    colCount = 2
+    rowCount = 1
+    rows.1.columns {
+      1 {
+        name = Main
+        colPos = 0
+      }
+      2 {
+        name = Header only
+        colPos = 1
+        allowedContentTypes = header
+      }
+    }
+  }
+}"
+"tt_content"
+,"uid","pid","CType","header","colPos","deleted","t3ver_oid","t3ver_wsid"
+,10,10,"header","Restricted page content",0,0,0,0
