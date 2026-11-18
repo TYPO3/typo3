@@ -235,6 +235,11 @@ services:
   Symfony\Component\Security\Core\Authorization\UserAuthorizationCheckerInterface:
     alias: Symfony\Component\Security\Core\Authorization\AuthorizationChecker
     public: true
+  TYPO3\CMS\Core\Security\Authorization\Policy\LegacyGroupDataPolicyDecisionPoint:
+    arguments:
+      $adminOnlyTableGrants: !tagged_iterator security.admin_only_table_grant
+  TYPO3\CMS\Core\Security\Authorization\Policy\PolicyDecisionPointInterface:
+    alias: TYPO3\CMS\Core\Security\Authorization\Policy\LegacyGroupDataPolicyDecisionPoint
   Psr\Clock\ClockInterface:
     alias: TYPO3\CMS\Core\Clock\SystemClock
     public: true

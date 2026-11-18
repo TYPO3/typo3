@@ -54,8 +54,15 @@ final class LegacyBackendUserRegistry
         $this->groupData = new \WeakMap();
     }
 
+    /**
+     * @throws \LogicException if the principal is registered already, as
+     *                         its group data must not change
+     */
     public function register(Principal $principal, BackendUserAuthentication $user): void
     {
+        if (isset($this->users[$principal])) {
+            throw new \LogicException('A principal is registered once, build a new principal for a changed user object.', 1795720926);
+        }
         $this->users[$principal] = \WeakReference::create($user);
         if ($principal->context->role === PrincipalRole::USER) {
             $this->groupData[$principal] = $user->groupData;

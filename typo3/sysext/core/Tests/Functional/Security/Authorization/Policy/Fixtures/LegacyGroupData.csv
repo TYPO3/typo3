@@ -1,0 +1,14 @@
+"be_groups"
+,"uid","pid","title","subgroup","groupMods","tables_select","tables_modify","non_exclude_fields","explicit_allowdeny","allowed_languages","pagetypes_select","custom_options","availableWidgets","mfa_providers","hidden","deleted"
+,1,0,"editors","2","web_layout,web_list","pages,tt_content","tt_content","tt_content:header,tt_content:bodytext","tt_content:CType:text","0,1","1,254","group1:item1","sysLogErrors","totp",0,0
+,2,0,"news editors",,"news_admin",,"tx_news","pages:title,pages:hidden",,"2",,,,,0,0
+,3,0,"hidden group",,"file_list",,"sys_file",,,,,,,,1,0
+,5,0,"deleted group",,"tools_toolsmaintenance",,"sys_template",,,,,,,,0,1
+,6,0,"padded lists",,," sys_category , sys_note ",,,,,"3",,,"recovery-codes",0,0
+"be_users"
+,"uid","pid","username","admin","usergroup","userMods","allowed_languages"
+,1,0,"admin",1,,,
+,2,0,"editor",0,"1","dashboard",
+,3,0,"inactive groups",0,"3,5",,
+,4,0,"padded",0,"6","web_info","5"
+,5,0,"nothing",0,,,

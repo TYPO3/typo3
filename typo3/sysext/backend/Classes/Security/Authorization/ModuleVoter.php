@@ -21,11 +21,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Core\Attribute\AsSecurityVoter;
 use TYPO3\CMS\Core\Authentication\Principal;
-use TYPO3\CMS\Core\Security\Authorization\LegacyBackendUserRegistry;
+use TYPO3\CMS\Core\Security\Authorization\Policy\PolicyDecisionPointInterface;
+use TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier;
 use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
 use TYPO3\CMS\Core\Security\Authorization\SecurityRole;
 use TYPO3\CMS\Core\Security\Authorization\Voter\PrincipalVoter;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Decides on accessing a backend module with one of the access values of
@@ -33,9 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A principal of a frontend user is denied every module. For backend users,
  * no access value grants every backend user, "admin" and "systemMaintainer"
  * require the corresponding role, "user" a grant of the module or one of its
- * aliases in the group data of the backend user object the principal was
- * built from, as BackendUserAuthentication::check() does. Without such an
- * object, "user" is denied.
+ * aliases, which the policy decision point answers.
  *
  * An access value of TYPO3 Core whose module access gate an extension
  * replaced is decided by that gate through the ModuleAccessGateVoter.
@@ -58,7 +56,7 @@ final class ModuleVoter extends PrincipalVoter
     public const array ACCESS_VALUES = ['', 'user', 'admin', 'systemMaintainer'];
 
     public function __construct(
-        private readonly LegacyBackendUserRegistry $legacyUserRegistry,
+        private readonly PolicyDecisionPointInterface $policyDecisionPoint,
         private readonly ReplacedModuleAccessGates $replacedGates,
     ) {}
 
@@ -106,12 +104,8 @@ final class ModuleVoter extends PrincipalVoter
 
     private function isGrantedForModule(Principal $principal, ModuleInterface $module, ?Vote $vote): bool
     {
-        if ($this->hasRole($principal, SecurityRole::ADMIN)) {
-            return true;
-        }
-        $modules = (string)($this->legacyUserRegistry->getGroupData($principal)['modules'] ?? '');
         foreach ([$module->getIdentifier(), ...$module->getAliases()] as $identifier) {
-            if (GeneralUtility::inList($modules, (string)$identifier)) {
+            if ($this->policyDecisionPoint->decide($principal, Scope::ACCESS, ResourceIdentifier::module((string)$identifier))) {
                 return true;
             }
         }

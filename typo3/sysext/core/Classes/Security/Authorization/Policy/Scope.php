@@ -18,12 +18,29 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\Authorization\Policy;
 
 /**
- * The scopes TYPO3 Core decides on, the attributes of isGranted() for
- * them. A decision service may support further scopes, a scope it does
- * not know is denied.
+ * The scopes TYPO3 Core decides on: what is to be done with a subject,
+ * passed as attribute to isGranted(Scope::WRITE, $schema). A voter of an
+ * extension may decide on attributes of its own, prefixed with its
+ * extension key. An attribute no voter decides on is denied.
  */
 final class Scope
 {
+    /**
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string READ = 'read';
+
+    /**
+     * Any change of a resource: creating, updating or deleting it. Grants
+     * do not tell these changes apart, so TYPO3 Core asks for this scope
+     * only and a voter restricting changes decides on it.
+     *
+     * @internal not part of TYPO3 Core API yet, still experimental as part of the
+     *           authentication modernization groundwork
+     */
+    public const string WRITE = 'write';
+
     /**
      * Accessing a resource, e.g. a backend module
      */

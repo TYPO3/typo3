@@ -25,12 +25,14 @@ use TYPO3\CMS\Core\Attribute\AsSecurityVoter;
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
+use TYPO3\CMS\Core\Security\Authorization\Policy\AdminOnlyTableGrantInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\FileSystemPublisherInterface;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
     $containerBuilder->registerForAutoconfiguration(SingletonInterface::class)->addTag('typo3.singleton');
     $containerBuilder->registerForAutoconfiguration(LoggerAwareInterface::class)->addTag('psr.logger_aware');
     $containerBuilder->registerForAutoconfiguration(FileSystemPublisherInterface::class)->addTag('asset.filesystem_publisher');
+    $containerBuilder->registerForAutoconfiguration(AdminOnlyTableGrantInterface::class)->addTag(AdminOnlyTableGrantInterface::TAG_NAME);
 
     // Services, to be read from container-aware dispatchers (on demand), therefore marked 'public'
     $containerBuilder->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('typo3.middleware');

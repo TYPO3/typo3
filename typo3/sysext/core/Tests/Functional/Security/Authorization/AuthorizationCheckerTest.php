@@ -24,12 +24,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\UserAuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use TYPO3\CMS\Core\Authentication\Principal;
+use TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier;
+use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
 use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Security\Authorization\PrincipalUser;
 use TYPO3\CMS\Core\Security\Authorization\SecurityRole;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestSecurityVoter\Voter\DiscountVoter;
 use TYPO3Tests\TestSecurityVoter\Voter\FrozenRecordVoter;
 
 final class AuthorizationCheckerTest extends FunctionalTestCase
@@ -68,6 +71,18 @@ final class AuthorizationCheckerTest extends FunctionalTestCase
 
         $this->authenticate(PrincipalRole::ADMIN);
         self::assertTrue($this->get(AuthorizationCheckerInterface::class)->isGranted('test.write', 'record'));
+    }
+
+    #[Test]
+    public function voterDecidesOnResourceTypeOfItsOwn(): void
+    {
+        $staffDiscount = new ResourceIdentifier(DiscountVoter::RESOURCE_TYPE, 'staff');
+        $this->authenticate(PrincipalRole::USER);
+        self::assertFalse($this->get(AuthorizationCheckerInterface::class)->isGranted(Scope::ACCESS, $staffDiscount));
+
+        $this->authenticate(PrincipalRole::ADMIN);
+        self::assertTrue($this->get(AuthorizationCheckerInterface::class)->isGranted(Scope::ACCESS, $staffDiscount));
+        self::assertFalse($this->get(AuthorizationCheckerInterface::class)->isGranted(Scope::WRITE, $staffDiscount));
     }
 
     #[Test]
