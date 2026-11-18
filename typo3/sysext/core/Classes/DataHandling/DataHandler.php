@@ -1186,7 +1186,7 @@ class DataHandler
 
         if ($table === 'pages' && $field === 'doktype') {
             // Processing special case of field pages.doktype
-            if (!($this->BE_USER->isAdmin() || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
+            if (!($this->BE_USER->isAdmin() || $this->BE_USER->check('pagetypes_select', (string)$value))) {
                 // User is not allowed to use this specific doktype
                 $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'User lacks permissions to set pages:{uid} doktype to "{value}"', null, ['uid' => $id, 'value' => $value], $currentRecord['pid'] ?? 0);
                 return [];
@@ -7462,7 +7462,7 @@ class DataHandler
     protected function checkModifyAccessList(string $table): bool
     {
         $isTableAdminOnly = $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
-        $isAccessAllowed = $this->BE_USER->isAdmin() || (!$isTableAdminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
+        $isAccessAllowed = $this->BE_USER->isAdmin() || (!$isTableAdminOnly && $this->BE_USER->check('tables_modify', $table));
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {

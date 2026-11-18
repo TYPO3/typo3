@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication\Pipeline;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\LocalIdentityProvider;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
  * @internal not part of TYPO3 Core API yet, only exists for the migration
  *           period and will vanish together with the legacy user objects
  */
+#[Autoconfigure(public: true)]
 final class LegacyUserPrincipalFactory
 {
     /**

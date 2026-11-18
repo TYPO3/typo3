@@ -222,6 +222,39 @@ final class CoreVotersTest extends FunctionalTestCase
         self::assertFalse($authorizationChecker->isGranted(Scope::WRITE, ResourceIdentifier::language(-1)));
     }
 
+    public static function backendUserChecksDataProvider(): \Generator
+    {
+        yield 'admin only table despite grant' => [2, 'check', ['tables_select', 'be_users'], false];
+        yield 'granted table' => [2, 'check', ['tables_modify', 'tt_content'], true];
+        yield 'field without access control' => [5, 'check', ['non_exclude_fields', 'tt_content:header'], true];
+        yield 'exclude field without grant' => [2, 'check', ['non_exclude_fields', 'tt_content:hidden'], false];
+        yield 'field without table' => [2, 'check', ['non_exclude_fields', 'header'], false];
+        yield 'field without table for admin' => [1, 'check', ['non_exclude_fields', 'header'], true];
+        yield 'page type that is no integer' => [2, 'check', ['pagetypes_select', ''], false];
+        yield 'page type that is no integer for admin' => [1, 'check', ['pagetypes_select', ''], true];
+        yield 'all languages' => [2, 'checkLanguageAccess', [-1], true];
+        yield 'language not granted' => [2, 'checkLanguageAccess', [3], false];
+        yield 'granted field value' => [2, 'checkAuthMode', ['tt_content', 'CType', 'text'], true];
+        yield 'field value not granted' => [2, 'checkAuthMode', ['tt_content', 'CType', 'html'], false];
+        yield 'blank field value' => [2, 'checkAuthMode', ['tt_content', 'CType', ''], true];
+        yield 'divider as field value' => [2, 'checkAuthMode', ['tt_content', 'CType', '--div--'], true];
+        yield 'field value listing several items' => [2, 'checkAuthMode', ['tt_content', 'CType', 'text,html'], false];
+        yield 'field value listing several items for admin' => [1, 'checkAuthMode', ['tt_content', 'CType', 'text,html'], true];
+        yield 'permission no voter decides on' => [1, 'check', ['webmounts', '1'], true];
+        yield 'table without TCA' => [2, 'check', ['tables_modify', 'tx_news'], true];
+        yield 'module by identifier' => [2, 'check', ['modules', 'web_layout'], true];
+        yield 'widget by identifier' => [2, 'check', ['available_widgets', 'sysLogErrors'], true];
+    }
+
+    #[Test]
+    #[DataProvider('backendUserChecksDataProvider')]
+    public function backendUserChecksDelegateToVoters(int $userId, string $method, array $arguments, bool $expected): void
+    {
+        $backendUser = $this->setUpBackendUser($userId);
+
+        self::assertSame($expected, $backendUser->$method(...$arguments));
+    }
+
     #[Test]
     public function unauthenticatedRequestIsDenied(): void
     {

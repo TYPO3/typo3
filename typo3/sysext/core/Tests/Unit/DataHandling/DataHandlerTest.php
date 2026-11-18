@@ -141,11 +141,11 @@ final class DataHandlerTest extends UnitTestCase
     }
 
     #[Test]
-    public function nonAdminWithTableModifyAccessIsAllowedToModifyNonAdminTable(): void
+    public function nonAdminWithTableModifyAccessIsNotAllowedToModifyNonAdminTableWithoutSecurityVoters(): void
     {
         $this->subject->BE_USER->user['admin'] = 0;
         $this->subject->BE_USER->groupData['tables_modify'] = 'tt_content';
-        self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
+        self::assertFalse($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]

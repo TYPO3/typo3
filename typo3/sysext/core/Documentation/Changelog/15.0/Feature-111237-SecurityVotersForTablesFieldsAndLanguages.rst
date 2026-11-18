@@ -409,13 +409,15 @@ passed to voters. Until then, :php:`BackendUserAuthentication::check()`
 keeps working for such fields.
 
 The subjects :php:`\TYPO3\CMS\Core\Security\Authorization\Subject\SchemaField`
-and :php:`\TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier`,
-:php:`\TYPO3\CMS\Core\Security\Authorization\Policy\AdminOnlyTableGrantInterface` and
+and :php:`\TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier` and
 the scopes `read` and `write` of
 :php:`\TYPO3\CMS\Core\Security\Authorization\Policy\Scope` are experimental and
 not yet public API: they may still change until the checks of
 :php:`BackendUserAuthentication` are migrated to them. The voters of TYPO3 Core
 and the policy decision point answering them are internal.
+:php:`\TYPO3\CMS\Core\Security\Authorization\Policy\AdminOnlyTableGrantInterface`
+is public API, as the checks of :php:`BackendUserAuthentication` on tables
+delegate to the voters, see :ref:`breaking-111498-1795103999`.
 
 Impact
 ======
@@ -424,6 +426,6 @@ Permissions granted by backend groups can be checked with :php:`isGranted()`
 and :php:`isGrantedForUser()` for every principal built from a backend user,
 and extensions can restrict them with voters. The methods of
 :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` keep working
-and will delegate to the voters in a follow-up.
+and delegate to the voters, see :ref:`breaking-111498-1795103999`.
 
 ..  index:: Backend, PHP-API, ext:core, ext:dashboard

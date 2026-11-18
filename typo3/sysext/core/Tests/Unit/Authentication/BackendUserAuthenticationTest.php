@@ -548,54 +548,44 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         self::assertEquals($expected, $subject->getPagePermsClause($perms));
     }
 
-    #[DataProvider('checkAuthModeReturnsExpectedValueDataProvider')]
-    #[Test]
-    public function checkAuthModeReturnsExpectedValue(string $theValue, bool $expectedResult): void
+    public static function checksWithoutSecurityVotersDataProvider(): \Generator
     {
-        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['isAdmin'])
-            ->getMock();
-
-        $subject
-            ->method('isAdmin')
-            ->willReturn(false);
-
-        $subject->groupData['explicit_allowdeny']
-            = 'dummytable:dummyfield:explicitly_allowed_value,'
-            . 'dummytable:dummyfield:explicitly_denied_value';
-
-        $result = $subject->checkAuthMode('dummytable', 'dummyfield', $theValue);
-        self::assertEquals($expectedResult, $result);
+        foreach (['without container' => false, 'with a container without the voters' => true] as $label => $withContainer) {
+            foreach (['user' => false, 'admin' => true] as $role => $isAdmin) {
+                $prefix = $label . ', ' . $role . ': ';
+                yield $prefix . 'granted table' => [$withContainer, $isAdmin, 'check', ['tables_modify', 'dummytable'], false];
+                yield $prefix . 'granted field' => [$withContainer, $isAdmin, 'check', ['non_exclude_fields', 'dummytable:dummyfield'], false];
+                yield $prefix . 'malformed field' => [$withContainer, $isAdmin, 'check', ['non_exclude_fields', 'dummyfield'], false];
+                yield $prefix . 'granted field value' => [$withContainer, $isAdmin, 'checkAuthMode', ['dummytable', 'dummyfield', 'explicitly_allowed_value'], false];
+                yield $prefix . 'blank field value' => [$withContainer, $isAdmin, 'checkAuthMode', ['dummytable', 'dummyfield', ''], false];
+                yield $prefix . 'granted language' => [$withContainer, $isAdmin, 'checkLanguageAccess', [1], false];
+                yield $prefix . 'all languages' => [$withContainer, $isAdmin, 'checkLanguageAccess', [-1], false];
+                yield $prefix . 'granted module' => [$withContainer, $isAdmin, 'check', ['modules', 'web_layout'], true];
+                yield $prefix . 'module not granted' => [$withContainer, $isAdmin, 'check', ['modules', 'web_list'], $isAdmin];
+            }
+        }
     }
 
-    public static function checkAuthModeReturnsExpectedValueDataProvider(): array
+    /**
+     * Without the security voters, such as with the failsafe container of the
+     * install tool, the permissions they decide on are denied. Any other
+     * permission is looked up in the groupData lists.
+     */
+    #[DataProvider('checksWithoutSecurityVotersDataProvider')]
+    #[Test]
+    public function checksWithoutSecurityVotersDenyPermissionsTheVotersDecideOn(bool $withContainer, bool $isAdmin, string $method, array $arguments, bool $expected): void
     {
-        return [
-            'explicit allow, not allowed value' => [
-                'non_allowed_field',
-                false,
-            ],
-            'explicit allow, allowed value' => [
-                'explicitly_allowed_value',
-                true,
-            ],
-            'invalid value colon' => [
-                'containing:invalid:chars',
-                false,
-            ],
-            'invalid value comma' => [
-                'containing,invalid,chars',
-                false,
-            ],
-            'blank value' => [
-                '',
-                true,
-            ],
-            'divider' => [
-                '--div--',
-                true,
-            ],
-        ];
+        if ($withContainer) {
+            GeneralUtility::setContainer(new Container());
+        }
+        $subject = new BackendUserAuthentication();
+        $subject->user = ['uid' => 2, 'admin' => (int)$isAdmin];
+        $subject->groupData['tables_modify'] = 'dummytable';
+        $subject->groupData['non_exclude_fields'] = 'dummytable:dummyfield';
+        $subject->groupData['explicit_allowdeny'] = 'dummytable:dummyfield:explicitly_allowed_value';
+        $subject->groupData['allowed_languages'] = '0,1';
+        $subject->groupData['modules'] = 'web_layout';
+
+        self::assertSame($expected, $subject->$method(...$arguments));
     }
 }

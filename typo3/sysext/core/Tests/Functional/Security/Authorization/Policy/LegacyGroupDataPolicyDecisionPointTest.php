@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier;
 use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LegacyGroupDataPolicyDecisionPointTest extends FunctionalTestCase
@@ -44,7 +45,8 @@ final class LegacyGroupDataPolicyDecisionPointTest extends FunctionalTestCase
     }
 
     /**
-     * Each case names a decision and the legacy check it has to agree with.
+     * Each case names a decision and the former check of
+     * BackendUserAuthentication it has to agree with, see formerCheck().
      */
     public static function goldenCasesDataProvider(): \Generator
     {
@@ -87,12 +89,12 @@ final class LegacyGroupDataPolicyDecisionPointTest extends FunctionalTestCase
 
     #[Test]
     #[DataProvider('goldenCasesDataProvider')]
-    public function decisionMatchesLegacyBackendUserCheck(int $userId, string $scope, ResourceIdentifier $resource, string $legacyMethod, array $legacyArguments): void
+    public function decisionMatchesFormerBackendUserCheck(int $userId, string $scope, ResourceIdentifier $resource, string $legacyMethod, array $legacyArguments): void
     {
         $backendUser = $this->setUpBackendUser($userId);
 
         self::assertSame(
-            $backendUser->$legacyMethod(...$legacyArguments),
+            $this->formerCheck($backendUser, $legacyMethod, $legacyArguments),
             $this->get(PolicyDecisionPointInterface::class)->decide($this->createPrincipal($backendUser), $scope, $resource)
         );
     }
@@ -190,5 +192,30 @@ final class LegacyGroupDataPolicyDecisionPointTest extends FunctionalTestCase
     private function createPrincipal(BackendUserAuthentication $backendUser): Principal
     {
         return $this->get(LegacyUserPrincipalFactory::class)->fromUser($backendUser, Realm::backend());
+    }
+
+    /**
+     * The checks of BackendUserAuthentication on its group data, as they were
+     * before they delegated to the security voters.
+     *
+     * @param list<string|int> $arguments
+     */
+    private function formerCheck(BackendUserAuthentication $backendUser, string $method, array $arguments): bool
+    {
+        $groupData = $backendUser->groupData;
+        return match ($method) {
+            'check' => isset($groupData[$arguments[0]])
+                && ($backendUser->isAdmin() || GeneralUtility::inList($groupData[$arguments[0]], (string)$arguments[1])),
+            'checkAuthMode' => $backendUser->isAdmin()
+                || (string)$arguments[2] === ''
+                || $arguments[2] === '--div--'
+                || (!preg_match('/[:|,]/', (string)$arguments[2])
+                    && GeneralUtility::inList($groupData['explicit_allowdeny'], implode(':', $arguments))),
+            'checkLanguageAccess' => trim($groupData['allowed_languages']) === ''
+                || (int)$arguments[0] === -1
+                || $backendUser->isAdmin()
+                || GeneralUtility::inList($groupData['allowed_languages'], (string)$arguments[0]),
+            default => throw new \LogicException('Unknown check ' . $method, 1795106215),
+        };
     }
 }

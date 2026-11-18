@@ -19,9 +19,12 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Authentication\Exception\InvalidPageRecordException;
+use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -50,6 +53,10 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Security\Authorization\Policy\ResourceIdentifier;
+use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
+use TYPO3\CMS\Core\Security\Authorization\Subject\SchemaField;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
@@ -75,6 +82,20 @@ use TYPO3\CMS\Install\Service\SessionService;
 class BackendUserAuthentication extends AbstractUserAuthentication
 {
     public const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
+
+    /**
+     * The permissions of check() the security voters decide on, see getVoterQuestion()
+     */
+    private const array VOTER_PERMISSIONS = [
+        'tables_select',
+        'tables_modify',
+        'non_exclude_fields',
+        'explicit_allowdeny',
+        'allowed_languages',
+        'pagetypes_select',
+        'mfa_providers',
+        'custom_options',
+    ];
 
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
@@ -130,6 +151,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Cached user settings object
      */
     private ?UserSettings $userSettings = null;
+
+    /**
+     * Services asking the security voters, resolved once, see resolveSecurityVoters()
+     */
+    private ?LegacyUserPrincipalFactory $voterPrincipalFactory = null;
+    private ?AccessDecisionManagerInterface $voterDecisionManager = null;
+    private ?TcaSchemaFactory $voterTcaSchemaFactory = null;
+
+    /**
+     * The token of the last principal asked for, see isGrantedByVoters()
+     */
+    private ?PrincipalToken $voterToken = null;
+
+    /**
+     * Whether the security voters are deciding, see isGrantedByVoters()
+     */
+    private bool $isDecidingByVoters = false;
 
     /**
      * True if the user TSconfig was parsed and needs to be cached.
@@ -610,14 +648,171 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Can thus be users to check for modules, exclude-fields, select/modify permissions for tables etc.
      * If user is admin TRUE is also returned
      *
+     * The permissions the security voters decide on are asked from them, see
+     * getVoterQuestion(), so that voters of extensions restrict them as well.
+     * They are denied without the security voters, such as with the failsafe
+     * container of the install tool, and for a user object without a principal.
+     *
      * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets", "mfa_providers"
      * @param string|int $value String to search for in the groupData-list, can also be an integer for "pagetypes_select" or "allowed_languages")
-     * @return bool TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
+     * @return bool TRUE if permission is granted: by the security voters for the permissions they decide on, otherwise if the value was found in the groupData list - or the BE_USER is "admin"
      */
     public function check($type, $value)
     {
-        return isset($this->groupData[$type])
-            && ($this->isAdmin() || GeneralUtility::inList($this->groupData[$type], (string)$value));
+        if (!isset($this->groupData[$type])) {
+            return false;
+        }
+        if (!in_array($type, self::VOTER_PERMISSIONS, true)) {
+            return $this->isAdmin() || GeneralUtility::inList($this->groupData[$type], (string)$value);
+        }
+        if (!$this->resolveSecurityVoters()) {
+            return false;
+        }
+        $question = $this->getVoterQuestion($this->voterTcaSchemaFactory, (string)$type, (string)$value);
+        if ($question === false) {
+            return $this->isAdmin() && $this->getVoterPrincipal() !== null;
+        }
+        if ($question === null) {
+            return $this->isAdmin() || GeneralUtility::inList($this->groupData[$type], (string)$value);
+        }
+        return $this->isGrantedByVoters(...$question);
+    }
+
+    /**
+     * The attribute and subject the security voters decide a permission of
+     * check() on, false for a value that never matches a grant, so that only
+     * admins are granted it, null for a permission without a subject the
+     * voters decide on: tables without TCA, fields unknown to the TCA, such as
+     * exclude fields of FlexForms, and modules and widgets by identifier.
+     *
+     * @return array{0: string, 1: mixed}|false|null
+     */
+    private function getVoterQuestion(TcaSchemaFactory $tcaSchemaFactory, string $type, string $value): array|false|null
+    {
+        return match ($type) {
+            'tables_select' => $this->getTableQuestion($tcaSchemaFactory, Scope::READ, $value),
+            'tables_modify' => $this->getTableQuestion($tcaSchemaFactory, Scope::WRITE, $value),
+            'non_exclude_fields' => $this->getFieldQuestion($tcaSchemaFactory, $value),
+            'explicit_allowdeny' => $this->getFieldValueQuestion($value),
+            'allowed_languages' => MathUtility::canBeInterpretedAsInteger($value)
+                ? [Scope::WRITE, ResourceIdentifier::language((int)$value)]
+                : false,
+            'pagetypes_select' => MathUtility::canBeInterpretedAsInteger($value)
+                ? [Scope::WRITE, ResourceIdentifier::pageType((int)$value)]
+                : false,
+            'mfa_providers' => [Scope::ACCESS, ResourceIdentifier::mfaProvider($value)],
+            'custom_options' => [Scope::ACCESS, ResourceIdentifier::customOption($value)],
+            default => null,
+        };
+    }
+
+    /**
+     * @return array{0: string, 1: TcaSchema}|null
+     */
+    private function getTableQuestion(TcaSchemaFactory $tcaSchemaFactory, string $scope, string $table): ?array
+    {
+        return $tcaSchemaFactory->has($table) ? [$scope, $tcaSchemaFactory->get($table)] : null;
+    }
+
+    /**
+     * @return array{0: string, 1: SchemaField}|false|null
+     */
+    private function getFieldQuestion(TcaSchemaFactory $tcaSchemaFactory, string $value): array|false|null
+    {
+        $parts = explode(':', $value);
+        if (count($parts) !== 2) {
+            return false;
+        }
+        [$table, $fieldName] = $parts;
+        if (!$tcaSchemaFactory->has($table)) {
+            return null;
+        }
+        $schema = $tcaSchemaFactory->get($table);
+        return $schema->hasField($fieldName) ? [Scope::WRITE, SchemaField::fromSchema($schema, $fieldName)] : null;
+    }
+
+    /**
+     * @return array{0: string, 1: mixed}|false
+     */
+    private function getFieldValueQuestion(string $value): array|false
+    {
+        $parts = explode(':', $value);
+        if (count($parts) !== 3) {
+            return false;
+        }
+        return [Scope::WRITE, ResourceIdentifier::fieldValue(...$parts)];
+    }
+
+    /**
+     * Resolves the services asking the security voters once, false without a
+     * container providing them, such as the failsafe one of the install tool.
+     */
+    private function resolveSecurityVoters(): bool
+    {
+        if ($this->voterDecisionManager !== null) {
+            return true;
+        }
+        try {
+            $container = GeneralUtility::getContainer();
+        } catch (\LogicException) {
+            return false;
+        }
+        if (!$container->has(AccessDecisionManagerInterface::class)
+            || !$container->has(LegacyUserPrincipalFactory::class)
+            || !$container->has(TcaSchemaFactory::class)
+        ) {
+            return false;
+        }
+        $this->voterPrincipalFactory = $container->get(LegacyUserPrincipalFactory::class);
+        $this->voterTcaSchemaFactory = $container->get(TcaSchemaFactory::class);
+        $this->voterDecisionManager = $container->get(AccessDecisionManagerInterface::class);
+        return true;
+    }
+
+    /**
+     * The principal of this user object the security voters decide for, null
+     * without the security voters, and for a user object without a principal,
+     * such as one without a user record or with a switch user original that
+     * cannot be resolved.
+     */
+    private function getVoterPrincipal(): ?Principal
+    {
+        if (!$this->resolveSecurityVoters()) {
+            return null;
+        }
+        return $this->voterPrincipalFactory?->fromUser($this, Realm::backend());
+    }
+
+    /**
+     * Asks the security voters for the principal of this user object, denied
+     * without the security voters or without a principal. A voter asking the
+     * checks of this user object for a permission the voters decide on would
+     * recurse without end, which is refused.
+     */
+    private function isGrantedByVoters(string $attribute, mixed $subject): bool
+    {
+        $principal = $this->getVoterPrincipal();
+        if ($principal === null) {
+            return false;
+        }
+        if ($this->isDecidingByVoters) {
+            throw new \LogicException(
+                'A permission decided by the security voters was asked from the backend user object while the security'
+                . ' voters decide on a permission of it, which would recurse without end. Security voters and'
+                . ' implementations of AdminOnlyTableGrantInterface must not call check(), checkAuthMode() or'
+                . ' checkLanguageAccess() of the backend user object for such a permission.',
+                1795117236
+            );
+        }
+        if ($this->voterToken?->getPrincipal() !== $principal) {
+            $this->voterToken = new PrincipalToken($principal);
+        }
+        $this->isDecidingByVoters = true;
+        try {
+            return $this->voterDecisionManager?->decide($this->voterToken, [$attribute], $subject) === true;
+        } finally {
+            $this->isDecidingByVoters = false;
+        }
     }
 
     /**
@@ -630,29 +825,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function checkAuthMode($table, $field, $value)
     {
-        // Admin users can do anything:
-        if ($this->isAdmin()) {
-            return true;
-        }
-        // Allow all blank values:
-        if ((string)$value === '') {
-            return true;
-        }
-        // Allow dividers:
-        if ($value === '--div--') {
-            return true;
-        }
-        // Certain characters are not allowed in the value
-        if (preg_match('/[:|,]/', $value)) {
-            return false;
-        }
-        // Initialize:
-        $testValue = $table . ':' . $field . ':' . $value;
-        $out = true;
-        if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue)) {
-            $out = false;
-        }
-        return $out;
+        return $this->isGrantedByVoters(Scope::WRITE, ResourceIdentifier::fieldValue((string)$table, (string)$field, (string)$value));
     }
 
     /**
@@ -663,20 +836,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function checkLanguageAccess($langValue)
     {
-        // The users language list must be non-blank - otherwise all languages are allowed.
-        if (trim($this->groupData['allowed_languages']) === '') {
-            return true;
-        }
-        if ($langValue instanceof SiteLanguage) {
-            $langValue = $langValue->getLanguageId();
-        } else {
-            $langValue = (int)$langValue;
-        }
-        // Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
-        if ($langValue !== LanguageMarker::ALL_LANGUAGES && !$this->check('allowed_languages', (string)$langValue)) {
-            return false;
-        }
-        return true;
+        return $this->isGrantedByVoters(
+            Scope::WRITE,
+            $langValue instanceof SiteLanguage ? $langValue : ResourceIdentifier::language((int)$langValue)
+        );
     }
 
     /**

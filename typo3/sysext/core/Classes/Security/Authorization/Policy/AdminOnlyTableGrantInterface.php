@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Authentication\Principal;
  * extension cannot grant it, as the TableVoter denies it. This is the only
  * way to grant it: the policy decision point asks every implementation,
  * and a single grant suffices. Voters of extensions still restrict the
- * decision. The DataHandler does not ask voters yet and keeps writing
- * admin only tables for administrators only.
+ * decision. The DataHandler keeps writing admin only tables for
+ * administrators only.
  *
  * Granting a table grants every field of it that is no exclude field.
  * be_users marks no field as exclude field: granting be_users grants
@@ -36,9 +36,6 @@ use TYPO3\CMS\Core\Authentication\Principal;
  * the grant is not meant for with a voter of the extension.
  *
  * Implementations are registered by autoconfiguration.
- *
- * @internal Experimental, not yet public API: it may still change until
- * the checks of BackendUserAuthentication are migrated to the voters.
  */
 interface AdminOnlyTableGrantInterface
 {
