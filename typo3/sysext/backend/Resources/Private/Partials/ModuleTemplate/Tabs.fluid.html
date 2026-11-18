@@ -4,33 +4,35 @@
 >
 
 <div class="tab-wrapper">
-    <ul class="nav nav-tabs" role="tablist" id="tabs-{id}" data-store-last-tab="{storeLastActiveTab}">
-        <f:for each="{items}" as="item" iteration="iteration">
-            <f:if condition="{item.content}">
-                <li role="presentation" class="nav-item">
-                    <button
-                        type="button"
-                        class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}"
-                        title="{item.linkTitle}"
-                        data-typo3-tab="#{id}-{iteration.cycle}"
-                        aria-controls="{id}-{iteration.cycle}"
-                        role="tab"
-                    >
-                        <f:if condition="{item.icon}">
-                            <f:format.raw>{item.icon}</f:format.raw>
-                        </f:if>
-                        {item.label}
-                        <f:if condition="{item.requiredIcon}">
-                            <f:format.raw>{item.requiredIcon}</f:format.raw>
-                        </f:if>
-                        <f:if condition="{item.stateIcon}">
-                            <f:render partial="ModuleTemplate/StateIcon" arguments="{item: item}" />
-                        </f:if>
-                    </button>
-                </li>
-            </f:if>
-        </f:for>
-    </ul>
+    <typo3-backend-tab-scroller>
+        <ul class="nav nav-tabs" role="tablist" id="tabs-{id}" data-store-last-tab="{storeLastActiveTab}">
+            <f:for each="{items}" as="item" iteration="iteration">
+                <f:if condition="{item.content}">
+                    <li role="presentation" class="nav-item">
+                        <button
+                            type="button"
+                            class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}"
+                            title="{item.linkTitle}"
+                            data-typo3-tab="#{id}-{iteration.cycle}"
+                            aria-controls="{id}-{iteration.cycle}"
+                            role="tab"
+                        >
+                            <f:if condition="{item.icon}">
+                                <f:format.raw>{item.icon}</f:format.raw>
+                            </f:if>
+                            {item.label}
+                            <f:if condition="{item.requiredIcon}">
+                                <f:format.raw>{item.requiredIcon}</f:format.raw>
+                            </f:if>
+                            <f:if condition="{item.stateIcon}">
+                                <f:render partial="ModuleTemplate/StateIcon" arguments="{item: item}" />
+                            </f:if>
+                        </button>
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+    </typo3-backend-tab-scroller>
     <div class="tab-content">
         <f:for each="{items}" as="item" iteration="iteration">
             <f:if condition="{item.content}">

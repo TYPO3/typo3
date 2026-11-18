@@ -257,8 +257,8 @@ class TabScroller {
  */
 @customElement('typo3-backend-tab-scroller')
 export class TabScrollerElement extends LitElement {
-  private startButton: HTMLButtonElement;
-  private endButton: HTMLButtonElement;
+  private startButton: HTMLButtonElement | null = null;
+  private endButton: HTMLButtonElement | null = null;
   private navTabs: HTMLElement|null = null;
 
   constructor() {
@@ -290,6 +290,9 @@ export class TabScrollerElement extends LitElement {
   }
 
   private createButtons(): void {
+    if (this.startButton !== null) {
+      return;
+    }
     this.startButton = document.createElement('button');
     this.startButton.slot = 'start-button';
     this.startButton.type = 'button';
