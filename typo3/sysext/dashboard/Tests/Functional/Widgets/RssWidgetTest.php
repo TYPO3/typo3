@@ -129,8 +129,17 @@ final class RssWidgetTest extends FunctionalTestCase
         self::assertSame([], $this->requestedUrls);
     }
 
+    public static function credentialsOfFeedUrlAreNotLoggedOnFetchErrorDataProvider(): array
+    {
+        return [
+            'user and password' => ['https://john:secret@typo3.org/rss'],
+            'user only' => ['https://secret@typo3.org/rss'],
+        ];
+    }
+
+    #[DataProvider('credentialsOfFeedUrlAreNotLoggedOnFetchErrorDataProvider')]
     #[Test]
-    public function passwordOfFeedUrlIsNotLoggedOnFetchError(): void
+    public function credentialsOfFeedUrlAreNotLoggedOnFetchError(string $feedUrl): void
     {
         $logger = new class extends AbstractLogger {
             public array $records = [];
@@ -146,7 +155,7 @@ final class RssWidgetTest extends FunctionalTestCase
             new ConnectException('Connection refused', $request)
         );
 
-        $result = $this->render(['feedUrl' => 'https://john:secret@typo3.org/rss']);
+        $result = $this->render(['feedUrl' => $feedUrl]);
 
         self::assertStringContainsString('Feed error', $result);
         self::assertSame(['https://***@typo3.org/rss'], array_column($logger->records, 'url'));
