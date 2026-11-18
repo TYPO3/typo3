@@ -361,14 +361,29 @@ const groups: { name: string, cases: ElementsBasicInputTestData[] }[] = [
   { name: 'format=timesec empty', cases: formatTimesecEmpty },
 ];
 
-// Opening the record takes most of the time of a case, so all cases of a
-// group share one opened record and run as steps of one test.
 for (const group of groups) {
   test(`elements_basic ${group.name}`, async ({ backend }) => {
+    const formEngine = backend.formEngine;
+    const pending = new Map<string, () => Promise<void>>();
+    const saveAndAssert = async () => {
+      await formEngine.save();
+      for (const assertAfterSave of pending.values()) {
+        await assertAfterSave();
+      }
+      pending.clear();
+    };
+
     for (const [index, data] of group.cases.entries()) {
-      await test.step(`[${index}] ${data.label}: ${data.inputValue || '<empty>'}`, async () => {
-        await backend.formEngine.runInputFieldTest(data, { datepicker: true });
-      });
+      // Save before overwriting a field whose persisted value still needs checking.
+      if (pending.has(data.label)) {
+        await saveAndAssert();
+      }
+      const caseName = `[${index}] ${data.label}: ${data.inputValue || '<empty>'}`;
+      const assertAfterSave = await test.step(`Before save ${caseName}`, () =>
+        formEngine.prepareInputFieldTest(data, { datepicker: true })
+      );
+      pending.set(data.label, () => test.step(`After save ${caseName}`, assertAfterSave));
     }
+    await saveAndAssert();
   });
 }

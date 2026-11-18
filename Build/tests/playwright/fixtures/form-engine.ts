@@ -96,6 +96,18 @@ export class FormEngine {
    * `data-formengine-input-name` attribute (flatpickr legacy).
    */
   async runInputFieldTest(data: ElementsBasicInputTestData, options: { datepicker?: boolean } = {}): Promise<void> {
+    const assertAfterSave = await this.prepareInputFieldTest(data, options);
+    await this.save();
+    await assertAfterSave();
+  }
+
+  /**
+   * Fill and verify a field, then return the assertions to run after saving.
+   */
+  async prepareInputFieldTest(
+    data: ElementsBasicInputTestData,
+    options: { datepicker?: boolean } = {},
+  ): Promise<() => Promise<void>> {
     const datepicker = options.datepicker === true;
 
     await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
@@ -106,12 +118,12 @@ export class FormEngine {
     await expect(visible).toHaveValue(data.expectedValue);
     await expect(hidden).toHaveValue(data.expectedInternalValue);
 
-    await this.save();
-
-    await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
-    const expectedVisibleAfterSave = data.expectedInternalValueAfterSave ?? data.expectedValue;
-    await expect(visible).toHaveValue(expectedVisibleAfterSave);
-    await expect(hidden).toHaveValue(data.expectedValueAfterSave);
+    return async () => {
+      await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
+      const expectedVisibleAfterSave = data.expectedInternalValueAfterSave ?? data.expectedValue;
+      await expect(visible).toHaveValue(expectedVisibleAfterSave);
+      await expect(hidden).toHaveValue(data.expectedValueAfterSave);
+    };
   }
 
   /**
