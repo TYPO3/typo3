@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -598,6 +599,39 @@ final class ResourceStorageTest extends FunctionalTestCase
         $this->expectException(IllegalFileExtensionException::class);
         $this->expectExceptionCode(1791966675);
         $subject->moveFile($file, $subject->getRootLevelFolder(false));
+    }
+
+    #[Test]
+    public function moveFileToAnotherStorageRemovesProcessedFilesOfTheSourceStorage(): void
+    {
+        $sourceStorage = $this->createStorageWithAllowedFileExtensions('source', '');
+        $file = $this->createFileInStorage($sourceStorage, 'photo.png');
+        $processedFilePath = $this->instancePath . '/resource-storage-test/source/_processed_/a/b/csm_photo_0123456789.png';
+        GeneralUtility::mkdir_deep(dirname($processedFilePath));
+        touch($processedFilePath);
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile')->insert(
+            'sys_file_processedfile',
+            [
+                'storage' => $sourceStorage->getUid(),
+                'original' => $file->getUid(),
+                'identifier' => '/_processed_/a/b/csm_photo_0123456789.png',
+                'name' => 'csm_photo_0123456789.png',
+                'configuration' => serialize(['width' => '100']),
+                'configurationsha1' => sha1(serialize(['width' => '100'])),
+                'originalfilesha1' => $file->getSha1(),
+                'task_type' => 'Image.CropScaleMask',
+                'checksum' => '0123456789',
+            ]
+        );
+        $subject = $this->createStorageWithAllowedFileExtensions('target', '');
+
+        $subject->moveFile($file, $subject->getRootLevelFolder(false));
+
+        $remainingProcessedFileRecords = $this->get(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_processedfile')
+            ->count('*', 'sys_file_processedfile', ['original' => $file->getUid()]);
+        self::assertSame(0, $remainingProcessedFileRecords);
+        self::assertFileDoesNotExist($processedFilePath);
     }
 
     /**
