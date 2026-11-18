@@ -3,7 +3,7 @@ import { ElementsBasicInputTestData } from '../../fixtures/form-engine';
 import { openElementsBasicEditor } from '../../helper/form-engine-elements';
 
 test.beforeEach(async ({ backend }) => {
-  await openElementsBasicEditor(backend, 'inputDateTime');
+  await openElementsBasicEditor(backend, 'inputDateTime', { reuseRecord: true });
 });
 
 const dbTypeDateEvalDate: ElementsBasicInputTestData[] = [

@@ -51,6 +51,14 @@ export class BackendPage {
     await javaScriptItemsProcessed(this.page);
   }
 
+  async gotoRecordEditor(editParameter: string) {
+    const edit = new URLSearchParams({ [editParameter]: 'edit' });
+    const redirect = new URLSearchParams({ redirect: 'record_edit', redirectParams: edit.toString() });
+    await this.page.goto(`?${redirect}`);
+    await expect(this.formEngine.container).toBeAttached();
+    await javaScriptItemsProcessed(this.page);
+  }
+
   /**
    * Returns a waiter for the next module loaded into the content frame,
    * see `moduleLoaded()` in `module-loaded.ts`.

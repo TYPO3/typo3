@@ -7,7 +7,11 @@ export type StyleguideTcaEditorOptions = {
   listId: string;
   // optional tab to click after the form loaded
   tab?: string;
+  // reuse the same fixture record for subsequent tests in this worker
+  reuseRecord?: boolean;
 };
+
+const editParameters = new Map<string, string>();
 
 /**
  * Open a styleguide TCA-demo record editor: navigate Records module,
@@ -15,15 +19,29 @@ export type StyleguideTcaEditorOptions = {
  * the given recordlist, and optionally switch to a tab.
  */
 export async function openStyleguideTcaEditor(backend: BackendPage, options: StyleguideTcaEditorOptions): Promise<void> {
-  await backend.gotoModule('records');
-  await backend.pageTree.open('styleguide TCA demo', options.pageName);
+  const editParameter = options.reuseRecord ? editParameters.get(options.listId) : undefined;
+  if (editParameter !== undefined) {
+    await backend.gotoRecordEditor(editParameter);
+  } else {
+    await backend.gotoModule('records');
+    await backend.pageTree.open('styleguide TCA demo', options.pageName);
 
-  const formEngineReady = await backend.formEngine.formEngineLoaded();
-  await backend.contentFrame
-    .locator(`#recordlist-${options.listId} a[aria-label="Edit record"]`)
-    .first()
-    .click();
-  await formEngineReady();
+    const editLink = backend.contentFrame.locator(`#recordlist-${options.listId} a[aria-label="Edit record"]`).first();
+    if (options.reuseRecord) {
+      const url = await editLink.evaluate((link: HTMLAnchorElement) => link.href);
+      const parameter = [...new URL(url).searchParams].find(([name, value]) =>
+        name.startsWith(`edit[${options.listId}][`) && value === 'edit'
+      );
+      if (parameter === undefined) {
+        throw new Error(`Missing edit parameter for ${options.listId} in the Records module`);
+      }
+      editParameters.set(options.listId, parameter[0]);
+    }
+
+    const formEngineReady = await backend.formEngine.formEngineLoaded();
+    await editLink.click();
+    await formEngineReady();
+  }
 
   if (options.tab !== undefined) {
     // `exact: true` so tab name `input` does not also match `inputDateTime`.
@@ -36,11 +54,16 @@ export async function openStyleguideTcaEditor(backend: BackendPage, options: Sty
  * pass it when a spec exercises a single tab, omit it when each test
  * picks its own tab.
  */
-export async function openElementsBasicEditor(backend: BackendPage, tab?: string): Promise<void> {
+export async function openElementsBasicEditor(
+  backend: BackendPage,
+  tab?: string,
+  options?: { reuseRecord: boolean },
+): Promise<void> {
   await openStyleguideTcaEditor(backend, {
     pageName: 'elements basic',
     listId: 'tx_styleguide_elements_basic',
     tab,
+    reuseRecord: options?.reuseRecord,
   });
 }
 

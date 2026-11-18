@@ -3,7 +3,7 @@ import { ElementsBasicInputTestData, ElementsBasicInputValidationData } from '..
 import { openElementsBasicEditor } from '../../helper/form-engine-elements';
 
 test.beforeEach(async ({ backend }) => {
-  await openElementsBasicEditor(backend, 'input');
+  await openElementsBasicEditor(backend, 'input', { reuseRecord: true });
 });
 
 const simpleCases: ElementsBasicInputTestData[] = [
