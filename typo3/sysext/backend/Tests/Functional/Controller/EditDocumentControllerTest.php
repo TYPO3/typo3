@@ -335,6 +335,54 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('#<span class="recordidentity-type">.*File Reference</span>#s', $html);
     }
 
+    public static function changingColumnOfContentElementReloadsFormDataProvider(): \Generator
+    {
+        yield 'page without content type restrictions' => [1, false];
+        yield 'page with a column restricting content types' => [10, true];
+    }
+
+    #[DataProvider('changingColumnOfContentElementReloadsFormDataProvider')]
+    #[Test]
+    public function changingColumnOfContentElementReloadsFormIfColumnsRestrictContentTypes(int $uid, bool $expectReload): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/content_type_restrictions.csv');
+        $request = (new ServerRequest('https://www.example.com/typo3/record/edit', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams(['edit' => ['tt_content' => [$uid => 'edit']]]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        $html = (string)$this->subject->mainAction($request)->getBody();
+
+        $onChangeNames = $this->getOnChangeNamesOfField($html, 'data[tt_content][' . $uid . '][colPos]');
+        self::assertContains('typo3-backend-form-update-value', $onChangeNames);
+        self::assertSame($expectReload, in_array('typo3-backend-form-reload', $onChangeNames, true));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getOnChangeNamesOfField(string $html, string $fieldName): array
+    {
+        $selectPattern = '/<select\b[^>]*\bname="' . preg_quote($fieldName, '/') . '"[^>]*>/';
+        self::assertMatchesRegularExpression($selectPattern, $html);
+        preg_match($selectPattern, $html, $selectTag);
+        preg_match('/\bid="([^"]+)"/', $selectTag[0], $selectId);
+        $onChangeNames = [];
+        preg_match_all('#<script\b[^>]*>/\* (.*?) \*/</script>#s', $html, $payloads);
+        foreach ($payloads[1] as $payload) {
+            foreach (json_decode($payload, true, flags: JSON_THROW_ON_ERROR) as $instruction) {
+                foreach ($instruction['payload']['items'] ?? [] as $item) {
+                    if (($item['args'][0] ?? null) === '#' . $selectId[1]) {
+                        $onChangeNames = [...$onChangeNames, ...array_column($item['args'][1]['onChange'] ?? [], 'name')];
+                    }
+                }
+            }
+        }
+        return $onChangeNames;
+    }
+
     public static function parametersOfTheBodyDataProvider(): \Generator
     {
         yield 'columnsOnly' => ['columnsOnly', ['pages' => ['title']], []];
