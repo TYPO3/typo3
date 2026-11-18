@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent;
+use TYPO3\CMS\Core\Resource\Event\AfterFileMovedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -56,6 +57,16 @@ final readonly class FileDeletionAspect
     public function cleanupProcessedFilesPostFileReplace(AfterFileReplacedEvent $event): void
     {
         $this->cleanupProcessedFiles($event->getFile());
+    }
+
+    #[AsEventListener('delete-processed-files-after-move')]
+    public function cleanupProcessedFilesPostFileMove(AfterFileMovedEvent $event): void
+    {
+        $file = $event->getFile();
+        if ($file->getStorage()->getUid() === $event->getOriginalFolder()->getStorage()->getUid()) {
+            return;
+        }
+        $this->cleanupProcessedFiles($file);
     }
 
     #[AsEventListener('delete-processed-files-after-delete')]

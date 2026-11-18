@@ -452,6 +452,50 @@ final class ResourceStorageTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function moveFileToAnotherStorageRemovesProcessedFilesOfTheSourceStorage(): void
+    {
+        $sourceStorage = $this->createLocalStorage('source');
+        touch($this->instancePath . '/resource-storage-test/source/photo.png');
+        $file = $sourceStorage->getFileByIdentifier('/photo.png');
+        $processedFilePath = $this->instancePath . '/resource-storage-test/source/_processed_/a/b/csm_photo_0123456789.png';
+        GeneralUtility::mkdir_deep(dirname($processedFilePath));
+        touch($processedFilePath);
+        $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile')->insert(
+            'sys_file_processedfile',
+            [
+                'storage' => $sourceStorage->getUid(),
+                'original' => $file->getUid(),
+                'identifier' => '/_processed_/a/b/csm_photo_0123456789.png',
+                'name' => 'csm_photo_0123456789.png',
+                'configuration' => serialize(['width' => '100']),
+                'configurationsha1' => sha1(serialize(['width' => '100'])),
+                'originalfilesha1' => $file->getSha1(),
+                'task_type' => 'Image.CropScaleMask',
+                'checksum' => '0123456789',
+            ]
+        );
+        $subject = $this->createLocalStorage('target');
+
+        $subject->moveFile($file, $subject->getRootLevelFolder(false));
+
+        $remainingProcessedFileRecords = $this->getConnectionPool()
+            ->getConnectionForTable('sys_file_processedfile')
+            ->count('*', 'sys_file_processedfile', ['original' => $file->getUid()]);
+        self::assertSame(0, $remainingProcessedFileRecords);
+        self::assertFileDoesNotExist($processedFilePath);
+    }
+
+    private function createLocalStorage(string $name): ResourceStorage
+    {
+        $basePath = $this->instancePath . '/resource-storage-test/' . $name;
+        mkdir($basePath);
+        $storageRepository = $this->get(StorageRepository::class);
+        $uid = $storageRepository->createLocalStorage($name, $basePath, 'absolute');
+        $storageRepository->flush();
+        return $storageRepository->findByUid($uid);
+    }
+
+    #[Test]
     public function getProcessingFolderReturnsFolderCreatedByAParallelRequest(): void
     {
         mkdir($this->instancePath . '/resource-storage-test/_processed_');
