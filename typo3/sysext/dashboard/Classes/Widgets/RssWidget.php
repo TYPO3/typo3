@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\RejectionException;
 use GuzzleHttp\Psr7\Uri;
-use GuzzleHttp\Psr7\Utils;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -219,7 +218,8 @@ readonly class RssWidget implements WidgetRendererInterface
     protected function redactFeedUrl(string $feedUrl): string
     {
         try {
-            return (string)Utils::redactUserInfo(new Uri($feedUrl));
+            $uri = new Uri($feedUrl);
+            return (string)($uri->getUserInfo() === '' ? $uri : $uri->withUserInfo('***'));
         } catch (\InvalidArgumentException) {
             return '(malformed URL)';
         }
