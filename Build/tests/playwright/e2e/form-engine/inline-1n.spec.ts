@@ -71,6 +71,16 @@ async function openInline1nEditor(backend: BackendPage): Promise<void> {
     .first()
     .click();
   await formEngineReady();
+
+  // shortcut: Reload blank heading rows until Chromium fixes issue 379030050.
+  const headingRows = backend.contentFrame.locator(`${childPanelAny} > .panel-heading > .panel-heading-row`);
+  if (await headingRows.evaluateAll(rows => rows.some(row =>
+    row.getClientRects().length === 0 && row.parentElement.getClientRects().length > 0
+  ))) {
+    const reloaded = await backend.formEngine.formEngineLoaded();
+    await backend.formEngine.container.evaluate(() => window.location.reload());
+    await reloaded();
+  }
 }
 
 async function deleteChild(backend: BackendPage, page: Page, fieldName: string): Promise<void> {
@@ -104,10 +114,14 @@ async function collapseChildren(backend: BackendPage): Promise<void> {
   // The expand state lives in the backend user configuration, so it survives a
   // reload and has to be normalised together with the records themselves.
   for (const fieldName of await childOrder(backend)) {
-    const collapse = backend.contentFrame.locator(`${childPanel(fieldName)} .panel-collapse`);
+    const panel = backend.contentFrame.locator(childPanel(fieldName));
+    const collapse = panel.locator(':scope > .panel-collapse');
     if (await collapse.evaluate((element) => element.classList.contains('show'))) {
-      await backend.contentFrame.locator(`${childPanel(fieldName)} .panel-button`).first().click();
-      await expect(collapse).not.toHaveClass(/\bshow\b/);
+      const toggle = panel.locator(':scope > .panel-heading .panel-button');
+      // Keep the next toggle clear of the sticky document header after scrolling.
+      await toggle.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+      await toggle.click();
+      await expect(collapse).not.toHaveClass(/\b(show|collapsing)\b/);
     }
   }
 }
@@ -146,14 +160,15 @@ test('inline_1n panel button toggles child input visibility', async ({ backend }
   const [firstChild] = await childOrder(backend);
   const panel = backend.contentFrame.locator(childPanel(firstChild));
   const input = panel.locator(childInput).first();
-  const collapsed = backend.contentFrame.locator(`${childPanel(firstChild)} .panel-collapse.show`);
+  const collapse = panel.locator(':scope > .panel-collapse');
 
   await panel.locator('.panel-button').first().click();
   await expect(input).toBeVisible();
   await expect(input).toHaveValue(baselineTitles[0]);
+  await expect(collapse).toHaveClass(/\bshow\b/);
 
   await panel.locator('.panel-button').first().click();
-  await expect(collapsed).not.toBeVisible();
+  await expect(collapse).not.toBeVisible();
 });
 
 test('inline_1n hides and unhides an inline child', async ({ backend }) => {
