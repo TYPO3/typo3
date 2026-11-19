@@ -215,7 +215,7 @@ final readonly class PageInformationFactory
         }
 
         $pageInformation->setPageRecord($pageRecord);
-        $pageDoktype = (int)($pageRecord['doktype']);
+        $pageDoktype = $this->getDoktypeInRequestedLanguage($request, $pageRecord);
 
         // Spacer and sysfolders are not accessible in frontend
         if (!$this->pageDoktypeRegistry->isPageTypeViewable($pageDoktype)) {
@@ -240,6 +240,7 @@ final readonly class PageInformationFactory
             /** @var PageRepository $pageRepository */
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $pageRecord = $pageInformation->getPageRecord();
+            $pageDoktype = (int)($pageRecord['doktype'] ?? 0);
             if ($pageDoktype === PageRepository::DOKTYPE_LINK) {
                 $pageInformation->setOriginalShortcutPageRecord($pageRecord);
                 $typolinkInformation = $this->pageTypeLinkResolver->resolveTypolinkParts($pageRecord);
@@ -314,6 +315,19 @@ final readonly class PageInformationFactory
         // Check 'extendToSubpages' in rootLine and backend user section.
         $this->checkRootlineForIncludeSection($request, $pageInformation);
         return $pageInformation;
+    }
+
+    /**
+     * A page translation has its own doktype, which settingLanguage() puts in place
+     * later on. Doktype dependent decisions have to be based on it nevertheless.
+     */
+    private function getDoktypeInRequestedLanguage(ServerRequestInterface $request, array $pageRecord): int
+    {
+        $language = $request->getAttribute('language', $request->getAttribute('site')->getDefaultLanguage());
+        return (int)GeneralUtility::makeInstance(PageRepository::class)->getPageOverlay(
+            $pageRecord,
+            LanguageAspectFactory::createFromSiteLanguage($language)
+        )['doktype'];
     }
 
     /**

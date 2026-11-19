@@ -162,22 +162,53 @@ final class PageLayoutControllerTest extends FunctionalTestCase
         );
     }
 
-    private function renderPageLayout(int $pageId, PageViewMode $storedViewMode): string
+    #[Test]
+    public function linkInfoBoxIsNotShownForStandardTranslationOfLinkPage(): void
+    {
+        $this->updatePage(self::PAGE_WITH_TRANSLATIONS, ['doktype' => 3, 'link' => 'https://typo3.org/default']);
+        $this->updatePage(1101, ['doktype' => 1, 'link' => 'https://typo3.org/translation']);
+
+        $body = $this->renderPageLayout(self::PAGE_WITH_TRANSLATIONS, PageViewMode::LayoutView, [1]);
+
+        self::assertStringNotContainsString('https://typo3.org/', $body);
+    }
+
+    #[Test]
+    public function linkInfoBoxIsShownForLinkTranslationOfStandardPage(): void
+    {
+        $this->updatePage(1101, ['doktype' => 3, 'link' => 'https://typo3.org/translation']);
+
+        $body = $this->renderPageLayout(self::PAGE_WITH_TRANSLATIONS, PageViewMode::LayoutView, [1]);
+
+        self::assertStringContainsString('href="https://typo3.org/translation"', $body);
+    }
+
+    #[Test]
+    public function shortcutInfoBoxIsShownForShortcutTranslationOfStandardPage(): void
+    {
+        $this->updatePage(1101, ['doktype' => 4, 'shortcut' => self::PAGE_WITHOUT_TRANSLATIONS, 'shortcut_mode' => 0]);
+
+        $body = $this->renderPageLayout(self::PAGE_WITH_TRANSLATIONS, PageViewMode::LayoutView, [1]);
+
+        self::assertMatchesRegularExpression('/Page is a link to the following page: <a href="[^"]*id=' . self::PAGE_WITHOUT_TRANSLATIONS . '/', $body);
+    }
+
+    private function renderPageLayout(int $pageId, PageViewMode $storedViewMode, ?array $languages = null): string
     {
         $moduleData = new ModuleData('web_layout', ['viewMode' => $storedViewMode->value], []);
-        $response = $this->get(PageLayoutController::class)->mainAction($this->createRequest($pageId, $moduleData));
+        $response = $this->get(PageLayoutController::class)->mainAction($this->createRequest($pageId, $moduleData, $languages));
 
         return (string)$response->getBody();
     }
 
-    private function createRequest(int $pageId, ModuleData $moduleData): ServerRequest
+    private function createRequest(int $pageId, ModuleData $moduleData, ?array $languages = null): ServerRequest
     {
         $request = (new ServerRequest('https://example.com/typo3/module/web/layout'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/typo3/module/web/layout', ['_identifier' => 'web_layout']))
             ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test-site'))
             ->withAttribute('moduleData', $moduleData)
-            ->withQueryParams(['id' => $pageId]);
+            ->withQueryParams(array_filter(['id' => $pageId, 'languages' => $languages], static fn(mixed $value): bool => $value !== null));
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
 
         return $request->withAttribute(
@@ -188,8 +219,13 @@ final class PageLayoutControllerTest extends FunctionalTestCase
 
     private function setPageTsConfig(int $pageId, string $tsConfig): void
     {
+        $this->updatePage($pageId, ['TSconfig' => $tsConfig]);
+    }
+
+    private function updatePage(int $pageId, array $fields): void
+    {
         $this->getConnectionPool()
             ->getConnectionForTable('pages')
-            ->update('pages', ['TSconfig' => $tsConfig], ['uid' => $pageId]);
+            ->update('pages', $fields, ['uid' => $pageId]);
     }
 }
