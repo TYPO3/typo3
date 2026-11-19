@@ -356,7 +356,13 @@ class PageLayoutController
         $backendUser = $this->getBackendUser();
 
         $infoBoxes = [];
-        $currentDocumentType = (int)($this->pageContext->pageRecord['doktype'] ?? 0);
+        // The translation of the selected language has its own doktype and properties
+        $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
+        $pageRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? [];
+        if ($primaryLanguageId === LanguageMarker::DEFAULT_LANGUAGE || $pageRecord === []) {
+            $pageRecord = $this->pageContext->pageRecord;
+        }
+        $currentDocumentType = (int)($pageRecord['doktype'] ?? 0);
         if ($currentDocumentType === PageRepository::DOKTYPE_SYSFOLDER && $this->moduleProvider->accessGranted('records', $backendUser)) {
             $infoBoxes[] = [
                 'title' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToRecordsModule'),
@@ -368,22 +374,22 @@ class PageLayoutController
             ];
         }
         if ($currentDocumentType === PageRepository::DOKTYPE_SHORTCUT) {
-            $shortcutMode = (int)($this->pageContext->pageRecord['shortcut_mode'] ?? 0);
+            $shortcutMode = (int)($pageRecord['shortcut_mode'] ?? 0);
             $targetPage = [];
             $state = ContextualFeedbackSeverity::ERROR;
-            if ($shortcutMode || ($this->pageContext->pageRecord['shortcut'] ?? false)) {
+            if ($shortcutMode || ($pageRecord['shortcut'] ?? false)) {
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)($this->pageContext->pageRecord['shortcut'] ?? 0), true));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)($pageRecord['shortcut'] ?? 0), true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredOrNotAccessibleInternalLinkMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
-                        $menuOfPages = $this->pageRepository->getMenu((int)($this->pageContext->pageRecord['uid'] ?? 0), '*', 'sorting', 'AND hidden = 0', true, true);
+                        $menuOfPages = $this->pageRepository->getMenu($this->pageContext->pageId, '*', 'sorting', 'AND hidden = 0', true, true);
                         $targetPage = reset($menuOfPages) ?: [];
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredFirstSubpageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)($this->pageContext->pageRecord['pid'] ?? 0), true));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage((int)($pageRecord['pid'] ?? 0), true));
                         $message = $targetPage === [] ? $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredParentPageMessage') : '';
                         break;
                     default:
@@ -396,7 +402,7 @@ class PageLayoutController
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW), 1000);
                     $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsInternalLinkMessage')), $linkedPath);
-                    $message .= ' (' . htmlspecialchars($languageService->sL($this->schemaLabelResolver->getLabelForFieldValue('pages', 'shortcut_mode', (string)$shortcutMode, $this->pageContext->pageRecord))) . ')';
+                    $message .= ' (' . htmlspecialchars($languageService->sL($this->schemaLabelResolver->getLabelForFieldValue('pages', 'shortcut_mode', (string)$shortcutMode, $pageRecord))) . ')';
                     $state = ContextualFeedbackSeverity::INFO;
                 }
             } else {
@@ -408,25 +414,21 @@ class PageLayoutController
             ];
         }
         if ($currentDocumentType === PageRepository::DOKTYPE_LINK) {
-            $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
-            $pageRecord = ($primaryLanguageId > LanguageMarker::DEFAULT_LANGUAGE && ($overlayRecord = $this->pageContext->languageInformation->existingTranslations[$primaryLanguageId] ?? []) !== [])
-                ? $overlayRecord
-                : $this->pageContext->pageRecord;
             $infoBoxes[] = $this->pageLinkMessageProvider->generateMessagesForPageTypeLink($pageRecord, $request);
         }
-        if ($this->pageContext->pageRecord['content_from_pid'] ?? false) {
+        if ($pageRecord['content_from_pid'] ?? false) {
             // If content from different pid is displayed
-            $contentPage = BackendUtility::getRecord('pages', (int)$this->pageContext->pageRecord['content_from_pid']);
+            $contentPage = BackendUtility::getRecord('pages', (int)$pageRecord['content_from_pid']);
             if ($contentPage === null) {
                 $infoBoxes[] = [
-                    'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_invalid_title'), $this->pageContext->pageRecord['content_from_pid']),
+                    'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_invalid_title'), $pageRecord['content_from_pid']),
                     'state' => ContextualFeedbackSeverity::ERROR,
                 ];
             } else {
-                $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->pageContext->pageRecord['content_from_pid']]);
+                $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $pageRecord['content_from_pid']]);
                 $title = BackendUtility::getRecordTitle('pages', $contentPage);
                 $title = BackendUtility::cropToTitleLength($title);
-                $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageContext->pageRecord['content_from_pid'] . ')</a>';
+                $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$pageRecord['content_from_pid'] . ')</a>';
                 $infoBoxes[] = [
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
                     'state' => ContextualFeedbackSeverity::INFO,

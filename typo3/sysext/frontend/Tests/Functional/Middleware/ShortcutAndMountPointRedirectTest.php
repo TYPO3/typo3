@@ -28,6 +28,7 @@ final class ShortcutAndMountPointRedirectTest extends FunctionalTestCase
 
     protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
     protected function setUp(): void
@@ -38,6 +39,7 @@ final class ShortcutAndMountPointRedirectTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://acme.com/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DE', '/de/'),
             ]
         );
     }
@@ -84,5 +86,82 @@ final class ShortcutAndMountPointRedirectTest extends FunctionalTestCase
             new InternalRequest('https://acme.com/page-link-circle-3/')
         );
         self::assertSame(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function standardPageTranslationOfPageLinkIsRendered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/page-link-translated-to-standard-page/')
+        );
+        self::assertSame(200, $response->getStatusCode());
+        self::assertFalse($response->hasHeader('X-Redirect-By'));
+    }
+
+    #[Test]
+    public function pageLinkTranslationOfStandardPageIsResolved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/standard-page-translated-to-page-link/')
+        );
+        self::assertSame(200, $response->getStatusCode());
+        self::assertFalse($response->hasHeader('X-Redirect-By'));
+        self::assertStringContainsString('page-uid-25', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function shortcutTranslationOfStandardPageRedirects(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/standard-page-translated-to-shortcut/')
+        );
+        self::assertSame(307, $response->getStatusCode());
+        self::assertSame('https://acme.com/de/shortcut-target/', $response->getHeaderLine('Location'));
+    }
+
+    #[Test]
+    public function standardPageTranslationOfSysfolderIsRendered(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/sysfolder-translated-to-standard-page/')
+        );
+        self::assertSame(200, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function sysfolderTranslationOfStandardPageResponseWith404(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        // Requested by id, since routing does not resolve the slug of a sysfolder translation at all
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/?id=23')
+        );
+        self::assertSame(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function standardPageTranslationOfMountPointIsNotMounted(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pageLinkAndShortcutCases.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/typoScriptFrontendInitializationSysTemplate.csv');
+        $connection = $this->getConnectionPool()->getConnectionForTable('pages');
+        // Mount point fields are excluded from translation, so the translation carries the same values
+        foreach ([27, 28] as $uid) {
+            $connection->update('pages', ['mount_pid' => 25, 'mount_pid_ol' => 1], ['uid' => $uid]);
+        }
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.com/de/mount-point-translated-to-standard-page/')
+        );
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringContainsString('page-uid-27', (string)$response->getBody());
     }
 }
