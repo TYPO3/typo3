@@ -295,7 +295,9 @@ function subscribeEvents(): void {
       getViewModel().addAbstractViewValidationResults();
       getViewModel().showInspectorSidebar();
       getViewModel().renderInspectorEditors();
-      getViewModel().focusFirstInspectorInput();
+      getViewModel().focusInspectorSidebar();
+    } else {
+      getViewModel().showInspectorSidebar();
     }
   });
 
@@ -497,7 +499,7 @@ function subscribeEvents(): void {
       getViewModel().addAbstractViewValidationResults();
       getViewModel().showInspectorSidebar();
       getViewModel().renderInspectorEditors();
-      getViewModel().focusFirstInspectorInput();
+      getViewModel().focusInspectorSidebar();
     }
   });
 

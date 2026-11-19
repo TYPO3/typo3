@@ -46,13 +46,6 @@
     overflow-x: clip;
 }
 
-@media (max-width: 949px) {
-    body:has(.formeditor-inspector-expanded) {
-        overflow: hidden;
-        max-height: 100dvh;
-    }
-}
-
 //
 // Layout
 //
@@ -113,28 +106,76 @@
 //
 // Inspector
 //
+// Docked beside the stage where the content frame is wide enough. Otherwise
+// a modal dialog that takes its look and motion from the backend's sheet
+// positioned modal, the same as contextual record editing: docked to the
+// inline end in windows from 768px, a bottom sheet below.
+//
 .formeditor-inspector {
-    position: absolute;
-    display: flex;
     flex-direction: column;
-    z-index: var(--typo3-zindex-header);
-    top: calc(-1 * (var(--module-body-padding-y) + var(--formeditor-inspector-border-width)));
-    inset-inline-end: calc(var(--module-body-padding-x) * -1);
-    width: calc(100% + var(--module-body-padding-x));
-    height: calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y));
     color: var(--formeditor-inspector-color);
-    border: var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);
-    border-inline-end: 0;
-    border-radius: var(--formeditor-inspector-border-radius) 0 0 var(--formeditor-inspector-border-radius);
-    background: var(--formeditor-inspector-bg);
-    box-shadow: var(--typo3-component-box-shadow-flyout);
-    overflow: hidden;
-    isolation: isolate;
-    transition: transform .3s ease-out;
-    transform: translateX(100%);
 
-    &.formeditor-inspector-expanded {
-        transform: translateX(0%);
+    &:not([open]) {
+        display: none;
+    }
+
+    // Set by the form editor while it switches between the docked inspector
+    // and the modal sheet
+    .formeditor &.formeditor-inspector-instant,
+    .formeditor &.formeditor-inspector-instant::backdrop {
+        transition: none;
+    }
+
+    &.modal {
+        --typo3-modal-width: var(--formeditor-module-inspector);
+        --typo3-modal-bg: var(--formeditor-inspector-bg);
+
+        @media (max-width: 767px) {
+            --typo3-modal-width: 100%;
+        }
+
+        .formeditor-inspector-inner {
+            background: var(--typo3-modal-bg);
+            overscroll-behavior: contain;
+        }
+
+        .formeditor-inspector-header {
+            display: flex;
+        }
+
+        .formeditor-inspector-element-headline:has([data-identifier="inspectorFormElementHeaderEditor"]) {
+            display: none;
+        }
+    }
+
+    // The sheet positioned modal turns into a bottom sheet in a content frame
+    // narrower than 768px, which a docked navigation also causes in a wide
+    // window. There the inspector keeps coming from the inline end.
+    &.modal.formeditor-inspector-sheet-end {
+        @media (max-width: 767px) {
+            --typo3-modal-width: var(--formeditor-module-inspector);
+            --typo3-modal-height: var(--typo3-modal-height-full);
+            --typo3-modal-offset-multiplier-x: 2;
+            --typo3-modal-offset-multiplier-y: 0;
+            margin-block: auto;
+            margin-inline-start: auto;
+            margin-inline-end: 0;
+            border-radius: var(--typo3-modal-border-radius);
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+            border-block-end: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
+            border-inline-end: 0;
+
+            @starting-style {
+                inset-block-end: 0;
+                inset-inline-end: var(--typo3-modal-slide);
+            }
+
+            &.modal-closing {
+                inset-block-end: 0;
+                inset-inline-end: var(--typo3-modal-slide);
+            }
+        }
     }
 }
 
@@ -145,14 +186,43 @@
     overflow: auto;
 }
 
-.formeditor-inspector-collapse {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: calc(var(--typo3-spacing) / 2);
+// Laid out like the header of contextual record editing
+.formeditor-inspector-header {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem 1rem;
+    background: var(--typo3-modal-bg);
+    border-bottom: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
 }
 
-.formeditor-inspector-expand {
-    display: inline-flex;
+.formeditor-inspector-header-title {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: .25rem;
+    min-width: 0;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: .875rem;
+    white-space: nowrap;
+
+    > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.formeditor-inspector-header-button-label {
+    @media (max-width: 500px) {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
 }
 
 .formeditor-inspector-content {
@@ -228,10 +298,19 @@ typo3-form-form-element-stage-item-toolbar {
         display: block;
     }
 
+    .formeditor-page-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(var(--typo3-spacing) / 2);
+        margin-bottom: var(--typo3-spacing);
+    }
+
     .formeditor-page-title {
         font-size: .875rem;
         font-weight: bold;
-        margin: 0 0 var(--typo3-spacing);
+        margin: 0;
         cursor: pointer;
 
         &:empty:before {
@@ -579,21 +658,6 @@ typo3-form-form-element-stage-item[invalid] {
 // Preview mode
 //
 .formeditor-module-viewmode-preview {
-    .formeditor-inspector-expand {
-        display: none;
-    }
-
-    & ~ .formeditor-inspector {
-        display: none;
-
-        @media (min-width: 950px) {
-            display: flex;
-            transform: translateX(100%);
-            margin-inline-start: calc(var(--formeditor-module-inspector) * -1 - var(--formeditor-module-gap));
-            opacity: 0;
-        }
-    }
-
     .formeditor-stage {
         select[multiple="multiple"] {
             height: auto;
@@ -631,9 +695,9 @@ typo3-form-form-element-stage-item[invalid] {
 }
 
 //
-// Desktop breakpoint
+// Docked inspector, set by the form editor from the width of the content frame
 //
-@media (min-width: 950px) {
+.formeditor-docked {
     .formeditor-inner {
         display: flex;
         align-items: flex-start;
@@ -651,24 +715,29 @@ typo3-form-form-element-stage-item[invalid] {
 
     .formeditor-inspector {
         position: sticky;
+        z-index: var(--typo3-zindex-header);
+        display: flex;
         inset: auto;
         top: calc(1rem + var(--module-docheader-sticky-height));
-        width: var(--formeditor-module-inspector);
-        height: auto;
         flex-shrink: 0;
+        width: var(--formeditor-module-inspector);
+        max-width: none;
+        height: auto;
         max-height: calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y) * 2);
+        margin: 0;
+        padding: 0;
+        background: var(--formeditor-inspector-bg);
+        border: var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);
         border-radius: var(--formeditor-inspector-border-radius);
-        border-inline-end: var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);
         box-shadow: var(--formeditor-inspector-box-shadow);
-        transform: none;
+        overflow: hidden;
+        isolation: isolate;
         transition: transform .3s ease-out, opacity .3s ease-out, margin .3s ease-out;
     }
 
-    .formeditor-inspector-collapse {
-        display: none;
-    }
-
-    .formeditor-inspector-expand {
-        display: none;
+    .formeditor-module-viewmode-preview ~ .formeditor-inspector {
+        transform: translateX(100%);
+        margin-inline-start: calc(var(--formeditor-module-inspector) * -1 - var(--formeditor-module-gap));
+        opacity: 0;
     }
 }

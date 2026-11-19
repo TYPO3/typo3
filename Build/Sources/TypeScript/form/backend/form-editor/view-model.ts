@@ -70,13 +70,13 @@ const configuration: Partial<HelperConfiguration> = {
     buttonHeaderViewModePreview: 'buttonViewModePreview',
     buttonFormSettings: 'formSettings',
     buttonToggleStructure: 'formeditorStructureToggle',
-    buttonExpandInspector: 'formeditorInspectorExpand',
     buttonCollapseInspector: 'formeditorInspectorCollapse',
     buttonNewPage: 'newPage',
     iconMailform: 'content-form',
     iconSave: 'actions-document-save',
     iconSaveSpinner: 'spinner-circle',
     inspectorSection: 'inspectorSection',
+    inspectorTitle: 'inspectorTitle',
     moduleLoadingIndicator: 'moduleLoadingIndicator',
     moduleWrapper: 'moduleWrapper',
     stageArea: 'stageArea',
@@ -92,6 +92,14 @@ const configuration: Partial<HelperConfiguration> = {
 };
 
 let previewMode: boolean = false;
+
+let inspectorDockedMediaQuery: MediaQueryList | null = null;
+
+let inspectorSheetFromEndMediaQuery: MediaQueryList | null = null;
+
+let inspectorCloseRequest: number = 0;
+
+let inspectorSheetOpenBeforeDocking: boolean = false;
 
 let formEditorApp: FormEditor | null = null;
 
@@ -415,12 +423,19 @@ function buttonsSetup(): void {
     qs('structureSection')?.classList.toggle('formeditor-inspector-expanded');
   });
 
-  qs('buttonExpandInspector')?.addEventListener('click', function() {
-    qs('inspectorSection')?.classList.add('formeditor-inspector-expanded');
+  qs('buttonCollapseInspector')?.addEventListener('click', function() {
+    hideInspectorSidebar();
   });
 
-  qs('buttonCollapseInspector')?.addEventListener('click', function() {
-    qs('inspectorSection')?.classList.remove('formeditor-inspector-expanded');
+  const inspectorDialog = getInspectorDialog();
+  inspectorDialog?.addEventListener('cancel', function(e: Event) {
+    e.preventDefault();
+    hideInspectorSidebar();
+  });
+  inspectorDialog?.addEventListener('click', function(e: MouseEvent) {
+    if (e.target === inspectorDialog) {
+      hideInspectorSidebar();
+    }
   });
 
   qs('buttonFormSettings')?.addEventListener('click', function() {
@@ -676,8 +691,178 @@ export function focusFirstInspectorInput(): void {
   }
 }
 
+/**
+ * Opens the inspector as modal sheet where it is not docked beside the stage.
+ */
 export function showInspectorSidebar(): void {
-  document.querySelector(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))?.classList.add('formeditor-inspector-expanded');
+  const inspectorDialog = getInspectorDialog();
+  if (!inspectorDialog || !isInspectorSidebarOverlay()) {
+    return;
+  }
+  if (inspectorDialog.open && inspectorDialog.classList.contains('modal-closing')) {
+    inspectorCloseRequest++;
+    inspectorDialog.classList.remove('modal-closing');
+    return;
+  }
+  if (!inspectorDialog.open) {
+    // Left in place on close, the dialog would otherwise fade in again
+    // while its display transition still runs
+    inspectorDialog.classList.remove('modal-closing');
+    inspectorDialog.querySelector('.formeditor-inspector-inner')?.scrollTo({ top: 0 });
+    inspectorDialog.showModal();
+  }
+}
+
+/**
+ * Moves the focus into the inspector. As modal sheet it lands on the close
+ * button, so touch devices do not open their on-screen keyboard.
+ */
+export function focusInspectorSidebar(): void {
+  if (!isInspectorSidebarOverlay()) {
+    focusFirstInspectorInput();
+    return;
+  }
+  document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('buttonCollapseInspector'))
+    ?.focus({ preventScroll: true });
+}
+
+/**
+ * Closes the modal sheet with the closing animation of backend modals and
+ * returns the focus to the stage element it was opened for.
+ */
+export function hideInspectorSidebar(): void {
+  const inspectorDialog = getInspectorDialog();
+  if (!inspectorDialog?.matches(':modal') || inspectorDialog.classList.contains('modal-closing')) {
+    return;
+  }
+  const closeRequest = ++inspectorCloseRequest;
+  inspectorDialog.classList.add('modal-closing');
+  new Promise<void>((resolve) => {
+    const onTransitionEnd = (e: TransitionEvent): void => {
+      if (e.target === inspectorDialog) {
+        inspectorDialog.removeEventListener('transitionend', onTransitionEnd);
+        resolve();
+      }
+    };
+    inspectorDialog.addEventListener('transitionend', onTransitionEnd);
+    // Fallback if transitionend is not fired, the animation takes 300ms
+    window.setTimeout(() => {
+      inspectorDialog.removeEventListener('transitionend', onTransitionEnd);
+      resolve();
+    }, 305);
+  }).then(() => {
+    if (closeRequest !== inspectorCloseRequest) {
+      return;
+    }
+    inspectorDialog.close();
+    const selectedStageElement = getStage().getAbstractViewFormElementDomElement();
+    const focusTarget = selectedStageElement?.matches('[tabindex]')
+      ? selectedStageElement
+      : selectedStageElement?.querySelector<HTMLElement>('button')
+        ?? document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('buttonFormSettings'));
+    focusTarget?.focus({ preventScroll: true });
+  });
+}
+
+/**
+ * Docks the inspector beside the stage where the content frame leaves the
+ * stage enough room, and turns it into a modal sheet otherwise. Like the
+ * sheet of contextual record editing, that sheet comes from the inline end
+ * unless the window is narrow, whatever room a docked navigation leaves the
+ * content frame.
+ */
+export function setupInspectorLayout(): void {
+  applyInspectorLayout();
+  getInspectorDockedMediaQuery().addEventListener('change', applyInspectorLayout);
+  getInspectorSheetFromEndMediaQuery().addEventListener('change', applyInspectorSheetDirection);
+  setupInspectorTitle();
+}
+
+/**
+ * Mirrors the headline of the selected element into the header of the modal
+ * sheet. The headline is rendered with the editors and completed
+ * asynchronously, once its icon has loaded.
+ */
+function setupInspectorTitle(): void {
+  const inspectorDialog = getInspectorDialog();
+  const title = document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('inspectorTitle'));
+  const content = inspectorDialog?.querySelector<HTMLElement>('.formeditor-inspector-content');
+  if (!title || !content) {
+    return;
+  }
+  const updateTitle = (): void => {
+    const headline = content.querySelector('[data-identifier="inspectorFormElementHeaderEditor"]');
+    title.replaceChildren(...Array.from(headline?.childNodes ?? [], (node) => node.cloneNode(true)));
+  };
+  new MutationObserver(updateTitle).observe(content, { childList: true, subtree: true });
+  updateTitle();
+}
+
+function applyInspectorLayout(): void {
+  const inspectorDialog = getInspectorDialog();
+  if (!inspectorDialog) {
+    return;
+  }
+  const docked = !isInspectorSidebarOverlay();
+  const sheetOpen = inspectorDialog.matches(':modal') && !inspectorDialog.classList.contains('modal-closing');
+  // Switching between both layouts must not run the opening or closing
+  // animation of the modal sheet, which would flash it up for a moment
+  inspectorDialog.classList.add('formeditor-inspector-instant');
+  inspectorCloseRequest++;
+  if (inspectorDialog.open) {
+    inspectorDialog.close();
+  }
+  inspectorDialog.classList.remove('modal-closing');
+  inspectorDialog.classList.toggle('modal', !docked);
+  inspectorDialog.classList.toggle('modal-size-expand', !docked);
+  inspectorDialog.classList.toggle('modal-position-sheet', !docked);
+  inspectorDialog.closest('.formeditor')?.classList.toggle('formeditor-docked', docked);
+  applyInspectorSheetDirection();
+  if (docked) {
+    inspectorSheetOpenBeforeDocking = sheetOpen;
+    // Opened without show(), which would move the focus into the inspector
+    inspectorDialog.setAttribute('open', '');
+  } else if (inspectorSheetOpenBeforeDocking) {
+    inspectorSheetOpenBeforeDocking = false;
+    inspectorDialog.showModal();
+    focusInspectorSidebar();
+  }
+  getComputedStyle(inspectorDialog).getPropertyValue('display');
+  inspectorDialog.classList.remove('formeditor-inspector-instant');
+}
+
+function getInspectorDialog(): HTMLDialogElement | null {
+  return document.querySelector<HTMLDialogElement>(getHelper().getDomElementDataIdentifierSelector('inspectorSection'));
+}
+
+function applyInspectorSheetDirection(): void {
+  getInspectorDialog()?.classList.toggle(
+    'formeditor-inspector-sheet-end',
+    isInspectorSidebarOverlay() && getInspectorSheetFromEndMediaQuery().matches
+  );
+}
+
+function getInspectorDockedMediaQuery(): MediaQueryList {
+  inspectorDockedMediaQuery ??= window.matchMedia('(min-width: 950px)');
+  return inspectorDockedMediaQuery;
+}
+
+function getInspectorSheetFromEndMediaQuery(): MediaQueryList {
+  if (inspectorSheetFromEndMediaQuery === null) {
+    let layoutWindow: Window = window;
+    try {
+      layoutWindow = window.top ?? window;
+      layoutWindow.matchMedia('all');
+    } catch {
+      layoutWindow = window;
+    }
+    inspectorSheetFromEndMediaQuery = layoutWindow.matchMedia('(min-width: 768px)');
+  }
+  return inspectorSheetFromEndMediaQuery;
+}
+
+function isInspectorSidebarOverlay(): boolean {
+  return !getInspectorDockedMediaQuery().matches;
 }
 
 export function renderInspectorCollectionElementEditors(
@@ -1057,6 +1242,7 @@ export function onViewReadyBatch(): void {
   hideComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('moduleLoadingIndicator')));
   showComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('moduleWrapper')));
   showComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('inspectorSection')));
+  setupInspectorLayout();
   showComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSave')));
   showComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('buttonHeaderClose')));
   showComponent(document.querySelector<HTMLElement>(getHelper().getDomElementDataIdentifierSelector('buttonHeaderUndo')));
