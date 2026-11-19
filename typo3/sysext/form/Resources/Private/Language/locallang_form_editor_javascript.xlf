@@ -6,6 +6,9 @@
       <trans-unit id="formEditor.insert_elements">
         <source>Insert elements</source>
       </trans-unit>
+      <trans-unit id="formEditor.stage.page.edit">
+        <source>Edit step</source>
+      </trans-unit>
       <trans-unit id="formEditor.stage.toolbar.new_element">
         <source>Create new element</source>
       </trans-unit>

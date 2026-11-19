@@ -554,6 +554,9 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
   stageDomElement!.replaceChildren(renderFormDefinitionPageAsSortableList(pageIndex!));
 
   stageDomElement!.addEventListener('click', function(e) {
+    if ((e.target as Element).closest('.formeditor-element-toolbar-right')) {
+      return;
+    }
     const formElementIdentifierPath = (e.target as Element)
       .closest(getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey'))
       ?.getAttribute(getHelper().getDomElementDataAttribute('elementIdentifier'));

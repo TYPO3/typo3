@@ -12,8 +12,6 @@
  */
 .formeditor{--formeditor-module-gap:var(--module-body-padding-x);--formeditor-module-inspector:400px;--formeditor-inspector-color:var(--typo3-text-color-base);--formeditor-inspector-bg:var(--typo3-surface-container-low);--formeditor-inspector-border-width:var(--typo3-component-border-width);--formeditor-inspector-border-color:color-mix(in srgb,var(--formeditor-inspector-bg),var(--formeditor-inspector-color) var(--typo3-border-mix));--formeditor-inspector-border-radius:var(--typo3-component-border-radius);--formeditor-inspector-box-shadow:var(--typo3-component-box-shadow);--formeditor-stage-element-padding-y:.5rem;--formeditor-stage-element-padding-x:.75rem;--formeditor-stage-element-validator-width:100px;--formeditor-stage-spacing:1rem;--formeditor-stage-element-border-width:var(--typo3-component-border-width);--formeditor-stage-element-border-radius:var(--typo3-component-border-radius);--formeditor-stage-element-border-color-state:initial;--formeditor-stage-element-bg:var(--typo3-surface-bright);--formeditor-stage-element-color:var(--typo3-component-color);--formeditor-stage-element-border-color:var(--typo3-component-border-color);--formeditor-stage-element-hover-border-color:var(--typo3-component-hover-border-color);--formeditor-stage-element-active-border-color:var(--typo3-component-active-border-color);--formeditor-stage-element-hidden-bg:var(--typo3-surface-bright);--formeditor-stage-element-hidden-color:var(--typo3-component-color);--formeditor-stage-element-hidden-border-color:var(--typo3-component-border-color);position:relative}
 [data-module-name=form_editor]{overflow-x:clip}
-@media (max-width:949px){
-body:has(.formeditor-inspector-expanded){max-height:100dvh;overflow:hidden}}
 .formeditor-loader{align-items:center;display:flex;flex-direction:column;gap:.25rem;inset:0;justify-content:center;overflow:hidden;position:absolute}
 .formeditor-module,.formeditor-stage-container{flex-grow:1;min-height:0;min-width:0}
 .formeditor-stage-container{position:relative}
@@ -22,11 +20,26 @@ body:has(.formeditor-inspector-expanded){max-height:100dvh;overflow:hidden}}
 .formeditor-header{align-items:center;display:flex;gap:1rem;justify-content:space-between;margin-bottom:var(--typo3-spacing)}
 .formeditor-header h1{margin:0}
 .formeditor-header-actions{align-items:center;display:flex;gap:.5rem}
-.formeditor-inspector{border:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);color:var(--formeditor-inspector-color);display:flex;flex-direction:column;height:calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y));inset-inline-end:calc(var(--module-body-padding-x)*-1);position:absolute;top:calc((var(--module-body-padding-y) + var(--formeditor-inspector-border-width))*-1);width:calc(100% + var(--module-body-padding-x));z-index:var(--typo3-zindex-header);-webkit-border-end:0;background:var(--formeditor-inspector-bg);border-inline-end:0;border-radius:var(--formeditor-inspector-border-radius) 0 0 var(--formeditor-inspector-border-radius);box-shadow:var(--typo3-component-box-shadow-flyout);isolation:isolate;overflow:hidden;transform:translateX(100%);transition:transform .3s ease-out}
-.formeditor-inspector.formeditor-inspector-expanded{transform:translateX(0)}
+.formeditor-inspector{color:var(--formeditor-inspector-color);flex-direction:column}
+.formeditor-inspector:not([open]){display:none}
+.formeditor .formeditor-inspector.formeditor-inspector-instant,.formeditor .formeditor-inspector.formeditor-inspector-instant::backdrop{transition:none}
+.formeditor-inspector.modal{--typo3-modal-width:var(--formeditor-module-inspector);--typo3-modal-bg:var(--formeditor-inspector-bg)}
+@media (max-width:767px){
+.formeditor-inspector.modal{--typo3-modal-width:100%}}
+.formeditor-inspector.modal .formeditor-inspector-inner{background:var(--typo3-modal-bg);overscroll-behavior:contain}
+.formeditor-inspector.modal .formeditor-inspector-header{display:flex}
+.formeditor-inspector.modal .formeditor-inspector-element-headline:has([data-identifier=inspectorFormElementHeaderEditor]){display:none}
+@media (max-width:767px){
+.formeditor-inspector.modal.formeditor-inspector-sheet-end{--typo3-modal-width:var(--formeditor-module-inspector);--typo3-modal-height:var(--typo3-modal-height-full);--typo3-modal-offset-multiplier-x:2;--typo3-modal-offset-multiplier-y:0;margin-block:auto;-webkit-margin-start:auto;margin-inline-start:auto;-webkit-margin-end:0;border-radius:var(--typo3-modal-border-radius);border-end-end-radius:0;border-start-end-radius:0;margin-inline-end:0;-webkit-border-after:var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);border-block-end:var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);-webkit-border-end:0;border-inline-end:0}
+@starting-style{
+.formeditor-inspector.modal.formeditor-inspector-sheet-end{inset-block-end:0;inset-inline-end:var(--typo3-modal-slide)}}
+.formeditor-inspector.modal.formeditor-inspector-sheet-end.modal-closing{inset-block-end:0;inset-inline-end:var(--typo3-modal-slide)}}
 .formeditor-inspector-inner{flex-grow:1;min-height:0;overflow:auto;padding:var(--module-body-padding)}
-.formeditor-inspector-collapse{border-bottom:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);display:flex;flex-shrink:0;justify-content:flex-end;padding:calc(var(--typo3-spacing)/2) var(--module-body-padding-x)}
-.formeditor-inspector-expand{display:inline-flex}
+.formeditor-inspector-header{align-items:center;background:var(--typo3-modal-bg);border-bottom:var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);display:none;flex-shrink:0;gap:.75rem;padding:.5rem 1rem}
+.formeditor-inspector-header-title{align-items:center;display:flex;flex:1;font-size:.875rem;font-weight:700;gap:.25rem;min-width:0;overflow:hidden;white-space:nowrap}
+.formeditor-inspector-header-title>span{overflow:hidden;text-overflow:ellipsis}
+@media (max-width:500px){
+.formeditor-inspector-header-button-label{-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;white-space:nowrap;width:1px}}
 .formeditor-inspector-content .input-group{flex-wrap:nowrap}
 .formeditor-inspector-content .input-group>:first-child{flex-grow:1}
 .formeditor-inspector-content .input-group>:first-child>*{border-end-end-radius:0;border-start-end-radius:0}
@@ -39,7 +52,8 @@ body:has(.formeditor-inspector-expanded){max-height:100dvh;overflow:hidden}}
 typo3-form-form-element-stage-item-toolbar{display:block}
 .formeditor-stage{border:1px dotted color-mix(in srgb,var(--module-bg),currentColor 30%);border-radius:var(--formeditor-stage-element-border-radius);margin-bottom:var(--typo3-spacing);overflow-x:auto;overflow-y:hidden;padding:var(--module-body-padding)}
 .formeditor-stage typo3-form-form-element-stage-item,.formeditor-stage typo3-form-page-stage-item{display:block}
-.formeditor-stage .formeditor-page-title{cursor:pointer;font-size:.875rem;font-weight:700;margin:0 0 var(--typo3-spacing)}
+.formeditor-stage .formeditor-page-header{align-items:center;display:flex;flex-wrap:wrap;gap:calc(var(--typo3-spacing)/2);justify-content:space-between;margin-bottom:var(--typo3-spacing)}
+.formeditor-stage .formeditor-page-title{cursor:pointer;font-size:.875rem;font-weight:700;margin:0}
 .formeditor-stage .formeditor-page-title:empty:before{content:attr(data-empty-message);opacity:.75}
 .formeditor-stage .formeditor-page-title:hover{text-decoration:underline;-webkit-text-decoration-color:color-mix(in srgb,currentColor,transparent 50%);text-decoration-color:color-mix(in srgb,currentColor,transparent 50%);text-underline-offset:.1em}
 .formeditor-stage-section{background-color:var(--typo3-surface-container-base);border-radius:calc(var(--formeditor-stage-element-border-radius) - 3px)}
@@ -91,18 +105,14 @@ typo3-form-form-element-stage-item[invalid] .formeditor-element-info-label{color
 .property-grid-editor__entry-inputs{flex:1}
 .property-grid-editor__entry-inputs div:last-child{margin-bottom:0}
 .property-grid-editor__entry-buttons{display:flex;flex-direction:column;gap:.25rem}
-.formeditor-module-viewmode-preview .formeditor-inspector-expand,.formeditor-module-viewmode-preview~.formeditor-inspector{display:none}
-@media (min-width:950px){
-.formeditor-module-viewmode-preview~.formeditor-inspector{display:flex;transform:translateX(100%);-webkit-margin-start:calc(var(--formeditor-module-inspector)*-1 - var(--formeditor-module-gap));margin-inline-start:calc(var(--formeditor-module-inspector)*-1 - var(--formeditor-module-gap));opacity:0}}
 .formeditor-module-viewmode-preview .formeditor-stage select[multiple=multiple]{height:auto;min-height:32px}
 .formeditor-module-viewmode-preview .formeditor-stage textarea{min-height:100px}
 .formeditor-module-viewmode-preview .formeditor-stage .container{width:auto}
 .formeditor-module-viewmode-preview .formeditor-stage .form-navigation .btn-group button,.formeditor-module-viewmode-preview .formeditor-stage .form-navigation .btn-group span{display:inline-flex;-webkit-margin-end:1em;margin-inline-end:1em}
 .formeditor-module-viewmode-preview .formeditor-stage .formeditor-element-preview{display:inline-block;position:relative;width:100%}
 .formeditor-module-viewmode-preview .formeditor-stage .formeditor-new-element-container{display:none}
-@media (min-width:950px){
-.formeditor-inner{align-items:flex-start;display:flex;gap:var(--formeditor-module-gap)}
-.formeditor-stage-container{overflow:visible}
-.formeditor-stage-container-inner{margin-inline:auto;max-width:800px}
-.formeditor-inspector{border-radius:var(--formeditor-inspector-border-radius);flex-shrink:0;height:auto;inset:auto;max-height:calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y)*2);position:-webkit-sticky;position:sticky;top:calc(1rem + var(--module-docheader-sticky-height));width:var(--formeditor-module-inspector);-webkit-border-end:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);border-inline-end:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);box-shadow:var(--formeditor-inspector-box-shadow);transform:none;transition:transform .3s ease-out,opacity .3s ease-out,margin .3s ease-out}
-.formeditor-inspector-collapse,.formeditor-inspector-expand{display:none}}
+.formeditor-docked .formeditor-inner{align-items:flex-start;display:flex;gap:var(--formeditor-module-gap)}
+.formeditor-docked .formeditor-stage-container{overflow:visible}
+.formeditor-docked .formeditor-stage-container-inner{margin-inline:auto;max-width:800px}
+.formeditor-docked .formeditor-inspector{background:var(--formeditor-inspector-bg);border:var(--formeditor-inspector-border-width) solid var(--formeditor-inspector-border-color);border-radius:var(--formeditor-inspector-border-radius);box-shadow:var(--formeditor-inspector-box-shadow);display:flex;flex-shrink:0;height:auto;inset:auto;isolation:isolate;margin:0;max-height:calc(100dvh - var(--module-docheader-height) - var(--module-body-padding-y)*2);max-width:none;overflow:hidden;padding:0;position:-webkit-sticky;position:sticky;top:calc(1rem + var(--module-docheader-sticky-height));transition:transform .3s ease-out,opacity .3s ease-out,margin .3s ease-out;width:var(--formeditor-module-inspector);z-index:var(--typo3-zindex-header)}
+.formeditor-docked .formeditor-module-viewmode-preview~.formeditor-inspector{transform:translateX(100%);-webkit-margin-start:calc(var(--formeditor-module-inspector)*-1 - var(--formeditor-module-gap));margin-inline-start:calc(var(--formeditor-module-inspector)*-1 - var(--formeditor-module-gap));opacity:0}

@@ -38,9 +38,15 @@ export class PageStageItem extends LitElement {
     const displayTitle = this.pageTitle || labels.get('formEditor.step.name.empty');
 
     return html`
-      <h2 class="formeditor-page-title">
-        ${displayTitle}
-      </h2>
+      <div class="formeditor-page-header">
+        <h2 class="formeditor-page-title">
+          ${displayTitle}
+        </h2>
+        <button type="button" class="btn btn-sm btn-default">
+          <typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>
+          ${labels.get('formEditor.stage.page.edit')}
+        </button>
+      </div>
     `;
   }
 }

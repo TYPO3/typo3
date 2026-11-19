@@ -23,21 +23,27 @@
                     </div>
                 </section>
             </div>
-            <section class="formeditor-inspector hidden" data-identifier="inspectorSection">
-                <div class="formeditor-inspector-collapse">
+            <dialog
+                class="formeditor-inspector hidden"
+                data-identifier="inspectorSection"
+                aria-labelledby="formeditorInspectorTitle"
+            >
+                <div class="formeditor-inspector-header">
+                    <div class="formeditor-inspector-header-title" id="formeditorInspectorTitle" data-identifier="inspectorTitle"></div>
                     <button
                         type="button"
-                        class="btn btn-default btn-sm"
+                        class="btn btn-default"
+                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_collapse_inspector')}"
                         data-identifier="formeditorInspectorCollapse"
                     >
-                        <core:icon identifier="actions-panel-expand-start" size="small" />
-                        {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_collapse_inspector')}
+                        <core:icon identifier="actions-close" size="small" />
+                        <span class="formeditor-inspector-header-button-label">{f:translate(key: 'core.common:close')}</span>
                     </button>
                 </div>
                 <div class="formeditor-inspector-inner">
                     <f:render section="Inspector" />
                 </div>
-            </section>
+            </dialog>
         </div>
     </div>
 </f:section>
@@ -54,14 +60,6 @@
             >
                 <core:icon identifier="actions-open" />
                 {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.edit_button')}
-            </button>
-            <button
-                type="button"
-                class="btn btn-sm btn-default formeditor-inspector-expand"
-                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_expand_inspector')}"
-                data-identifier="formeditorInspectorExpand"
-            >
-                <core:icon identifier="actions-panel-collapse-start" size="small" />
             </button>
         </div>
     </div>
