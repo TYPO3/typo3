@@ -707,6 +707,14 @@ class ContentObjectRenderer
                 $exception = new \Exception($exception->getMessage(), 1698347363, $exception);
             }
             $content = $exceptionHandler->handle($exception, $contentObject, $configuration);
+            $this->getRequest()->getAttribute('frontend.cache.instruction')?->disableCache(
+                sprintf(
+                    'EXT:frontend: Exception handled while rendering content object "%s": %s (%s)',
+                    $contentObject::class,
+                    $exception->getMessage(),
+                    $exception->getCode()
+                )
+            );
         }
 
         // Store cache

@@ -140,6 +140,40 @@ final class RequestHandlerTest extends AbstractTestCase
     }
 
     #[Test]
+    public function pageWithHandledContentObjectExceptionIsNotCached(): void
+    {
+        $internalRequest = new InternalRequest('https://website.local/default/welcome');
+        $internalRequest = $internalRequest->withInstructions([
+            (new TypoScriptInstruction())->withTypoScript([
+                'config.' => [
+                    'contentObjectExceptionHandler' => '1',
+                    'contentObjectExceptionHandler.' => [
+                        'errorMessage' => 'Content object failed: {code}',
+                    ],
+                ],
+                'page.' => [
+                    '10' => 'FLUIDTEMPLATE',
+                    '10.' => [
+                        'template' => 'TEXT',
+                        'template.' => [
+                            'value' => '<f:doesNotExist />',
+                        ],
+                    ],
+                ],
+            ]),
+        ]);
+
+        $firstResponse = $this->executeFrontendSubRequest($internalRequest);
+        self::assertStringContainsString('Content object failed: ', (string)$firstResponse->getBody());
+        self::assertSame('private, no-store', $firstResponse->getHeaderLine('Cache-Control'));
+        self::assertEmpty($firstResponse->getHeaderLine('Pragma'));
+
+        $secondResponse = $this->executeFrontendSubRequest($internalRequest);
+        self::assertEmpty($secondResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
+        self::assertSame('private, no-store', $secondResponse->getHeaderLine('Cache-Control'));
+    }
+
+    #[Test]
     public function nonceAttributesForAssetsAreUpdatedInCachedState(): void
     {
         $internalRequest = new InternalRequest('https://website.local/csp-enabled/features');
