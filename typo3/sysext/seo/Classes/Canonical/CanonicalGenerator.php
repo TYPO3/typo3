@@ -23,8 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\DocType;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -42,12 +41,12 @@ readonly class CanonicalGenerator
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        private PageRenderer $pageRenderer,
+        private MetaTagManagerRegistry $metaTagManagerRegistry,
         private RecordFactory $recordFactory,
         private PageRepository $pageRepository,
     ) {}
 
-    public function generate(array $params): string
+    public function generate(array $params): void
     {
         /** @var ServerRequestInterface $request */
         $request = $params['request'];
@@ -85,15 +84,8 @@ readonly class CanonicalGenerator
         }
 
         if ($href !== '') {
-            $docType = DocType::createFromConfigurationKey($typoScriptConfigArray['doctype'] ?? '');
-            $canonical = '<link ' . GeneralUtility::implodeAttributes([
-                'rel' => 'canonical',
-                'href' => $href,
-            ], true) . ($docType->isXmlCompliant() ? '/' : '') . '>' . LF;
-            $this->pageRenderer->addHeaderData($canonical);
-            return $canonical;
+            $this->metaTagManagerRegistry->getManagerForProperty('canonical')->addProperty('canonical', $href, [], true);
         }
-        return '';
     }
 
     protected function checkForCanonicalLink(ServerRequestInterface $request): string

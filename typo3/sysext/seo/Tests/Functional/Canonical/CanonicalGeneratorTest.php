@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\TestCanonicalPlugin\CanonicalPluginController;
 
 final class CanonicalGeneratorTest extends FunctionalTestCase
 {
@@ -42,6 +44,22 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
     ];
 
     protected array $coreExtensionsToLoad = ['seo'];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/seo/Tests/Functional/Fixtures/Extensions/test_canonical_plugin',
+    ];
+
+    protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    'pages' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                ],
+            ],
+        ],
+    ];
 
     protected function setUp(): void
     {
@@ -210,14 +228,51 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         self::assertSame(1706104147, $modifyUrlForCanonicalTagEvent->getCanonicalGenerationDisabledException()->getCode());
     }
 
-    private function buildPageTypoScript(): TypoScriptInstruction
+    #[Test]
+    public function uncachedPluginOverridesCanonicalUrlOnCacheMissAndCacheHit(): void
+    {
+        $request = new InternalRequest('http://localhost/dummy-1-2-5')->withInstructions([
+            $this->buildPageTypoScript([
+                '20' => 'USER_INT',
+                '20.' => [
+                    'userFunc' => CanonicalPluginController::class . '->setCanonical',
+                    'canonical' => 'https://example.com/from-uncached-plugin',
+                ],
+            ]),
+        ]);
+        foreach (['cache miss', 'cache hit'] as $run) {
+            $body = (string)$this->executeFrontendSubRequest($request)->getBody();
+            self::assertStringContainsString('canonical plugin', $body, $run);
+            self::assertSame(1, substr_count($body, 'rel="canonical"'), $run);
+            self::assertStringContainsString('<link rel="canonical" href="https://example.com/from-uncached-plugin">', $body, $run);
+        }
+    }
+
+    #[Test]
+    public function uncachedPluginRemovesCanonicalUrlOnCacheMissAndCacheHit(): void
+    {
+        $request = new InternalRequest('http://localhost/dummy-1-2-5')->withInstructions([
+            $this->buildPageTypoScript([
+                '20' => 'USER_INT',
+                '20.' => [
+                    'userFunc' => CanonicalPluginController::class . '->setCanonical',
+                    'canonical' => '',
+                ],
+            ]),
+        ]);
+        foreach (['cache miss', 'cache hit'] as $run) {
+            $body = (string)$this->executeFrontendSubRequest($request)->getBody();
+            self::assertStringContainsString('canonical plugin', $body, $run);
+            self::assertStringNotContainsString('rel="canonical"', $body, $run);
+        }
+    }
+
+    private function buildPageTypoScript(array $pageObjects = []): TypoScriptInstruction
     {
         return new TypoScriptInstruction()
             ->withTypoScript([
                 'page' => 'PAGE',
-                'page.' => [
-                    'typeNum' => 0,
-                ],
+                'page.' => array_replace(['typeNum' => 0], $pageObjects),
             ]);
     }
 }

@@ -332,6 +332,7 @@
 			"TYPO3Tests\\TestSecurityVoter\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_security_voter/Classes/",
 			"TYPO3Tests\\TestModuleAccessGateOverride\\": "typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_module_access_gate_override/Classes/",
 			"TYPO3Tests\\TestSitemapLegacyProvider\\": "typo3/sysext/seo/Tests/Functional/Fixtures/Extensions/test_sitemap_legacy_provider/Classes/",
+			"TYPO3Tests\\TestCanonicalPlugin\\": "typo3/sysext/seo/Tests/Functional/Fixtures/Extensions/test_canonical_plugin/Classes/",
 			"TYPO3Tests\\TestStartingpoint\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_startingpoint/Classes/",
 			"TYPO3Tests\\TestFluidTemplate\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Classes/",
 			"TYPO3Tests\\TestIndexingEvents\\": "typo3/sysext/indexed_search/Tests/Functional/Fixtures/Extensions/test_indexing_events/Classes/",
