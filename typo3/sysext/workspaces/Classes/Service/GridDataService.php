@@ -454,7 +454,8 @@ readonly class GridDataService
                 }
 
                 $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
-                $pageId = (int)($record['pid'] ?? null);
+                // Moved records come without "pid", their target page is "wspid"
+                $pageId = (int)($record['pid'] ?? $record['wspid'] ?? 0);
                 if ($table === 'pages') {
                     // The page ID for a translated page is considered here
                     $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
