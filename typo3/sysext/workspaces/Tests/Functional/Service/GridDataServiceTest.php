@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
 use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceStageRepository;
 use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
@@ -33,6 +34,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class GridDataServiceTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    protected const array LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en'],
+        'SQ' => ['id' => 0, 'title' => 'Albanian', 'locale' => 'sq_AL.UTF8', 'iso' => 'sq'],
+    ];
+
     protected array $coreExtensionsToLoad = ['workspaces'];
     private ?BackendUserAuthentication $backendUser = null;
 
@@ -225,6 +233,39 @@ final class GridDataServiceTest extends FunctionalTestCase
             ['group' => 'custom', 'icon' => 'actions-clock', 'title' => 'Schedule publication'],
             $actions['schedule']
         );
+    }
+
+    public static function languageOfMovedRecordsDataProvider(): \Generator
+    {
+        yield 'record moved on the English site' => ['identifier' => 'tt_content:102', 'expectedLanguage' => 'English'];
+        yield 'record moved on the Albanian site' => ['identifier' => 'tt_content:203', 'expectedLanguage' => 'Albanian'];
+    }
+
+    /**
+     * Moved records come without "pid", only with "wspid" and "livepid". The language must still be
+     * resolved from the site of the record, not from all sites: the site "albania" comes first in
+     * the alphabetical order of the site identifiers and must not win for a record of "main".
+     */
+    #[Test]
+    #[DataProvider('languageOfMovedRecordsDataProvider')]
+    public function generateGridListFromVersionsShowsTheLanguageOfTheSiteAMovedRecordBelongsTo(string $identifier, string $expectedLanguage): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/GridData/tt_content-moved.csv');
+        $this->writeSiteConfiguration(
+            'main',
+            $this->buildSiteConfiguration(1, 'https://example.com/'),
+            [$this->buildDefaultLanguageConfiguration('EN', 'https://example.com/')],
+        );
+        $this->writeSiteConfiguration(
+            'albania',
+            $this->buildSiteConfiguration(10, 'https://example.al/'),
+            [$this->buildDefaultLanguageConfiguration('SQ', 'https://example.al/')],
+        );
+
+        $result = $this->generateGridList();
+
+        $rows = array_column($result['data'], null, 'id');
+        self::assertSame($expectedLanguage, $rows[$identifier]['language']['title']);
     }
 
     /**
