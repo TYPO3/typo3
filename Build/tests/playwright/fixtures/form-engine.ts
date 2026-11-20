@@ -1,4 +1,4 @@
-import { Page, expect, Locator, FrameLocator } from '@playwright/test';
+import { Page, expect, Locator, FrameLocator, test } from '@playwright/test';
 import { moduleLoaded } from './module-loaded';
 
 export type ElementsBasicInputTestData = {
@@ -101,29 +101,33 @@ export class FormEngine {
     await assertAfterSave();
   }
 
-  /**
-   * Fill and verify a field, then return the assertions to run after saving.
-   */
-  async prepareInputFieldTest(
-    data: ElementsBasicInputTestData,
+  async runBatchedInputFieldTests(
+    cases: ElementsBasicInputTestData[],
     options: { datepicker?: boolean } = {},
-  ): Promise<() => Promise<void>> {
-    const datepicker = options.datepicker === true;
-
-    await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
-    const { visible, hidden } = await this.resolveElementsBasicFields(data.label, datepicker);
-
-    await this.fillElementsBasicField(visible, data.inputValue);
-
-    await expect(visible).toHaveValue(data.expectedValue);
-    await expect(hidden).toHaveValue(data.expectedInternalValue);
-
-    return async () => {
-      await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
-      const expectedVisibleAfterSave = data.expectedInternalValueAfterSave ?? data.expectedValue;
-      await expect(visible).toHaveValue(expectedVisibleAfterSave);
-      await expect(hidden).toHaveValue(data.expectedValueAfterSave);
+  ): Promise<void> {
+    const pending = new Map<string, () => Promise<void>>();
+    const saveAndAssert = async () => {
+      await test.step('Save fields', () => this.save());
+      for (const assertAfterSave of pending.values()) {
+        await assertAfterSave();
+      }
+      pending.clear();
     };
+
+    for (const [index, data] of cases.entries()) {
+      // Save before overwriting a field whose persisted value still needs checking.
+      if (pending.has(data.label)) {
+        await saveAndAssert();
+      }
+      const caseName = `[${index}] ${data.label}: ${data.inputValue || '<empty>'}`;
+      const assertAfterSave = await test.step(`Before save ${caseName}`, () =>
+        this.prepareInputFieldTest(data, options)
+      );
+      pending.set(data.label, () => test.step(`After save ${caseName}`, assertAfterSave));
+    }
+    if (pending.size > 0) {
+      await saveAndAssert();
+    }
   }
 
   /**
@@ -192,6 +196,31 @@ export class FormEngine {
     return this.contentFrame.locator(
       `xpath=(//code[contains(text(),"[${label}]")]/..)[1]/ancestor::fieldset[@class="form-section"][1]`
     );
+  }
+
+  /**
+   * Fill and verify a field, then return the assertions to run after saving.
+   */
+  private async prepareInputFieldTest(
+    data: ElementsBasicInputTestData,
+    options: { datepicker?: boolean } = {},
+  ): Promise<() => Promise<void>> {
+    const datepicker = options.datepicker === true;
+
+    await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
+    const { visible, hidden } = await this.resolveElementsBasicFields(data.label, datepicker);
+
+    await this.fillElementsBasicField(visible, data.inputValue);
+
+    await expect(visible).toHaveValue(data.expectedValue);
+    await expect(hidden).toHaveValue(data.expectedInternalValue);
+
+    return async () => {
+      await this.waitForElementsBasicFieldInitialized(data.label, datepicker);
+      const expectedVisibleAfterSave = data.expectedInternalValueAfterSave ?? data.expectedValue;
+      await expect(visible).toHaveValue(expectedVisibleAfterSave);
+      await expect(hidden).toHaveValue(data.expectedValueAfterSave);
+    };
   }
 
   private async resolveElementsBasicFields(label: string, datepicker: boolean): Promise<{ visible: Locator, hidden: Locator }> {

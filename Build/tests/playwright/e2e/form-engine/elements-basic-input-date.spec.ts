@@ -363,27 +363,6 @@ const groups: { name: string, cases: ElementsBasicInputTestData[] }[] = [
 
 for (const group of groups) {
   test(`elements_basic ${group.name}`, async ({ backend }) => {
-    const formEngine = backend.formEngine;
-    const pending = new Map<string, () => Promise<void>>();
-    const saveAndAssert = async () => {
-      await formEngine.save();
-      for (const assertAfterSave of pending.values()) {
-        await assertAfterSave();
-      }
-      pending.clear();
-    };
-
-    for (const [index, data] of group.cases.entries()) {
-      // Save before overwriting a field whose persisted value still needs checking.
-      if (pending.has(data.label)) {
-        await saveAndAssert();
-      }
-      const caseName = `[${index}] ${data.label}: ${data.inputValue || '<empty>'}`;
-      const assertAfterSave = await test.step(`Before save ${caseName}`, () =>
-        formEngine.prepareInputFieldTest(data, { datepicker: true })
-      );
-      pending.set(data.label, () => test.step(`After save ${caseName}`, assertAfterSave));
-    }
-    await saveAndAssert();
+    await backend.formEngine.runBatchedInputFieldTests(group.cases, { datepicker: true });
   });
 }
