@@ -131,8 +131,9 @@ class SearchController extends ActionController
             $searchData['sections'] = $searchData['_sections'];
         }
         // If "_sections" is set, this value overrides any existing value.
-        if (($searchData['_freeIndexUid'] ?? '') !== '' && ($searchData['_freeIndexUid'] ?? '') !== '_') {
-            $searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
+        $freeIndexUid = $searchData['_freeIndexUid'] ?? '';
+        if ($freeIndexUid !== '' && $freeIndexUid !== '_') {
+            $searchData['freeIndexUid'] = $freeIndexUid;
         }
         $searchData['numberOfResults'] = $this->getNumberOfResults((int)($searchData['numberOfResults'] ?? 0));
         // This gets the search-words into the $searchWordArray
