@@ -8,6 +8,19 @@ import type { BackendPage } from '../../fixtures/backend-page';
 // close the sheet instead of loading the target behind it.
 
 const contentFromPidField = 'select[data-formengine-input-name$="[content_from_pid]"]';
+let fixturePageId: string | undefined;
+
+async function openFixturePage(backend: BackendPage): Promise<void> {
+  await backend.gotoModule('web_layout', fixturePageId);
+  if (fixturePageId === undefined) {
+    const node = await backend.pageTree.open('styleguide TCA demo', 'elements group');
+    const pageId = await node.getAttribute('data-id');
+    if (pageId === null || !/^[1-9]\d*$/.test(pageId)) {
+      throw new Error('Could not determine the elements group fixture page ID');
+    }
+    fixturePageId = pageId;
+  }
+}
 
 async function openPagePropertiesSheet(backend: BackendPage, page: Page): Promise<Locator> {
   await backend.contentFrame.locator('typo3-backend-contextual-record-edit-trigger[context="pages"]').click();
@@ -35,8 +48,7 @@ async function expectRecordSaved(page: Page): Promise<void> {
 
 test.describe.serial('context menu in the contextual record edit sheet', () => {
   test.beforeEach(async ({ backend }) => {
-    await backend.gotoModule('web_layout');
-    await backend.pageTree.open('styleguide TCA demo', 'elements group');
+    await openFixturePage(backend);
   });
 
   test('a record referenced in the sheet gets a usable context menu', async ({ backend, page }) => {
@@ -291,8 +303,7 @@ test.describe.serial('context menu in the contextual record edit sheet', () => {
     });
 
     await test.step('clean up the reference', async () => {
-      await backend.gotoModule('web_layout');
-      await backend.pageTree.open('styleguide TCA demo', 'elements group');
+      await openFixturePage(backend);
       sheet = await openPagePropertiesSheet(backend, page);
       await sheet.locator(contentFromPidField).selectOption({ index: 0 });
       await sheet.locator(`.form-section:has(${contentFromPidField}) .t3js-btn-removeoption`).click();

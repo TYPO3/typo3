@@ -42,8 +42,12 @@ export class BackendPage {
     this.sidebar = new Sidebar(page);
   }
 
-  async gotoModule(identifier: string) {
-    await this.page.goto(`?redirect=${encodeURIComponent(identifier)}`);
+  async gotoModule(identifier: string, pageId?: string) {
+    const query = new URLSearchParams({ redirect: identifier });
+    if (pageId !== undefined) {
+      query.set('redirectParams[id]', pageId);
+    }
+    await this.page.goto(`?${query}`);
     const activeModule = this.page.locator(`a[data-modulemenu-identifier="${identifier}"].modulemenu-action-active`);
     // Protected modules request sudo verification before becoming active.
     const verificationDialog = this.page.getByRole('dialog', { name: 'Verify with user password' });
