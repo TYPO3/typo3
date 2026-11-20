@@ -16,8 +16,8 @@ body {
     --textmedia-meta-color: var(--color-neutral-70);
     --textmedia-text-color: var(--color-neutral-90);
     --textmedia-teaser-border-color-focus: var(--color-neutral-10);
-    --textmedia-teaser-outline-focus: var(--color-neutral-70);
-    --textmedia-teaser-background-color-focus: var(--color-neutral-100);
+    --textmedia-teaser-outline-focus: var(--color-neutral-0);
+    --textmedia-teaser-outline-focus-inner: var(--color-neutral-90);
 
     --image-border-radius: var(--corners-l) var(--corners-l) 0 0;
     --image-object-fit: cover;
@@ -113,7 +113,6 @@ body {
     }
 
     &:focus-visible {
-        background: var(--textmedia-teaser-background-color-focus);
         border-color: var(--textmedia-teaser-border-color-focus);
 
         .button {
@@ -127,11 +126,13 @@ body {
             the image transformation scales the image and visible overlaps the outline.
         */
         outline: none;
+        box-shadow: none;
         &::after {
             content: '';
             position: absolute;
             inset: 0;
             border: 2px solid var(--textmedia-teaser-outline-focus);
+            box-shadow: inset 0 0 0 2px var(--textmedia-teaser-outline-focus-inner);
             border-radius: var(--corners-l);
             pointer-events: none;
             z-index: 10;
