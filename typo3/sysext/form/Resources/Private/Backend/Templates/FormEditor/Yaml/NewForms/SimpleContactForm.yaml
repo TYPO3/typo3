@@ -20,6 +20,11 @@ finishers:
       translation:
         language: ''
       title: 'New contact form request'
+  -
+    identifier: Confirmation
+    options:
+      message: 'Thank you for your message. We will get back to you as soon as possible.'
+      contentElementUid: ''
 
 renderables:
   -
@@ -35,7 +40,6 @@ renderables:
         type: Text
         properties:
           fluidAdditionalAttributes:
-            placeholder: 'Name'
             autocomplete: name
             required: required
         validators:
@@ -48,7 +52,6 @@ renderables:
         type: Text
         properties:
           fluidAdditionalAttributes:
-            placeholder: 'Subject'
             required: required
         validators:
           -
@@ -60,7 +63,6 @@ renderables:
         type: Email
         properties:
           fluidAdditionalAttributes:
-            placeholder: 'Email address'
             autocomplete: email
             required: required
         validators:
@@ -70,12 +72,29 @@ renderables:
             identifier: EmailAddress
       -
         defaultValue: ''
+        identifier: phone
+        label: 'Phone'
+        type: Telephone
+        properties:
+          fluidAdditionalAttributes:
+            autocomplete: tel
+      -
+        defaultValue: ''
         identifier: message
         label: 'Message'
         type: Textarea
         properties:
           fluidAdditionalAttributes:
-            placeholder: ''
+            required: required
+        validators:
+          -
+            identifier: NotEmpty
+      -
+        identifier: consent
+        label: 'I agree that my details from this form are processed to answer my request. More information can be found in our privacy policy.'
+        type: Checkbox
+        properties:
+          fluidAdditionalAttributes:
             required: required
         validators:
           -
