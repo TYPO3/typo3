@@ -75,6 +75,7 @@ const setupMessageHandling = (modal: ModalElement, focusTarget: HTMLElement | nu
   let savedRecord = '';
   let hasSaved = false;
   let closeConfirmed = false;
+  let navigated = false;
   const messageHandler = (event: MessageEvent): void => {
     if (event.origin !== window.location.origin) {
       return;
@@ -93,6 +94,7 @@ const setupMessageHandling = (modal: ModalElement, focusTarget: HTMLElement | nu
     }
     if (event.data?.actionName === 'typo3:editform:navigate') {
       closeConfirmed = true;
+      navigated = true;
       modal.hideModal();
     }
   };
@@ -120,7 +122,8 @@ const setupMessageHandling = (modal: ModalElement, focusTarget: HTMLElement | nu
         window.location.origin
       );
       topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-      if (topWindow.TYPO3?.Backend?.ContentContainer) {
+      // A navigation loads the content frame anew, and a reload would cancel it
+      if (!navigated && topWindow.TYPO3?.Backend?.ContentContainer) {
         topWindow.TYPO3.Backend.ContentContainer.refresh();
       }
       Notification.success(
