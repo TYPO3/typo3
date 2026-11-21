@@ -3695,9 +3695,6 @@ class ContentObjectRenderer
                             $retVal = $this->getRequest()->getAttribute('frontend.register.stack')->current()->get($key);
                         }
                         break;
-                    case 'global':
-                        $retVal = $this->getGlobal($key);
-                        break;
                     case 'level':
                         $localRootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
                         $retVal = count($localRootLine) - 1;
@@ -3996,24 +3993,22 @@ class ContentObjectRenderer
 
     /**
      * Return global variable where the input string $var defines array keys separated by "|"
-     * Example: $var = "HTTP_SERVER_VARS | something" will return the value $GLOBALS['HTTP_SERVER_VARS']['something'] value
      *
      * @param string $keyString Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
-     * @param array $source Alternative array than $GLOBAL to get variables from.
+     * @param array $source array to get variables from.
      * @return float|int|string Whatever value. If none, then blank string.
      */
-    public function getGlobal($keyString, $source = null)
+    public function getGlobal($keyString, array $source)
     {
         $keys = GeneralUtility::trimExplode('|', $keyString);
         // remove the first key, as this is only used for finding the original value
         $rootKey = array_shift($keys);
-        $value = isset($source) ? ($source[$rootKey] ?? '') : ($GLOBALS[$rootKey] ?? '');
+        $value = $source[$rootKey] ?? '';
         return $this->getValueFromRecursiveData($keys, $value);
     }
 
     /**
-     * This method recursively checks for values in methods, arrays, objects, but
-     * does not fall back to $GLOBALS object instead of getGlobal().
+     * This method recursively checks for values in methods, arrays, objects.
      */
     protected function getValueFromRecursiveData(array $keys, mixed $startValue): int|float|string
     {

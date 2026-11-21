@@ -3794,31 +3794,6 @@ content="benni">',
                         'something' => 'foo',
                     ],
                 ],
-                null,
-            ],
-            'simple source fallback' => [
-                'foo',
-                'HTTP_SERVER_VARS | something',
-                null,
-                [
-                    'HTTP_SERVER_VARS' => [
-                        'something' => 'foo',
-                    ],
-                ],
-            ],
-            'globals ignored if source given' => [
-                '',
-                'HTTP_SERVER_VARS | something',
-                [
-                    'HTTP_SERVER_VARS' => [
-                        'something' => 'foo',
-                    ],
-                ],
-                [
-                    'HTTP_SERVER_VARS' => [
-                        'something-else' => 'foo',
-                    ],
-                ],
             ],
             'sub array is returned as empty string' => [
                 '',
@@ -3828,22 +3803,10 @@ content="benni">',
                         'something' => ['foo'],
                     ],
                 ],
-                null,
-            ],
-            'does not exist' => [
-                '',
-                'HTTP_SERVER_VARS | something',
-                [
-                    'HTTP_SERVER_VARS' => [
-                        'something-else' => 'foo',
-                    ],
-                ],
-                null,
             ],
             'does not exist in source' => [
                 '',
                 'HTTP_SERVER_VARS | something',
-                null,
                 [
                     'HTTP_SERVER_VARS' => [
                         'something-else' => 'foo',
@@ -3855,12 +3818,8 @@ content="benni">',
 
     #[DataProvider('getGlobalDataProvider')]
     #[Test]
-    public function getGlobalReturnsExpectedResult(mixed $expected, string $key, ?array $globals, ?array $source): void
+    public function getGlobalReturnsExpectedResult(mixed $expected, string $key, array $source): void
     {
-        if (isset($globals['HTTP_SERVER_VARS'])) {
-            // Note we can't simply $GLOBALS = $globals, since phpunit backupGlobals works on existing array keys.
-            $GLOBALS['HTTP_SERVER_VARS'] = $globals['HTTP_SERVER_VARS'];
-        }
         self::assertSame($expected, $this->get(ContentObjectRenderer::class)->getGlobal($key, $source));
     }
 
@@ -6088,6 +6047,25 @@ content="benni">',
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $subject->setRequest($request);
         self::assertEquals('123.45.67.89', $subject->getData('getindpenv:REMOTE_ADDR', []));
+    }
+
+    public static function getDataWithTypeGlobalReturnsEmptyStringDataProvider(): array
+    {
+        return [
+            'TYPO3_CONF_VARS' => ['global:TYPO3_CONF_VARS|SYS|sitename'],
+            'PHP superglobal' => ['global:_SERVER|TYPO3_FRONTEND_TEST_GLOBAL'],
+        ];
+    }
+
+    #[DataProvider('getDataWithTypeGlobalReturnsEmptyStringDataProvider')]
+    #[Test]
+    public function getDataWithTypeGlobalReturnsEmptyString(string $identifier): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'typo3.site';
+        $_SERVER['TYPO3_FRONTEND_TEST_GLOBAL'] = 'typo3.site';
+        $result = $this->get(ContentObjectRenderer::class)->getData($identifier, []);
+        unset($_SERVER['TYPO3_FRONTEND_TEST_GLOBAL']);
+        self::assertSame('', $result);
     }
 
     #[Test]
