@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { defineConfig } from '@playwright/test';
-import config from './tests/playwright/config';
-import * as os from "node:os";
+import config from './config';
+import * as os from 'node:os';
 
 // Limit concurrency locally to a sane level, 4 workers max for now
 let worker = Math.round(os.cpus().length / 2);
@@ -10,7 +10,7 @@ if(worker > 4) {
 }
 
 export default defineConfig({
-  testDir: './tests/playwright',
+  testDir: '.',
   timeout: 30 * 1000,
   expect: {
     timeout: 10000
@@ -26,7 +26,7 @@ export default defineConfig({
     [
       'html',
       {
-        outputFolder: '../typo3temp/var/tests/playwright-reports'
+        outputFolder: '../../../typo3temp/var/tests/playwright-reports'
       }
     ]
   ],
@@ -67,5 +67,5 @@ export default defineConfig({
       },
     },
   ],
-  outputDir: '../typo3temp/var/tests/playwright-results'
+  outputDir: '../../../typo3temp/var/tests/playwright-results'
 });

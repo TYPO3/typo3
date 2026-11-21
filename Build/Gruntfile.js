@@ -282,7 +282,8 @@ module.exports = function (grunt) {
         src: [
           '<%= paths.typescript %>/**/*.ts',
           './types/**/*.ts',
-          '<%= paths.playwright %>/**/*.ts'
+          '<%= paths.playwright %>/**/*.ts',
+          '!<%= paths.playwright %>node_modules/**'
         ]
       }
     },

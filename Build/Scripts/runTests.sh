@@ -226,6 +226,18 @@ getPhpImageVersion() {
     esac
 }
 
+installPlaywrightDependencies() {
+    if [[ ! -x "${PLAYWRIGHT_PACKAGE}/node_modules/.bin/playwright" ]]; then
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
+            -e HOME=${CORE_ROOT}/.cache \
+            ${IMAGE_NODEJS_CHROME} \
+            npm --prefix="${PLAYWRIGHT_PACKAGE}" ci
+        if [[ $? -ne 0 ]]; then
+            kill -SIGINT -$$
+        fi
+    fi
+}
+
 # @todo: Add support for all available database engines (see -d option)
 runPlaywright() {
     PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
@@ -254,13 +266,7 @@ runPlaywright() {
         fi
     fi
 
-    [[ -e "${CORE_ROOT}/Build/node_modules/.bin/playwright" ]] || ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
-        -e HOME=${CORE_ROOT}/.cache \
-        ${IMAGE_NODEJS_CHROME} \
-        npm --prefix=Build ci
-        if [[ $? -gt 0 ]]; then
-            kill -SIGINT -$$
-        fi
+    installPlaywrightDependencies
 
     APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${PLAYWRIGHT_DOCROOT} -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 || ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
@@ -290,8 +296,8 @@ runPlaywright() {
     # They must come before "--project", which Playwright parses as a variadic
     # option that would otherwise swallow a following file path as another project name.
     # Arrays keep an argument containing spaces, e.g. --grep "a pattern", in one piece.
-    COMMAND=(npm "--prefix=${CORE_ROOT}/Build" run playwright:run -- "$@" ${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD})
-    COMMAND_UI=(npm "--prefix=${CORE_ROOT}/Build" run playwright:open -- "$@" ${PLAYWRIGHT_PROJECT})
+    COMMAND=(npm "--prefix=${PLAYWRIGHT_PACKAGE}" run playwright:run -- "$@" ${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD})
+    COMMAND_UI=(npm "--prefix=${PLAYWRIGHT_PACKAGE}" run playwright:open -- "$@" ${PLAYWRIGHT_PROJECT})
     PLAYWRIGHT_GUI_PORT=43837
 
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
@@ -362,13 +368,7 @@ runPlaywrightInstall() {
         kill -SIGINT -$$
     fi
 
-    [[ -e "${CORE_ROOT}/Build/node_modules/.bin/playwright" ]] || ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
-        -e HOME=${CORE_ROOT}/.cache \
-        ${IMAGE_NODEJS_CHROME} \
-        npm --prefix=Build ci
-        if [[ $? -gt 0 ]]; then
-            kill -SIGINT -$$
-        fi
+    installPlaywrightDependencies
 
     INSTALL_ENV=""
     PLAYWRIGHT_INSTALL_SPEC=""
@@ -434,8 +434,8 @@ runPlaywrightInstall() {
 
     waitFor phpfpm 9000 web 80
 
-    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
-    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
+    COMMAND="npm --prefix=${PLAYWRIGHT_PACKAGE} run playwright:run -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
+    COMMAND_UI="npm --prefix=${PLAYWRIGHT_PACKAGE} run playwright:open -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
     PLAYWRIGHT_GUI_PORT=43837
 
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
@@ -947,6 +947,7 @@ THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 cd "$THIS_SCRIPT_DIR" || exit 1
 cd ../../ || exit 1
 CORE_ROOT="${PWD}"
+PLAYWRIGHT_PACKAGE="${CORE_ROOT}/Build/tests/playwright"
 
 # Default variables
 TEST_SUITE="unit"
@@ -1102,6 +1103,7 @@ IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\./
 
 IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs24:1.1"
 IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs24-chrome:1.1"
+# Keep the Playwright version in sync with Build/tests/playwright/package.json
 IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.56.1-noble"
 IMAGE_REDIS="docker.io/redis:8-alpine"
 IMAGE_MEMCACHED="docker.io/memcached:1.6-alpine"

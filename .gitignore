@@ -36,12 +36,13 @@ nbproject
 #
 # Ignore build stuff
 /.ddev/*
-/Build/.auth
 /Build/.cache
 /Build/phpunit/FunctionalTests-Job-*
 /Build/phpunit/.phpunit.cache
 /Build/bower_components/*
 /Build/node_modules/*
+/Build/tests/playwright/.auth/
+/Build/tests/playwright/node_modules/
 /Build/JavaScript
 !/Build/typings/no-def*
 /typo3/sysext/*/Resources/Private/TypeScript/*.js

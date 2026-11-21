@@ -1,0 +1,15 @@
+{
+	"name": "typo3-core-e2e",
+	"private": true,
+	"scripts": {
+		"playwright:install": "playwright install",
+		"playwright:open": "playwright test --ui",
+		"playwright:run": "playwright test",
+		"playwright:codegen": "playwright codegen --ignore-https-errors"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "4.9.1",
+		"@playwright/test": "1.56.1",
+		"otpauth": "9.5.1"
+	}
+}
