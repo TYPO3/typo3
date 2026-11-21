@@ -1,3 +1,4 @@
+import type { Cookie } from '@playwright/test';
 import { test, expect, INSTALL_TOOL_PASSWORD } from '../../fixtures/install-tool';
 
 // The e2e project depends on the login helper which stores the backend session.
@@ -427,11 +428,21 @@ test.describe('Install Tool', () => {
   });
 
   test.describe('Environment', () => {
-    test.beforeEach(async ({ installTool }) => {
+    // Reuse authentication across fresh browser contexts in this read-only group.
+    let sessionCookie: Cookie | undefined;
+
+    test.beforeEach(async ({ installTool, context }) => {
       await installTool.enable();
+      if (sessionCookie !== undefined) {
+        await context.addCookies([sessionCookie]);
+      }
       await installTool.goto();
-      await installTool.login();
+      if (sessionCookie === undefined) {
+        await installTool.login();
+      }
       await installTool.navigateTo('Environment');
+      sessionCookie = (await context.cookies()).find(({ name }) => name === 'Typo3InstallTool');
+      expect(sessionCookie).toBeDefined();
     });
 
     const cardsWithModals = [
