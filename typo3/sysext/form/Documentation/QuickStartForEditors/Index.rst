@@ -30,3 +30,36 @@ to get started quickly? Follow these steps:
     #.  Repeat steps 2 to 5 to insert the form on further pages.
 
 View your form on your web site. Enjoy!
+
+..  _quickstarteditors-edit-in-form-editor:
+
+Changing the form from the content element
+==========================================
+
+..  versionadded:: 15.0
+    :changelog: feature-111457-1794680900
+
+    Before, you had to open the :guilabel:`Forms` module and find the form
+    again to change it.
+
+..  figure:: /Images/FormPluginEditInFormEditor.png
+    :alt: Tab "Plugin" of the content element "Contact form", with the form
+        definition "Contact (1)" selected and the button "Edit in form
+        editor" below it
+
+    The button below the form definition opens the selected form.
+
+To change the form of a form content element, open the content element and
+go to the tab :guilabel:`Plugin`. Click :guilabel:`Edit in form editor`
+below the form definition. The form editor opens the selected form. When
+you close the form editor, you return to the content element.
+
+A change in the form editor affects every content element that uses the
+form. If more than one content element uses it, a notice below the button
+says how many.
+
+In a workspace, a notice says that forms are not versioned. A change in the
+form editor is visible on the website immediately.
+
+If you do not see the button, you may not edit the form. Ask your
+administrator for access to the form editor.
