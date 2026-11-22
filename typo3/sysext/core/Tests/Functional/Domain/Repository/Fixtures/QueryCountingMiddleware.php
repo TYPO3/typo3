@@ -44,11 +44,13 @@ final class QueryCountingMiddleware implements Middleware
                         QueryCountingMiddleware::$count++;
                         return parent::prepare($sql);
                     }
+
                     public function query(string $sql): Result
                     {
                         QueryCountingMiddleware::$count++;
                         return parent::query($sql);
                     }
+
                     public function exec(string $sql): int|string
                     {
                         QueryCountingMiddleware::$count++;

@@ -80,6 +80,7 @@ final class DatabaseIntegrityCheckTest extends FunctionalTestCase
         self::assertSame(1, $statistics['hidden']);
         self::assertSame([1 => 8, 254 => 1], $statistics['doktype']);
     }
+
     #[Test]
     public function genTreeUsesOneQuery(): void
     {

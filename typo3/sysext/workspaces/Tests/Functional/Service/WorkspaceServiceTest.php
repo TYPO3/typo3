@@ -83,6 +83,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         sort($livePageIds);
         self::assertSame([2, 3, 4, 6, 6], $livePageIds);
     }
+
     #[Test]
     public function versionsCanBeRequestedForAPageThatWasCreatedAndDeletedInTheWorkspace(): void
     {
