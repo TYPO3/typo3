@@ -46,6 +46,42 @@ or Atom feed.
 #.  Configure the feed URL (RSS or Atom), limit, and label as needed
 #.  Save the configuration to apply changes
 
+..  _rss-widget-allowed-hosts:
+
+Restricting the hosts of the feeds
+----------------------------------
+
+..  versionadded:: 14.3.12
+    :changelog: important-110471-1792652849
+
+    Before, the widget also read feeds from other sources, such as local
+    files, and the settings of a widget could override the feed URL of the
+    widget registration.
+
+The RSS widget fetches feeds over HTTP and HTTPS only.
+
+By default, the widget can request any host. A backend user who can
+configure an RSS widget can therefore make the server send requests to any
+host, also to hosts in an internal network. Restrict the hosts in
+:php:`$GLOBALS['TYPO3_CONF_VARS']['HTTP']['allowed_hosts']['dashboard_rss']`.
+Allow only the hosts of the feeds that your dashboards use:
+
+..  code-block:: php
+    :caption: config/system/additional.php
+
+    $GLOBALS['TYPO3_CONF_VARS']['HTTP']['allowed_hosts']['dashboard_rss'] = [
+      // Hosts of the TYPO3 news feed
+      'typo3.org',
+      'news.typo3.com',
+    ];
+
+The restriction applies to every feed request, also to redirect targets and
+to the feed URL of a widget registration. If a host is not allowed, the
+widget does not load the feed and shows a notice instead.
+
+For wildcards and the values that allow or block all hosts, see
+`the allowed hosts in TYPO3 Explained <https://docs.typo3.org/permalink/t3coreapi:typo3confvars-http-allowed-hosts>`_.
+
 ..  _rss-widget-format:
 
 Feed format support
@@ -100,9 +136,15 @@ The following options are available via :yaml:`services.dashboard.widget.t3news.
 ..  confval:: feedUrl
     :type: string
     :name: rss-widget-feedUrl
+    :changed: 14.3.12 important-110471-1792652849
 
     Defines the URL providing the RSS Feed.
     This is fetched by the widget in order to show its entries.
+
+    If the widget registration sets this option, the settings of a widget
+    cannot override it. The URL must use HTTP or HTTPS, and its host must be
+    allowed, see
+    `restricting the hosts of the feeds <https://docs.typo3.org/permalink/typo3/cms-dashboard:rss-widget-allowed-hosts>`_.
 
 ..  confval:: lifeTime
     :type: int
