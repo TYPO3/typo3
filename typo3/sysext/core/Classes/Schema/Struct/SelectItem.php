@@ -45,12 +45,13 @@ final class SelectItem implements \ArrayAccess
 
     public static function fromTcaItemArray(array $item, string $type = 'select'): SelectItem
     {
+        $group = $item['group'] ?? $item[3] ?? null;
         return new self(
             type: $type,
             label: (string)($item['label'] ?? $item[0]),
             value: $item['value'] ?? $item[1] ?? null,
             icon: $item['icon'] ?? $item[2] ?? null,
-            group: $item['group'] ?? $item[3] ?? null,
+            group: $group !== null ? (string)$group : null,
             description: $item['description'] ?? $item[4] ?? null,
             invertStateDisplay: (bool)($item['invertStateDisplay'] ?? false),
             iconIdentifierChecked: $item['iconIdentifierChecked'] ?? null,
