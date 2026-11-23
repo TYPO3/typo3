@@ -13,7 +13,7 @@ In order to add a button to a widget, a new dependency to an :php:`ButtonProvide
 ..  _adding-buttons-template:
 
 Template
---------
+========
 
 The output itself is done inside of the Fluid template, for example :file:`Resources/Private/Templates/Widget/RssWidget.html`:
 
@@ -28,7 +28,7 @@ The output itself is done inside of the Fluid template, for example :file:`Resou
 ..  _adding-buttons-configuration:
 
 Configuration
--------------
+=============
 
 The configuration is done through an configured Instance of the dependency, for example :file:`Services.yaml`:
 
@@ -77,7 +77,7 @@ See also: :php:`\TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider`.
 ..  _adding-buttons-implementation:
 
 Implementation
---------------
+==============
 
 An example implementation could look like this:
 

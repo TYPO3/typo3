@@ -25,7 +25,7 @@ website that is used a lot by the users.
 ..  _cta-button-widget-example:
 
 Example
--------
+=======
 
 ..  code-block:: yaml
     :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
@@ -49,7 +49,7 @@ Example
 ..  _cta-button-widget-options:
 
 Options
--------
+=======
 
 ..  include:: Options/RefreshAvailable.rst.txt
 
@@ -65,7 +65,7 @@ Options
 ..  _cta-button-widget-dependencies:
 
 Dependencies
-------------
+============
 
 ..  confval:: $buttonProvider
     :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`

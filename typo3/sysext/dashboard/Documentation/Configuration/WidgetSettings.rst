@@ -16,7 +16,7 @@ Adjust settings of registered widgets
 ..  _configurable-widgets:
 
 Configurable dashboard widgets
-------------------------------
+==============================
 
 ..  versionadded:: 14.0
 

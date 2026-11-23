@@ -23,7 +23,7 @@ between data.
 ..  _doughnut-chart-widget-example:
 
 Example
--------
+=======
 
 ..  code-block:: yaml
     :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
@@ -47,14 +47,14 @@ Example
 ..  _doughnut-chart-widget-options:
 
 Options
--------
+=======
 
 .. include:: Options/RefreshAvailable.rst.txt
 
 ..  _doughnut-chart-widget-dependencies:
 
 Dependencies
-------------
+============
 
 ..  confval:: $dataProvider
     :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface`

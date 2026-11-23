@@ -23,7 +23,7 @@ This kind of widgets are useful if you want to show some simple stats.
 ..  _number-widget-example:
 
 Example
--------
+=======
 
 ..  code-block:: yaml
     :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
@@ -49,7 +49,7 @@ Example
 ..  _number-widget-options:
 
 Options
--------
+=======
 
 .. include:: Options/RefreshAvailable.rst.txt
 
@@ -79,7 +79,7 @@ Options
 ..  _number-widget-dependencies:
 
 Dependencies
-------------
+============
 
 ..  confval:: $dataProvider
     :type: :php:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`

@@ -44,7 +44,7 @@ registration. Below is an example of a RSS widget with the refresh option enable
 ..  _refresh-button:
 
 Enable the refresh button
--------------------------
+=========================
 
 Widgets can render a refresh button to allow users to manually refresh them.
 
@@ -60,7 +60,7 @@ configure the option:
 ..  _refresh-javascript:
 
 JavaScript API
---------------
+==============
 
 It is possible for all widgets to dispatch an event, which will cause
 the widget being refreshed. This is possible for all widgets on the dashboard

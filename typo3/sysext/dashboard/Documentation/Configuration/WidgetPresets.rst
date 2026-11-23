@@ -12,7 +12,7 @@ The extension already ships a ``default`` as well as an ``empty`` dashboard pres
 ..  _create-preset:
 
 Create preset
--------------
+=============
 
 New presets can be configured:
 
@@ -92,7 +92,7 @@ Each preset consists of the following options:
 ..  _configure-preset-for-user:
 
 Configure preset for user
--------------------------
+=========================
 
 To define the default preset for a backend user, the following User TSconfig can be added:
 

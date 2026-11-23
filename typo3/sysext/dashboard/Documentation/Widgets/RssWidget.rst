@@ -35,7 +35,7 @@ Automatic caching ensures optimal performance with configurable cache lifetimes.
 ..  _rss-widget-usage:
 
 Usage of the RSS Widget in the dashboard
-----------------------------------------
+========================================
 
 You can use this kind of widget to show your own RSS feed
 or Atom feed.
@@ -49,7 +49,7 @@ or Atom feed.
 ..  _rss-widget-allowed-hosts:
 
 Restricting the hosts of the feeds
-----------------------------------
+==================================
 
 ..  versionadded:: 14.3.12
     :changelog: important-110471-1792652849
@@ -85,7 +85,7 @@ For wildcards and the values that allow or block all hosts, see
 ..  _rss-widget-format:
 
 Feed format support
--------------------
+===================
 
 The RSS widget now supports both feed formats:
 
@@ -112,7 +112,7 @@ Author information
 ..  _rss-widget-example:
 
 Example for RSS widget with Atom feed
--------------------------------------
+=====================================
 
 ..  literalinclude:: _codesnippets/_rsswidget-services.yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
@@ -120,7 +120,7 @@ Example for RSS widget with Atom feed
 ..  _rss-widget-options:
 
 Options
--------
+=======
 
 ..  include:: Options/RefreshAvailable.rst.txt
 
@@ -163,7 +163,7 @@ The following options are available via :yaml:`services.dashboard.widget.t3news.
 ..  _rss-widget-dependencies:
 
 Dependencies
-------------
+============
 
 ..  confval:: $buttonProvider
     :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`
