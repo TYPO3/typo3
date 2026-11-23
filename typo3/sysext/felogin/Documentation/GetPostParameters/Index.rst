@@ -13,7 +13,7 @@ redirect settings.
 .. _noredirect:
 
 noredirect
-----------
+==========
 
 .. container:: table-row
 
