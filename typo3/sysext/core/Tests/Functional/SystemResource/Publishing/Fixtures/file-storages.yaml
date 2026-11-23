@@ -1,0 +1,13 @@
+storages:
+  1:
+    name: fileadmin
+    default: true
+    configuration:
+      basePath: fileadmin/
+      caseSensitive: true
+  2:
+    name: cdn
+    configuration:
+      basePath: cdn-files/
+      baseUri: 'https://cdn.example.com/files/'
+      caseSensitive: true

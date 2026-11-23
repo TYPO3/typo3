@@ -5,5 +5,5 @@ storages:
     default: true
     configuration:
       directory: flysystem-storage
-      baseUri: https://cdn.example.com/
+      baseUri: https://cdn.example.com/files/
       caseSensitive: true

@@ -195,26 +195,6 @@ class LocalDriver extends AbstractFlysystemDriver
     }
 
     /**
-     * Returns a publicly accessible URL to a file or folder.
-     * For the local driver, this will always return a path relative to public web path.
-     * For non-public storages, this method returns null.
-     *
-     * @param non-empty-string $identifier
-     * @return string|null NULL if file is missing or deleted, the generated url otherwise
-     */
-    public function getPublicUrl(string $identifier): ?string
-    {
-        $publicUrl = null;
-        if ($this->baseUri !== null) {
-            $uriParts = explode('/', ltrim($identifier, '/'));
-            $uriParts = array_map(rawurlencode(...), $uriParts);
-            $identifier = implode('/', $uriParts);
-            $publicUrl = $this->baseUri . $identifier;
-        }
-        return $publicUrl;
-    }
-
-    /**
      * Creates a folder, within a given parent folder.
      * If no parent folder is given, a folder on the root-level will be created
      *

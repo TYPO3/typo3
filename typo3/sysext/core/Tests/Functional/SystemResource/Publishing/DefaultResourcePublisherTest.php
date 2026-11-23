@@ -48,6 +48,10 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_system_resources',
     ];
 
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/core/Tests/Functional/SystemResource/Publishing/Fixtures/file-storages.yaml' => 'typo3conf/system/file-storages.yaml',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -257,6 +261,19 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
         if ($endsWith !== null) {
             self::assertStringEndsWith($endsWith, (string)$resourcePublisher->generateUri($resource, null));
         }
+    }
+
+    #[Test]
+    public function generatesAbsoluteUriForFalFileOfStorageWithAbsoluteBaseUri(): void
+    {
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/cdn-files');
+        file_put_contents(Environment::getPublicPath() . '/cdn-files/Extension.svg', '<svg/>');
+        $resource = $this->get(SystemResourceFactory::class)->createPublicResource('FAL:2:/Extension.svg');
+        $resourcePublisher = $this->get(DefaultSystemResourcePublisher::class);
+        self::assertSame(
+            'https://cdn.example.com/files/Extension.svg',
+            (string)$resourcePublisher->generateUri($resource, null, new UriGenerationOptions(cacheBusting: false))
+        );
     }
 
     #[Test]

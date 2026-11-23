@@ -23,7 +23,9 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UrlGeneration\PublicUrlGenerator;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Resource\Capabilities;
@@ -35,6 +37,8 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\PublicUrl\PrefixPublicUrlGenerator;
+use TYPO3\CMS\Core\Resource\PublicUrl\PublicUrlResolverInterface;
 use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,12 +51,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * is provided here. All paths are canonicalized and checked before they are
  * passed to Flysystem, which rejects path traversal on its own as well.
  *
- * The optional "baseUri" configuration option publishes the storage below the
- * given URL. Otherwise the storage is not public, public URLs an adapter
- * might generate are not used, as adapters like the AWS S3 one generate URLs
- * for private buckets as well.
+ * The option "publicUrl" selects how the public URLs of the storage are
+ * generated, its "type" is either "prefix", the default, which publishes the
+ * storage below the URL of the option "baseUri", or "adapter", which takes the
+ * URLs from an adapter implementing PublicUrlGenerator. Without a generator
+ * the storage is not public. Adapters like the AWS S3 one generate URLs for
+ * private buckets as well, so their URLs are only used if configured.
  */
-abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDriver implements StreamableDriverInterface
+abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDriver implements StreamableDriverInterface, PublicUrlResolvingDriverInterface
 {
     protected const int FILE_METADATA_LIMIT = 10000;
 
@@ -61,6 +67,8 @@ abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDri
     protected ?FilesystemAdapter $adapter = null;
 
     protected ?string $baseUri = null;
+
+    protected ?PublicUrlGenerator $publicUrlGenerator = null;
 
     /**
      * Flysystem options for copying files, e.g. whether the visibility is retained
@@ -123,9 +131,10 @@ abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDri
     public function processConfiguration(): void
     {
         $this->adapter = $this->createFilesystemAdapter();
-        $this->filesystem = new Filesystem($this->adapter, [], new FlysystemPathNormalizer());
         $this->baseUri = $this->determineBaseUri();
-        if ($this->baseUri === null) {
+        $this->publicUrlGenerator = $this->createPublicUrlGenerator();
+        $this->filesystem = new Filesystem($this->adapter, [], new FlysystemPathNormalizer(), $this->publicUrlGenerator);
+        if ($this->publicUrlGenerator === null) {
             $this->capabilities->removeCapability(Capabilities::CAPABILITY_PUBLIC);
         }
     }
@@ -139,6 +148,33 @@ abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDri
             return null;
         }
         return rtrim((string)$this->configuration['baseUri'], '/') . '/';
+    }
+
+    /**
+     * Creates the generator for the public URLs of the storage according to
+     * the option "publicUrl", or returns null if the storage is not public.
+     *
+     * @throws InvalidConfigurationException
+     */
+    protected function createPublicUrlGenerator(): ?PublicUrlGenerator
+    {
+        $type = (string)($this->configuration['publicUrl']['type'] ?? 'prefix');
+        if ($type === 'prefix') {
+            return $this->baseUri !== null ? new PrefixPublicUrlGenerator($this->baseUri) : null;
+        }
+        if ($type === 'adapter') {
+            if (!$this->adapter instanceof PublicUrlGenerator) {
+                throw new InvalidConfigurationException(
+                    sprintf('The public URLs of storage "%d" are taken from its adapter, which does not implement %s.', (int)$this->storageUid, PublicUrlGenerator::class),
+                    1795458401
+                );
+            }
+            return $this->adapter;
+        }
+        throw new InvalidConfigurationException(
+            sprintf('The public URL type "%s" of storage "%d" is unknown, use "prefix" or "adapter".', $type, (int)$this->storageUid),
+            1795458402
+        );
     }
 
     public function initialize(): void {}
@@ -173,8 +209,28 @@ abstract class AbstractFlysystemDriver extends AbstractHierarchicalFilesystemDri
         if (!$this->hasCapability(Capabilities::CAPABILITY_PUBLIC)) {
             return null;
         }
-        $identifier = $this->canonicalizeAndCheckFileIdentifier($identifier);
-        return $this->baseUri . implode('/', array_map(rawurlencode(...), explode('/', ltrim($identifier, '/'))));
+        $isFolder = str_ends_with($identifier, '/');
+        $path = $this->getPath($this->canonicalizeAndCheckFileIdentifier($identifier));
+        try {
+            $publicUrl = $this->getFilesystem()->publicUrl($path);
+        } catch (FilesystemException) {
+            return null;
+        }
+        if ($isFolder && $path !== '') {
+            $publicUrl .= '/';
+        }
+        return $publicUrl;
+    }
+
+    public function resolvePublicUrl(UriInterface $uri, string $sitePath): ?string
+    {
+        if (!$this->hasCapability(Capabilities::CAPABILITY_PUBLIC)
+            || !$this->publicUrlGenerator instanceof PublicUrlResolverInterface
+        ) {
+            return null;
+        }
+        $path = $this->publicUrlGenerator->resolvePath($uri, $sitePath);
+        return $path === null ? null : '/' . $path;
     }
 
     public function getRootLevelFolder(): string

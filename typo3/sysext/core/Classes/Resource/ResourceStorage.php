@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
+use TYPO3\CMS\Core\Resource\Driver\PublicUrlResolvingDriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\StreamableDriverInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
@@ -1456,6 +1458,22 @@ class ResourceStorage implements ResourceStorageInterface
             $file = $file->getIdentifier();
         }
         return $this->driver->hashIdentifier($file);
+    }
+
+    /**
+     * Returns the identifier of the file or folder the URI is the public URL
+     * of, the reverse of getPublicUrl(), if the storage is online and public
+     * and its driver can map its public URLs back. A folder identifier ends
+     * with a slash, the file or folder is not checked for existence.
+     *
+     * @param string $sitePath The path TYPO3 is installed in, see NormalizedParams::getSitePath()
+     */
+    public function resolvePublicUrl(UriInterface $uri, string $sitePath = '/'): ?string
+    {
+        if (!$this->isOnline() || !$this->isPublic() || !$this->driver instanceof PublicUrlResolvingDriverInterface) {
+            return null;
+        }
+        return $this->driver->resolvePublicUrl($uri, $sitePath);
     }
 
     /**

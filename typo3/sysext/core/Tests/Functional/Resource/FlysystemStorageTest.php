@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\Driver\FlysystemDriver;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
@@ -73,7 +74,7 @@ final class FlysystemStorageTest extends FunctionalTestCase
         self::assertSame('/Upload_File.txt', $file->getIdentifier());
         self::assertSame(7, $file->getSize());
         self::assertSame(sha1('content'), $file->getSha1());
-        self::assertSame('https://cdn.example.com/Upload_File.txt', $file->getPublicUrl());
+        self::assertSame('https://cdn.example.com/files/Upload_File.txt', $file->getPublicUrl());
 
         $file = $storage->renameFile($file, 'renamed.txt');
         self::assertSame('/renamed.txt', $file->getIdentifier());
@@ -111,6 +112,26 @@ final class FlysystemStorageTest extends FunctionalTestCase
 
         $storage->deleteFolder($storage->getFolder('/copy/'), true);
         self::assertDirectoryDoesNotExist($this->storagePath . '/copy');
+    }
+
+    #[Test]
+    public function publicUrlsAreResolvedToTheirFile(): void
+    {
+        $storage = $this->getStorage();
+        $localFile = Environment::getVarPath() . '/transient/upload.txt';
+        file_put_contents($localFile, 'content');
+        $file = $storage->addFile($localFile, $storage->getRootLevelFolder(), 'Ümlaut file.txt');
+        self::assertSame($file->getIdentifier(), $storage->resolvePublicUrl(new Uri($file->getPublicUrl()), '/'));
+        self::assertSame('/missing.txt', $storage->resolvePublicUrl(new Uri('https://cdn.example.com/files/missing.txt'), '/'));
+        self::assertNull($storage->resolvePublicUrl(new Uri('https://acme.com/files/missing.txt'), '/'));
+    }
+
+    #[Test]
+    public function publicUrlsOfOfflineStoragesAreNotResolved(): void
+    {
+        $storage = $this->getStorage();
+        $storage->markAsTemporaryOffline();
+        self::assertNull($storage->resolvePublicUrl(new Uri('https://cdn.example.com/files/missing.txt'), '/'));
     }
 
     #[Test]

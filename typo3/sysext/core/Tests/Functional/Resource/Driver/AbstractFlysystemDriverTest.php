@@ -21,6 +21,7 @@ use League\Flysystem\UnableToReadFile;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -96,6 +97,63 @@ final class AbstractFlysystemDriverTest extends FunctionalTestCase
         $subject = $this->getSubject(['generatesPublicUrls' => true]);
         self::assertFalse($subject->hasCapability(Capabilities::CAPABILITY_PUBLIC));
         self::assertNull($subject->getPublicUrl('/file.txt'));
+    }
+
+    #[Test]
+    public function publicUrlsOfTheAdapterAreUsedIfConfigured(): void
+    {
+        file_put_contents($this->baseDirectory . '/file.txt', 'content');
+        $subject = $this->getSubject(['generatesPublicUrls' => true, 'publicUrl' => ['type' => 'adapter']]);
+        self::assertTrue($subject->hasCapability(Capabilities::CAPABILITY_PUBLIC));
+        self::assertSame('https://bucket.example.com/file.txt', $subject->getPublicUrl('/file.txt'));
+    }
+
+    #[Test]
+    public function publicUrlsOfTheAdapterRequireAnAdapterGeneratingThem(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionCode(1795458401);
+        $this->getSubject(['publicUrl' => ['type' => 'adapter']]);
+    }
+
+    #[Test]
+    public function unknownPublicUrlTypeIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionCode(1795458402);
+        $this->getSubject(['baseUri' => 'https://cdn.example.com/files/', 'publicUrl' => ['type' => 'unknown']]);
+    }
+
+    #[Test]
+    public function folderUrlsKeepTheirTrailingSlash(): void
+    {
+        $subject = $this->getSubject(['baseUri' => 'https://cdn.example.com/files/']);
+        self::assertSame('https://cdn.example.com/files/', $subject->getPublicUrl('/'));
+        self::assertSame('https://cdn.example.com/files/a%20folder/', $subject->getPublicUrl('/a folder/'));
+    }
+
+    public static function publicUrlIsResolvedToIdentifierDataProvider(): \Generator
+    {
+        yield 'file' => ['https://cdn.example.com/files/a%20folder/some%20file.txt', '/a folder/some file.txt'];
+        yield 'folder' => ['https://cdn.example.com/files/a%20folder/', '/a folder/'];
+        yield 'root folder' => ['https://cdn.example.com/files/', '/'];
+        yield 'other host' => ['https://acme.com/files/some%20file.txt', null];
+    }
+
+    #[DataProvider('publicUrlIsResolvedToIdentifierDataProvider')]
+    #[Test]
+    public function publicUrlIsResolvedToIdentifier(string $url, ?string $expected): void
+    {
+        $subject = $this->getSubject(['baseUri' => 'https://cdn.example.com/files/']);
+        self::assertSame($expected, $subject->resolvePublicUrl(new Uri($url), '/'));
+    }
+
+    #[Test]
+    public function publicUrlIsNotResolvedWithoutResolvingGenerator(): void
+    {
+        self::assertNull($this->getSubject()->resolvePublicUrl(new Uri('https://cdn.example.com/files/file.txt'), '/'));
+        $subject = $this->getSubject(['generatesPublicUrls' => true, 'publicUrl' => ['type' => 'adapter']]);
+        self::assertNull($subject->resolvePublicUrl(new Uri('https://bucket.example.com/file.txt'), '/'));
     }
 
     #[Test]
