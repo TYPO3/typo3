@@ -359,6 +359,39 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function addDataAddsItemGroupsFromIntegerColumnOfForeignTable(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 1,
+            'databaseRow' => [
+                'aField' => '',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'itemGroups' => [
+                                1 => 'Records on Home page',
+                            ],
+                            'foreign_table' => 'foreign_table',
+                            'foreign_table_item_group' => 'pid',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->get(TcaSelectItems::class)->addData($this->addTcaSchemata($input));
+
+        self::assertSame(
+            ['label' => 'Records on Home page', 'value' => '--div--', 'group' => '1'],
+            $result['processedTca']['columns']['aField']['config']['items'][0]
+        );
+    }
+
+    #[Test]
     public function addDataKeepsIconFromItem(): void
     {
         $input = [
