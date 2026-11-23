@@ -20,7 +20,7 @@ provider.
 ..  _list-widget-example:
 
 Example
--------
+=======
 
 ..  code-block:: yaml
     :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
@@ -45,14 +45,14 @@ Example
 ..  _list-widget-options:
 
 Options
--------
+=======
 
 .. include:: Options/RefreshAvailable.rst.txt
 
 ..  _list-widget-dependencies:
 
 Dependencies
-------------
+============
 
 ..  confval:: $dataProvider
     :type: :php:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`

@@ -33,7 +33,7 @@ The concrete registration will provide the URL to RSS feed.
 ..  _widget-php-class:
 
 PHP class
----------
+=========
 
 Each Widget has to be a PHP class.
 This class has to implement the :php:`WidgetInterface` and could look like this:
@@ -96,7 +96,7 @@ holding all internal configuration, like icon identifier.
 ..  _implement-new-widget-fluid:
 
 Using Fluid
------------
+===========
 
 Most widgets will need a template.
 Therefore each widget can define :php:`BackendViewFactory` as requirement for DI in
@@ -106,7 +106,7 @@ constructor, like done in RSS example.
 ..  _implement-new-widget-custom-js:
 
 Providing custom JS
--------------------
+===================
 
 There are two ways to add JavaScript for an widget:
 
@@ -175,7 +175,7 @@ All ways can be combined.
 ..  _custom-css:
 
 Providing custom CSS
---------------------
+====================
 
 It is possible to add custom Css to style widgets.
 
