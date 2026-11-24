@@ -12,6 +12,16 @@ page.headerData.10.value = <meta name="marker" content="headerDataOfNotFoundPage
 page.footerData.10.value = <!-- footerDataOfNotFoundPage -->
 page.30 = USER_INT
 page.30.userFunc = TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler\Fixtures\PageContentErrorHandlerUserFuncs->renderRequestType
+page.40 = COA_INT
+page.40.10 = TEXT
+page.40.10.data = context:date:timestamp
+page.40.10.wrap = <!-- dateOfNotFoundPage:|-->
+page.40.20 = TEXT
+page.40.20.data = context:frontend.user:groupIds
+page.40.20.wrap = <!-- frontendUserGroupsOfNotFoundPage:|-->
+page.40.30 = TEXT
+page.40.30.data = GP:example
+page.40.30.wrap = <!-- exampleParameterOfNotFoundPage:|-->
 [global]
 
 [page["uid"] == 100]

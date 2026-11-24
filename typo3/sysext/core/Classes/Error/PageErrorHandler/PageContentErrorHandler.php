@@ -95,8 +95,11 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             if ($urlType === LinkService::TYPE_URL) {
                 return $this->sendExternalRequest($resolvedUrl, $request);
             }
-            // Create a sub-request and do not take any special query parameters into account
-            $subRequest = $request->withoutAttribute('extbase')->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
+            // The error page is part of the previewed site, so it must use the same simulated date and
+            // frontend user group as the requested page. The sub-request starts with a new context, so it
+            // keeps the two query parameters that set this simulation.
+            $previewParameters = array_intersect_key($request->getQueryParams(), ['ADMCMD_simTime' => true, 'ADMCMD_simUser' => true]);
+            $subRequest = $request->withoutAttribute('extbase')->withQueryParams($previewParameters)->withUri(new Uri($resolvedUrl))->withMethod('GET');
             $subResponse = $this->sendSubRequest($subRequest, $urlParams['pageuid'], $request);
 
             if ($subResponse->getStatusCode() >= 300) {

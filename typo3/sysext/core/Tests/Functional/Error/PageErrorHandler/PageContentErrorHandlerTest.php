@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Error\PageErrorHandler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -70,5 +73,59 @@ final class PageContentErrorHandlerTest extends FunctionalTestCase
         self::assertSame(404, $response->getStatusCode());
         self::assertStringContainsString('contentOfNotFoundPage', $body);
         self::assertStringContainsString('renderedWithPlainRequest', $body);
+    }
+
+    public static function errorPageSubRequestKeepsPreviewSimulationOfBackendUserDataProvider(): \Generator
+    {
+        yield 'simulated date' => [
+            'query' => 'ADMCMD_simTime=4102444800',
+            'expected' => '<!-- dateOfNotFoundPage:4102444800-->',
+        ];
+        yield 'simulated frontend user group' => [
+            'query' => 'ADMCMD_simUser=7',
+            'expected' => '<!-- frontendUserGroupsOfNotFoundPage:0,-2,7-->',
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('errorPageSubRequestKeepsPreviewSimulationOfBackendUserDataProvider')]
+    public function errorPageSubRequestKeepsPreviewSimulationOfBackendUser(string $query, string $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+        $userRecord = $this->get(ConnectionPool::class)->getConnectionForTable('be_users')
+            ->select(['*'], 'be_users', ['uid' => 1])->fetchAssociative();
+        $backendUser = new BackendUserAuthentication();
+        $session = $backendUser->createUserSession($userRecord);
+        $request = new InternalRequest('https://website.local/does-not-exist?' . $query);
+        $request = $request->withCookieParams([BackendUserAuthentication::getCookieName() => $session->getJwt()]);
+
+        $response = $this->executeFrontendSubRequest($request);
+        $body = (string)$response->getBody();
+
+        self::assertSame(404, $response->getStatusCode());
+        self::assertStringContainsString('contentOfNotFoundPage', $body);
+        self::assertStringContainsString($expected, $body);
+    }
+
+    #[Test]
+    public function errorPageSubRequestDoesNotSimulateDateWithoutBackendUser(): void
+    {
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/does-not-exist?ADMCMD_simTime=4102444800'));
+        $body = (string)$response->getBody();
+
+        self::assertSame(404, $response->getStatusCode());
+        self::assertStringContainsString('contentOfNotFoundPage', $body);
+        self::assertStringNotContainsString('<!-- dateOfNotFoundPage:4102444800-->', $body);
+    }
+
+    #[Test]
+    public function errorPageSubRequestDropsOtherQueryParameters(): void
+    {
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://website.local/does-not-exist?example=1'));
+        $body = (string)$response->getBody();
+
+        self::assertSame(404, $response->getStatusCode());
+        self::assertStringContainsString('contentOfNotFoundPage', $body);
+        self::assertStringContainsString('<!-- exampleParameterOfNotFoundPage:-->', $body);
     }
 }
