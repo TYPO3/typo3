@@ -1,0 +1,4 @@
+"pages"
+,"uid","pid","title","doktype","slug","is_siteroot","TSconfig"
+,10,0,"Preview Site Root Page",1,"/",1,"mod.web_view.type = 98"
+,11,10,"Preview Site Sub Page",1,"/sub-page",0,""
