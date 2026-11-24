@@ -37,6 +37,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
+use TYPO3\CMS\Extbase\Persistence\Generic\EntityIdentity;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
@@ -168,7 +169,7 @@ class DataMapper
      */
     protected function buildIdentifier(array $row): string
     {
-        return $this->persistenceSession->buildIdentifier($row, $this->getEffectiveLanguageAspect());
+        return (string)EntityIdentity::fromRow($row, $this->getEffectiveLanguageAspect());
     }
 
     /**
@@ -794,7 +795,7 @@ class DataMapper
             );
         }
 
-        $identifier = $this->persistenceSession->buildIdentifier((string)$fieldValue, $this->getEffectiveLanguageAspect());
+        $identifier = (string)EntityIdentity::fromBaseIdentifier((string)$fieldValue, $this->getEffectiveLanguageAspect());
         if ($this->persistenceSession->hasIdentifier($identifier, $className)) {
             return $this->persistenceSession->getObjectByIdentifier($identifier, $className);
         }

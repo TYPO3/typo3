@@ -156,7 +156,7 @@ class Backend implements BackendInterface
             return null;
         }
 
-        return $this->session->getBaseIdentifier($identifier);
+        return EntityIdentity::baseIdentifierOf($identifier);
     }
 
     /**
@@ -185,7 +185,7 @@ class Backend implements BackendInterface
         );
 
         // Build language-aware session identifier
-        $sessionIdentifier = $this->session->buildIdentifier($identifier, $languageAspect);
+        $sessionIdentifier = (string)EntityIdentity::fromBaseIdentifier($identifier, $languageAspect);
         if ($this->session->hasIdentifier($sessionIdentifier, $className)) {
             return $this->session->getObjectByIdentifier($sessionIdentifier, $className);
         }
@@ -680,7 +680,7 @@ class Backend implements BackendInterface
 
         $uid = $this->storageBackend->addRow($dataMap->tableName, $row);
         $localizedUid = $this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
-        $identifier = $this->session->buildIdentifier(['uid' => $uid, '_LOCALIZED_UID' => $localizedUid]);
+        $identifier = (string)EntityIdentity::fromRow(['uid' => $uid, '_LOCALIZED_UID' => $localizedUid]);
         $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_UID, $uid);
         $object->setPid((int)$row['pid']);
         if ($uid >= 1) {
