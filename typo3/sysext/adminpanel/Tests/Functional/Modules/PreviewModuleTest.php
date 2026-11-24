@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Functional\Modules;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
@@ -24,8 +25,12 @@ use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -146,5 +151,35 @@ final class PreviewModuleTest extends FunctionalTestCase
 
         self::assertSame($expected, $request->getAttribute('admin-panel.fluid.debug', false));
         self::assertSame($expected, !($request->getAttribute('frontend.cache.instruction')?->isCachingAllowed() ?? true));
+    }
+
+    public static function pageSettingsOfferFrontendUserGroupsToSimulateDataProvider(): array
+    {
+        return [
+            'groups on pages the backend user may show, ordered by title' => [2, [[2, 'Authors'], [1, 'Members']]],
+            'no groups if the backend user may show no page with groups' => [3, []],
+            'admin gets visible groups on all pages, but not on root level' => [1, [[2, 'Authors'], [1, 'Members'], [3, 'Staff']]],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('pageSettingsOfferFrontendUserGroupsToSimulateDataProvider')]
+    public function pageSettingsOfferFrontendUserGroupsToSimulate(int $backendUserUid, array $expectedGroups): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/PreviewModuleTestFrontendUserGroups.csv');
+        $backendUser = new FrontendBackendUserAuthentication();
+        $backendUser->user = $this->getBackendUserRecordFromDatabase($backendUserUid);
+        $backendUser->fetchGroupData();
+        $GLOBALS['BE_USER'] = $backendUser;
+        $request = new ServerRequest('https://example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = $request
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('language', new SiteLanguage(0, 'en_US.UTF-8', new Uri('https://example.com/'), []));
+
+        $pageSettings = $this->get(PreviewModule::class)->getPageSettings();
+
+        preg_match_all('/<option value="(\d+)"[^>]*>\s*(.*?)\s*<\/option>/s', $pageSettings, $matches, PREG_SET_ORDER);
+        $options = array_map(static fn(array $match): array => [(int)$match[1], $match[2]], $matches);
+        self::assertSame([[0, ''], ...$expectedGroups], $options);
     }
 }
