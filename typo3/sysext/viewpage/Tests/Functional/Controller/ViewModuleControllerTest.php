@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Viewpage\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -28,6 +29,10 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Viewpage\Controller\ViewModuleController;
@@ -153,6 +158,46 @@ final class ViewModuleControllerTest extends FunctionalTestCase
         $content = (string)$response->getBody();
 
         self::assertStringContainsString('Please select a page with a valid page type', $content);
+    }
+
+    public static function frameSrcContainsOnlyOriginOfPreviewedPageDataProvider(): array
+    {
+        return [
+            'site on other host' => [
+                'https://preview.example.org/',
+                'https://preview.example.org',
+            ],
+            'site on other host with port' => [
+                'https://preview.example.org:8443/',
+                'https://preview.example.org:8443',
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('frameSrcContainsOnlyOriginOfPreviewedPageDataProvider')]
+    public function frameSrcContainsOnlyOriginOfPreviewedPage(string $siteBase, string $expectedSource): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages_preview_site.csv');
+        $this->writeSiteConfiguration(
+            'preview-site',
+            $this->buildSiteConfiguration(10, $siteBase),
+            [$this->buildDefaultLanguageConfiguration('EN', '/')]
+        );
+
+        // Page 11 has a slug and gets `mod.web_view.type` from page 10.
+        // Thus its preview URI has a path and a query.
+        $controller = $this->get(ViewModuleController::class);
+        $controller->handleRequest($this->createRequest(11));
+
+        $frameSources = $this->get(PolicyProvider::class)->provideFor(Scope::backend())->get(Directive::FrameSrc);
+        $previewSiteSources = [];
+        foreach ($frameSources->sources as $source) {
+            if ($source instanceof UriValue && $source->getHost() === 'preview.example.org') {
+                $previewSiteSources[] = (string)$source;
+            }
+        }
+        self::assertSame([$expectedSource], $previewSiteSources);
     }
 
     #[Test]

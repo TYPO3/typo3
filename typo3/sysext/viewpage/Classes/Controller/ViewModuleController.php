@@ -132,8 +132,11 @@ final class ViewModuleController
         ]);
 
         if ($targetUri->getScheme() !== '' && $targetUri->getHost() !== '') {
-            // temporarily(!) extend the CSP `frame-src` directive with the URL to be shown in the `<iframe>`
-            $mutation = new Mutation(MutationMode::Extend, Directive::FrameSrc, UriValue::fromUri($targetUri));
+            // Allow the origin of the page in `frame-src` for this response only.
+            // A CSP source with a path allows only this one path. With such a source,
+            // the browser blocks a link in the frame to another page on the same host.
+            $frameSource = UriValue::fromUri($targetUri->withUserInfo('')->withPath('')->withQuery(''));
+            $mutation = new Mutation(MutationMode::Extend, Directive::FrameSrc, $frameSource);
             $this->policyRegistry->appendMutationCollection(new MutationCollection($mutation));
         }
         return $view->renderResponse('Show');
