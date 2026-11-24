@@ -130,6 +130,20 @@ final class SchedulerTest extends FunctionalTestCase
         self::assertSame(serialize([$now - 9 * 60]), $this->getSerializedExecutions(1));
     }
 
+    #[Test]
+    public function constructorSkipsTasksWithEmptyExecutions(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('tx_scheduler_task')->insert(
+            'tx_scheduler_task',
+            ['uid' => 1, 'serialized_executions' => ''],
+            ['serialized_executions' => Connection::PARAM_LOB]
+        );
+
+        $this->createScheduler();
+
+        self::assertSame('', $this->getSerializedExecutions(1));
+    }
+
     private function createScheduler(): Scheduler
     {
         return new Scheduler(

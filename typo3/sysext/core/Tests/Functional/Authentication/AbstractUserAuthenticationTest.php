@@ -71,6 +71,13 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
                 'admin' => 1,
                 'mfa' => json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]),
             ]);
+            $connection->insert('be_users', [
+                'uid' => 103,
+                'username' => 'emptyucuser',
+                'password' => $passwordHash,
+                'admin' => 1,
+                'uc' => '',
+            ]);
         });
     }
 
@@ -156,6 +163,17 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
         self::assertSame(100, $subject->getUserId());
         self::assertSame('testadmin', $subject->getUserName());
         self::assertSame(1, $this->countSessionsOfUser(100));
+    }
+
+    #[Test]
+    public function userWithEmptyUserConfigurationCanLogIn(): void
+    {
+        $this->provideValidRequestToken();
+        $subject = $this->createSubject();
+        $subject->start($this->buildLoginRequest('emptyucuser', self::PASSWORD));
+
+        self::assertSame(103, $subject->getUserId());
+        self::assertIsArray($subject->uc);
     }
 
     #[Test]

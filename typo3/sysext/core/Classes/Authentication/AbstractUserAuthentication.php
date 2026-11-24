@@ -998,7 +998,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     protected function unpack_uc()
     {
-        if (isset($this->user['uc'])) {
+        if (($this->user['uc'] ?? '') !== '') {
             $theUC = unserialize($this->user['uc'], ['allowed_classes' => false]);
             if (is_array($theUC)) {
                 $this->uc = $theUC;
