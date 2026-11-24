@@ -25,9 +25,9 @@ use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
-use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
 use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
+use TYPO3\CMS\Core\Authentication\SimulatableFrontendUserGroupsResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
@@ -72,6 +72,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         private readonly LoggerInterface $logger,
         private readonly GroupResolver $groupResolver,
         private readonly CacheFlusher $cacheFlusher,
+        private readonly SimulatableFrontendUserGroupsResolver $simulatableFrontendUserGroupsResolver,
         private readonly PreviewSimulatorCalculator $previewSimulatorCalculator = new PreviewSimulatorCalculator(),
     ) {}
 
@@ -137,8 +138,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         );
         $view = $this->viewFactory->create($viewFactoryData);
 
-        $frontendGroupsRepository = GeneralUtility::makeInstance(FrontendGroupsRepository::class);
-
         $pageId = 0;
         $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
         if ($pageArguments instanceof PageArguments) {
@@ -156,7 +155,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                 ],
                 'simulateDate' => (int)($this->config['simulateDate'] ?? 0),
                 'frontendUserGroups' => [
-                    'availableGroups' => $frontendGroupsRepository->getAvailableFrontendUserGroups(),
+                    'availableGroups' => $this->simulatableFrontendUserGroupsResolver->resolve($this->getBackendUser()),
                     'selected' => (int)($this->config['simulateUserGroup'] ?? 0),
                 ],
                 'languageKey' => $this->getBackendUser()->user['lang'] ?? null,

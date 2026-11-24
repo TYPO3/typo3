@@ -1,0 +1,22 @@
+pages
+,uid,pid,title,hidden,starttime,endtime,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody
+,1,0,"Page that backend user 2 may show",0,0,0,2,0,1,0,0
+,2,0,"Page that only backend user 1 may show",0,0,0,1,0,31,0,0
+,3,0,"Hidden page",1,0,0,1,0,31,0,0
+,4,0,"Page with a start time in the future",0,2147483647,0,1,0,31,0,0
+,5,0,"Page with an end time in the past",0,0,946684800,1,0,31,0,0
+be_users
+,uid,pid,username,admin
+,1,0,admin,1
+,2,0,with-show-permission,0
+,3,0,without-show-permission,0
+fe_groups
+,uid,pid,title,hidden
+,1,1,"Members",0
+,2,1,"Authors",0
+,3,2,"Staff",0
+,4,1,"Hidden group",1
+,5,0,"Group on root level",0
+,6,3,"Group on hidden page",0
+,7,4,"Group on page with a start time in the future",0
+,8,5,"Group on page with an end time in the past",0
