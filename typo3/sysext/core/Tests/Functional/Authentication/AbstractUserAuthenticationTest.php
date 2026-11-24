@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -90,5 +92,22 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
             $expectedEnableClause = $connection->quoteIdentifier('be_users.pid') . ' IN (' . $expectedPids . ')';
         }
         self::assertSame($expectedEnableClause, (string)$enableClause);
+    }
+
+    #[Test]
+    public function userWithEmptyUserConfigurationCanBeAuthenticated(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->insert('be_users', [
+            'uid' => 103,
+            'username' => '_cli_',
+            'password' => 'invalid-hash-never-matches',
+            'admin' => 1,
+            'uc' => '',
+        ]);
+        $subject = new CommandLineUserAuthentication();
+        $subject->setLogger(new NullLogger());
+        $subject->authenticate();
+
+        self::assertSame(103, (int)$subject->user['uid']);
     }
 }
