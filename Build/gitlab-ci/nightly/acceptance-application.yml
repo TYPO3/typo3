@@ -81,7 +81,7 @@ acceptance application sys_template sqlite php 8.2 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -t systemplate -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-acceptance application postgres 15 php 8.5 max:
+acceptance application postgres 15 php 8.6 max:
   stage: acceptance
   tags:
     - metal2
@@ -95,5 +95,5 @@ acceptance application postgres 15 php 8.5 max:
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -i 15 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.6
+    - Build/Scripts/runTests.sh -s acceptance -d postgres -i 15 -p 8.6 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
