@@ -396,7 +396,7 @@ BE:
         fileDenyPattern:
             type: text
             readonly: true
-            description: 'A perl-compatible and JavaScript-compatible regular expression (without delimiters "/"!) that - if it matches a filename - will deny the file upload/rename or whatever. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in PHP constant FILE_DENY_PATTERN_DEFAULT'
+            description: 'A perl-compatible and JavaScript-compatible regular expression (without delimiters "/"!) that - if it matches a filename - will deny the file upload/rename or whatever. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. If the option is not set, the pattern in \TYPO3\CMS\Core\Resource\Security\FileNameValidator::DEFAULT_FILE_DENY_PATTERN is used.'
         versionNumberInFilename:
             type: bool
             description: |
