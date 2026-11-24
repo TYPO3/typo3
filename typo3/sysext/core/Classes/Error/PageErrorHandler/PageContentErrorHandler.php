@@ -134,7 +134,10 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $request = $request->withAttribute('site', $site);
         }
 
-        $request = $request->withAttribute('originalRequest', $originalRequest);
+        $request = $request
+            ->withAttribute('originalRequest', $originalRequest)
+            // Internal attribute. It marks the sub-request for the error page.
+            ->withAttribute('frontend.errorPage.subRequest', true);
 
         // Reset page renderer as it might contain content from current rendering request.
         $this->pageRenderer->reset($request);
