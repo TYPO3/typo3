@@ -143,6 +143,11 @@ final class WorkspacePreview implements MiddlewareInterface
         }
 
         $response = $handler->handle($request);
+        if ($request->getAttribute('frontend.errorPage.subRequest') === true) {
+            // PageContentErrorHandler copies the body of this response into the response of the outer request.
+            // This middleware also runs for the outer request. It adds the info box to the final response.
+            return $response;
+        }
 
         if ($this->context->getPropertyFromAspect('workspace', 'isOffline', false)
             || $request->getAttribute(self::LIVE_COMPARISON_ATTRIBUTE) === true
