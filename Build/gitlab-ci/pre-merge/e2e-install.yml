@@ -40,7 +40,7 @@ e2e install mysql 8.0 playwright php 8.5 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.0 -p 8.5
 
-e2e install postgres 10 playwright php 8.5 pre-merge:
+e2e install postgres 10 playwright php 8.6 pre-merge:
   stage: main
   tags:
     - metal2
@@ -58,8 +58,8 @@ e2e install postgres 10 playwright php 8.5 pre-merge:
       - typo3temp/var/tests/playwright-reports
       - typo3temp/var/tests/playwright-results
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
-    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 10 -p 8.5
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.6
+    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 10 -p 8.6
 
 e2e install sqlite playwright php 8.5 pre-merge:
   stage: main
