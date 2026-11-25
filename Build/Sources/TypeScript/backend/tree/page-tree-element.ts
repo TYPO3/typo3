@@ -90,7 +90,7 @@ export class EditablePageTree extends PageTree {
   protected override allowNodeDrag: boolean = true;
   protected override allowNodeSorting: boolean = true;
 
-  public sendChangeCommand(data: NodeChangeCommandDataInterface): void {
+  public sendChangeCommand(data: NodeChangeCommandDataInterface): Promise<void> {
     let params: string = '';
     let targetUid: string = '0';
 
@@ -125,7 +125,7 @@ export class EditablePageTree extends PageTree {
       params = 'cmd[pages][' + data.node.identifier + '][' + data.command + ']=' + targetUid;
     }
 
-    this.requestTreeUpdate(params).then((response) => {
+    return this.requestTreeUpdate(params).then((response): void => {
       if (response && response.hasErrors) {
         this.errorNotification(response.messages);
       } else {

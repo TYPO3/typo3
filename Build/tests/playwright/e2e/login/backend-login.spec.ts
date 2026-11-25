@@ -58,6 +58,6 @@ test.describe('Backend login', () => {
     await expect(page.getByLabel('Username')).toBeVisible();
 
     const cookies = await page.context().cookies();
-    await expect(cookies.filter(cookie => cookie.name === 'be_typo_user')).toHaveLength(0);
+    expect(cookies.filter(cookie => cookie.name === 'be_typo_user')).toHaveLength(0);
   });
 });

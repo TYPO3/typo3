@@ -166,11 +166,11 @@ export class JavaScriptItemProcessor {
     });
   }
 
-  private invoke(name: 'globalAssignment' | 'javaScriptModuleInstruction', data: any): void | Promise<unknown> {
+  private invoke(name: 'globalAssignment' | 'javaScriptModuleInstruction', data: any): Promise<unknown> {
     if (!this.invokableNames.includes(name) || typeof this[name] !== 'function') {
       throw new Error('Unknown handler name "' + name + '"');
     }
-    return this[name].call(this, data);
+    return Promise.resolve(this[name].call(this, data));
   }
 
   /**

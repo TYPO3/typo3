@@ -261,7 +261,6 @@ export class NotificationMessage extends LitElement {
     }
 
     await new Promise(resolve => window.setTimeout(resolve, 200));
-    await this.requestUpdate();
     if (this.notificationDuration > 0) {
       this.dismissalArmed = true;
       this.resumeDismissal();

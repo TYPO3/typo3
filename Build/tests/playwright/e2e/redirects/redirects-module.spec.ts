@@ -61,7 +61,7 @@ test('See all possible status codes when creating new redirect', async ({ backen
   const statusCodes = [301, 302, 303, 307, 308];
   for (const statusCode of statusCodes) {
     await test.step('Status code ' + statusCode + ' is available', async () => {
-      await expect(backend.contentFrame.locator('//select[contains(@name, "data[sys_redirect]") and contains(@name, "[target_statuscode]")]//option[@value="' + statusCode + '"]')).toBeDefined();
+      await expect(backend.contentFrame.locator('//select[contains(@name, "data[sys_redirect]") and contains(@name, "[target_statuscode]")]//option[@value="' + statusCode + '"]')).toBeAttached();
     });
   }
 });

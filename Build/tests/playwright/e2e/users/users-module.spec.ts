@@ -247,8 +247,6 @@ test.describe('Backend Users module', () => {
 
       await expect(contentFrame.locator('#EditDocumentController')).toBeVisible();
       await expect(contentFrame.locator('h1')).toContainText(usernameSecondCompare.trim().split('[')[0].trimEnd());
-
-      await contentFrame.getByRole('button', { name: 'Go back' });
     });
 
     await test.step('Remove all users from compare list', async () => {

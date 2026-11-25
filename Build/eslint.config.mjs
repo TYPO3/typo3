@@ -68,6 +68,7 @@ export default [...compat.extends(
       format: ["PascalCase"],
     }],
 
+    "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/no-array-delete": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
     "@typescript-eslint/restrict-template-expressions": "error",
