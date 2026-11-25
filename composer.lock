@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "563ef7f5566928ac028649934b33d87e",
+    "content-hash": "a694f9ded124d54176a677f93ea048b1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -962,25 +962,26 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "8.3.1",
+            "version": "8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "7d9b1f430bb65ac664e120af227bf9a795ad6333"
+                "reference": "ba6574fd975ab16f87dc356729a36777c03851e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7d9b1f430bb65ac664e120af227bf9a795ad6333",
-                "reference": "7d9b1f430bb65ac664e120af227bf9a795ad6333",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ba6574fd975ab16f87dc356729a36777c03851e8",
+                "reference": "ba6574fd975ab16f87dc356729a36777c03851e8",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^3.1",
-                "guzzlehttp/psr7": "^3.2",
+                "guzzlehttp/promises": "^3.2",
+                "guzzlehttp/psr7": "^3.6",
                 "php": "^7.4 || ^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
+                "symfony/deprecation-contracts": "^2.5 || ^3.0",
                 "symfony/polyfill-php80": "^1.25",
                 "symfony/polyfill-php82": "^1.27"
             },
@@ -1068,7 +1069,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/8.3.1"
+                "source": "https://github.com/guzzle/guzzle/tree/8.6.0"
             },
             "funding": [
                 {
@@ -1084,20 +1085,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-25T21:35:34+00:00"
+            "time": "2026-11-22T16:48:13+00:00",
+            "published-time": "2026-11-22T16:50:37+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "094d0ec418eb3b1411ea271a180ec95cae6ae933"
+                "reference": "a201cc78db93065f891278f86eaeaa1c97c5a158"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/094d0ec418eb3b1411ea271a180ec95cae6ae933",
-                "reference": "094d0ec418eb3b1411ea271a180ec95cae6ae933",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a201cc78db93065f891278f86eaeaa1c97c5a158",
+                "reference": "a201cc78db93065f891278f86eaeaa1c97c5a158",
                 "shasum": ""
             },
             "require": {
@@ -1152,7 +1154,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/3.1.0"
+                "source": "https://github.com/guzzle/promises/tree/3.2.0"
             },
             "funding": [
                 {
@@ -1168,26 +1170,28 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T12:48:16+00:00"
+            "time": "2026-11-21T03:48:02+00:00",
+            "published-time": "2026-11-21T03:48:27+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "3.2.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "cdc139396207a5eba10c242d241fb014cb098390"
+                "reference": "1fa0f8319c046b7dec80030460254283d851388e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/cdc139396207a5eba10c242d241fb014cb098390",
-                "reference": "cdc139396207a5eba10c242d241fb014cb098390",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/1fa0f8319c046b7dec80030460254283d851388e",
+                "reference": "1fa0f8319c046b7dec80030460254283d851388e",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
                 "psr/http-factory": "^1.1",
                 "psr/http-message": "^2.0",
+                "symfony/deprecation-contracts": "^2.5 || ^3.0",
                 "symfony/polyfill-php80": "^1.25",
                 "symfony/polyfill-php82": "^1.27"
             },
@@ -1203,6 +1207,7 @@
                 "phpunit/phpunit": "^9.6.34"
             },
             "suggest": {
+                "ext-intl": "Convert internationalized hosts with Idna",
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
             "type": "library",
@@ -1271,7 +1276,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/3.2.0"
+                "source": "https://github.com/guzzle/psr7/tree/3.6.0"
             },
             "funding": [
                 {
@@ -1287,7 +1292,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-17T23:57:19+00:00"
+            "time": "2026-11-22T00:00:35+00:00",
+            "published-time": "2026-11-22T00:01:04+00:00"
         },
         {
             "name": "lolli42/finediff",
@@ -1955,7 +1961,8 @@
             "support": {
                 "source": "https://github.com/php-fig/http-client"
             },
-            "time": "2023-09-23T14:17:50+00:00"
+            "time": "2023-09-23T14:17:50+00:00",
+            "published-time": "2023-09-23T14:18:12+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -2010,7 +2017,8 @@
             "support": {
                 "source": "https://github.com/php-fig/http-factory"
             },
-            "time": "2024-04-15T12:06:14+00:00"
+            "time": "2024-04-15T12:06:14+00:00",
+            "published-time": "2024-05-10T07:32:19+00:00"
         },
         {
             "name": "psr/http-message",
@@ -2063,7 +2071,8 @@
             "support": {
                 "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:54:51+00:00"
+            "time": "2023-04-04T09:54:51+00:00",
+            "published-time": "2023-04-04T09:55:35+00:00"
         },
         {
             "name": "psr/http-server-handler",
@@ -3863,7 +3872,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-25T15:50:05+00:00"
+            "time": "2026-09-25T15:50:05+00:00",
+            "published-time": "2026-09-30T10:23:32+00:00"
         },
         {
             "name": "symfony/polyfill-php83",
