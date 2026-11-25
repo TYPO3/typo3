@@ -38,6 +38,22 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
     expect(b).to.equal(1);
   });
 
+  it('rejects an abortable request with the reason of the failed task', async (): Promise<void> => {
+    const reason = new Error('task failed');
+    const task = async (): Promise<number> => {
+      throw reason;
+    };
+    const dedupe = new DedupeAsyncTask<number>();
+    let error: unknown;
+    try {
+      await dedupe.get('foo', task, new AbortController().signal);
+    } catch (e: unknown) {
+      error = e;
+    }
+
+    expect(error).to.equal(reason);
+  });
+
   describe('aborts requests', (): void => {
     const boolTask = async (signal: AbortSignal): Promise<boolean> => {
       await new Promise((resolve) => window.setTimeout(resolve, 0));
@@ -133,6 +149,23 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       expect(b).to.be.null;
     });
 
+
+    it('with the reason given to the abort signal', async (): Promise<void> => {
+      const dedupe = new DedupeAsyncTask<boolean>();
+      const reason = new Error('stop');
+      const abortController = new AbortController();
+      const promise = dedupe.get('foo', boolTask, abortController.signal);
+
+      abortController.abort(reason);
+      let error: unknown;
+      try {
+        await promise;
+      } catch (e: unknown) {
+        error = e;
+      }
+
+      expect(error).to.equal(reason);
+    });
 
     it('if previous request already succeeded', async (): Promise<void> => {
       const dedupe = new DedupeAsyncTask<boolean>();

@@ -66,7 +66,7 @@ export const initiateSudoModeModal = async (properties: Omit<SudoModeProperties,
   topDocument.body.append(el);
   return new Promise<void>((resolve, reject) => {
     el.addEventListener('typo3:sudo-mode:verified', () => resolve());
-    el.addEventListener('typo3:sudo-mode:finished', () => reject());
+    el.addEventListener('typo3:sudo-mode:finished', () => reject(new Error('Sudo mode was closed without verification')));
   });
 };
 

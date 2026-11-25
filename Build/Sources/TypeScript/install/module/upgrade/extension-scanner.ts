@@ -265,7 +265,7 @@ class ExtensionScanner extends AbstractInteractableModule {
           this.setStatusMessageForScan(extension, doneFiles, numberOfFiles, failedFiles.length);
           this.setProgressForScan(extension, doneFiles + failedFiles.length, numberOfFiles);
         };
-        const filePromises = data.files.map((file): Promise<void> => new Promise<void>((resolve, reject): void => {
+        const filePromises = data.files.map((file): Promise<void> => new Promise<void>((resolve): void => {
           AjaxQueue.add({
             method: 'POST',
             data: {
@@ -371,7 +371,7 @@ class ExtensionScanner extends AbstractInteractableModule {
             onrejected: (reason: string): void => {
               markFileAsFailed(file);
               console.error(reason);
-              reject();
+              resolve();
             },
           });
         }));

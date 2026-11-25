@@ -56,7 +56,7 @@ export class ThumbnailElement extends LitElement {
 
       await new Promise<void>(((resolve, reject) => {
         img.onload = () => resolve();
-        img.onerror = () => reject();
+        img.onerror = () => reject(new Error('Thumbnail could not be loaded'));
       }));
       return html`${img}`;
     },
