@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Psr\Log\LogLevel;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Error\ErrorHandler;
 use TYPO3\CMS\Core\Error\ErrorHandlerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -103,7 +104,9 @@ final class ErrorHandlerTest extends UnitTestCase
         $logManager->setLogger('TYPO3.CMS.deprecations', clone $this->trackingLogger);
         // disabled until the new logger is in place
         // $logManager->setLogger('TYPO3.CMS.php_errors', clone $this->trackingLogger);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        $container = new Container();
+        $container->set(LogManager::class, $logManager);
+        GeneralUtility::setContainer($container);
 
         try {
             $return = $subject->handleError($levelToTrigger, $message, $file, $line);

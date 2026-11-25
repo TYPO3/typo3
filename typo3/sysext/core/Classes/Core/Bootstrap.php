@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
 use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
@@ -97,7 +98,7 @@ readonly class Bootstrap
 
         $disableCaching = $failsafe ? true : false;
         /** @var PhpFrontend $coreCache */
-        $coreCache = static::createCache('core', $disableCaching);
+        $coreCache = static::createCache('core', $disableCaching, logManager: $logManager);
         $packageCache = static::createPackageCache($coreCache);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
@@ -108,7 +109,7 @@ readonly class Bootstrap
         static::setDefaultTimezone();
         static::setMemoryLimit();
 
-        $dependencyInjectionContainerCache = static::createCache('di');
+        $dependencyInjectionContainerCache = static::createCache('di', logManager: $logManager);
 
         $bootState = new \stdClass();
         $bootState->complete = false;
@@ -245,7 +246,8 @@ readonly class Bootstrap
     public static function createCache(
         string $identifier,
         bool $disableCaching = false,
-        ?string $enforcedCacheBackend = null
+        ?string $enforcedCacheBackend = null,
+        ?LogManagerInterface $logManager = null,
     ): FrontendInterface {
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $cacheConfigurations['di']['frontend'] = PhpFrontend::class;
@@ -265,6 +267,9 @@ readonly class Bootstrap
         $backendInstance = new $backend($options);
         if (!$backendInstance instanceof BackendInterface) {
             throw new InvalidBackendException('"' . $backend . '" is not a valid cache backend object.', 1545260108);
+        }
+        if ($logManager !== null && $backendInstance instanceof LoggerAwareInterface) {
+            $backendInstance->setLogger($logManager->getLogger($backendInstance::class));
         }
         if (is_callable([$backendInstance, 'initializeObject'])) {
             $backendInstance->initializeObject();

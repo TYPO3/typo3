@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Log\Processor\ProcessorInterface;
 use TYPO3\CMS\Core\Log\Processor\RequestIdProcessor;
 use TYPO3\CMS\Core\Log\Writer\WriterInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Inspired by java.util.logging
  */
-class LogManager implements SingletonInterface, LogManagerInterface
+class LogManager implements LogManagerInterface
 {
     /**
      * @var string

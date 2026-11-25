@@ -45,6 +45,7 @@ These classes do not implement :php-short:`\TYPO3\CMS\Core\SingletonInterface` a
 -   :php:`\TYPO3\CMS\Core\LinkHandling\LinkService`
 -   :php:`\TYPO3\CMS\Core\Localization\Locales`
 -   :php:`\TYPO3\CMS\Core\Locking\LockFactory`
+-   :php:`\TYPO3\CMS\Core\Log\LogManager`
 -   :php:`\TYPO3\CMS\Core\Messaging\FlashMessageService`
 -   :php:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`
 -   :php:`\TYPO3\CMS\Core\Page\ImportMapFactory`

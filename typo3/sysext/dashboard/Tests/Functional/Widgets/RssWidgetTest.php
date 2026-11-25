@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Settings\Settings;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\RssWidget;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
@@ -151,7 +150,7 @@ final class RssWidgetTest extends FunctionalTestCase
         };
         $logManager = self::createStub(LogManager::class);
         $logManager->method('getLogger')->willReturn($logger);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        $this->getContainer()->set(LogManager::class, $logManager); // @phpstan-ignore-line
         $GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']['feed'] = static fn() => static fn(RequestInterface $request) => new RejectedPromise(
             new ConnectException('Connection refused', $request)
         );

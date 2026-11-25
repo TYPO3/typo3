@@ -74,11 +74,9 @@ final class SetCookieServiceTest extends UnitTestCase
         $logger = new NullLogger();
         $logManager = self::createStub(LogManager::class);
         $logManager->method('getLogger')->willReturn($logger);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        GeneralUtility::addInstance(LogManager::class, $logManager);
 
         $subject = SetCookieService::create('typo_user', $loginType);
-
-        GeneralUtility::removeSingletonInstance(LogManager::class, $logManager);
 
         $removalCookie = $subject->removeCookie($normalizedParams);
         $creationCookie = $subject->setSessionCookie(UserSession::createNonFixated('fdcba54321'), $normalizedParams);

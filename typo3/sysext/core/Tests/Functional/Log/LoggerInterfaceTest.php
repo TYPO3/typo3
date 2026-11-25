@@ -19,8 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Functional\Log;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Log\DummyWriter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestLogger\ConstructorAttributeChannelTester;
 use TYPO3Tests\TestLogger\ConstructorClassAttributeChannelTester;
@@ -65,6 +68,21 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     {
         DummyWriter::$logs = [];
         parent::tearDown();
+    }
+
+    #[Test]
+    public function makeInstanceReturnsLogManagerOfContainer(): void
+    {
+        self::assertSame($this->get(LogManager::class), GeneralUtility::makeInstance(LogManager::class));
+    }
+
+    #[Test]
+    public function loggerFromMakeInstanceUsesRequestIdOfContainer(): void
+    {
+        GeneralUtility::makeInstance(LogManager::class)->getLogger('makeInstance.channel')->info('beep');
+
+        self::assertCount(1, DummyWriter::$logs);
+        self::assertSame((string)$this->get(RequestId::class), DummyWriter::$logs[0]->getRequestId());
     }
 
     #[Test]

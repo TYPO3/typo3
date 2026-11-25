@@ -167,7 +167,7 @@ final class LoggerTest extends UnitTestCase
         $logManager = new LogManager();
         $configuredLogger = $logManager->getLogger('test.core.log');
         $configuredLogger->addWriter(LogLevel::NOTICE, $writer);
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+        GeneralUtility::addInstance(LogManager::class, $logManager);
 
         $restored = unserialize(serialize(new Logger('test.core.log')), ['allowed_classes' => [Logger::class]]);
 
