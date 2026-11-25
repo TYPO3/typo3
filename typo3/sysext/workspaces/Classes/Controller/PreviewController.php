@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -161,7 +162,7 @@ final readonly class PreviewController
             // plus -2 ("show at any login"), which every logged-in frontend user has.
             $draftContext = clone $this->context;
             if ($simulatedUserGroups !== '') {
-                $draftContext->setAspect('frontend.user', new UserAspect(null, [-2, ...$this->previewSimulatorCalculator->getUserGroupIds($simulatedUserGroups)]));
+                $draftContext->setAspect('frontend.user', new UserAspect(null, [FrontendUserGroup::AnyLogin->value, ...$this->previewSimulatorCalculator->getUserGroupIds($simulatedUserGroups)]));
             }
             $wsUrl = $this->generateUrl($site, $pageUid, $parameters, $draftContext);
         } catch (SiteNotFoundException|InvalidRouteArgumentsException $e) {

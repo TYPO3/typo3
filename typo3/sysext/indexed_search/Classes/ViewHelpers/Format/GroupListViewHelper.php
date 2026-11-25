@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -43,7 +44,7 @@ final class GroupListViewHelper extends AbstractViewHelper
         $groups = $this->arguments['groups'];
         $str = [];
         foreach ($groups as $row) {
-            $str[] = $row['gr_list'] === '0,-1' ? 'NL' : $row['gr_list'];
+            $str[] = $row['gr_list'] === implode(',', FrontendUserGroup::anonymousGroupIds()) ? 'NL' : $row['gr_list'];
         }
         arsort($str);
         return implode('|', $str);

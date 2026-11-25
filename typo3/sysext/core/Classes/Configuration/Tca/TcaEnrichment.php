@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Tca;
 
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 
 /**
@@ -127,11 +128,11 @@ final readonly class TcaEnrichment
                         'items' => [
                             [
                                 'label' => 'core.db.general:fe_group.hide_at_login',
-                                'value' => -1,
+                                'value' => FrontendUserGroup::NotLoggedIn->value,
                             ],
                             [
                                 'label' => 'core.db.general:fe_group.any_login',
-                                'value' => -2,
+                                'value' => FrontendUserGroup::AnyLogin->value,
                             ],
                             [
                                 'label' => 'core.db.general:fe_group.usergroups',

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -304,17 +305,13 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function createUserAspect(bool $respectUserGroups = true): UserAspect
     {
-        $userGroups = [0];
+        $userGroups = [FrontendUserGroup::Everyone->value];
         $isUserAndGroupSet = is_array($this->user) && !empty($this->userGroups);
         if ($isUserAndGroupSet) {
-            // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
-            // This is used to let elements be shown for all logged in users!
-            $userGroups[] = -2;
+            $userGroups[] = FrontendUserGroup::AnyLogin->value;
             $groupsFromUserRecord = array_keys($this->userGroups);
         } else {
-            // group -1 is not an existing group, but denotes a 'default' group when not logged in.
-            // This is used to let elements be hidden, when a user is logged in!
-            $userGroups[] = -1;
+            $userGroups[] = FrontendUserGroup::NotLoggedIn->value;
             if ($respectUserGroups) {
                 // For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
                 $groupsFromUserRecord = array_keys($this->userGroups);

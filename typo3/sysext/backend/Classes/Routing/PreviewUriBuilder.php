@@ -22,6 +22,7 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
@@ -549,8 +550,8 @@ class PreviewUriBuilder
             }
         }
         $additionalQueryParameters = [];
-        if ((int)$access['fe_group'] === -2) {
-            // -2 means "show at any login". We simulate first available fe_group.
+        if ((int)$access['fe_group'] === FrontendUserGroup::AnyLogin->value) {
+            // Simulate the first available fe_group
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('fe_groups');
             $queryBuilder->getRestrictions()
