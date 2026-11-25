@@ -72,7 +72,8 @@ final class DataHandlerRedirectCacheHookTest extends FunctionalTestCase
         $dataHandler->start(['sys_redirect' => ['NEW1' => [
             'pid' => 0,
             'source_host' => 'other.example.com',
-            'source_path' => '/new',
+            'source_path' => '#^/new$#',
+            'is_regexp' => 1,
             'target' => 'https://example.com/target',
         ]]], []);
         $dataHandler->process_datamap();
@@ -98,8 +99,9 @@ final class DataHandlerRedirectCacheHookTest extends FunctionalTestCase
     private function getCachedRedirectUids(string $sourceHost): array
     {
         $uids = [];
-        foreach ($this->get(RedirectCacheService::class)->getRedirects($sourceHost) as $redirectsByPath) {
-            foreach ($redirectsByPath as $redirects) {
+        $cachedRedirects = $this->get(RedirectCacheService::class)->getRedirects($sourceHost);
+        foreach (['regexp_flat', 'regexp_query_parameters'] as $group) {
+            foreach ($cachedRedirects[$group] ?? [] as $redirects) {
                 foreach ($redirects as $redirect) {
                     $uids[] = (int)$redirect['uid'];
                 }
