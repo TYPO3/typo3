@@ -91,8 +91,10 @@ single view plugin of news.
 *   Index Records immediately when saved?: When enabled, records of the
     configured table are indexed as soon as they are saved in the backend.
     This applies to records located on the page of the configuration, or on
-    the Alternative Source Page, if set. Hiding or deleting a record removes
-    it from the index.
+    the Alternative Source Page, if set. Only records that anonymous
+    visitors may see are indexed: hiding, deleting, scheduling or restricting
+    a record to frontend user groups removes it from the index. Password
+    fields are never indexed.
 
 If a record is removed its indexing entry will also be
 removed upon next indexing. The UID of the record is saved in the index for

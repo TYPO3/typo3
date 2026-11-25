@@ -2,3 +2,4 @@
 ,"uid","pid","type","table2index","fieldlist","get_params","records_indexonchange","alternative_source_pid","set_id"
 ,1,2,1,"tt_content","header,bodytext","&tx_test[record]=###UID###",1,0,0
 ,2,3,1,"tt_content","header,bodytext","",0,0,0
+,3,4,1,"fe_users","username,password,email","",1,0,0

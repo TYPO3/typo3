@@ -58,7 +58,7 @@ final readonly class RecordIndexingDataHandlerHook
         }
 
         foreach ($this->recordIndexer->findIndexOnChangeConfigurations($record) as $configuration) {
-            if ($record->getSystemProperties()?->isDisabled()) {
+            if (!$this->recordIndexer->isVisibleToAnonymousVisitors($record)) {
                 $this->recordIndexer->removeRecord($record, $configuration);
                 continue;
             }

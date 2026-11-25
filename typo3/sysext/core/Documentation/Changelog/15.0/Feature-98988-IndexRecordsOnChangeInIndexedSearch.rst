@@ -18,9 +18,11 @@ has had no effect anymore.
 
 EXT:indexed_search now takes care of this on its own. When a record of the
 configured table is saved in the backend, it is indexed right away, using the
-fields configured in the indexing configuration. Hiding or deleting a record
-removes it from the index again. Deleting a page removes its index, as does
-hiding it or marking it as "no search".
+fields configured in the indexing configuration. The index is public, so only
+records that anonymous visitors may see are indexed: hiding, deleting,
+scheduling or restricting a record to frontend user groups removes it from
+the index again. Password fields are never indexed. Deleting a page removes
+its index, as does hiding it or marking it as "no search".
 
 The indexing is done by the new internal service
 :php:`\TYPO3\CMS\IndexedSearch\Service\RecordIndexer`, which works with

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -119,10 +120,68 @@ final class RecordIndexingTest extends FunctionalTestCase
         self::assertSame([], $this->getIndexedRows());
     }
 
-    private function saveContentElement(int $pid, int|string $id, string $header, string $bodytext): void
+    public static function restrictedRecordDataProvider(): \Generator
+    {
+        yield 'restricted to a frontend user group' => [['fe_group' => '1']];
+        yield 'shown at any login' => [['fe_group' => '-2']];
+        yield 'scheduled for the future' => [['starttime' => time() + 86400]];
+        yield 'expired' => [['starttime' => time() - 172800, 'endtime' => time() - 86400]];
+    }
+
+    #[DataProvider('restrictedRecordDataProvider')]
+    #[Test]
+    public function recordNotVisibleToAnonymousVisitorsIsNotIndexed(array $restriction): void
+    {
+        $this->saveContentElement(2, 'NEW1', 'Restricted headline', 'Zeppelin', $restriction);
+
+        self::assertSame([], $this->getIndexedRows());
+    }
+
+    #[DataProvider('restrictedRecordDataProvider')]
+    #[Test]
+    public function recordNotVisibleToAnonymousVisitorsIsRemovedFromIndex(array $restriction): void
+    {
+        $this->saveContentElement(2, 'NEW1', 'Indexable headline', 'Zeppelin');
+        $recordUid = (int)$this->getIndexedRows()[0]['recordUid'];
+
+        $this->saveContentElement(2, $recordUid, 'Restricted headline', 'Zeppelin', $restriction);
+
+        self::assertSame([], $this->getIndexedRows());
+    }
+
+    #[Test]
+    public function recordHiddenAtLoginIsIndexed(): void
+    {
+        $this->saveContentElement(2, 'NEW1', 'Anonymous headline', 'Zeppelin', ['fe_group' => '-1']);
+
+        self::assertCount(1, $this->getIndexedRows());
+    }
+
+    #[Test]
+    public function passwordFieldIsNotIndexed(): void
     {
         $dataHandler = $this->get(DataHandler::class);
-        $dataHandler->start(['tt_content' => [$id => ['pid' => $pid, 'CType' => 'text', 'header' => $header, 'bodytext' => $bodytext]]], []);
+        $dataHandler->start(['fe_users' => ['NEW1' => ['pid' => 4, 'username' => 'kasper', 'password' => 'Secret-Password-123', 'email' => 'kasper@example.com']]], []);
+        $dataHandler->process_datamap();
+        self::assertSame([], $dataHandler->errorLog);
+        $passwordHash = (string)$this->get(ConnectionPool::class)->getConnectionForTable('fe_users')
+            ->select(['password'], 'fe_users', ['username' => 'kasper'])
+            ->fetchOne();
+
+        $rows = $this->getIndexedRows();
+        self::assertCount(1, $rows);
+        self::assertSame('kasper', $rows[0]['item_title']);
+        $fulltext = $this->getFulltext($rows[0]['phash']);
+        self::assertStringContainsString('kasper@example.com', $fulltext);
+        self::assertNotSame('', $passwordHash);
+        self::assertStringNotContainsString($passwordHash, $fulltext);
+        self::assertStringNotContainsString('Secret-Password-123', $fulltext);
+    }
+
+    private function saveContentElement(int $pid, int|string $id, string $header, string $bodytext, array $additionalFields = []): void
+    {
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['tt_content' => [$id => array_merge(['pid' => $pid, 'CType' => 'text', 'header' => $header, 'bodytext' => $bodytext], $additionalFields)]], []);
         $dataHandler->process_datamap();
         self::assertSame([], $dataHandler->errorLog);
     }

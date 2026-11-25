@@ -19,13 +19,19 @@ namespace TYPO3\CMS\IndexedSearch\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Schema\Field\PasswordFieldType;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
@@ -47,7 +53,22 @@ final readonly class RecordIndexer
         #[AutowireLocator([Indexer::class])]
         private ServiceLocator $indexers,
         private PageAncestryResolver $pageAncestryResolver,
+        private RecordAccessVoter $recordAccessVoter,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private Context $context,
     ) {}
+
+    /**
+     * Records are indexed for anonymous visitors (gr_list "0,-1"), so only records
+     * that an anonymous visitor may see right now are allowed in the index.
+     */
+    public function isVisibleToAnonymousVisitors(Record $record): bool
+    {
+        $context = clone $this->context;
+        $context->setAspect('visibility', VisibilityAspect::create());
+        $context->setAspect('frontend.user', new UserAspect(null, [0, -1]));
+        return $this->recordAccessVoter->accessGranted($record->getMainType(), $record->getRawRecord()->toArray(), $context);
+    }
 
     /**
      * Find all indexing configurations of type "Database records" that ask for
@@ -155,6 +176,10 @@ final readonly class RecordIndexer
     private function getFieldValue(Record $record, string $fieldName): string
     {
         if ($fieldName === '' || !$record->has($fieldName)) {
+            return '';
+        }
+        $schema = $this->tcaSchemaFactory->get($record->getMainType());
+        if ($schema->hasField($fieldName) && $schema->getField($fieldName) instanceof PasswordFieldType) {
             return '';
         }
         $value = $record->get($fieldName);
