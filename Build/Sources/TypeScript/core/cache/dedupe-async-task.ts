@@ -59,37 +59,28 @@ export class DedupeAsyncTask<T> {
     return promise;
   }
 
-  private getAbortablePromise(
+  private async getAbortablePromise(
     key: string,
     promise: Promise<T>,
     signal: AbortSignal,
   ): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-      const abortListener = () => {
+    const listenerController = new AbortController();
+    const aborted = new Promise<void>((resolve) => {
+      signal.addEventListener('abort', (): void => {
         if (key in this.promises && --this.promises[key].refCount < 1) {
           this.promises[key].abortController.abort();
           delete this.promises[key];
         }
-        try {
-          signal.throwIfAborted();
-        } catch (e) {
-          reject(e);
-        }
-      };
-
-      signal.addEventListener('abort', abortListener, { once: true });
-      promise.then(
-        (value: T) => {
-          signal.removeEventListener('abort', abortListener);
-          if (!signal.aborted) {
-            resolve(value);
-          }
-        },
-        (e: unknown) => {
-          signal.removeEventListener('abort', abortListener);
-          reject(e);
-        }
-      );
+        resolve();
+      }, { once: true, signal: listenerController.signal });
     });
+
+    try {
+      await Promise.race([promise, aborted]);
+      signal.throwIfAborted();
+      return await promise;
+    } finally {
+      listenerController.abort();
+    }
   }
 }

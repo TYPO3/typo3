@@ -71,7 +71,7 @@ class ContentContainer extends AbstractContainer {
     const iFrame = <HTMLIFrameElement>this.resolveIFrameElement();
     // abort, if no IFRAME can be found
     if (iFrame === null) {
-      return Promise.reject();
+      return Promise.reject(new Error('Content container has no module iframe'));
     }
     const promise: Promise<void> = this.consumerScope.invoke(
       new TriggerRequest('typo3.refresh', interactionRequest),

@@ -221,7 +221,7 @@ class Icons {
       return Promise.resolve(ClientStorage.get('icon_' + cacheIdentifier)!);
     }
 
-    return Promise.reject();
+    return Promise.reject(new Error('Icon is not cached in local storage'));
   }
 }
 
