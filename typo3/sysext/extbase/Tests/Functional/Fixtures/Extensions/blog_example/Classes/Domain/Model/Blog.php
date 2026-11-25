@@ -75,11 +75,41 @@ class Blog extends AbstractEntity
     #[Lazy]
     protected Administrator|LazyLoadingProxy|null $administrator = null;
 
+    /**
+     * Transient state without a TCA column
+     */
+    protected string $draftNote = '';
+
+    /**
+     * Transient state without a TCA column, private on purpose
+     */
+    private string $editToken = '';
+
     public function __construct()
     {
         $this->posts = new ObjectStorage();
         $this->categories = new ObjectStorage();
         $this->logo = new ObjectStorage();
+    }
+
+    public function setDraftNote(string $draftNote): void
+    {
+        $this->draftNote = $draftNote;
+    }
+
+    public function getDraftNote(): string
+    {
+        return $this->draftNote;
+    }
+
+    public function setEditToken(string $editToken): void
+    {
+        $this->editToken = $editToken;
+    }
+
+    public function getEditToken(): string
+    {
+        return $this->editToken;
     }
 
     public function setSubtitle(?string $subtitle): void

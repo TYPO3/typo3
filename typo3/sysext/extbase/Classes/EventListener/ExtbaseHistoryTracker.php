@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent;
@@ -178,27 +177,29 @@ final readonly class ExtbaseHistoryTracker
         }
 
         foreach ($properties as $propertyName => $propertyValue) {
-            // Get actual database column name:
             $columnMap = $dataMap->getColumnMap($propertyName);
-            if ($columnMap !== null) {
-                $propertyName = $columnMap->columnName;
+            if ($propertyName === AbstractDomainObject::PROPERTY_UID || $propertyName === AbstractDomainObject::PROPERTY_PID) {
+                $columnName = $propertyName;
+            } elseif ($columnMap !== null) {
+                $columnName = $columnMap->columnName;
             } else {
-                $propertyName = GeneralUtility::camelCaseToLowerCaseUnderscored($propertyName);
+                // A property without a TCA column is never stored, so it is not part of the record history
+                continue;
             }
 
             // Convert objects and complex types to string representation
             if (is_object($propertyValue)) {
                 if ($propertyValue instanceof DomainObjectInterface) {
-                    $data[$propertyName] = $propertyValue->getUid();
+                    $data[$columnName] = $propertyValue->getUid();
                 } elseif (method_exists($propertyValue, '__toString')) {
-                    $data[$propertyName] = (string)$propertyValue;
+                    $data[$columnName] = (string)$propertyValue;
                 } else {
-                    $data[$propertyName] = get_class($propertyValue);
+                    $data[$columnName] = get_class($propertyValue);
                 }
             } elseif (is_array($propertyValue)) {
-                $data[$propertyName] = json_encode($propertyValue);
+                $data[$columnName] = json_encode($propertyValue);
             } else {
-                $data[$propertyName] = $propertyValue;
+                $data[$columnName] = $propertyValue;
             }
         }
 
