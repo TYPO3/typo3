@@ -47,8 +47,8 @@ export class ValuePicker extends HTMLElement {
 
   private initializeValuePicker(slot: HTMLSlotElement): void {
     const picker = (slot.assignedElements()[0] ?? null) as HTMLSelectElement|null;
-    if (picker !== null && picker.tagName.toLowerCase() !== 'select') {
-      throw new Error(`ValuePicker could not be initialized. Expected <select> child name, but found: ${picker}`);
+    if (picker !== null && picker.localName !== 'select') {
+      throw new Error(`ValuePicker could not be initialized. Expected <select> child name, but found: <${picker.localName}>`);
     }
     if (picker !== this.valuePicker) {
       this.valuePicker?.removeEventListener('change', this.onChange);

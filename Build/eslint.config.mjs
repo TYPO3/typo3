@@ -70,6 +70,7 @@ export default [...compat.extends(
 
     "@typescript-eslint/no-array-delete": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
+    "@typescript-eslint/restrict-template-expressions": "error",
     curly: "error",
     "default-case": "error",
     "dot-notation": "error",
