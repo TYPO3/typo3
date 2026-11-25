@@ -22,11 +22,16 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -34,6 +39,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Http\Application;
+use TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders;
 
 /**
  * Renders the content of a page to be displayed (also in relation to language etc)
@@ -51,6 +57,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected RequestFactoryInterface $requestFactory;
     protected GuzzleClientFactory $guzzleClientFactory;
     protected PageRenderer $pageRenderer;
+    protected LoggerInterface $logger;
 
     /**
      * PageContentErrorHandler constructor.
@@ -73,6 +80,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $this->requestFactory = $container->get(RequestFactoryInterface::class);
         $this->guzzleClientFactory = $container->get(GuzzleClientFactory::class);
         $this->pageRenderer = $container->get(PageRenderer::class);
+        $this->logger = $container->get(LogManager::class)->getLogger(self::class);
     }
 
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -85,10 +93,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
 
             // avoid denial-of-service amplification scenario
             if ($resolvedUrl === (string)$request->getUri()) {
-                return new HtmlResponse(
-                    'The error page could not be resolved, as the error page itself is not accessible',
-                    $this->statusCode
-                );
+                return $this->createErrorPageNotAccessibleResponse($request);
             }
             // External URL most likely pointing to additional hosts or pages not contained in the current instance,
             // and using internal sub requests would never receive a valid page. Send an external request instead.
@@ -103,7 +108,14 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $subResponse = $this->sendSubRequest($subRequest, $urlParams['pageuid'], $request);
 
             if ($subResponse->getStatusCode() >= 300) {
-                throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", status code: %s', $resolvedUrl, $subResponse->getStatusCode()), 1544172839);
+                // The handler does not throw an exception here, because the exception handler then answers
+                // with the status 500. The handler sends the TYPO3 error page with the original status code.
+                // The log tells the integrator which page failed.
+                $this->logger->warning(
+                    'Error handler could not fetch error page "{uri}", status code: {statusCode}',
+                    ['uri' => $resolvedUrl, 'statusCode' => $subResponse->getStatusCode()]
+                );
+                return $this->createErrorPageNotAccessibleResponse($request);
             }
 
             $response = $this->responseFactory->createResponse($this->statusCode)
@@ -159,10 +171,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             // If the header is set here, it is a recursive call within the same instance where an
             // outer error handler called a page that results in another error handler call. To break
             // the loop, we except here.
-            return new HtmlResponse(
-                'The error page could not be resolved, the error page itself is not accessible',
-                $this->statusCode
-            );
+            return $this->createErrorPageNotAccessibleResponse($originalRequest);
         }
         try {
             $request = $this->requestFactory->createRequest('GET', $url)
@@ -172,21 +181,43 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             // In case global guzzle configuration has been changed to not throw an exception
             // for error status codes, the response status code is checked here.
             if ($response->getStatusCode() >= 300) {
-                return new HtmlResponse(
-                    'The error page could not be resolved, as the error page itself is not accessible',
-                    $this->statusCode
+                $this->logger->warning(
+                    'Error handler could not fetch error page "{uri}", status code: {statusCode}',
+                    ['uri' => $url, 'statusCode' => $response->getStatusCode()]
                 );
+                return $this->createErrorPageNotAccessibleResponse($originalRequest);
             }
             return $this->responseFactory
                 ->createResponse($this->statusCode)
                 ->withHeader('Content-Type', $response->getHeader('Content-Type'))
                 ->withBody($response->getBody());
-        } catch (GuzzleException) {
-            return new HtmlResponse(
-                'The error page could not be resolved, the error page itself is not accessible',
-                $this->statusCode
+        } catch (GuzzleException $e) {
+            $this->logger->warning(
+                'Error handler could not fetch error page "{uri}", error: {error}',
+                ['uri' => $url, 'error' => $e->getMessage()]
             );
+            return $this->createErrorPageNotAccessibleResponse($originalRequest);
         }
+    }
+
+    /**
+     * The handler uses this response when it cannot get the content of the error page. The
+     * visitor gets the TYPO3 error page with the original status code. The title is the reason
+     * phrase of the status code, because a site can use this handler for any status code.
+     */
+    private function createErrorPageNotAccessibleResponse(ServerRequestInterface $request): ResponseInterface
+    {
+        $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
+            $this->responseFactory->createResponse($this->statusCode)->getReasonPhrase(),
+            'The error page could not be resolved, as the error page itself is not accessible',
+            0,
+            $this->statusCode
+        );
+        // The handler adds the Content-Security-Policy headers here, as ErrorController does. The
+        // middleware for these headers can prepare the policy during the page rendering. When the error
+        // occurs after that, the policy does not allow the inline style of the TYPO3 error page.
+        return GeneralUtility::makeInstance(ContentSecurityPolicyHeaders::class)
+            ->applyToResponse($request, new HtmlResponse($content, $this->statusCode));
     }
 
     /**
@@ -227,8 +258,13 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $language = reset($enabledLanguages);
         }
 
-        // Build Url
-        $uri = $site->getRouter()->generateUri(
+        // With the visibility of the request, PageRouter finds no page record for an error page that
+        // is hidden or outside its start and end time. Then PageRouter builds the URI "/", and the
+        // handler shows the root page. Thus PageRouter gets a context that also includes such pages.
+        // The sub-request still checks if the visitor or the backend user can see the error page.
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('visibility', VisibilityAspect::create()->withIncludeHiddenPages(true)->withIncludeScheduledRecords(true));
+        $uri = $site->getRouter($context)->generateUri(
             (int)$urlParams['pageuid'],
             ['_language' => $language]
         );
