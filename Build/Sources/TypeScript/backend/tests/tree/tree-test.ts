@@ -13,13 +13,16 @@
 
 import { expect } from '@open-wc/testing';
 import { Tree } from '@typo3/backend/tree/tree.js';
-import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node.js';
+import { TreeNodeCommandEnum, type TreeNodeInterface } from '@typo3/backend/tree/tree-node.js';
+import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
 import Notification from '@typo3/backend/notification.js';
 import { spy, stub, type SinonStub } from 'sinon';
 import type { } from 'mocha';
 
 class TestTree extends Tree {
+  private dragTargetNode: TreeNodeInterface|null = null;
+
   public enhance(nodes: TreeNodeInterface[]): TreeNodeInterface[] {
     return this.enhanceNodes(nodes);
   }
@@ -28,6 +31,25 @@ class TestTree extends Tree {
     this.unfilteredNodes = JSON.stringify(this.nodes);
     this.searchTerm = searchTerm;
     this.nodes = this.enhanceNodes(filteredNodes);
+  }
+
+  public dragOver(draggingNode: TreeNodeInterface, targetNode: TreeNodeInterface): { nodeDragMode: TreeNodeCommandEnum|null, dropAllowed: boolean } {
+    this.draggingNode = draggingNode;
+    this.dragTargetNode = targetNode;
+    stub(this, 'getElementFromNode').returns(document.createElement('div'));
+    const preventDefault = spy();
+    const event = {
+      dataTransfer: { types: [DataTransferTypes.treenode] },
+      target: document.createElement('div'),
+      clientY: 0,
+      preventDefault,
+    } as unknown as DragEvent;
+    this.handleNodeDragOver(event);
+    return { nodeDragMode: this.nodeDragMode, dropAllowed: preventDefault.called };
+  }
+
+  protected override getNodeFromDragEvent(): TreeNodeInterface|null {
+    return this.dragTargetNode;
   }
 }
 
@@ -107,6 +129,33 @@ describe('tree filter reset', () => {
     await new Promise((resolve) => setTimeout(resolve));
 
     expect(filterReset.called).to.equal(false);
+  });
+});
+
+describe('tree node drag over', () => {
+  // A page moved in a workspace is shown twice: below page 1 at its live position, below page 3 at its moved position
+  const createTreeWithMovedPage = (): TestTree => {
+    const tree = document.createElement('typo3-test-storage-tree') as TestTree;
+    tree.nodes = tree.enhance([
+      { identifier: '0', depth: 0, loaded: true, hasChildren: true },
+      { identifier: '1', depth: 1, loaded: true, hasChildren: true },
+      { identifier: '2', depth: 2, loaded: true, hasChildren: false },
+      { identifier: '3', depth: 1, loaded: true, hasChildren: true },
+      { identifier: '2', depth: 2, loaded: true, hasChildren: false },
+    ] as unknown as TreeNodeInterface[]);
+    return tree;
+  };
+
+  it('refuses dropping a node onto another node of the same record', () => {
+    const tree = createTreeWithMovedPage();
+
+    expect(tree.dragOver(tree.nodes[4], tree.nodes[2])).to.deep.equal({ nodeDragMode: null, dropAllowed: false });
+  });
+
+  it('allows dropping a node into a node of another record', () => {
+    const tree = createTreeWithMovedPage();
+
+    expect(tree.dragOver(tree.nodes[4], tree.nodes[1])).to.deep.equal({ nodeDragMode: TreeNodeCommandEnum.MOVE, dropAllowed: true });
   });
 });
 
