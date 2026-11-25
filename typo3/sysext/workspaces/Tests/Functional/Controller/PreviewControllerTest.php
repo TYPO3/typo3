@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Workspaces\Controller\PreviewController;
+use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -54,6 +56,13 @@ final class PreviewControllerTest extends FunctionalTestCase
         $backendUser->workspace = 91;
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(91));
+        $this->get(Context::class)->setAspect(
+            'visibility',
+            VisibilityAspect::create()
+                ->withIncludeHiddenPages(true)
+                ->withIncludeHiddenContent(true)
+                ->withIncludeScheduledRecords(true),
+        );
         $this->writeSiteConfiguration(
             'main',
             $this->buildSiteConfiguration(1, 'https://example.com/'),
@@ -102,6 +111,21 @@ final class PreviewControllerTest extends FunctionalTestCase
                 ['path' => '/show-at-any-login', 'ADMCMD_simUser' => '1'],
                 ['path' => '/show-at-any-login', 'ADMCMD_simUser' => '1'],
             ],
+            'page with start time in the future' => [
+                11,
+                ['path' => '/scheduled', 'ADMCMD_simUser' => null],
+                ['path' => '/scheduled', 'ADMCMD_simUser' => null],
+            ],
+            'page with end time in the past' => [
+                12,
+                ['path' => '/expired', 'ADMCMD_simUser' => null],
+                ['path' => '/expired', 'ADMCMD_simUser' => null],
+            ],
+            'page with start time in the future in draft version only' => [
+                13,
+                ['path' => '/scheduled-in-draft', 'ADMCMD_simUser' => null],
+                ['path' => '/scheduled-in-draft', 'ADMCMD_simUser' => null],
+            ],
         ];
     }
 
@@ -144,6 +168,9 @@ final class PreviewControllerTest extends FunctionalTestCase
             'restricted page with draft version restricted to the same group' => [4, 'Restricted modified (draft)'],
             'page restricted in draft version only' => [5, 'Restricted only in draft (draft)'],
             'live and draft version restricted to different groups' => [6, 'Different groups (draft)'],
+            'page with start time in the future' => [11, 'Scheduled'],
+            'page with end time in the past' => [12, 'Expired'],
+            'page with start time in the future in draft version only' => [13, 'Scheduled in draft (draft)'],
         ];
     }
 
@@ -159,6 +186,50 @@ final class PreviewControllerTest extends FunctionalTestCase
             new InternalRequest(html_entity_decode($matches[1])),
             new InternalRequestContext()->withBackendUserId(1)->withWorkspaceId(91)
         );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringContainsString($expectedTitle, (string)$response->getBody());
+    }
+
+    public static function previewLinkContainsPagePathDataProvider(): array
+    {
+        return [
+            'page without schedule' => [2, '/public'],
+            'page with start time in the future' => [11, '/scheduled'],
+            'page with end time in the past' => [12, '/expired'],
+            'page with start time in the future in draft version only' => [13, '/scheduled-in-draft'],
+        ];
+    }
+
+    #[DataProvider('previewLinkContainsPagePathDataProvider')]
+    #[Test]
+    public function previewLinkContainsPagePath(int $pageId, string $expectedPath): void
+    {
+        $uri = $this->get(PreviewUriBuilder::class)->buildUriForPage($pageId);
+
+        self::assertSame($expectedPath, parse_url($uri, PHP_URL_PATH));
+        self::assertStringContainsString('ADMCMD_prev=', $uri);
+    }
+
+    public static function previewLinkRendersPageWithoutBackendLoginDataProvider(): array
+    {
+        return [
+            'page without schedule' => [2, 'Public'],
+            'page with start time in the future' => [11, 'Scheduled'],
+            'page with end time in the past' => [12, 'Expired'],
+            'page with start time in the future in draft version only' => [13, 'Scheduled in draft (draft)'],
+        ];
+    }
+
+    #[DataProvider('previewLinkRendersPageWithoutBackendLoginDataProvider')]
+    #[Test]
+    public function previewLinkRendersPageWithoutBackendLogin(int $pageId, string $expectedTitle): void
+    {
+        $this->setUpFrontendRootPage(1);
+        $this->addTypoScriptToTemplateRecord(1, 'page = PAGE' . LF . 'page.10 = TEXT' . LF . 'page.10.field = title');
+        $uri = $this->get(PreviewUriBuilder::class)->buildUriForPage($pageId);
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(200, $response->getStatusCode());
         self::assertStringContainsString($expectedTitle, (string)$response->getBody());

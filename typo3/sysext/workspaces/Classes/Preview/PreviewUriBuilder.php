@@ -27,10 +27,12 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
@@ -60,6 +62,8 @@ readonly class PreviewUriBuilder
         private ConnectionPool $connectionPool,
         private TranslationConfigurationProvider $translationConfigurationProvider,
         private TcaSchemaFactory $tcaSchemaFactory,
+        private Context $context,
+        private PageAncestryResolver $pageAncestryResolver,
     ) {}
 
     /**
@@ -79,7 +83,11 @@ readonly class PreviewUriBuilder
             } catch (\InvalidArgumentException) {
                 $language = $site->getDefaultLanguage();
             }
-            $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
+            $uri = $site->getRouter()->generateUri(
+                $uid,
+                ['ADMCMD_prev' => $previewKeyword, '_language' => $language, ...$this->getTimeSimulationParameters($uid)],
+                ''
+            );
             return (string)$uri;
         } catch (SiteNotFoundException|InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $uid, $e->getMessage()), 1559794916, $e);
@@ -183,6 +191,7 @@ readonly class PreviewUriBuilder
             }
             $routeParameters = array_merge(
                 ['ADMCMD_prev' => $previewKeyword, '_language' => $language],
+                $this->getTimeSimulationParameters($previewPageId),
                 $additionalParameters
             );
             $uri = $site->getRouter()->generateUri($previewPageId, $routeParameters, '');
@@ -190,6 +199,21 @@ readonly class PreviewUriBuilder
         } catch (SiteNotFoundException|InvalidRouteArgumentsException) {
             return '';
         }
+    }
+
+    /**
+     * A page that is not live yet or not live anymore is only rendered by the frontend
+     * when the preview simulates a point in time at which it is visible.
+     */
+    private function getTimeSimulationParameters(int $pageId): array
+    {
+        $page = BackendUtility::getRecordWSOL('pages', $pageId);
+        if (!is_array($page)) {
+            return [];
+        }
+        $rootLine = $this->pageAncestryResolver->resolve($pageId, (int)$this->getBackendUser()->workspace)->toLegacyRootLine();
+        $parameters = BackendPreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages($page, clone $this->context, $rootLine);
+        return array_intersect_key($parameters, ['ADMCMD_simTime' => true]);
     }
 
     /**
