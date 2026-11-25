@@ -21,6 +21,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -149,7 +150,7 @@ class IndexSearchRepository
     public function initialize(array $settings, array $searchData, int|string $searchRootPageIdList): void
     {
         $this->searchRootPageIdList = (string)$searchRootPageIdList;
-        $this->frontendUserGroupList = implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
+        $this->frontendUserGroupList = implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', FrontendUserGroup::anonymousGroupIds()));
         if ($settings['exactCount'] ?? false) {
             $this->useExactCount = true;
         }

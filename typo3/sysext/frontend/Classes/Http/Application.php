@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -68,6 +69,6 @@ class Application extends AbstractApplication
         $this->context->setAspect('visibility', VisibilityAspect::create());
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
-        $this->context->setAspect('frontend.user', new UserAspect(null, [0, -1]));
+        $this->context->setAspect('frontend.user', new UserAspect(null, FrontendUserGroup::anonymousGroupIds()));
     }
 }

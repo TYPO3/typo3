@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
@@ -66,7 +67,7 @@ final readonly class RecordIndexer
     {
         $context = clone $this->context;
         $context->setAspect('visibility', VisibilityAspect::create());
-        $context->setAspect('frontend.user', new UserAspect(null, [0, -1]));
+        $context->setAspect('frontend.user', new UserAspect(null, FrontendUserGroup::anonymousGroupIds()));
         return $this->recordAccessVoter->accessGranted($record->getMainType(), $record->getRawRecord()->toArray(), $context);
     }
 
@@ -128,7 +129,7 @@ final readonly class RecordIndexer
             'type' => 0,
             'sys_language_uid' => $record->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE,
             'MP' => '',
-            'gr_list' => '0,-1',
+            'gr_list' => implode(',', FrontendUserGroup::anonymousGroupIds()),
             'staticPageArguments' => $queryArguments,
             'freeIndexUid' => $configuration->getUid(),
             'freeIndexSetId' => (int)$configuration->get('set_id'),

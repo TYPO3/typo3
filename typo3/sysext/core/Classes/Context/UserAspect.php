@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Context;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Authentication\Principal;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
@@ -53,7 +54,7 @@ final readonly class UserAspect implements AspectInterface
     private array $groupNames;
 
     /**
-     * @param array|null $alternativeGroups Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
+     * @param array|null $alternativeGroups Alternative list of groups, usually useful for frontend logins with the pseudo groups of FrontendUserGroup
      */
     public function __construct(AbstractUserAuthentication|Principal|null $user = null, ?array $alternativeGroups = null)
     {
@@ -66,8 +67,8 @@ final readonly class UserAspect implements AspectInterface
             if (is_array($alternativeGroups)) {
                 $this->groupIds = $alternativeGroups;
             } elseif ($this->isFrontendUser) {
-                // A principal always denotes a logged in user, always add "-2"
-                $this->groupIds = array_merge([0, -2], $user->context->groupIds);
+                // A principal always denotes a logged in user
+                $this->groupIds = array_merge([FrontendUserGroup::Everyone->value, FrontendUserGroup::AnyLogin->value], $user->context->groupIds);
             } else {
                 $this->groupIds = $user->context->groupIds;
             }
@@ -84,14 +85,13 @@ final readonly class UserAspect implements AspectInterface
             $this->groupIds = $user->userGroupsUID;
         } elseif ($this->isFrontendUser) {
             if ($this->id > 0) {
-                // If a user is logged in, always add "-2"
-                $groups = [0, -2];
+                $groups = [FrontendUserGroup::Everyone->value, FrontendUserGroup::AnyLogin->value];
                 if (!empty($user->userGroups)) {
                     $groups = array_merge($groups, array_keys($user->userGroups));
                 }
                 $this->groupIds = $groups;
             } else {
-                $this->groupIds = [0, -1];
+                $this->groupIds = FrontendUserGroup::anonymousGroupIds();
             }
         } else {
             $this->groupIds = [];
@@ -153,9 +153,7 @@ final readonly class UserAspect implements AspectInterface
     /**
      * Return the groups the user is a member of
      *
-     * For Frontend Users there are two special groups:
-     * "-1" = hide at login
-     * "-2" = show at any login
+     * For frontend users, they include the pseudo groups of FrontendUserGroup
      */
     public function getGroupIds(): array
     {
@@ -178,7 +176,7 @@ final readonly class UserAspect implements AspectInterface
     public function isUserOrGroupSet(): bool
     {
         if ($this->isFrontendUser) {
-            return $this->isLoggedIn() || implode(',', $this->groupIds) !== '0,-1';
+            return $this->isLoggedIn() || implode(',', $this->groupIds) !== implode(',', FrontendUserGroup::anonymousGroupIds());
         }
         return $this->isLoggedIn();
     }

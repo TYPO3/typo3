@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -122,9 +123,8 @@ class RedirectLoginErrorHandler implements PageErrorHandlerInterface
 
     protected function isSimulatedBackendGroup(): bool
     {
-        // look for special "any group"
         return $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn')
-            && $this->context->getPropertyFromAspect('frontend.user', 'groupIds')[1] === -2;
+            && $this->context->getPropertyFromAspect('frontend.user', 'groupIds')[1] === FrontendUserGroup::AnyLogin->value;
     }
 
     private function checkHandlerConfiguration(): void

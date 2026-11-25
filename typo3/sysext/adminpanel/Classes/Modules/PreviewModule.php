@@ -26,6 +26,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
@@ -220,7 +221,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             // This can be removed once #90989 is fixed
             $frontendUser->user['uid'] = PHP_INT_MAX;
             $groupUids = array_column($frontendUser->userGroups, 'uid');
-            $context->setAspect('frontend.user', new UserAspect($frontendUser, array_merge([-2], $groupUids)));
+            $context->setAspect('frontend.user', new UserAspect($frontendUser, array_merge([FrontendUserGroup::AnyLogin->value], $groupUids)));
         }
         $isPreview = $simulateUserGroups !== [] || $simTime || $showHiddenPages || $showHiddenRecords || $showScheduledRecords;
         if ($context->hasAspect('frontend.preview')) {

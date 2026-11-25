@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\EventListener;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Authentication\FrontendUserGroup;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
@@ -107,7 +108,7 @@ final readonly class FrontendGenerationPageIndexingTrigger
             // MP variable, if any (Mount Points)
             'MP' => $pageInformation->getMountPoint(),
             // Group list
-            'gr_list' => implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])),
+            'gr_list' => implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', FrontendUserGroup::anonymousGroupIds())),
             // page arguments array
             'staticPageArguments' => $pageArguments->getStaticArguments(),
             // The creation date of the TYPO3 page
