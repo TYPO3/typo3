@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
@@ -68,6 +68,8 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     protected bool $debugMode = false;
 
+    protected ?LogManagerInterface $logManager = null;
+
     /**
      * Registers this class as default error handler
      *
@@ -99,6 +101,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
     public function setDebugMode($debugMode)
     {
         $this->debugMode = (bool)$debugMode;
+    }
+
+    public function setLogManager(LogManagerInterface $logManager): void
+    {
+        $this->logManager = $logManager;
     }
 
     public function registerErrorHandler()
@@ -141,8 +148,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         $message = $this->getFormattedLogMessage($message);
 
         if ($errorLevel === E_USER_DEPRECATED || $errorLevel === E_DEPRECATED) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger('TYPO3.CMS.deprecations');
-            $logger->notice($message);
+            $this->logManager?->getLogger('TYPO3.CMS.deprecations')->notice($message);
             return self::ERROR_HANDLED;
         }
 

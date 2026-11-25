@@ -359,6 +359,9 @@ readonly class Bootstrap
             if (is_callable([$errorHandler, 'setDebugMode'])) {
                 $errorHandler->setDebugMode($displayErrors === 1);
             }
+            if (is_callable([$errorHandler, 'setLogManager'])) {
+                $errorHandler->setLogManager($logManager);
+            }
             if (is_callable([$errorHandler, 'registerErrorHandler'])) {
                 $errorHandler->registerErrorHandler();
             }

@@ -108,9 +108,7 @@ final class ErrorHandlerTest extends UnitTestCase
         $logManager->setLogger('TYPO3.CMS.deprecations', clone $this->trackingLogger);
         // disabled until the new logger is in place
         // $logManager->setLogger('TYPO3.CMS.php_errors', clone $this->trackingLogger);
-        $container = new Container();
-        $container->set(LogManager::class, $logManager);
-        GeneralUtility::setContainer($container);
+        $subject->setLogManager($logManager);
 
         try {
             $return = $subject->handleError($levelToTrigger, $message, $file, $line);
@@ -138,6 +136,22 @@ final class ErrorHandlerTest extends UnitTestCase
          *    self::assertEquals($errorsLogLevel, $logManager->getLogger('TYPO3.CMS.php_errors')->records[0]['level']);
          * }
          */
+    }
+
+    // @phpstan-ignore attributes.forbidden.methodScope (to avoid inconsistencies when testing our custom error handler)
+    #[WithoutErrorHandler]
+    #[Test]
+    public function deprecationIsNotLoggedWithoutLogManager(): void
+    {
+        $logManager = $this->createMock(LogManager::class);
+        $logManager->expects($this->never())->method('getLogger');
+        $container = new Container();
+        $container->set(LogManager::class, $logManager);
+        GeneralUtility::setContainer($container);
+
+        $subject = new ErrorHandler(self::DEFAULT_ERROR_HANDLER_LEVELS);
+
+        self::assertTrue($subject->handleError(E_USER_DEPRECATED, 'Stop doing that', 'foo.php', 42));
     }
 
     public static function errorTests(): iterable

@@ -77,7 +77,6 @@ final class ErrorHandlerTest extends FunctionalTestCase
         // Make sure the core error handler does not return true due to a deprecation error
         $logManagerMock = $this->createMock(LogManager::class);
         $logManagerMock->expects($this->never())->method('getLogger')->with('TYPO3.CMS.deprecations');
-        $this->getContainer()->set(LogManager::class, $logManagerMock); // @phpstan-ignore-line
 
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -88,6 +87,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
             E_ALL & ~(E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)
         );
         $coreErrorHandler->setLogger($logger);
+        $coreErrorHandler->setLogManager($logManagerMock);
 
         $customErrorHandler = new class {
             protected $existingHandler;
