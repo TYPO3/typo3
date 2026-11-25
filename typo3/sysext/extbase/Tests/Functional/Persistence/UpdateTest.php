@@ -139,6 +139,9 @@ final class UpdateTest extends FunctionalTestCase
     {
         $blog = new Blog();
         $blog->setTitle('A test blog');
+        // Properties without a TCA column are never stored and must not end up in the history
+        $blog->setDraftNote('Not stored');
+        $blog->setEditToken('Not stored either');
 
         $this->blogRepository->add($blog);
         $this->persistentManager->persistAll();
