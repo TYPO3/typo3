@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -629,7 +630,10 @@ class UriBuilder
     protected function convertTransientObjectToArray(DomainObjectInterface $object): array
     {
         $result = [];
-        foreach ($object->_getProperties() as $propertyName => $propertyValue) {
+        // @todo Not injected to keep the constructor signature of this non-final class stable;
+        //       this path goes away with the deprecation of value objects as URI arguments.
+        $reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
+        foreach ($reflectionService->getRawEntityPropertyValues($object) as $propertyName => $propertyValue) {
             if ($propertyValue instanceof \Iterator) {
                 $propertyValue = $this->convertIteratorToArray($propertyValue);
             }

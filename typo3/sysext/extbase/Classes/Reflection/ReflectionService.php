@@ -144,6 +144,27 @@ class ReflectionService
     }
 
     /**
+     * Reads the raw values of all initialized, non-virtual domain object properties (no "_" properties).
+     * Uninitialized properties are skipped.
+     *
+     * @return array<string, mixed>
+     * @internal not part of TYPO3 Core API.
+     */
+    public function getRawEntityPropertyValues(DomainObjectInterface $object): array
+    {
+        $className = $object::class;
+        $initializedObject = new \ReflectionClass($object)->initializeLazyObject($object);
+        $values = [];
+        foreach ($this->getClassSchema($className)->getDomainObjectProperties() as $property) {
+            $reflectionProperty = $this->getCachedReflectionProperty($className, $property->getName());
+            if ($reflectionProperty !== null && $reflectionProperty->isInitialized($initializedObject)) {
+                $values[$property->getName()] = $reflectionProperty->getRawValue($initializedObject);
+            }
+        }
+        return $values;
+    }
+
+    /**
      * Writes the raw value: property hooks and setters of the entity are bypassed.
      *
      * @internal only to be used by the Extbase persistence layer, not part of TYPO3 Core API.

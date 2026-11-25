@@ -348,6 +348,13 @@ final class TextViewHelperTest extends FunctionalTestCase
             'exceptionCode' => 1775553111,
             'exceptionMessage' => 'Could not find the field "header" in the given model TYPO3Tests\BlogExample\Domain\Model\Blog.',
         ];
+        yield 'extbaseModel with uninitialized field' => [
+            'record' => new \ReflectionClass(Blog::class)->newInstanceWithoutConstructor(),
+            'templateSource' => '<f:render.text record="{record}" field="logo" />',
+            'exception' => InvalidArgumentValueException::class,
+            'exceptionCode' => 1775553111,
+            'exceptionMessage' => 'Could not find the field "logo" in the given model TYPO3Tests\BlogExample\Domain\Model\Blog.',
+        ];
     }
 
     private function addRenderTextListener(string $identifier, \Closure $listener): void

@@ -26,6 +26,7 @@ use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -41,10 +42,12 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Tests\Fixture\StringBackedEnum;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ScopeValueObjectFixture;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -68,6 +71,7 @@ final class UriBuilderTest extends UnitTestCase
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
         $container = new Container();
         $container->set(BackendUriBuilder::class, new BackendUriBuilder($router, $formProtectionFactory, $requestContextFactory));
+        $container->set(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'uri-builder-test'));
         GeneralUtility::setContainer($container);
     }
 
@@ -815,6 +819,34 @@ final class UriBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
         $expectedResult = ['name' => 'foo', 'object' => null, 'uid' => null, 'pid' => null];
         self::assertEquals($expectedResult, $subject->_call('convertTransientObjectToArray', $mockValueObject));
+    }
+
+    #[Test]
+    public function transientObjectConversionReadsPropertiesOfAllVisibilitiesOfConcreteClassButNoPrivateParentProperties(): void
+    {
+        // Given a value object with public, protected and private properties in the concrete class and its parent,
+        // a hooked property and a virtual property
+        $valueObject = new ScopeValueObjectFixture();
+        $subject = $this->getAccessibleMock(UriBuilder::class, null, [], '', false);
+
+        // When it is converted
+        $result = $subject->_call('convertTransientObjectToArray', $valueObject);
+
+        // Then the private property of the parent class is missing, the uninitialized and the virtual property are skipped
+        // and the hooked property yields its raw value
+        self::assertEquals(
+            [
+                'ownPublic' => 'ownPublic',
+                'ownProtected' => 'ownProtected',
+                'ownPrivate' => 'ownPrivate',
+                'hooked' => 'raw',
+                'parentPublic' => 'parentPublic',
+                'parentProtected' => 'parentProtected',
+                'uid' => null,
+                'pid' => null,
+            ],
+            $result
+        );
     }
 
     #[Test]

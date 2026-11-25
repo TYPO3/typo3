@@ -32,6 +32,12 @@ with the removed methods. Private properties of a parent class are not entity
 properties. Virtual properties (property hooks without a backing value) hold no
 state and are ignored.
 
+The Extbase :php:`UriBuilder` and the ViewHelper :html:`<f:render.text>` read
+the properties of Extbase domain objects the same way: link arguments built
+from a value object and the rendered field of an Extbase model use the raw
+property value. Virtual properties are neither added as link arguments nor
+found as fields.
+
 ..  important::
 
     The new methods of :php:`ReflectionService` are marked as
@@ -44,8 +50,14 @@ Impact
 Calling one of the removed methods results in a fatal PHP error.
 
 Property hooks of Extbase models are no longer executed while the persistence
-layer reconstitutes or persists an entity. Custom implementations of the
-removed methods in a model are no longer called by Extbase.
+layer reconstitutes or persists an entity.
+
+Property hooks are not executed either when the :php:`UriBuilder` turns a value
+object into link arguments or when :html:`<f:render.text>` renders a field of an
+Extbase model.
+
+Custom implementations of the removed methods in a model are no longer called
+by Extbase.
 
 Affected installations
 ======================
@@ -56,7 +68,8 @@ example to set the :php:`uid` of an entity in tests, or that override these
 methods in a model.
 
 Installations with Extbase models that rely on property hooks being executed
-when records are loaded or persisted.
+when records are loaded or persisted, when value objects are used as link
+arguments or when models are rendered with :html:`<f:render.text>`.
 
 The extension scanner reports calls of the removed methods as weak matches, as
 it only matches the method names and cannot tell which class a method is called

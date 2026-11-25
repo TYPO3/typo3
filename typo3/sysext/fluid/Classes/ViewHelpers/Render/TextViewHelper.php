@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Event\BeforeRenderTextEvent;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper as FormatHtmlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper as SanitizeHtmlViewHelper;
@@ -71,6 +72,7 @@ final class TextViewHelper extends AbstractViewHelper
         private readonly TcaSchemaFactory $tcaSchema,
         private readonly DataMapFactory $dataMapFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ReflectionService $reflectionService,
     ) {}
 
     public function initializeArguments(): void
@@ -190,7 +192,7 @@ final class TextViewHelper extends AbstractViewHelper
             return null;
         }
 
-        foreach ($input->_getProperties() as $propertyName => $value) {
+        foreach ($this->reflectionService->getRawEntityPropertyValues($input) as $propertyName => $value) {
             if ($dataMap->getColumnMap($propertyName)?->columnName === $recordTypeFieldName) {
                 if ($value instanceof \BackedEnum) {
                     return (string)$value->value;
@@ -203,7 +205,7 @@ final class TextViewHelper extends AbstractViewHelper
 
     private function getResultingValue(DomainObjectInterface $input, DataMap $dataMap, string $field): mixed
     {
-        foreach ($input->_getProperties() as $propertyName => $value) {
+        foreach ($this->reflectionService->getRawEntityPropertyValues($input) as $propertyName => $value) {
             if ($dataMap->getColumnMap($propertyName)?->columnName === $field) {
                 return $value ?? '';
             }

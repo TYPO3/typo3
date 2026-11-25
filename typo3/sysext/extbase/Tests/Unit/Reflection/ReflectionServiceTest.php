@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInvalidTypeHint;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ScopeValueObjectFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ReflectionServiceTest extends UnitTestCase
@@ -83,6 +84,54 @@ final class ReflectionServiceTest extends UnitTestCase
 
         self::assertNull($reflectionService->getRawEntityPropertyValue($entity, 'uninitialized'));
         self::assertNull($reflectionService->getRawEntityPropertyValue($entity, 'unknown'));
+    }
+
+    #[Test]
+    public function getRawEntityPropertyValuesReturnsInitializedPropertiesOnly(): void
+    {
+        // Given an entity with initialized null properties (uid, pid), an uninitialized property, a private parent property,
+        // a hooked property and a virtual property
+        $entity = new ScopeValueObjectFixture();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
+
+        // When all raw values are read
+        $values = $reflectionService->getRawEntityPropertyValues($entity);
+
+        // Then null is kept, the hooked property yields its raw value, uninitialized, virtual and parent private properties are absent
+        self::assertEquals(
+            [
+                'ownPublic' => 'ownPublic',
+                'ownProtected' => 'ownProtected',
+                'ownPrivate' => 'ownPrivate',
+                'hooked' => 'raw',
+                'parentPublic' => 'parentPublic',
+                'parentProtected' => 'parentProtected',
+                'uid' => null,
+                'pid' => null,
+            ],
+            $values
+        );
+    }
+
+    #[Test]
+    public function getRawEntityPropertyValuesReadsRealInstanceOfLazyProxy(): void
+    {
+        // Given an uninitialized lazy proxy
+        $realInstance = new class extends AbstractEntity {
+            protected string $username = 'real';
+            protected string $uninitialized;
+        };
+        $reflectionClass = new \ReflectionClass($realInstance);
+        $proxy = $reflectionClass->newLazyProxy(static fn(): object => $realInstance);
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
+
+        // When all raw values are read, also repeatedly
+        $first = $reflectionService->getRawEntityPropertyValues($proxy);
+        $second = $reflectionService->getRawEntityPropertyValues($proxy);
+
+        // Then the values of the real instance are returned each time
+        self::assertEquals(['username' => 'real', 'uid' => null, 'pid' => null], $first);
+        self::assertEquals($first, $second);
     }
 
     #[Test]
