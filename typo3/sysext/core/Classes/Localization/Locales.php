@@ -433,9 +433,11 @@ class Locales
         if ($request !== null && ApplicationType::fromRequest($request)->isFrontend()) {
             // @todo: the string conversion is needed for the time being, as long as SiteLanguage does not contain
             // the full locale with all fallbacks, then getTypo3Language() also needs to be removed.
-            $localeString = (string)($request->getAttribute('language')?->getTypo3Language()
-                ?? $request->getAttribute('site')->getDefaultLanguage()->getTypo3Language());
-            return $this->createLocale($localeString);
+            $localeString = $request->getAttribute('language')?->getTypo3Language()
+                ?? $request->getAttribute('site')?->getDefaultLanguage()->getTypo3Language();
+            if ($localeString !== null) {
+                return $this->createLocale((string)$localeString);
+            }
         }
         return $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null)->getLocale();
     }

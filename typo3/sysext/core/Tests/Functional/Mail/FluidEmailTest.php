@@ -104,6 +104,32 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertStringStartsWith($expectedFooter . ' your site administrator', $footer);
     }
 
+    public static function systemEmailFooterOmitsLoginCopyrightNoticeDataProvider(): \Generator
+    {
+        yield FluidEmail::FORMAT_PLAIN => [FluidEmail::FORMAT_PLAIN];
+        yield FluidEmail::FORMAT_HTML => [FluidEmail::FORMAT_HTML];
+    }
+
+    #[DataProvider('systemEmailFooterOmitsLoginCopyrightNoticeDataProvider')]
+    #[Test]
+    public function systemEmailFooterOmitsLoginCopyrightNotice(string $format): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->format($format)
+            ->setTemplate('Default')
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Content')
+            ->to('some-recipient@example.com');
+
+        $body = $format === FluidEmail::FORMAT_HTML ? strip_tags((string)$subject->getHtmlBody(true)) : (string)$subject->getTextBody(true);
+        $body = (string)preg_replace('/\s+/', ' ', $body);
+
+        self::assertStringNotContainsString('Obstructing the appearance of this notice', $body);
+        self::assertStringNotContainsString('absolutely no warranty', $body);
+        self::assertStringContainsString('Powered by TYPO3 - inspiring people to share!', $body);
+    }
+
     #[Test]
     public function settingFormatWithTextOnlyGeneratesTextEmail(): void
     {

@@ -9,4 +9,4 @@
 
 </f:else></f:if>Please contact your site administrator if you feel you received this email by accident.
 
-{typo3.information.copyrightNotice -> f:format.stripTags() -> f:format.htmlentitiesDecode()}
+{f:translate(key: 'core.mail:footer.poweredBy') -> f:format.htmlentitiesDecode()} https://typo3.org/

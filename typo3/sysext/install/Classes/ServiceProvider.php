@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -58,6 +59,7 @@ use TYPO3\CMS\Core\ViewHelpers\IconViewHelper;
 use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SessionService;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
@@ -112,6 +114,7 @@ class ServiceProvider extends AbstractServiceProvider
             HtmlViewHelper::class => self::getHtmlViewHelper(...),
             InfoboxViewHelper::class => self::getInfoboxViewHelper(...),
             NormalizedUrlViewHelper::class => self::getNormalizedUrlViewHelper(...),
+            TranslateViewHelper::class => self::getTranslateViewHelper(...),
             PasswordGenerator::class => self::getPasswordGenerator(...),
             Random::class => self::getRandom(...),
         ];
@@ -426,6 +429,15 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, NormalizedUrlViewHelper::class, [
             $container->get(SystemResourceFactory::class),
             $container->get(SystemResourcePublisherInterface::class),
+        ]);
+    }
+
+    public static function getTranslateViewHelper(ContainerInterface $container): TranslateViewHelper
+    {
+        return self::new($container, TranslateViewHelper::class, [
+            $container->get(TranslationDomainMapper::class),
+            $container->get(TranslationDomainResolver::class),
+            $container->get(Locales::class),
         ]);
     }
 
