@@ -943,7 +943,9 @@ export class Tree extends LitElement {
     // Check if the target is the current node.
     // If the current node is the target we only allow
     // drop when the user is over the delete drop zone.
-    if (this.draggingNode == targetNode) {
+    // A record can be shown by more than one node, for
+    // example a page moved in a workspace.
+    if (this.draggingNode.identifier === targetNode.identifier) {
       const targetDelete = target.dataset.treeDropzone === 'delete';
       if (targetDelete) {
         this.nodeDragMode = TreeNodeCommandEnum.DELETE;
