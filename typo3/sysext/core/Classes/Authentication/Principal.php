@@ -37,8 +37,7 @@ use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
  *
  * The group ids are the resolved user groups including their subgroups, as
  * the user aspect and the permission context expect them, not only the
- * groups the user is a direct member of. The group names belong to the
- * same groups.
+ * groups the user is a direct member of.
  *
  * The read surface voters decide on is public API: the role, id and group
  * ids of the context and isBackendUser(). Everything else, e.g. creating a
@@ -48,14 +47,12 @@ use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 final readonly class Principal
 {
     /**
-     * @param list<string> $groupNames
      * @internal not part of TYPO3 Core API yet, principals are established by authentication
      */
     public function __construct(
         public PrincipalContext $context,
         public string $realmIdentifier,
         public string $username,
-        public array $groupNames = [],
     ) {
         if ($context->id <= 0) {
             throw new \InvalidArgumentException('A principal requires a positive user id, got ' . $context->id . '.', 1791465463);

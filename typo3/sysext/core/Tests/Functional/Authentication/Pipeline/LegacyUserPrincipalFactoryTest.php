@@ -65,39 +65,32 @@ final class LegacyUserPrincipalFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function groupNamesOfBackendUserFollowTheOrderOfGroupIds(): void
+    public function groupIdsOfBackendUserFollowTheOrderOfUserGroupsUid(): void
     {
         $user = $this->createBackendUser(['uid' => 5, 'username' => 'editor']);
         $user->userGroupsUID = [3, 1, 2];
-        $user->userGroups = [
-            1 => ['uid' => 1, 'title' => 'One'],
-            2 => ['uid' => 2, 'title' => 'Two'],
-            3 => ['uid' => 3, 'title' => 'Three'],
-        ];
         $GLOBALS['BE_USER'] = $user;
 
         $principal = $this->get(LegacyUserPrincipalFactory::class)->fromUser($user, Realm::backend());
 
         self::assertSame([3, 1, 2], $principal?->context->groupIds);
-        self::assertSame(['Three', 'One', 'Two'], $principal->groupNames);
     }
 
     #[Test]
-    public function groupNamesOfFrontendUserFollowTheOrderOfGroupIds(): void
+    public function groupIdsOfFrontendUserFollowTheOrderOfUserGroups(): void
     {
         $user = new FrontendUserAuthentication();
         $user->initializeUserSessionManager();
         $user->user = ['uid' => 10, 'username' => 'feuser'];
         $user->userGroups = [
-            7 => ['uid' => 7, 'title' => 'Seven'],
-            4 => ['uid' => 4, 'title' => 'Four'],
+            7 => ['uid' => 7],
+            4 => ['uid' => 4],
         ];
 
         $principal = $this->get(LegacyUserPrincipalFactory::class)->fromUser($user, Realm::frontend());
 
         self::assertSame(PrincipalRole::USER, $principal?->context->role);
         self::assertSame([7, 4], $principal->context->groupIds);
-        self::assertSame(['Seven', 'Four'], $principal->groupNames);
     }
 
     #[Test]

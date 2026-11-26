@@ -26,17 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PrincipalTest extends UnitTestCase
 {
-    #[Test]
-    public function groupNamesDefaultToEmptyList(): void
-    {
-        $principal = new Principal(
-            context: new PrincipalContext(role: PrincipalRole::USER, id: 42),
-            realmIdentifier: 'frontend:main',
-            username: 'member',
-        );
-        self::assertSame([], $principal->groupNames);
-    }
-
     public static function nonPositiveUserIdDataProvider(): array
     {
         return [

@@ -122,7 +122,6 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
         self::assertSame('feuser', $principal->username);
         self::assertSame(PrincipalRole::USER, $principal->context->role);
         self::assertContains(5, $principal->context->groupIds);
-        self::assertSame(['Members'], $principal->groupNames);
         self::assertStringContainsString('fe_typo_user', $response->getHeaderLine('Set-Cookie'));
     }
 

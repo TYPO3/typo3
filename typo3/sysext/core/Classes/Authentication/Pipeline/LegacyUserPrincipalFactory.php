@@ -88,10 +88,6 @@ final class LegacyUserPrincipalFactory
                 return null;
             }
         }
-        $groupNames = array_map(
-            static fn(int $groupId): string => (string)($user->userGroups[$groupId]['title'] ?? ''),
-            $groupIds
-        );
         $principal = new Principal(
             context: new PrincipalContext(
                 role: $role,
@@ -101,7 +97,6 @@ final class LegacyUserPrincipalFactory
             ),
             realmIdentifier: $realm->identifier,
             username: (string)$user->getUserName(),
-            groupNames: $groupNames,
         );
         if ($user instanceof BackendUserAuthentication) {
             $this->legacyUserRegistry->register($principal, $user);

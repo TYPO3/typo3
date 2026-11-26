@@ -271,7 +271,6 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         self::assertSame(101, $principal->context->id);
         self::assertSame(PrincipalRole::USER, $principal->context->role);
         self::assertSame([7], $principal->context->groupIds);
-        self::assertSame(['Editors'], $principal->groupNames);
     }
 
     #[Test]
