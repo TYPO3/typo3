@@ -270,13 +270,9 @@ class Installer {
 
   private executeDatabaseConnect(): void {
     const outputContainer = document.querySelector(Identifiers.databaseConnectOutput)!;
-    const postData: Record<string, string> = {
-      'install[action]': 'executeDatabaseConnect',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseConnectExecuteToken ?? '',
-    };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!);
+    postData.set('install[action]', 'executeDatabaseConnect');
+    postData.set('install[token]', document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseConnectExecuteToken ?? '');
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -322,13 +318,9 @@ class Installer {
 
   private executeDatabaseSelect(): void {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput)!;
-    const postData: { [id: string]: string } = {
-      'install[action]': 'executeDatabaseSelect',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseSelectExecuteToken ?? '',
-    };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!);
+    postData.set('install[action]', 'executeDatabaseSelect');
+    postData.set('install[token]', document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseSelectExecuteToken ?? '');
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -347,13 +339,9 @@ class Installer {
 
   private checkDatabaseRequirements(): void {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput)!;
-    const postData: Record<string, string> = {
-      'install[action]': 'checkDatabaseRequirements',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseCheckRequirementsExecuteToken ?? '',
-    };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!);
+    postData.set('install[action]', 'checkDatabaseRequirements');
+    postData.set('install[token]', document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseCheckRequirementsExecuteToken ?? '');
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -400,13 +388,9 @@ class Installer {
 
   private executeDatabaseData(): void {
     const outputContainer = document.querySelector(Identifiers.databaseDataOutput)!;
-    const postData: Record<string, string> = {
-      'install[action]': 'executeDatabaseData',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseDataExecuteToken ?? '',
-    };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!);
+    postData.set('install[action]', 'executeDatabaseData');
+    postData.set('install[token]', document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseDataExecuteToken ?? '');
     const progressBar = document.createElement('typo3-backend-progress-bar');
     outputContainer.replaceChildren(progressBar);
     (new AjaxRequest(this.getUrl()))
@@ -440,13 +424,9 @@ class Installer {
   }
 
   private executeDefaultConfiguration(): void {
-    const postData: Record<string, string> = {
-      'install[action]': 'executeDefaultConfiguration',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDefaultConfigurationExecuteToken ?? '',
-    };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!);
+    postData.set('install[action]', 'executeDefaultConfiguration');
+    postData.set('install[token]', document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDefaultConfigurationExecuteToken ?? '');
     (new AjaxRequest(this.getUrl()))
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {

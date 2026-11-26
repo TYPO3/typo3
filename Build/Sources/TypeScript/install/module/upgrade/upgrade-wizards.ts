@@ -476,15 +476,10 @@ class UpgradeWizards extends AbstractInteractableModule {
   private wizardExecute(identifier: string, title: string): void {
     const executeToken = this.getModuleContent().dataset.upgradeWizardsExecuteToken;
     const modalContent = this.getModalBody();
-    const postData: Record<string, string> = {
-      'install[action]': 'upgradeWizardsExecute',
-      'install[token]': executeToken ?? '',
-      'install[identifier]': identifier,
-    };
-    const formData = new FormData(this.findInModal(Identifiers.outputWizardsContainer + ' form') as HTMLFormElement);
-    for (const [name, value] of formData) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(this.findInModal(Identifiers.outputWizardsContainer + ' form') as HTMLFormElement);
+    postData.set('install[action]', 'upgradeWizardsExecute');
+    postData.set('install[token]', executeToken ?? '');
+    postData.set('install[identifier]', identifier);
     const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     const messagesContainer = this.findInModal(Identifiers.outputMessagesContainer)!;
     this.renderProgressBar(outputContainer, {

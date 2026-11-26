@@ -128,10 +128,12 @@ class LiveSearch {
 
           const formData = new FormData(searchForm!);
           this.search(formData).then((): void => {
-            const query = formData.get('query')!.toString();
-            const offset = formData.get('offset')?.toString();
-            BrowserSession.set('livesearch-term', query);
-            if (offset) {
+            const query = formData.get('query');
+            const offset = formData.get('offset');
+            if (typeof query === 'string') {
+              BrowserSession.set('livesearch-term', query);
+            }
+            if (typeof offset === 'string' && offset !== '') {
               BrowserSession.set('livesearch-offset', offset);
             }
           });
@@ -212,9 +214,9 @@ class LiveSearch {
   }
 
   private readonly search = async (formData: FormData): Promise<void> => {
-    const query = formData.get('query')!.toString();
+    const query = formData.get('query');
 
-    if (query === '') {
+    if (typeof query !== 'string' || query === '') {
       this.updateSearchResults();
     } else {
       const searchResultContainer = document.querySelector<ResultContainer>(resultContainerComponentName)!;

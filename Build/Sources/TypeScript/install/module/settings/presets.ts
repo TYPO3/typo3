@@ -117,13 +117,9 @@ class Presets extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken: string = this.getModuleContent().dataset.presetsActivateToken ?? '';
-    const postData: Record<string, string> = {};
-    const formData = new FormData(this.findInModal('form')!);
-    for (const [name, value] of formData) {
-      postData[name] = value.toString();
-    }
-    postData['install[action]'] = 'presetsActivate';
-    postData['install[token]'] = executeToken;
+    const postData = new FormData(this.findInModal('form')!);
+    postData.set('install[action]', 'presetsActivate');
+    postData.set('install[token]', executeToken);
     (new AjaxRequest(Router.getUrl())).post(postData).then(
       async (response: AjaxResponse): Promise<void> => {
         const data: PresetsWrittenResponse = await response.resolve();

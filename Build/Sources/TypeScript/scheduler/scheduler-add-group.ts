@@ -73,7 +73,8 @@ class SchedulerAddGroups {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const name = formData.get('action[createGroup]')?.toString() ?? '';
+    const groupName = formData.get('action[createGroup]');
+    const name = typeof groupName === 'string' ? groupName : '';
     const newUid = 'NEW' + Math.random().toString(36).slice(2, 7);
     const params = '&data[tx_scheduler_task_group][' + newUid + '][pid]=0' +
       '&data[tx_scheduler_task_group][' + newUid + '][groupName]=' + encodeURIComponent(name);

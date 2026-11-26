@@ -69,13 +69,9 @@ class Features extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.featuresSaveToken;
-    const postData: Record<string, string> = {};
-    const formData = new FormData(this.findInModal('form')!);
-    for (const [name, value] of formData) {
-      postData[name] = value.toString();
-    }
-    postData['install[action]'] = 'featuresSave';
-    postData['install[token]'] = executeToken ?? '';
+    const postData = new FormData(this.findInModal('form')!);
+    postData.set('install[action]', 'featuresSave');
+    postData.set('install[token]', executeToken ?? '');
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(

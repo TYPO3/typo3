@@ -123,20 +123,20 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   private write(form: HTMLFormElement): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.extensionConfigurationWriteToken;
-    const extensionConfiguration: Record<string, string> = {};
+    const postData = new FormData();
+    if (executeToken !== undefined) {
+      postData.set('install[token]', executeToken);
+    }
+    postData.set('install[action]', 'extensionConfigurationWrite');
+    if (form.dataset.extensionKey !== undefined) {
+      postData.set('install[extensionKey]', form.dataset.extensionKey);
+    }
     for (const [name, value] of new FormData(form)) {
-      extensionConfiguration[name] = value.toString();
+      postData.append('install[extensionConfiguration][' + name + ']', value);
     }
 
     (new AjaxRequest(Router.getUrl()))
-      .post({
-        install: {
-          token: executeToken,
-          action: 'extensionConfigurationWrite',
-          extensionKey: form.dataset.extensionKey,
-          extensionConfiguration: extensionConfiguration,
-        },
-      })
+      .post(postData)
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: ExtensionConfigurationWrittenResponse = await response.resolve();

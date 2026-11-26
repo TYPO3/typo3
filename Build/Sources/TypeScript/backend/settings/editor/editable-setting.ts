@@ -203,7 +203,7 @@ export class EditableSettingElement extends LitElement {
 
     const data = new FormData();
     data.append('specificSetting', this.setting.definition.key);
-    data.append(name, String(value));
+    data.append(name, value ?? '');
 
     // @todo hookup with ProgressBar
     const response = await new AjaxRequest(this.dumpuri).post(

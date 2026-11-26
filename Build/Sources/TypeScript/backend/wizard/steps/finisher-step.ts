@@ -98,8 +98,9 @@ export class FinisherStep implements WizardStepInterface {
           return this.wizard.renderError(wizardLabels.get('wizard.status.error.message'), result.errors);
         }
 
-        if (result?.finisher?.data?.resetButtonTitle) {
-          this.resetButtonTitle = String(result?.finisher?.data?.resetButtonTitle);
+        const resetButtonTitle = result.finisher.data.resetButtonTitle;
+        if (typeof resetButtonTitle === 'string' && resetButtonTitle !== '') {
+          this.resetButtonTitle = resetButtonTitle;
         }
 
         // Load and render the finisher with the result data

@@ -359,12 +359,8 @@ class LoginRefresh {
       passwordField.value = '';
     }
 
-    const postData: Record<string, string> = {
-      login_status: 'login'
-    };
-    for (const [name, value] of new FormData(form)) {
-      postData[name] = value.toString();
-    }
+    const postData = new FormData(form);
+    postData.set('login_status', 'login');
     const headers = new Headers();
     headers.set(tokenData.headerName, tokenData.requestToken);
 
