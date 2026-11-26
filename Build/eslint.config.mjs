@@ -70,6 +70,7 @@ export default [...compat.extends(
 
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/no-array-delete": "error",
+    "@typescript-eslint/no-redundant-type-constituents": "error",
     "@typescript-eslint/prefer-promise-reject-errors": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
     "@typescript-eslint/restrict-template-expressions": "error",
