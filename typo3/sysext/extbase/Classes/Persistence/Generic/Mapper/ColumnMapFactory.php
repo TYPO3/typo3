@@ -118,7 +118,9 @@ readonly class ColumnMapFactory
             );
         }
 
-        if ($propertyCollectionValueType !== null) {
+        // An array property mapped to a TCA type="json" column holds the decoded JSON and is no relation.
+        $isJsonArrayProperty = $propertyType === 'array' && $tableColumnType === TableColumnType::JSON;
+        if ($propertyCollectionValueType !== null && !$isJsonArrayProperty) {
             // The field might not be a RelationFieldType, e.g. for TCA type "passthrough" or type "select"
             // without items. However, the model defines a relation and therefore overrules the TCA schema lookup.
             // This also overrules any "maxitems" or "renderType" configuration!

@@ -274,7 +274,7 @@ class DataMapper
                 'bool', 'boolean' => (bool)$propertyValue,
                 'float' => (float)$propertyValue,
                 'string' => (string)$propertyValue,
-                'array' => null, // $this->mapArray($propertyValue); // Not supported, yet!
+                'array' => $this->thawArrayProperty($columnMap, $propertyValue),
                 'object' => $this->thawObjectProperty($property, $columnMap, $object, $propertyName, $propertyValue, $propertyClassName),
                 default => null,
             };
@@ -283,6 +283,21 @@ class DataMapper
                 $this->reflectionService->setRawEntityPropertyValue($object, $propertyName, $propertyValue);
             }
         }
+    }
+
+    /**
+     * Only columns of TCA type "json" are mapped to array properties. An empty or
+     * non-array JSON value results in null, which keeps the default value of a
+     * non-nullable property (thawProperties() only assigns null to nullable
+     * properties).
+     */
+    private function thawArrayProperty(ColumnMap $columnMap, mixed $propertyValue): ?array
+    {
+        if ($columnMap->type !== TableColumnType::JSON || (string)$propertyValue === '') {
+            return null;
+        }
+        $decoded = json_decode((string)$propertyValue, true, 512, JSON_THROW_ON_ERROR);
+        return is_array($decoded) ? $decoded : null;
     }
 
     /**
@@ -1005,6 +1020,10 @@ class DataMapper
 
         if ($input instanceof DomainObjectInterface) {
             return (int)$input->getUid();
+        }
+
+        if ($columnMap?->type === TableColumnType::JSON && is_array($input)) {
+            return json_encode($input, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION);
         }
 
         if (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {

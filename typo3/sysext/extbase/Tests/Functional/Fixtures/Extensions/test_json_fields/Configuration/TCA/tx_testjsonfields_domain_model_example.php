@@ -71,6 +71,23 @@ return [
                 'type' => 'json',
             ],
         ],
+        // Mapped to an array in the model.
+        'array_json_field' => [
+            'exclude' => true,
+            'label' => 'Array JSON field',
+            'config' => [
+                'type' => 'json',
+                'default' => '[]',
+            ],
+        ],
+        // Mapped to a nullable array in the model.
+        'nullable_array_json_field' => [
+            'exclude' => true,
+            'label' => 'Nullable array JSON field',
+            'config' => [
+                'type' => 'json',
+            ],
+        ],
     ],
     'types' => [
         '0' => [

@@ -28,6 +28,8 @@ class Example extends AbstractEntity
     protected string $nativeJsonAsTextField = '{}';
     protected JsonValue $typedJsonField;
     protected ?JsonValue $nullableTypedJsonField = null;
+    protected array $arrayJsonField = [];
+    protected ?array $nullableArrayJsonField = null;
 
     public function __construct()
     {
@@ -92,5 +94,25 @@ class Example extends AbstractEntity
     public function setNullableTypedJsonField(?JsonValue $nullableTypedJsonField): void
     {
         $this->nullableTypedJsonField = $nullableTypedJsonField;
+    }
+
+    public function getArrayJsonField(): array
+    {
+        return $this->arrayJsonField;
+    }
+
+    public function setArrayJsonField(array $arrayJsonField): void
+    {
+        $this->arrayJsonField = $arrayJsonField;
+    }
+
+    public function getNullableArrayJsonField(): ?array
+    {
+        return $this->nullableArrayJsonField;
+    }
+
+    public function setNullableArrayJsonField(?array $nullableArrayJsonField): void
+    {
+        $this->nullableArrayJsonField = $nullableArrayJsonField;
     }
 }

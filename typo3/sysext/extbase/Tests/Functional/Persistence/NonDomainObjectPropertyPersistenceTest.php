@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -189,6 +190,186 @@ final class NonDomainObjectPropertyPersistenceTest extends FunctionalTestCase
         self::assertInstanceOf(Example::class, $reconstituted);
         self::assertNull($reconstituted->getNullableTypedJsonField());
         self::assertSame([], $reconstituted->getTypedJsonField()->toArray());
+    }
+
+    /**
+     * An array property mapped to a TCA json column is stored as a JSON string.
+     */
+    #[Test]
+    public function arrayIsPersistedAsJson(): void
+    {
+        // Given an example with an array value
+        $example = new Example();
+        $example->setTitle('test');
+        $example->setArrayJsonField(['foo' => 'bar', 'list' => [1, 2, 3]]);
+
+        // When the example is persisted
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+
+        // Then the column contains the array as JSON (MySQL normalizes the key order of native JSON)
+        $row = $this->fetchRawRow('tx_testjsonfields_domain_model_example', 1);
+        self::assertIsString($row['array_json_field']);
+        self::assertEquals(['foo' => 'bar', 'list' => [1, 2, 3]], json_decode($row['array_json_field'], true));
+    }
+
+    /**
+     * A JSON string stored in a TCA json column is decoded into an array property.
+     */
+    #[Test]
+    public function jsonIsReconstitutedAsArray(): void
+    {
+        // Given a persisted example with array values
+        $example = new Example();
+        $example->setTitle('test');
+        $example->setArrayJsonField(['foo' => 'bar', 'list' => [1, 2, 3]]);
+        $example->setNullableArrayJsonField(['nullable' => true]);
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+
+        // When the example is read again
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+
+        // Then the properties hold the decoded arrays and the object is clean
+        self::assertInstanceOf(Example::class, $reconstituted);
+        self::assertNotSame($example, $reconstituted);
+        self::assertEquals(['foo' => 'bar', 'list' => [1, 2, 3]], $reconstituted->getArrayJsonField());
+        self::assertSame(['nullable' => true], $reconstituted->getNullableArrayJsonField());
+        self::assertFalse($this->get(CleanStateTracker::class)->isEntityDirty($reconstituted));
+    }
+
+    /**
+     * A changed array property marks the entity dirty and the new value is written as JSON.
+     */
+    #[Test]
+    public function updatedArrayIsPersistedAsJson(): void
+    {
+        // Given a persisted example that is read again
+        $example = new Example();
+        $example->setTitle('test');
+        $example->setArrayJsonField(['foo' => 'bar']);
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+        self::assertInstanceOf(Example::class, $reconstituted);
+
+        // When the array is changed and persisted
+        $reconstituted->setArrayJsonField(['foo' => 'baz', 'added' => [true]]);
+        self::assertTrue($this->get(CleanStateTracker::class)->isEntityDirty($reconstituted));
+        $this->get(ExampleRepository::class)->update($reconstituted);
+        $this->persistenceManager->persistAll();
+
+        // Then the column contains the new array
+        $row = $this->fetchRawRow('tx_testjsonfields_domain_model_example', 1);
+        self::assertEquals(['foo' => 'baz', 'added' => [true]], json_decode($row['array_json_field'], true));
+    }
+
+    /**
+     * A nullable array property left at null is stored as SQL NULL and read back as null.
+     */
+    #[Test]
+    public function nullNullableArrayIsPersistedAsNullAndReconstitutedAsNull(): void
+    {
+        // Given an example with a nullable array that is null
+        $example = new Example();
+        $example->setTitle('test');
+        self::assertNull($example->getNullableArrayJsonField());
+
+        // When the example is persisted and read again
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+        $row = $this->fetchRawRow('tx_testjsonfields_domain_model_example', 1);
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+
+        // Then the column is NULL and the property is null
+        self::assertNull($row['nullable_array_json_field'], 'Nullable array was persisted as ' . var_export($row['nullable_array_json_field'], true) . ' instead of NULL');
+        self::assertInstanceOf(Example::class, $reconstituted);
+        self::assertNull($reconstituted->getNullableArrayJsonField());
+        self::assertSame([], $reconstituted->getArrayJsonField());
+    }
+
+    /**
+     * A nullable array that is set to null after it had a value is stored as SQL NULL.
+     */
+    #[Test]
+    public function nullableArraySetToNullIsPersistedAsNull(): void
+    {
+        // Given a persisted example with a nullable array value
+        $example = new Example();
+        $example->setTitle('test');
+        $example->setNullableArrayJsonField(['foo' => 'bar']);
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+        self::assertInstanceOf(Example::class, $reconstituted);
+
+        // When the array is set to null and persisted
+        $reconstituted->setNullableArrayJsonField(null);
+        $this->get(ExampleRepository::class)->update($reconstituted);
+        $this->persistenceManager->persistAll();
+
+        // Then the column is NULL
+        $row = $this->fetchRawRow('tx_testjsonfields_domain_model_example', 1);
+        self::assertNull($row['nullable_array_json_field']);
+    }
+
+    /**
+     * Nested arrays and floats with a zero fraction survive a round trip.
+     */
+    #[Test]
+    public function nestedArrayAndFloatSurviveRoundTrip(): void
+    {
+        // Given an example with a nested array containing a float with a zero fraction
+        $value = ['level1' => ['level2' => ['float' => 1.0, 'list' => ['a', 'b']], 'flag' => false], 'empty' => []];
+        $example = new Example();
+        $example->setTitle('test');
+        $example->setArrayJsonField($value);
+
+        // When the example is persisted and read again
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+
+        // Then the structure is identical, the float stays a float
+        self::assertInstanceOf(Example::class, $reconstituted);
+        self::assertEquals($value, $reconstituted->getArrayJsonField());
+        self::assertIsFloat($reconstituted->getArrayJsonField()['level1']['level2']['float']);
+    }
+
+    /**
+     * JSON that does not decode to an array leaves a non-nullable array property at
+     * its default value and sets a nullable one to null.
+     */
+    #[Test]
+    public function scalarJsonIsReconstitutedAsDefaultOrNull(): void
+    {
+        // Given a persisted example whose JSON columns contain scalar JSON values
+        $example = new Example();
+        $example->setTitle('test');
+        $this->persistenceManager->add($example);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+        $this->get(ConnectionPool::class)
+            ->getConnectionForTable('tx_testjsonfields_domain_model_example')
+            ->update(
+                'tx_testjsonfields_domain_model_example',
+                ['array_json_field' => '"text"', 'nullable_array_json_field' => '42'],
+                ['uid' => 1],
+                ['array_json_field' => Connection::PARAM_STR, 'nullable_array_json_field' => Connection::PARAM_STR]
+            );
+
+        // When the example is read again
+        $reconstituted = $this->get(ExampleRepository::class)->findByUid(1);
+
+        // Then the non-nullable property keeps its default and the nullable one is null
+        self::assertInstanceOf(Example::class, $reconstituted);
+        self::assertSame([], $reconstituted->getArrayJsonField());
+        self::assertNull($reconstituted->getNullableArrayJsonField());
     }
 
     private function fetchRawRow(string $tableName, int $uid): array
