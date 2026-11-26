@@ -145,7 +145,7 @@ class Popover {
     } else if (element instanceof NodeList) {
       elementList = element as NodeListOf<HTMLElement>;
     } else {
-      throw `Cannot consume element of type ${(element as object).constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`;
+      throw new Error(`Cannot consume element of type ${(element as object).constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`);
     }
 
     return elementList;

@@ -72,6 +72,9 @@ export default [...compat.extends(
     "@typescript-eslint/no-array-delete": "error",
     "@typescript-eslint/no-base-to-string": "error",
     "@typescript-eslint/no-redundant-type-constituents": "error",
+    "@typescript-eslint/only-throw-error": ["error", {
+      allow: [{ from: "file", name: "AjaxResponse", path: "Sources/TypeScript/core/ajax/ajax-response.ts" }],
+    }],
     "@typescript-eslint/prefer-promise-reject-errors": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
     "@typescript-eslint/restrict-template-expressions": "error",

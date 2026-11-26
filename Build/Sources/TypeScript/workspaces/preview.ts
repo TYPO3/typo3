@@ -226,7 +226,7 @@ class Preview extends Workspaces {
     } else if (direction === 'next') {
       actionName = 'sendPageToNextStage';
     } else {
-      throw 'Invalid direction ' + direction + ' requested.';
+      throw new Error('Invalid direction ' + direction + ' requested.');
     }
 
     // Use explicit publish action when the target stage is the publish execute stage

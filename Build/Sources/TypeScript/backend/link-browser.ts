@@ -73,7 +73,7 @@ class LinkBrowser {
   }
 
   public finalizeFunction(link: string): void {
-    throw 'The link browser requires the finalizeFunction to be set in order for ' + link + ' to be handled. Seems like you discovered a major bug.';
+    throw new Error('The link browser requires the finalizeFunction to be set in order for ' + link + ' to be handled. Seems like you discovered a major bug.');
   }
 }
 

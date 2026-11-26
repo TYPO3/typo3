@@ -72,10 +72,7 @@ export function assert(test: boolean|(() => boolean), message: string, messageCo
     if (messageCode) {
       message = message + ' (' + messageCode + ')';
     }
-    if ('undefined' !== typeof Error) {
-      throw new Error(message);
-    }
-    throw message;
+    throw new Error(message);
   }
 }
 
@@ -166,7 +163,7 @@ export class FormManager {
    */
   public run(): FormManager {
     if (this.isRunning) {
-      throw 'You can not run the app twice (1475942618)';
+      throw new Error('You can not run the app twice (1475942618)');
     }
 
     this.bootstrap();

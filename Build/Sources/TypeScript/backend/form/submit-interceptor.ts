@@ -28,7 +28,7 @@ export default class SubmitInterceptor {
 
   public addPreSubmitCallback(callback: PreSubmitCallback): SubmitInterceptor {
     if (typeof callback !== 'function') {
-      throw 'callback must be a function.';
+      throw new Error('callback must be a function.');
     }
 
     this.preSubmitCallbacks.push(callback);

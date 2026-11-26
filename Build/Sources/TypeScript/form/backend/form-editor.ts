@@ -671,7 +671,7 @@ export class FormEditor {
    */
   public run(): FormEditor {
     if (this.isRunning) {
-      throw 'You can not run the app twice (1473200696)';
+      throw new Error('You can not run the app twice (1473200696)');
     }
 
     try {

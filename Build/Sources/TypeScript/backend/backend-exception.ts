@@ -11,12 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export class BackendException {
-  public readonly message: string;
+export class BackendException extends Error {
   public readonly code: number;
 
   constructor(message: string = '', code: number = 0) {
-    this.message = message;
+    super(message);
     this.code = code;
   }
 }

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class e{constructor(s="",c=0){this.message=s,this.code=c}}export{e as BackendException};
+class c extends Error{constructor(e="",r=0){super(e),this.code=r}}export{c as BackendException};
