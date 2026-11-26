@@ -413,6 +413,20 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function modifyTestMMWithUnchangedGroupMM2Relations(): void
+    {
+        parent::modifyTestMMWithUnchangedGroupMM2Relations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTestMMWithUnchangedGroupMM2Relations.csv');
+    }
+
+    #[Test]
+    public function modifyTestMMWithChangedGroupMM2Relations(): void
+    {
+        parent::modifyTestMMWithChangedGroupMM2Relations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTestMMWithChangedGroupMM2Relations.csv');
+    }
+
+    #[Test]
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();

@@ -1,0 +1,13 @@
+"tx_test_mm"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","group_mm_2_local"
+,28,0,256,0,0,0,0,0,0,0,"Surf A",0
+,29,0,512,0,0,0,0,0,0,0,"Surf B",0
+,30,0,768,0,0,0,0,0,0,0,"Surf C",0
+,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",0
+,34,0,1792,0,0,0,0,0,0,0,"Surf G",1
+"group_mm_2_relations_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,34,298,1,0
+"sys_history"
+,"actiontype","tablename","recuid","history_data"
+,2,"tx_test_mm",34,"{""oldRecord"":{""group_mm_2_local"":""297,298""},""newRecord"":{""group_mm_2_local"":""298""}}"

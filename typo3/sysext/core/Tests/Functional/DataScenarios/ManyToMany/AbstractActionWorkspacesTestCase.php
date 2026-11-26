@@ -24,4 +24,19 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
 
     protected array $coreExtensionsToLoad = ['workspaces'];
+
+    /**
+     * Once a related record has a workspace version, the stored relations
+     * point to that version while the submitted value names the live record.
+     */
+    public function modifyContentAndTestMMWithUnchangedGroupMM2Relations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportGroupMM2Relations.csv');
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Surfing #1']);
+        $this->actionService->modifyRecord(
+            self::TABLE_TEST_MM,
+            self::VALUE_TestMMIdWithGroupMM2Relations,
+            [self::FIELD_GROUP_MM_2_LOCAL => self::TABLE_Content . '_' . self::VALUE_ContentIdFirst . ',' . self::TABLE_Content . '_' . self::VALUE_ContentIdLast]
+        );
+    }
 }

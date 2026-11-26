@@ -37,6 +37,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_TestMMIdFourth = 31;
     protected const VALUE_TestMMIdWithInlineChild = 32;
     protected const VALUE_TestMMIdWithInlineChildren = 33;
+    protected const VALUE_TestMMIdWithGroupMM2Relations = 34;
 
     protected const TABLE_Page = 'pages';
     protected const TABLE_Content = 'tt_content';
@@ -44,6 +45,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const TABLE_GROUP_1_ManyToMany = 'group_mm_1_relations_mm';
 
     protected const FIELD_GROUP_MM_1_LOCAL = 'group_mm_1_local';
+
+    protected const FIELD_GROUP_MM_2_LOCAL = 'group_mm_2_local';
 
     protected const FIELD_SELECT_MM_1_LOCAL = 'select_mm_1_local';
 
@@ -190,6 +193,30 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::VALUE_ContentIdFirst,
             self::FIELD_GROUP_MM_1_FOREIGN,
             [self::VALUE_TestMMIdSecond, self::VALUE_TestMMIdFirst]
+        );
+    }
+
+    /**
+     * FormEngine submits group values as <table>_<uid>, while the relations
+     * of a single allowed table are stored and read back as plain uids.
+     */
+    public function modifyTestMMWithUnchangedGroupMM2Relations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportGroupMM2Relations.csv');
+        $this->actionService->modifyRecord(
+            self::TABLE_TEST_MM,
+            self::VALUE_TestMMIdWithGroupMM2Relations,
+            [self::FIELD_GROUP_MM_2_LOCAL => self::TABLE_Content . '_' . self::VALUE_ContentIdFirst . ',' . self::TABLE_Content . '_' . self::VALUE_ContentIdLast]
+        );
+    }
+
+    public function modifyTestMMWithChangedGroupMM2Relations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportGroupMM2Relations.csv');
+        $this->actionService->modifyRecord(
+            self::TABLE_TEST_MM,
+            self::VALUE_TestMMIdWithGroupMM2Relations,
+            [self::FIELD_GROUP_MM_2_LOCAL => self::TABLE_Content . '_' . self::VALUE_ContentIdLast]
         );
     }
 

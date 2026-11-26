@@ -1,0 +1,11 @@
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","categories","l18n_diffsource"
+,310,88,768,0,0,0,0,0,0,0,"Regular Element #3",0,2,"{""categories"":""""}"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
+,28,310,"tt_content",0,1,"categories"
+,29,310,"tt_content",0,2,"categories"
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"febeda113f61a7a3c15d742ae200edc8","sys_category",28,"items",0,0,2147483647,0,,,,1,0,"tt_content",310,"categories",0,0,2147483647,0,1,
+,"6104a798ea4058063ed53f8e17b46994","sys_category",29,"items",0,0,2147483647,0,,,,2,0,"tt_content",310,"categories",0,0,2147483647,0,2,

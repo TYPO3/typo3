@@ -216,6 +216,20 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyContentWithUnchangedPrefixedCategoryRelations(): void
+    {
+        parent::modifyContentWithUnchangedPrefixedCategoryRelations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWithUnchangedPrefixedCategoryRelations.csv');
+    }
+
+    #[Test]
+    public function modifyCategoryAndContentWithUnchangedCategoryRelations(): void
+    {
+        parent::modifyCategoryAndContentWithUnchangedCategoryRelations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryAndContentWithUnchangedCategoryRelations.csv');
+    }
+
+    #[Test]
     public function modifyCategoryAndAddCategoryRelation(): void
     {
         parent::modifyCategoryAndAddCategoryRelation();

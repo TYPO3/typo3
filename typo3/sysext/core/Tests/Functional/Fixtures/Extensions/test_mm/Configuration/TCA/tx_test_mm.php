@@ -35,7 +35,7 @@ return [
         '1' => [
             'showitem' => '
                 --div--;core.form.tabs:general,
-                    title, parent, group_mm_1_local, select_mm_1_local, inline_mm_1_local,
+                    title, parent, group_mm_1_local, group_mm_2_local, select_mm_1_local, inline_mm_1_local,
                 --div--;core.form.tabs:language,
                     --palette--;;language,
                 --div--;core.form.tabs:access,
@@ -95,6 +95,15 @@ return [
                         'disabled' => true,
                     ],
                 ],
+            ],
+        ],
+        'group_mm_2_local' => [
+            'label' => 'Group MM 2 - Local side (single table)',
+            'description' => 'MM relation to one allowed table, with only uid_local / uid_foreign in MM table',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'tt_content',
+                'MM' => 'group_mm_2_relations_mm',
             ],
         ],
         'select_mm_1_local' => [

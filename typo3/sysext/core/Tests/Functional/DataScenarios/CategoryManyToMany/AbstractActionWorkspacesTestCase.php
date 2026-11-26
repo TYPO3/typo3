@@ -116,4 +116,20 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
             [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird]
         );
     }
+
+    /**
+     * Once a category has a workspace version, the stored relations point
+     * to that version while the submitted value names the live category.
+     */
+    public function modifyCategoryAndContentWithUnchangedCategoryRelations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportContentWithCategories.csv');
+        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdWithCategories,
+            self::FIELD_Categories,
+            [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond]
+        );
+    }
 }
