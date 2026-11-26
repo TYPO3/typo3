@@ -42,8 +42,6 @@ final class ErrorHandlerTest extends UnitTestCase
 
     private LoggerInterface $trackingLogger;
 
-    protected bool $resetSingletonInstances = true;
-
     /**
      * Sets up this test case.
      */
@@ -64,6 +62,12 @@ final class ErrorHandlerTest extends UnitTestCase
                 ];
             }
         };
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::purgeInstances();
+        parent::tearDown();
     }
 
     // @phpstan-ignore attributes.forbidden.methodScope (to avoid inconsistencies when testing our custom error handler)
