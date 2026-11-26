@@ -15,13 +15,13 @@ import type SimpleResponseInterface from './simple-response-interface';
 
 export class AjaxResponse {
   public readonly response: Response;
-  private resolvedBody: string | any;
+  private resolvedBody: any;
 
   constructor(response: Response) {
     this.response = response;
   }
 
-  public async resolve(expectedType?: string): Promise<string | any> {
+  public async resolve(expectedType?: string): Promise<any> {
     // streams can only be read once
     // (otherwise response would have to be cloned)
     if (typeof this.resolvedBody !== 'undefined') {

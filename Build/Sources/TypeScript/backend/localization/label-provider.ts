@@ -48,7 +48,7 @@ export class LabelProvider<LabelParameterMap extends Record<string, NamedParamet
     return Array.isArray(res) ? res.join('') : res;
   }
 
-  public render<K extends keyof LabelParameterMap, T extends object|never>(
+  public render<K extends keyof LabelParameterMap, T extends object>(
     key: K,
     args: Readonly<TemplatedParameters<LabelParameterMap[K], T>>,
   ): string | T | Array<string | T> {

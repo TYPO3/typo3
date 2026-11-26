@@ -361,13 +361,12 @@ export class CKEditor5Element extends LitElement {
   }
 }
 
-type RecurseMapInput = Record<string, unknown>|Array<unknown>|unknown;
 type PseudoRegExp = {
   pattern: string,
   flags?: string
 };
 
-function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null): RecurseMapInput {
+function walkObj(data: unknown, proc: (value: unknown) => unknown): unknown {
   if (data !== null && typeof data === 'object') {
     if (Array.isArray(data)) {
       return data.map((element) => proc(element) ?? walkObj(element, proc));
@@ -381,8 +380,8 @@ function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null):
   return data;
 }
 
-function convertPseudoRegExp(data: RecurseMapInput): RecurseMapInput {
-  return walkObj(data, (entry: PseudoRegExp | unknown): RegExp | null => {
+function convertPseudoRegExp(data: unknown): unknown {
+  return walkObj(data, (entry: unknown): RegExp | null => {
     if (entry !== null && typeof entry === 'object' && 'pattern' in entry && typeof entry.pattern === 'string') {
       const pseudoRegExp = entry as PseudoRegExp;
       return new RegExp(pseudoRegExp.pattern, pseudoRegExp.flags || undefined);

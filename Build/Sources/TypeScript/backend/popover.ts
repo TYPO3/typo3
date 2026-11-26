@@ -138,7 +138,7 @@ class Popover {
     popover.toggle();
   }
 
-  private toIterable(element: NodeListOf<HTMLElement> | HTMLElement | unknown): NodeListOf<HTMLElement> | HTMLElement[] {
+  private toIterable(element: unknown): NodeListOf<HTMLElement> | HTMLElement[] {
     let elementList: NodeListOf<HTMLElement> | HTMLElement[];
     if (element instanceof HTMLElement) {
       elementList = [element];

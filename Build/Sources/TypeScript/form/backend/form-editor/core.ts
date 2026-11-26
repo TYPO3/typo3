@@ -758,7 +758,7 @@ export class Model<D extends object, T extends ModelData<D>> {
   /**
    * @throws 1475361755
    */
-  public get(key: string): any | undefined {
+  public get(key: string): any {
     let firstPartOfPath: string;
     let obj: Record<string, unknown>;
     assert(utility.isNonEmptyString(key), 'Invalid parameter "key"', 1475361755);
@@ -2124,8 +2124,8 @@ declare global {
     ],
     'core/formElement/somePropertyChanged': readonly [
       propertyPath: string,
-      value?: unknown | undefined,
-      oldValue?: unknown | undefined,
+      value?: unknown,
+      oldValue?: unknown,
       formElementIdentifierPath?: string,
     ];
   }

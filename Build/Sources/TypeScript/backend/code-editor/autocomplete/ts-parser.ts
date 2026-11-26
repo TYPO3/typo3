@@ -140,7 +140,7 @@ export class TsParser {
   public readonly extTsObjTree: TsObjTree;
   private tsTree: TreeNode;
 
-  private clone!: <T extends object | unknown>(myObj: T) => T;
+  private clone!: <T>(myObj: T) => T;
 
   constructor(tsRef: TsRef, extTsObjTree: TsObjTree) {
     this.tsRef = tsRef;
@@ -445,7 +445,7 @@ export class TsParser {
    * to the location specified by path1
    */
   public setCopy(path1: string, path2: string): void {
-    this.clone = <T extends object | unknown>(myObj: T): T => {
+    this.clone = <T>(myObj: T): T => {
       if (typeof myObj !== 'object') {
         return myObj;
       }
