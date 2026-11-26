@@ -236,10 +236,7 @@ export function assert(test: boolean|(() => boolean), message: string, messageCo
     if (messageCode) {
       message = message + ' (' + messageCode + ')';
     }
-    if ('undefined' !== typeof Error) {
-      throw new Error(message);
-    }
-    throw message;
+    throw new Error(message);
   }
 }
 

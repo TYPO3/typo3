@@ -597,16 +597,16 @@ export default (function() {
 
   FormEngine.handlePostMessage = function (e: MessageEvent) {
     if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
-      throw 'Denied message sent by ' + e.origin;
+      throw new Error('Denied message sent by ' + e.origin);
     }
 
     if (e.data.actionName === 'typo3:elementBrowser:elementAdded') {
       if (typeof e.data.fieldName === 'undefined') {
-        throw 'fieldName not defined in message';
+        throw new Error('fieldName not defined in message');
       }
 
       if (typeof e.data.value === 'undefined') {
-        throw 'value not defined in message';
+        throw new Error('value not defined in message');
       }
 
       const label = e.data.label || e.data.value;

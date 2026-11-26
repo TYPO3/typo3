@@ -54,7 +54,7 @@ export class AjaxDispatcher {
       return TYPO3.settings.ajaxUrls[routeName];
     }
 
-    throw 'Undefined endpoint for route "' + routeName + '"';
+    throw new Error('Undefined endpoint for route "' + routeName + '"');
   }
 
   public send<T extends AjaxDispatcherResponse = AjaxDispatcherResponse>(request: AjaxRequest, params: Array<string>): Promise<T> {

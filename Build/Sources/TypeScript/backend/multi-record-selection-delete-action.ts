@@ -91,7 +91,7 @@ class MultiRecordSelectionDeleteAction {
                 }
               });
               if (result.hasErrors) {
-                throw result.messages;
+                throw new Error('Records could not be deleted', { cause: result.messages });
               } else if (returnUrl !== '') {
                 (event.target as HTMLElement).ownerDocument.location.href = returnUrl;
               } else {

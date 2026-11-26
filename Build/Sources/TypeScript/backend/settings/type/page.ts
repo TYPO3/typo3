@@ -81,16 +81,16 @@ export class PageTypeElement extends BaseElement<number> {
 
   private readonly elementBrowserListener = (e: MessageEvent): void => {
       if (!MessageUtility.verifyOrigin(e.origin)) {
-        throw 'Denied message sent by ' + e.origin;
+        throw new Error('Denied message sent by ' + e.origin);
       }
 
       if (e.data.actionName === 'typo3:elementBrowser:elementAdded') {
         if (typeof e.data.fieldName === 'undefined') {
-          throw 'fieldName not defined in message';
+          throw new Error('fieldName not defined in message');
         }
 
         if (typeof e.data.value === 'undefined') {
-          throw 'value not defined in message';
+          throw new Error('value not defined in message');
         }
 
         this.value = e.data.value.split('_').pop();

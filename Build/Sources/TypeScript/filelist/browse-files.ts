@@ -125,7 +125,7 @@ class BrowseFiles {
 
     new RegularEvent('message', (event: MessageEvent): void => {
       if (!MessageUtility.verifyOrigin(event.origin)) {
-        throw 'Denied message sent by ' + event.origin;
+        throw new Error('Denied message sent by ' + event.origin);
       }
 
       if (event.data.actionName === 'typo3:foreignRelation:inserted') {

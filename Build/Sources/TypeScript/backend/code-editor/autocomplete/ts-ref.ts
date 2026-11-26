@@ -100,7 +100,7 @@ export class TsRef {
     maxRecDepth: number
   ): void {
     if (maxRecDepth < 0) {
-      throw 'Maximum recursion depth exceeded while trying to resolve the extends in the TSREF!';
+      throw new Error('Maximum recursion depth exceeded while trying to resolve the extends in the TSREF!');
     }
     const exts = addFromTypeNames.split(',');
     for (let i = 0; i < exts.length; i++) {

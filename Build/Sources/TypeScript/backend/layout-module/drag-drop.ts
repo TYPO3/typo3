@@ -273,7 +273,7 @@ class DragDrop {
 
     return DataHandler.process(parameters, eventData).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
-        throw result.messages;
+        throw new Error('Content element could not be moved or copied', { cause: result.messages });
       }
 
       if (isCopyAction || (gridContainer?.dataset.multiLanguages === '1')) {

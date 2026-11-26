@@ -383,12 +383,12 @@ class InlineControlContainer extends HTMLElement {
    */
   private readonly handlePostMessage = (e: MessageEvent): void => {
     if (!MessageUtility.verifyOrigin(e.origin)) {
-      throw 'Denied message sent by ' + e.origin;
+      throw new Error('Denied message sent by ' + e.origin);
     }
 
     if (e.data.actionName === 'typo3:foreignRelation:insert') {
       if (typeof e.data.objectGroup === 'undefined') {
-        throw 'No object group defined for message';
+        throw new Error('No object group defined for message');
       }
 
       if (e.data.objectGroup !== this.objectGroup) {

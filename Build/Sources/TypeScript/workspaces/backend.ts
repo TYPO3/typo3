@@ -345,7 +345,7 @@ class Backend extends Workspaces {
           reload = true;
           break;
         default:
-          throw 'Unknown action "' + paginator.dataset.action + '"';
+          throw new Error('Unknown action "' + paginator.dataset.action + '"');
       }
 
       if (reload) {
@@ -406,7 +406,7 @@ class Backend extends Workspaces {
       stageWindowAction = 'sendToPrevStageWindow';
       stageExecuteAction = 'sendToPrevStageExecute';
     } else {
-      throw 'Invalid direction given.';
+      throw new Error('Invalid direction given.');
     }
 
     this.sendRemoteRequest(
@@ -807,7 +807,7 @@ class Backend extends Workspaces {
         continueButtonLabel = labels.get('label_doaction_discard');
         break;
       default:
-        throw 'Invalid mass action ' + selectedAction + ' called.';
+        throw new Error('Invalid mass action ' + selectedAction + ' called.');
     }
 
     const sendRequestsUntilAllProcessed = async (response: AjaxResponse): Promise<void> => {

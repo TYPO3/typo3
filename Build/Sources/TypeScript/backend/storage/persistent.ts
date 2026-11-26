@@ -136,7 +136,7 @@ class Persistent {
       return JSON.parse(request.responseText);
     }
 
-    throw `Unexpected response code ${request.status}, reason: ${request.responseText}`;
+    throw new Error(`Unexpected response code ${request.status}, reason: ${request.responseText}`);
   }
 
   /**

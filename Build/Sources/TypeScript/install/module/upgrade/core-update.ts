@@ -111,7 +111,7 @@ class CoreUpdate extends AbstractInteractableModule {
           this.update('regular');
           break;
         default:
-          throw 'Unknown update action "' + action + '"';
+          throw new Error('Unknown update action "' + action + '"');
       }
     }).delegateTo(currentModal, '.t3js-coreUpdate-init');
   }
