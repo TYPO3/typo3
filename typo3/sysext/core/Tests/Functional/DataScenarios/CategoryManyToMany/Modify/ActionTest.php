@@ -138,6 +138,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function modifyContentWithUnchangedPrefixedCategoryRelations(): void
+    {
+        parent::modifyContentWithUnchangedPrefixedCategoryRelations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWithUnchangedPrefixedCategoryRelations.csv');
+    }
+
+    #[Test]
     public function modifyContentOfRelatedCategory(): void
     {
         parent::modifyContentOfRelatedCategory();

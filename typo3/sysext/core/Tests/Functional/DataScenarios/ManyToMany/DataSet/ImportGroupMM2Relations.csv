@@ -1,0 +1,11 @@
+"tx_test_mm"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","group_mm_2_local","l10n_diffsource"
+,34,0,1792,0,0,0,0,0,0,0,"Surf G",2,"{""group_mm_2_local"":""""}"
+"group_mm_2_relations_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,34,297,1,0
+,34,298,2,0
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"b664d1c89473df94833e78775767b2df","tx_test_mm",34,"group_mm_2_local",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"90c6c749c4f8ef52b51707b59d442fef","tx_test_mm",34,"group_mm_2_local",0,0,2147483647,0,,,,1,0,"tt_content",298,,0,0,2147483647,0,0,

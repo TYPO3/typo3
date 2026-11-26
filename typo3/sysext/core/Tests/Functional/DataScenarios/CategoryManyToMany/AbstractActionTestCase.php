@@ -32,6 +32,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_CategoryPageId = 0;
     protected const VALUE_ContentIdFirst = 297;
     protected const VALUE_ContentIdLast = 298;
+    protected const VALUE_ContentIdWithCategories = 310;
     protected const VALUE_CategoryIdFirst = 28;
     protected const VALUE_CategoryIdSecond = 29;
     protected const VALUE_CategoryIdThird = 30;
@@ -149,6 +150,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content,
             self::VALUE_ContentIdFirst,
             ['header' => 'Testing #1']
+        );
+    }
+
+    public function modifyContentWithUnchangedPrefixedCategoryRelations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportContentWithCategories.csv');
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdWithCategories,
+            [self::FIELD_Categories => self::TABLE_Category . '_' . self::VALUE_CategoryIdFirst . ',' . self::TABLE_Category . '_' . self::VALUE_CategoryIdSecond]
         );
     }
 

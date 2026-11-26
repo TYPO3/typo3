@@ -2916,15 +2916,15 @@ class DataHandler
         string $table,
         string $field
     ): array {
-        $newRelations = implode(',', $valueArray);
         $relationHandler = $this->createRelationHandlerInstance();
-        $relationHandler->start($newRelations, $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
+        $relationHandler->start(implode(',', $valueArray), $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
         if ($tcaFieldConf['MM'] ?? false) {
             $relationHandler->convertItemArray();
             if ($status === 'update') {
                 $relationHandleForOldRelations = $this->createRelationHandlerInstance();
                 $relationHandleForOldRelations->initializeForField($table, $tcaFieldConf, $id);
                 $oldRelations = implode(',', $relationHandleForOldRelations->getValueArray());
+                $newRelations = implode(',', $relationHandler->getValueArray());
                 $relationHandler->writeMM($tcaFieldConf['MM'], $id);
                 if ($oldRelations !== $newRelations) {
                     $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$field] = $oldRelations;
@@ -2960,10 +2960,9 @@ class DataHandler
     {
         $tables = $type === 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'];
         $prep = $type === 'group' ? ($tcaFieldConf['prepend_tname'] ?? '') : '';
-        $newRelations = implode(',', $valueArray);
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
-        $dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
+        $dbAnalysis->start(implode(',', $valueArray), $tables, '', 0, $currentTable, $tcaFieldConf);
         if ($tcaFieldConf['MM'] ?? false) {
             // convert submitted items to use version ids instead of live ids
             // (only required for MM relations in a workspace context)
@@ -2973,8 +2972,9 @@ class DataHandler
                 // Db analysis with $id will initialize with the existing relations
                 $oldRelations_dbAnalysis->initializeForField($currentTable, $tcaFieldConf, $id);
                 $oldRelations = implode(',', $oldRelations_dbAnalysis->getValueArray());
+                $newRelations = implode(',', $dbAnalysis->getValueArray());
                 $dbAnalysis->writeMM($tcaFieldConf['MM'], $id, $prep);
-                if ($oldRelations != $newRelations) {
+                if ($oldRelations !== $newRelations) {
                     $this->mmHistoryRecords[$currentTable . ':' . $id]['oldRecord'][$currentField] = $oldRelations;
                     $this->mmHistoryRecords[$currentTable . ':' . $id]['newRecord'][$currentField] = $newRelations;
                 } else {
