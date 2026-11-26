@@ -59,10 +59,8 @@ class FileListRenameHandler {
           const form = modal.querySelector('form');
           form?.addEventListener('submit', (event: SubmitEvent): void => {
             event.preventDefault();
-            const formData = new FormData(event.target as HTMLFormElement);
-            const submittedData = Object.fromEntries(formData);
-            const resourceName = submittedData.name.toString();
-            if (resource.name !== resourceName) {
+            const resourceName = new FormData(event.target as HTMLFormElement).get('name');
+            if (typeof resourceName === 'string' && resource.name !== resourceName) {
               const request = new AjaxRequest(TYPO3.settings.ajaxUrls.resource_rename);
               request.post({
                 identifier: resource.identifier,

@@ -236,9 +236,10 @@ export class EditablePageTitle extends LitElement {
   private updatePageTitle(e: SubmitEvent): void {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const submittedData = Object.fromEntries(formData);
-    const newPageTitle = submittedData.newPageTitle.toString();
+    const newPageTitle = new FormData(e.target as HTMLFormElement).get('newPageTitle');
+    if (typeof newPageTitle !== 'string') {
+      return;
+    }
 
     if (this.pageTitle === newPageTitle) {
       // Page title didn't change, no need to update anything

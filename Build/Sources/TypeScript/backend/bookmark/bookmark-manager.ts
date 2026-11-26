@@ -1171,10 +1171,7 @@ export class BookmarkManagerContentElement extends LitElement {
       if (entries.length === 0) {
         return null;
       }
-      const format = (value: unknown): string => {
-        const isObject = typeof value === 'object' && value !== null;
-        return isObject ? JSON.stringify(value) : String(value);
-      };
+      const format = (value: unknown): string => typeof value === 'string' ? value : JSON.stringify(value);
       return html`
         <ul class="list-unstyled mb-0">
           ${entries.map(([key, value]) => html`<li><strong>${key}:</strong> ${format(value)}</li>`)}
