@@ -79,6 +79,7 @@
 		"guzzlehttp/psr7": "^3.2.0",
 		"league/flysystem": "^3.36",
 		"league/flysystem-local": "^3.35",
+		"league/mime-type-detection": "^1.16.0",
 		"lolli42/finediff": "^1.1.2",
 		"nikic/php-parser": "^5.4.0",
 		"phpdocumentor/type-resolver": "^2.0.0",
