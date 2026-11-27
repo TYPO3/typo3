@@ -1829,6 +1829,9 @@ return [
                 'gclid',
                 'dclid',
                 'wbraid',
+                'gclsrc',
+                // Google organic search (Merchant Center)
+                'srsltid',
                 // Facebook
                 'fbclid',
                 // Microsoft Bing Ads.
@@ -1858,6 +1861,15 @@ return [
                 'submissionGuid',
                 // LinkedIn First-Party Ad Tracking ID
                 'li_fat_id',
+                // TikTok Tracking Parameter
+                'ttclid',
+                // Reddit Ads Click ID
+                'rdt_cid',
+                // Snapchat Ads Click ID
+                'ScCid',
+                'sccid',
+                // ChatGPT Ads (OpenAI) Click ID
+                'oppref',
             ],
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
