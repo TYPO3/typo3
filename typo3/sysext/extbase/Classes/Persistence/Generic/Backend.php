@@ -378,6 +378,19 @@ class Backend implements BackendInterface
                 $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
+        if (!$object->_isNew()
+            && $this->cleanStateTracker->contains($object)
+            && $this->cleanStateTracker->isEntityPropertyDirty($object, AbstractDomainObject::PROPERTY_PID)
+        ) {
+            $pageId = (int)$object->getPid();
+            $row[AbstractDomainObject::PROPERTY_PID] = $pageId;
+            foreach ($this->getInlineChildObjectsMovingWithParent($object) as $childObject) {
+                $childObject->setPid($pageId);
+                // A child persisted earlier in this run has to be visited again to write its new page
+                $this->visitedDuringPersistence->detach($childObject);
+                $queue[] = $childObject;
+            }
+        }
         $isRowWritten = !empty($row);
         if ($isRowWritten) {
             $this->updateObject($object, $row);
@@ -392,6 +405,52 @@ class Backend implements BackendInterface
             $this->persistObject($queuedObject);
         }
         $this->eventDispatcher->dispatch(new EntityPersistedEvent($object));
+    }
+
+    /**
+     * Returns the persisted children of the inline relations of an object, which move along with it
+     * to another page, as DataHandler moves them, unless the field sets "disableMovingChildrenWithParent".
+     *
+     * @return list<DomainObjectInterface>
+     */
+    protected function getInlineChildObjectsMovingWithParent(DomainObjectInterface $object): array
+    {
+        $className = get_class($object);
+        $dataMap = $this->dataMapFactory->buildDataMap($className);
+        $schema = $this->tcaSchemaFactory->has($dataMap->tableName) ? $this->tcaSchemaFactory->get($dataMap->tableName) : null;
+        if ($schema !== null && $dataMap->recordType !== null && $schema->hasSubSchema((string)$dataMap->recordType)) {
+            $schema = $schema->getSubSchema((string)$dataMap->recordType);
+        }
+        $childObjects = [];
+        foreach ($this->reflectionService->getClassSchema($className)->getDomainObjectProperties() as $property) {
+            $propertyName = $property->name;
+            if (!$dataMap->isPersistableProperty($propertyName)) {
+                continue;
+            }
+            $columnMap = $dataMap->getColumnMap($propertyName);
+            if ($columnMap->parentKeyFieldName === null
+                || !in_array($columnMap->typeOfRelation, [Relation::HAS_ONE, Relation::HAS_MANY], true)
+            ) {
+                continue;
+            }
+            if ($schema !== null
+                && $schema->hasField($columnMap->columnName)
+                && ($schema->getField($columnMap->columnName)->getConfiguration()['behaviour']['disableMovingChildrenWithParent'] ?? false)
+            ) {
+                continue;
+            }
+            $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
+            if ($propertyValue instanceof LazyLoadingProxy) {
+                $propertyValue = $propertyValue->_loadRealInstance();
+            }
+            // Iterating a lazy object storage loads the children that are not in memory yet
+            foreach ($propertyValue instanceof ObjectStorage ? $propertyValue : [$propertyValue] as $childObject) {
+                if ($childObject instanceof DomainObjectInterface && !$childObject->_isNew()) {
+                    $childObjects[] = $childObject;
+                }
+            }
+        }
+        return $childObjects;
     }
 
     /**

@@ -1,0 +1,18 @@
+"pages"
+,"uid","pid","title"
+,1,0,"Page 1"
+,2,0,"Page 2"
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","posts","featured_post"
+,1,1,"Moved blog",2,1
+,2,1,"Other blog",1,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","blog","featured_blog","title","comments"
+,1,1,1,0,"Post of moved blog",1
+,2,1,1,0,"Second post of moved blog",0
+,3,1,0,1,"Featured post of moved blog",0
+,4,1,2,0,"Post of other blog",1
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","content","date"
+,1,1,1,"Comment on post of moved blog","2026-01-15 12:00:00"
+,2,1,4,"Comment on post of other blog","2026-01-15 12:00:00"

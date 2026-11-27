@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -203,5 +204,36 @@ final class BackendTest extends FunctionalTestCase
         $administratorLazyLoadingProxy = $blog->getAdministrator();
         $subject = $this->get(Backend::class);
         self::assertSame('1', $subject->getIdentifierByObject($administratorLazyLoadingProxy));
+    }
+
+    /**
+     * None of the relations is loaded before the move, and the comment is a child of a child.
+     */
+    #[Test]
+    public function movingEntityMovesInlineChildren(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendTest/movingEntityImport.csv');
+        $persistenceManager = $this->get(PersistenceManager::class);
+        /** @var Blog $blog */
+        $blog = $persistenceManager->getObjectByIdentifier(1, Blog::class);
+        $blog->setPid(2);
+        $persistenceManager->update($blog);
+        $persistenceManager->persistAll();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/BackendTest/movingEntityMovesInlineChildrenAssertion.csv');
+    }
+
+    #[Test]
+    public function movingEntityKeepsChildrenOfFieldWithMovingDisabled(): void
+    {
+        $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['columns']['posts']['config']['behaviour']['disableMovingChildrenWithParent'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendTest/movingEntityImport.csv');
+        $persistenceManager = $this->get(PersistenceManager::class);
+        /** @var Blog $blog */
+        $blog = $persistenceManager->getObjectByIdentifier(1, Blog::class);
+        $blog->setPid(2);
+        $persistenceManager->update($blog);
+        $persistenceManager->persistAll();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/BackendTest/movingEntityKeepsChildrenOfFieldWithMovingDisabledAssertion.csv');
     }
 }
