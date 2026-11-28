@@ -1,4 +1,3 @@
-import type { Cookie } from '@playwright/test';
 import { test, expect, INSTALL_TOOL_PASSWORD } from '../../fixtures/install-tool';
 
 // The e2e project depends on the login helper which stores the backend session.
@@ -429,7 +428,7 @@ test.describe('Install Tool', () => {
 
   test.describe('Environment', () => {
     // Reuse authentication across fresh browser contexts in this read-only group.
-    let sessionCookie: Cookie | undefined;
+    let sessionCookie: { name: string, value: string, domain: string, path: string } | undefined;
 
     test.beforeEach(async ({ installTool, context }) => {
       await installTool.enable();
