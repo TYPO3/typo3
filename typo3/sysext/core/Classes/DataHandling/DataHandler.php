@@ -79,6 +79,7 @@ use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -445,6 +446,7 @@ class DataHandler
         private readonly SiteFinder $siteFinder,
         private readonly DataMapProcessor $dataMapProcessor,
         private readonly FlexFormSchemaFactory $flexFormSchemaFactory,
+        private readonly RecordTypeResolver $recordTypeResolver,
     ) {}
 
     /**
@@ -1107,7 +1109,7 @@ class DataHandler
             $testRecord = array_replace($checkValueRecord, $incomingFieldArray);
             if ($schema->supportsSubSchema()
                 && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
-                && ($newTypeValue = BackendUtility::getTCAtypeValue($table, $testRecord)) !== BackendUtility::getTCAtypeValue($table, $checkValueRecord)
+                && ($newTypeValue = $this->recordTypeResolver->getRecordTypeWithFallback($table, $testRecord)) !== $this->recordTypeResolver->getRecordTypeWithFallback($table, $checkValueRecord)
             ) {
                 $checkValueRecord[$schema->getSubSchemaTypeInformation()->getFieldName()] = $newTypeValue;
             }
@@ -1343,8 +1345,8 @@ class DataHandler
         if (!$schema->hasField($field)) {
             return null;
         }
-        $recordType = BackendUtility::getTCAtypeValue($table, $record, true);
-        if ($recordType !== null && $schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
+        $recordType = $this->recordTypeResolver->getRecordType($table, $record);
+        if ($recordType !== null && $schema->getSubSchema($recordType)->hasField($field)) {
             return $schema->getSubSchema($recordType)->getField($field);
         }
         return $schema->getField($field);
@@ -1529,7 +1531,7 @@ class DataHandler
             return $valueArray;
         }
         if ($richtextEnabled) {
-            $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
+            $recordType = $this->recordTypeResolver->getRecordTypeWithFallback($table, $this->checkValue_currentRecord);
             $richtextConfiguration = $this->richtext->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $rteParser = GeneralUtility::makeInstance(RteHtmlParser::class);
             $valueArray['value'] = $rteParser->transformTextForPersistence((string)$value, $richtextConfiguration['proc.'] ?? []);
@@ -8391,7 +8393,7 @@ class DataHandler
             return $fieldArray;
         }
         $schema = $this->tcaSchemaFactory->get($table);
-        $recordType = BackendUtility::getTCAtypeValue($table, $recordContext, true);
+        $recordType = $this->recordTypeResolver->getRecordType($table, $recordContext);
         $subSchema = $recordType !== null && $schema->hasSubSchema($recordType) ? $schema->getSubSchema($recordType) : null;
         foreach ($schema->getFields() as $field) {
             $fieldName = $field->getName();
@@ -8421,8 +8423,8 @@ class DataHandler
             return new FieldCollection([]);
         }
         $schema = $this->tcaSchemaFactory->get($table);
-        $recordType = BackendUtility::getTCAtypeValue($schema->getName(), $row, true);
-        return ($recordType !== null && $schema->hasSubSchema($recordType))
+        $recordType = $this->recordTypeResolver->getRecordType($schema->getName(), $row);
+        return $recordType !== null
             ? $schema->getSubSchema($recordType)->getFields()
             : $schema->getFields();
     }

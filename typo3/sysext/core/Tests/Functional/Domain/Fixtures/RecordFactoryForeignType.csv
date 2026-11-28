@@ -1,0 +1,9 @@
+"sys_file"
+,"uid","pid","storage","type","identifier","name"
+,1,0,1,1,"/user_upload/readme.txt","readme.txt"
+,2,0,1,2,"/user_upload/image.svg","image.svg"
+"sys_file_metadata"
+,"uid","pid","file","sys_language_uid","l10n_parent","title","width","height"
+,1,0,1,0,0,"Readme",0,0
+,2,0,2,0,0,"Image",1200,800
+,3,0,99,0,0,"Orphan",0,0

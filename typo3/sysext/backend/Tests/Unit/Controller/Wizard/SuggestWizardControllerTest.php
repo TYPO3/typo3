@@ -22,8 +22,11 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -71,7 +74,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, new RecordTypeResolver($tcaSchemaFactoryMock, self::createStub(ConnectionPool::class), new Context())))->searchAction($request);
     }
 
     #[Test]
@@ -115,7 +118,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, new RecordTypeResolver($tcaSchemaFactoryMock, self::createStub(ConnectionPool::class), new Context())))->searchAction($request);
     }
 
     #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]

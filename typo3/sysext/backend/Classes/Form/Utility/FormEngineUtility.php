@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -144,7 +145,7 @@ class FormEngineUtility
         $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
         if ($TScID >= 0) {
             $tsConfig = BackendUtility::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
-            $typeVal = BackendUtility::getTCAtypeValue($table, $row, true);
+            $typeVal = GeneralUtility::makeInstance(RecordTypeResolver::class)->getRecordType($table, $row);
             foreach ($tsConfig as $key => $val) {
                 if (is_array($val)) {
                     $fieldN = substr($key, 0, -1);

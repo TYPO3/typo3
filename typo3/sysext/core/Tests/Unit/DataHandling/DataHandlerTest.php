@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
@@ -51,6 +52,7 @@ use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -115,6 +117,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
             new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
+            new RecordTypeResolver($this->tcaSchemaFactory, self::createStub(ConnectionPool::class), new Context()),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
@@ -303,6 +306,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
             new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
+            new RecordTypeResolver($this->tcaSchemaFactory, self::createStub(ConnectionPool::class), new Context()),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1152,6 +1156,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
             new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
+            new RecordTypeResolver($this->tcaSchemaFactory, self::createStub(ConnectionPool::class), new Context()),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1189,6 +1194,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
             new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
+            new RecordTypeResolver($this->tcaSchemaFactory, self::createStub(ConnectionPool::class), new Context()),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1623,6 +1629,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
             new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
+            new RecordTypeResolver($this->tcaSchemaFactory, self::createStub(ConnectionPool::class), new Context()),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }
@@ -1796,7 +1803,6 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $defaultValues = $this->subject->newFieldArray('tx_my_testtable');
         self::assertArrayHasKey($column, $defaultValues);
         self::assertEquals($expected, $defaultValues[$column]);
@@ -1879,7 +1885,6 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $defaultValues = $this->subject->newFieldArray('tx_my_testtable');
         self::assertEquals('test', $defaultValues['input_3']);
         self::assertArrayNotHasKey($column, $defaultValues);
@@ -1926,7 +1931,6 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $this->subject->defaultValues['tx_my_testtable']['input_1'] = 'foo';
         $defaultValues = $this->subject->newFieldArray('tx_my_testtable');
         self::assertEquals('foo', $defaultValues['input_1']);

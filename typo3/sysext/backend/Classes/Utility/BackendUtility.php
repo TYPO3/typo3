@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\JsonFieldType;
 use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Field\PassthroughFieldType;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -671,65 +672,17 @@ class BackendUtility
      * If the schema does not support sub schemata, zero is used.
      * If zero is not a valid sub schemata for the table, then the $fieldValue returned will default to 1 (no matter if that is valid or not)
      *
-     * Note: This method is very similar to the type determination of FormDataProvider/DatabaseRecordTypeValue,
-     * however, it has two differences:
-     * 1) The method in TCEForms also takes care of localization (which is difficult to do here as the whole infrastructure for language overlays is only in TCEforms).
-     * 2) The $row array looks different in TCEForms, as in there it's not the raw record but the prepared data from other providers is handled, which changes e.g. how "select"
-     * and "group" field values are stored, which makes different processing of the "foreign pointer field" type field variant necessary.
-     *
      * @param string $table Table name present in TCA
      * @param array $row Record from $table
-     * @throws \RuntimeException
+     * @param bool $skipFallback Return null instead of "0" or "1" if no "types" section exists for the record
      * @return string|null Field value
      */
     public static function getTCAtypeValue($table, $row, bool $skipFallback = false)
     {
-        $typeNum = null;
-        $schema = self::getTcaSchema($table);
-        if ($schema) {
-            if ($schema->supportsSubSchema()) {
-                $subSchemaInformation = $schema->getSubSchemaTypeInformation();
-                if ($subSchemaInformation->isPointerToForeignFieldInForeignSchema()) {
-                    $pointerField = $subSchemaInformation->getFieldName();
-                    // Check if the record has been persisted already
-                    $foreignUid = 0;
-                    if (isset($row['uid'])) {
-                        // Get field value from database if field is not in the $row array
-                        if (!isset($row[$subSchemaInformation->getFieldName()])) {
-                            $localRow = self::getRecord($table, $row['uid'], $pointerField);
-                            $foreignUid = $localRow[$pointerField] ?? 0;
-                        } else {
-                            $foreignUid = $row[$pointerField];
-                        }
-                    }
-                    if ($foreignUid) {
-                        if (($foreignSchema = self::getTcaSchema($subSchemaInformation->getForeignSchemaName())) !== null) {
-                            if (isset($row[$pointerField]) && $foreignSchema->hasField($subSchemaInformation->getForeignFieldName())) {
-                                $foreignRecord = self::getRecord($subSchemaInformation->getForeignSchemaName(), $row[$pointerField], $subSchemaInformation->getForeignFieldName());
-                                $typeNum = $foreignRecord[$subSchemaInformation->getForeignFieldName()] ?? null;
-                            }
-                        }
-                    }
-                } else {
-                    $typeNum = $row[$subSchemaInformation->getFieldName()] ?? null;
-                }
-            }
-        }
-        // If typeNum is an array, e.g. when using type=select and renderType=selectCheckBox, use the
-        // first value or fallback to NULL in case multiple values are selected - which does not work.
-        if (is_array($typeNum)) {
-            $typeNum = count($typeNum) === 1 ? reset($typeNum) : null;
-        }
-        // If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
-        // @todo Resolve this
-        if ($typeNum === null || !$schema?->hasSubSchema((string)$typeNum)) {
-            if ($skipFallback) {
-                return null;
-            }
-            $typeNum = $schema?->hasSubSchema('0') ? '0' : '1';
-        }
-        // Force to string. Necessary for eg '-1' to be recognized as a type value.
-        return (string)$typeNum;
+        $recordTypeResolver = GeneralUtility::makeInstance(RecordTypeResolver::class);
+        return $skipFallback
+            ? $recordTypeResolver->getRecordType((string)$table, (array)$row)
+            : $recordTypeResolver->getRecordTypeWithFallback((string)$table, (array)$row);
     }
 
     /*******************************************
@@ -1374,8 +1327,8 @@ class BackendUtility
         }
         $labelCapability = $mainSchema->hasCapability(TcaSchemaCapability::Label) ? $mainSchema->getCapability(TcaSchemaCapability::Label) : null;
         if ($mainSchema->supportsSubSchema()) {
-            $recordType = self::getTCAtypeValue($table, $row, true);
-            if ($recordType !== null && $mainSchema->hasSubSchema($recordType)) {
+            $recordType = GeneralUtility::makeInstance(RecordTypeResolver::class)->getRecordType($table, $row);
+            if ($recordType !== null) {
                 $schema = $mainSchema->getSubSchema($recordType);
                 $labelCapability = $schema->hasCapability(TcaSchemaCapability::Label) ? $schema->getCapability(TcaSchemaCapability::Label) : $labelCapability;
             }
@@ -1653,7 +1606,7 @@ class BackendUtility
                             // Merge TCEFORM.[table].[field].types.[type] over TCEFORM.[table].[field]
                             $typeSpecificTsConfig = $columnTsConfig['types.'] ?? [];
                             unset($columnTsConfig['types.']);
-                            $recordType = self::getTCAtypeValue($table, $fullRow, true);
+                            $recordType = GeneralUtility::makeInstance(RecordTypeResolver::class)->getRecordType($table, $fullRow);
                             if ($recordType !== null && is_array($typeSpecificTsConfig[$recordType . '.'] ?? null)) {
                                 ArrayUtility::mergeRecursiveWithOverrule($columnTsConfig, $typeSpecificTsConfig[$recordType . '.']);
                             }

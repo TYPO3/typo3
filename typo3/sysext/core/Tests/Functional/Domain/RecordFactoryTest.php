@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Domain;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
 use TYPO3\CMS\Core\Domain\Page;
@@ -36,6 +38,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordFactoryTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['styleguide', 'workspaces'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -88,6 +92,69 @@ final class RecordFactoryTest extends FunctionalTestCase
         self::assertNull($result->getSystemProperties()->getDescription());
         self::assertSame(0, $result->getSystemProperties()->getSorting());
         self::assertFalse($result->getSystemProperties()->isLockedForEditing());
+    }
+
+    #[Test]
+    public function typeDefinedInForeignRecordIsResolved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordFactoryForeignType.csv');
+        $dbRow = BackendUtility::getRecord('sys_file_metadata', 1);
+        /** @var Record $result */
+        $result = $this->get(RecordFactory::class)->createFromDatabaseRow('sys_file_metadata', $dbRow);
+        self::assertSame('1', $result->getRecordType());
+        self::assertSame('sys_file_metadata.1', $result->getFullType());
+        self::assertSame('Readme', $result->get('title'));
+        self::assertArrayNotHasKey('width', $result->toArray());
+    }
+
+    #[Test]
+    public function typeDefinedInForeignRecordIsResolvedWithoutMatchingSubSchema(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordFactoryForeignType.csv');
+        $dbRow = BackendUtility::getRecord('sys_file_metadata', 2);
+        $result = $this->get(RecordFactory::class)->createRawRecord('sys_file_metadata', $dbRow);
+        self::assertSame('2', $result->getRecordType());
+        self::assertSame('sys_file_metadata.2', $result->getFullType());
+    }
+
+    #[Test]
+    public function typeDefinedInMissingForeignRecordIsNotResolved(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordFactoryForeignType.csv');
+        $dbRow = BackendUtility::getRecord('sys_file_metadata', 3);
+        $result = $this->get(RecordFactory::class)->createRawRecord('sys_file_metadata', $dbRow);
+        self::assertNull($result->getRecordType());
+        self::assertSame('sys_file_metadata', $result->getFullType());
+    }
+
+    #[Test]
+    public function typeDefinedInForeignRecordIsNotResolvedWithoutPointerField(): void
+    {
+        $result = $this->get(RecordFactory::class)->createRawRecord('sys_file_metadata', ['uid' => 1, 'pid' => 0]);
+        self::assertNull($result->getRecordType());
+        self::assertSame('sys_file_metadata', $result->getFullType());
+    }
+
+    public static function typeDefinedInForeignWorkspaceRecordIsResolvedDataProvider(): \Generator
+    {
+        yield 'live record in live workspace' => [1, 0, 'withChangedFields'];
+        yield 'record changed in workspace' => [1, 1, 'withColumnsOverrides'];
+        yield 'record deleted in workspace, live workspace' => [2, 0, 'withChangedFields'];
+        yield 'record deleted in workspace' => [2, 1, null];
+        yield 'deleted record' => [3, 0, null];
+        yield 'record new in workspace, live workspace' => [4, 0, null];
+        yield 'record new in workspace' => [4, 1, 'withColumnsOverrides'];
+    }
+
+    #[DataProvider('typeDefinedInForeignWorkspaceRecordIsResolvedDataProvider')]
+    #[Test]
+    public function typeDefinedInForeignWorkspaceRecordIsResolved(int $uid, int $workspaceId, ?string $expectedType): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordFactoryForeignTypeWorkspace.csv');
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $dbRow = BackendUtility::getRecord('tx_styleguide_typeforeign', $uid);
+        $result = $this->get(RecordFactory::class)->createRawRecord('tx_styleguide_typeforeign', $dbRow);
+        self::assertSame($expectedType, $result->getRecordType());
     }
 
     #[Test]
