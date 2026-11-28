@@ -419,6 +419,23 @@ final class BackendUtilityTest extends FunctionalTestCase
         self::assertSame($expectation, $statement);
     }
 
+    public static function getTCAtypeValueResolvesRecordTypeDataProvider(): \Generator
+    {
+        yield 'type field of the record' => ['tt_content', ['CType' => 'text'], 'text', 'text'];
+        yield 'type without types section' => ['pages', ['doktype' => 12345], '1', null];
+        yield 'table without types' => ['be_groups', ['uid' => 1], '1', null];
+        yield 'unknown table' => ['tx_unknown', ['uid' => 1], '1', null];
+        yield 'missing related record' => ['sys_file_metadata', ['uid' => 1, 'file' => 99], '1', null];
+    }
+
+    #[DataProvider('getTCAtypeValueResolvesRecordTypeDataProvider')]
+    #[Test]
+    public function getTCAtypeValueResolvesRecordType(string $table, array $row, string $expected, ?string $expectedWithoutFallback): void
+    {
+        self::assertSame($expected, BackendUtility::getTCAtypeValue($table, $row));
+        self::assertSame($expectedWithoutFallback, BackendUtility::getTCAtypeValue($table, $row, true));
+    }
+
     #[Test]
     public function getRecordWithLargeUidDoesNotFail(): void
     {

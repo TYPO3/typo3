@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Security\RawValue;
@@ -46,6 +47,7 @@ readonly class SuggestWizardController
         private FlexFormTools $flexFormTools,
         private TcaSchemaFactory $tcaSchemaFactory,
         private ConnectionPool $connectionPool,
+        private RecordTypeResolver $recordTypeResolver,
     ) {}
 
     /**
@@ -80,11 +82,7 @@ readonly class SuggestWizardController
             // With possible columnsOverrides
             // @todo Validate if we can move this fallback recordType determination, should be do-able in v13?!
             if ($recordType === null) {
-                $recordType = BackendUtility::getTCAtypeValue(
-                    $tableName,
-                    BackendUtility::getRecord($tableName, $uid) ?? [],
-                    true
-                );
+                $recordType = $this->recordTypeResolver->getRecordType($tableName, BackendUtility::getRecord($tableName, $uid) ?? []);
             }
             if ($recordType !== null && $schema->hasSubSchema($recordType)) {
                 $fieldConfig = $schema->getSubSchema($recordType)->getField($fieldName)->getConfiguration();

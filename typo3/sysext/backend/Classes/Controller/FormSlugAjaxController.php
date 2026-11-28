@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,6 +45,7 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
         private Context $context,
         private HashService $hashService,
         private SiteFinder $siteFinder,
+        private RecordTypeResolver $recordTypeResolver,
     ) {}
 
     /**
@@ -90,7 +92,7 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
         $row = (array)BackendUtility::getRecordWSOL($tableName, $recordId);
         $recordType = (string)($queryParameters['recordType'] ?? '');
         if (!isset($GLOBALS['TCA'][$tableName]['types'][$recordType])) {
-            $recordType = BackendUtility::getTCAtypeValue($tableName, $row, true);
+            $recordType = $this->recordTypeResolver->getRecordType($tableName, $row);
         }
         if ($recordType !== null) {
             $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;

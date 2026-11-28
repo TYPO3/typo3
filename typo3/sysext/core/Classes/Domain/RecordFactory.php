@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Schema\Capability\FieldCapability;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\SystemInternalFieldCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\RecordTypeResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,6 +60,7 @@ readonly class RecordFactory
         protected TcaSchemaFactory $schemaFactory,
         protected RecordFieldTransformer $fieldTransformer,
         protected EventDispatcherInterface $eventDispatcher,
+        protected ?RecordTypeResolver $recordTypeResolver = null,
     ) {}
 
     /**
@@ -149,17 +151,23 @@ readonly class RecordFactory
         }
         $schema = $this->schemaFactory->get($table);
         $fullType = $table;
-        if ($schema->supportsSubSchema() && ($subSchemaTypeInformation = $schema->getSubSchemaTypeInformation())->isPointerToForeignFieldInForeignSchema() === false) {
-            // @todo Limitation to local SubSchemaDivisorField, because the actual record type is defined in foreign record.
-            $subSchemaDivisorFieldName = $subSchemaTypeInformation->getFieldName();
-            if (!isset($record[$subSchemaDivisorFieldName])) {
-                throw new \InvalidArgumentException(
-                    'Missing typeField "' . $subSchemaDivisorFieldName . '" in record of requested table "' . $table . '".',
-                    1715267513,
-                );
+        if ($schema->supportsSubSchema()) {
+            $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
+            if ($subSchemaTypeInformation->isPointerToForeignFieldInForeignSchema()) {
+                $recordType = ($this->recordTypeResolver ?? GeneralUtility::makeInstance(RecordTypeResolver::class))->getTypeValue($table, $record);
+                if ($recordType !== null) {
+                    $fullType .= '.' . $recordType;
+                }
+            } else {
+                $subSchemaDivisorFieldName = $subSchemaTypeInformation->getFieldName();
+                if (!isset($record[$subSchemaDivisorFieldName])) {
+                    throw new \InvalidArgumentException(
+                        'Missing typeField "' . $subSchemaDivisorFieldName . '" in record of requested table "' . $table . '".',
+                        1715267513,
+                    );
+                }
+                $fullType .= '.' . $record[$subSchemaDivisorFieldName];
             }
-            $recordType = (string)$record[$subSchemaDivisorFieldName];
-            $fullType .= '.' . $recordType;
         }
         $computedProperties = $this->extractComputedProperties($record);
         // @todo We might want to throw an exception in case uid / pid are not defined.
